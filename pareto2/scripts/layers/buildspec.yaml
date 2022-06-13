@@ -1,0 +1,14 @@
+artifacts:
+  base-directory: build
+  files:
+  - '**/*'
+  name: $S3_KEY
+phases:
+  install:
+    commands:
+    - pip install --upgrade pip
+    - mkdir -p build/python
+    - pip install --upgrade --target build/python $PIP_TARGET
+    runtime-versions:
+      python: $PYTHON_RUNTIME
+version: '0.2'

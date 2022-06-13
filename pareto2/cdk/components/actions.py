@@ -1,0 +1,142 @@
+from cdk.components import hungarorise as H
+from cdk.components import uppercase as U
+from cdk.components import resource
+
+import re
+
+"""
+- events because it's an event driven system
+- logs because everything always needs logs
+- sqs because it's used in a variety of situations
+  - dlqs/destinations
+  - event mappings, which require "lookbacks"
+"""
+
+DefaultPermissions={"events", "logs", "sqs"}
+
+PatternPermissions=[("\\-table", "dynamodb"),
+                    ("\\-bucket", "s3")]
+
+@resource            
+def init_function(action, **kwargs):
+    resourcename=H("%s-function" % action["name"])
+    rolename=H("%s-role" % action["name"])
+    memory=H("memory-size-%s" % action["size"])
+    timeout=H("timeout-%s" % action["timeout"])
+    code={"S3Bucket": {"Ref": H("artifacts-bucket")},
+          "S3Key": {"Ref": H("artifacts-key")}}
+    handler={"Fn::Sub": "${%s}/%s/index.handler" % (H("package-root"),
+                                                    action["name"].replace("-", "/"))}
+    runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
+    props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
+           "MemorySize": {"Ref": memory},
+           "Timeout": {"Ref": timeout},
+           "Code": code,
+           "Handler": handler,
+           "Runtime": runtime}
+    if "packages" in action:
+        props["Layers"]=[{"Ref": H("layer-%s" % pkgname)}
+                         for pkgname in action["packages"]]
+    if "env" in action:
+        variables={U(k): {"Ref": H(k)}
+                   for k in action["env"]["variables"]}
+        props["Environment"]={"Variables": variables}
+    return (resourcename, 
+            "AWS::Lambda::Function",
+            props)
+
+"""
+- custom permissions layer provided so you can access polly, translate etc
+"""
+
+@resource
+def init_function_role(action, **kwargs):
+    def init_permissions(action,
+                         defaultpermissions=DefaultPermissions,
+                         patternpermissions=PatternPermissions):
+        permissions=set(defaultpermissions)
+        if "env" in action:
+            for var in action["env"]["variables"]:
+                for pat, permission in patternpermissions:
+                    if re.search(pat, var):
+                        permissions.add(permission)
+        if "permissions" in action:
+            permissions.update(set(action["permissions"]))
+        return permissions        
+    resourcename=H("%s-role" % action["name"])
+    assumerolepolicydoc={"Version": "2012-10-17",
+                         "Statement": [{"Action": "sts:AssumeRole",
+                                        "Effect": "Allow",
+                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
+    permissions=init_permissions(action)
+    policydoc={"Version": "2012-10-17",
+               "Statement": [{"Action" : "%s:*" % permission,
+                              "Effect": "Allow",
+                              "Resource": "*"}
+                             for permission in sorted(list(permissions))]}
+    policyname={"Fn::Sub": "%s-role-policy-${AWS::StackName}" % action["name"]}
+    policies=[{"PolicyDocument": policydoc,
+               "PolicyName": policyname}]
+    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+           "Policies": policies}
+    return (resourcename,
+            "AWS::IAM::Role",
+            props)
+
+@resource
+def init_function_event_config(action, errors):
+    resourcename=H("%s-event-config" % action["name"])
+    retries=action["retries"] if "retries" in action else 0
+    funcname=H("%s-function" % action["name"])
+    destarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
+    destconfig={"OnFailure": {"Destination": destarn}}
+    props={"MaximumRetryAttempts": retries,
+           "FunctionName": {"Ref": funcname},
+           "Qualifier": "$LATEST",
+           "DestinationConfig": destconfig}
+    return (resourcename,
+            "AWS::Lambda::EventInvokeConfig",
+            props)
+
+"""
+- only actions which are *not* bound to queues have event config defined (async)
+- otherwise retries and dlq is controlled by bound queue (sync)
+"""
+
+def init_component(action, errors):
+    resources=[]
+    fns=[init_function,
+         init_function_role]
+    if "queue" not in action:
+        fns.append(init_function_event_config)
+    for fn in fns:
+        resource=fn(action, errors=errors)
+        resources.append(resource)
+    return resources
+
+def init_resources(md):
+    resources=[]
+    errors=md.errors
+    for action in md.actions:
+        component=init_component(action, errors)
+        resources+=component
+    return dict(resources)
+
+def update_template(template, md):
+    template["Resources"].update(init_resources(md))
+
+if __name__=="__main__":
+    try:
+        import sys
+        if len(sys.argv) < 2:
+            raise RuntimeError("please enter stagename")
+        stagename=sys.argv[1]
+        from cdk.template import Template
+        template=Template("actions")
+        from cdk.metadata import Metadata
+        md=Metadata.initialise(stagename)
+        md.validate().expand()
+        update_template(template, md)
+        template.dump_yaml(template.filename_yaml)
+    except RuntimeError as error:
+        print ("Error: %s" % str(error))

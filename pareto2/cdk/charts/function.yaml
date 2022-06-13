@@ -1,0 +1,78 @@
+- format: h3
+  height: 1
+  type: text
+  value: {{Title}}
+- body:
+  - - metrics:
+      - - AWS/Lambda
+        - Invocations
+        - FunctionName
+        - {{ResourceName}}
+        - Resource
+        - {{ResourceName}}
+        - stat: Sum
+      region: ${AWS::Region}
+      stacked: false
+      title: Invocations
+      view: timeSeries
+    - metrics:
+      - - AWS/Lambda
+        - ConcurrentExecutions
+        - FunctionName
+        - {{ResourceName}}
+        - Resource
+        - {{ResourceName}}
+        - stat: Maximum
+      region: ${AWS::Region}
+      stacked: false
+      title: "Concurrent Executions"
+      view: timeSeries
+    - metrics:
+      - - AWS/Lambda
+        - Duration
+        - FunctionName
+        - {{ResourceName}}
+        - Resource
+        - {{ResourceName}}
+        - stat: Minimum
+      - - '...'
+        - stat: Average
+      - - '...'
+        - stat: Maximum
+      region: ${AWS::Region}
+      stacked: false
+      title: Duration
+      view: timeSeries
+    - metrics:
+      - - AWS/Lambda
+        - Errors
+        - FunctionName
+        - {{ResourceName}}
+        - Resource
+        - {{ResourceName}}
+        - color: '#d13212'
+          id: errors
+          stat: Sum
+      - - .
+        - Invocations
+        - .
+        - .
+        - .
+        - .
+        - id: invocations
+          stat: Sum
+          visible: false
+      - - expression: 100 - 100 * errors / MAX([errors, invocations])
+          id: availability
+          label: Success rate (%)
+          region: ${AWS::Region}
+          yAxis: right
+      region: ${AWS::Region}
+      stacked: false
+      title: Errors
+      view: timeSeries
+      yAxis:
+        right:
+          max: 100
+  height: 6
+  type: charts
