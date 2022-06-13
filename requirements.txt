@@ -1,0 +1,7 @@
+awscli
+boto3
+botocore
+docker # moto sqs
+jsonschema
+moto==2.0.11
+pyyaml

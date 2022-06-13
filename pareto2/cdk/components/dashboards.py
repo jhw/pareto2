@@ -1,4 +1,4 @@
-from cdk.components import hungarorise as H
+from pareto2.cdk.components import hungarorise as H
 
 import json, yaml
 
@@ -154,9 +154,9 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
-        from cdk.template import Template
+        from pareto2.cdk.template import Template
         template=Template("dashboards")
-        from cdk.metadata import Metadata
+        from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)
         md.validate().expand()
         update_template(template, md)

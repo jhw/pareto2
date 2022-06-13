@@ -1,4 +1,4 @@
-from scripts.helpers import hungarorise
+from pareto2.scripts.helpers import hungarorise
 
 class Layers(list):
 

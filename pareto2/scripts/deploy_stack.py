@@ -1,9 +1,9 @@
-from cdk.metadata import Metadata
-from cdk.template import Template
+from pareto2.cdk.metadata import Metadata
+from pareto2.cdk.template import Template
 
-from scripts.deploy.models.lambdas import Lambdas
-from scripts.deploy.models.layers import Layers
-from scripts.deploy.models.parameters import Parameters
+from pareto2.scripts.deploy.models.lambdas import Lambdas
+from pareto2.scripts.deploy.models.layers import Layers
+from pareto2.scripts.deploy.models.parameters import Parameters
 
 from botocore.exceptions import ClientError, WaiterError
 
@@ -41,7 +41,7 @@ if __name__=="__main__":
         print ("initialising/validating metadata")
         from datetime import datetime
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        from scripts.helpers import load_config
+        from pareto2.scripts.helpers import load_config
         config=load_config()
         md=Metadata.initialise(stagename)
         md.validate().expand()
@@ -56,7 +56,7 @@ if __name__=="__main__":
         layers=Layers.initialise(md)
         layers.validate(s3, config)
         print ("initialising/validating template")
-        from cdk import init_template
+        from pareto2.cdk import init_template
         template=init_template(md,
                                name="main",
                                timestamp=timestamp)

@@ -1,5 +1,5 @@
-from cdk.components import hungarorise as H
-from cdk.components import resource
+from pareto2.cdk.components import hungarorise as H
+from pareto2.cdk.components import resource
 
 @resource
 def init_userpool(users):
@@ -74,9 +74,9 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
-        from cdk.template import Template
+        from pareto2.cdk.template import Template
         template=Template("users")
-        from cdk.metadata import Metadata
+        from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)        
         md.validate().expand()
         update_template(template, md)

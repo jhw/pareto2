@@ -1,10 +1,10 @@
-from cdk.components.actions import init_function, init_function_role
+from pareto2.cdk.components.actions import init_function, init_function_role
 
-from cdk.components.queues import init_queue_binding
+from pareto2.cdk.components.queues import init_queue_binding
 
-from cdk.components import hungarorise as H
+from pareto2.cdk.components import hungarorise as H
 
-from cdk.components import resource
+from pareto2.cdk.components import resource
 
 """
 - defined as init_error_queue to distinguish from plain init_queue in queues.py
@@ -43,9 +43,9 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
-        from cdk.template import Template
+        from pareto2.cdk.template import Template
         template=Template("errors")
-        from cdk.metadata import Metadata
+        from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)
         md.validate().expand()
         update_template(template, md)

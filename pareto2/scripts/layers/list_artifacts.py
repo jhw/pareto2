@@ -11,7 +11,7 @@ def list_bucket(s3, bucketname, prefix="layer-"):
 
 if __name__=="__main__":
     try:
-        from scripts.helpers import load_config
+        from pareto2.scripts.helpers import load_config
         config=load_config()
         s3=boto3.client("s3")
         list_bucket(s3, config["ArtifactsBucket"])

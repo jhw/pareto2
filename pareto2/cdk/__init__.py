@@ -1,18 +1,18 @@
-from cdk.components.actions import update_template as init_actions
-from cdk.components.api import update_template as init_api
-from cdk.components.bucket import update_template as init_bucket
-from cdk.components.dashboards import update_template as init_dashboard
-from cdk.components.errors import update_template as init_errors
-from cdk.components.events import update_template as init_events
-from cdk.components.layers import update_template as init_layers
-from cdk.components.queues import update_template as init_queues
-from cdk.components.routing import update_template as init_routing
-from cdk.components.secrets import update_template as init_secrets
-from cdk.components.table import update_template as init_table
-from cdk.components.timers import update_template as init_timers
-from cdk.components.users import update_template as init_users
+from pareto2.cdk.components.actions import update_template as init_actions
+from pareto2.cdk.components.api import update_template as init_api
+from pareto2.cdk.components.bucket import update_template as init_bucket
+from pareto2.cdk.components.dashboards import update_template as init_dashboard
+from pareto2.cdk.components.errors import update_template as init_errors
+from pareto2.cdk.components.events import update_template as init_events
+from pareto2.cdk.components.layers import update_template as init_layers
+from pareto2.cdk.components.queues import update_template as init_queues
+from pareto2.cdk.components.routing import update_template as init_routing
+from pareto2.cdk.components.secrets import update_template as init_secrets
+from pareto2.cdk.components.table import update_template as init_table
+from pareto2.cdk.components.timers import update_template as init_timers
+from pareto2.cdk.components.users import update_template as init_users
 
-from cdk.template import Template
+from pareto2.cdk.template import Template
 
 from datetime import datetime
 
@@ -66,7 +66,7 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
-        from cdk.metadata import Metadata
+        from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)
         md.validate()
         template=init_template(md)

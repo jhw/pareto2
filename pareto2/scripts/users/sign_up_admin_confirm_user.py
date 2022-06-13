@@ -2,7 +2,7 @@
 - to be used when you want a ready- made use to test against
 """
 
-from scripts.users import *
+from pareto2.scripts.users import *
 
 import boto3, yaml
 

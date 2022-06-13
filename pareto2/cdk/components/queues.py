@@ -1,5 +1,5 @@
-from cdk.components import hungarorise as H
-from cdk.components import resource
+from pareto2.cdk.components import hungarorise as H
+from pareto2.cdk.components import resource
             
 """
 - queues are the only part of the messaging system which are tightly coupled to lambdas
@@ -71,9 +71,9 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
-        from cdk.template import Template
+        from pareto2.cdk.template import Template
         template=Template("queues")
-        from cdk.metadata import Metadata
+        from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)
         md.validate().expand()
         update_template(template, md)

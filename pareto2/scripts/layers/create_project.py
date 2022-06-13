@@ -88,7 +88,7 @@ def init_project(cb, iam, config, rolearn,
                           
 if __name__=="__main__":
     try:
-        from scripts.helpers import load_config
+        from pareto2.scripts.helpers import load_config
         config=load_config()
         cb=boto3.client("codebuild")
         iam=boto3.client("iam")

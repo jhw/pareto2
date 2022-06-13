@@ -5,7 +5,7 @@
 - auth routine could be expanded into full onboarding routine including podcast channel details, image upload etc
 """
 
-from scripts.users import *
+from pareto2.scripts.users import *
 
 import boto3, yaml
 
