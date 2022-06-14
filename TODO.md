@@ -1,13 +1,12 @@
 ### short
 
-- add ping scripts and test
-
-### medium
-
+- scripts to test get, post
 - add error handling and slack
 - test hello add with bad errors
   - remember has to be async ping
 - tagged release
+
+### medium
 
 ### long
 
