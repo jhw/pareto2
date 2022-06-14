@@ -2,7 +2,7 @@ from pareto2.scripts import load_config
 
 import importlib, inspect, os, unittest
 
-def filter_tests(root):
+def filter_tests(root=os.environ["APP_ROOT"]):
     classes=[]
     for parent, _, itemnames in os.walk(root):
         if "__pycache__" in parent:
@@ -26,7 +26,6 @@ def run_tests(tests):
     return runner.run(suite)
 
 if __name__=="__main__":
-    root=load_config()["PackageRoot"]
-    classes=filter_tests(root)
+    classes=filter_tests()
     run_tests(classes)
     

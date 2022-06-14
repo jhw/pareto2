@@ -47,8 +47,7 @@ if __name__=="__main__":
         md.validate().expand()
         print ("initialising/validating lambdas")
         lambdas=Lambdas.initialise(md=md,
-                                   timestamp=timestamp,
-                                   root=config["PackageRoot"])
+                                   timestamp=timestamp)
         lambdas.validate()
         lambdas.dump_zip()
         config.update({"StageName": stagename,
@@ -67,9 +66,6 @@ if __name__=="__main__":
                               default_flow_style=False))
         template.dump_yaml(template.filename_yaml)
         template.validate_root()
-        # START TEMP CODE
-        config.pop("PackageRoot")
-        # END TEMP CODE
         params=Parameters.initialise([config,
                                       layers.parameters])
         params.validate(template)

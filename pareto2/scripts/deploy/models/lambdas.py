@@ -8,7 +8,7 @@ class Lambdas(list):
     """
     
     @classmethod
-    def initialise(self, md, timestamp, root):
+    def initialise(self, md, timestamp, root=os.environ["APP_ROOT"]):
         def filter_paths(root):
             paths, errors = [], []
             for parent, _, itemnames in os.walk(root):
