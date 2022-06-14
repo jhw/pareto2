@@ -42,7 +42,8 @@ class Lambdas(list):
         errors=[]
         for path in self:
             if path.endswith("index.py"):
-                actionname="-".join(path.split("/")[1:-1])
+                actionname="-".join(path.split("/")[:-1])
+                print (actionname)
                 if "errors" not in path:
                     if actionname not in actionnames:
                         errors.append(actionname)
@@ -59,7 +60,6 @@ class Lambdas(list):
             raise RuntimeError("errors handler not found")
         elif len(paths) > 1:
             raise RuntimeError("multiple error handlers found")
-
     
     def validate(self):
         self.validate_actions()

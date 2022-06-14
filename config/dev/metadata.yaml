@@ -37,7 +37,7 @@ bucket:
 dashboard:
   name: dashboard
 errors:
-  name: errors
+  name: demo-errors
   size: small
   timeout: short
 events:
