@@ -2,7 +2,7 @@ from pareto2.cdk.components import hungarorise as H
 
 import json, yaml
 
-ChartSrc="cdk/charts/%s.yaml"
+ChartSrc="pareto2/cdk/charts/%s.yaml"
 
 PageWidth=24
 

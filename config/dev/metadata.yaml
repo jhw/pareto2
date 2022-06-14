@@ -33,7 +33,7 @@ api:
   stage:
     name: 1-0-0
 bucket:
-  name: streaming-bucket
+  name: demo-streaming-bucket
 dashboard:
   name: dashboard
 errors:
@@ -42,11 +42,14 @@ errors:
   timeout: short
 events:
   name: events
+secrets: []
 table:
   indexes: []
-  name: streaming-table
+  name: demo-streaming-table
   stream:
     retries: 3
     batch:
       window: 1
-    type: NEW_AND_OLD_IMAGES
+    type: NEW_AND_OLD_IMAGES    
+users:
+  name: users

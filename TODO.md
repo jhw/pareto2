@@ -1,10 +1,15 @@
 ### short
 
+- Error: unknown parameter PackageRoot
+
 ### medium
+
+- cross check bucket/table names against mapped streaming functions
+
+### long
 
 - replace s3 event lambda with direct eventbridge event
 - investigate eventbridge direct URL ping for Slack events
-- separate slack error, alert channels
 
 ### thoughts
 
