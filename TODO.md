@@ -1,6 +1,5 @@
 ### short
 
-- pip package
 - demo
 - optional config path
 
@@ -12,6 +11,7 @@
 
 ### done
 
+- pip package
 - github project
 - replace package root in defaults
   - use full package name in lambda
