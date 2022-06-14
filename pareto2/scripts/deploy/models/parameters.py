@@ -12,9 +12,11 @@ class Parameters(dict):
 
     def validate(self, template):
         errors=[]
+        """
         for paramname in self:
             if paramname not in template["Parameters"]:
                 errors.append("unknown parameter %s" % paramname)
+        """
         for paramname, param in template["Parameters"].items():
             if ("Default" not in param and
                 paramname not in self):

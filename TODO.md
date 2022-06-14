@@ -1,13 +1,18 @@
 ### short
 
-- PackageRoot is being passed as parameter but not being consumed
+- allow APIGW endpoints to be unauthorized
+- complete apigw handler code and tests
+- add demo ping scripts
+- deploy and test
 
 ### medium
 
+- hookup error handling to post to slack
 - cross check bucket/table names against mapped streaming functions
 
 ### long
 
+- replace slack with aws chat
 - replace s3 event lambda with direct eventbridge event
 - investigate eventbridge direct URL ping for Slack events
 
@@ -15,6 +20,7 @@
 
 ### done
 
+- PackageRoot is being passed as parameter but not being consumed
 - test skeletons
 - base test class
 - pip package
