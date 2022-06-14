@@ -1,6 +1,6 @@
 ### short
 
-- base test class
+- test skeletons
 
 ### medium
 
@@ -12,6 +12,7 @@
 
 ### done
 
+- base test class
 - pip package
 - github project
 - replace package root in defaults
