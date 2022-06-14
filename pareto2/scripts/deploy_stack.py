@@ -67,6 +67,9 @@ if __name__=="__main__":
                               default_flow_style=False))
         template.dump_yaml(template.filename_yaml)
         template.validate_root()
+        # START TEMP CODE
+        config.pop("PackageRoot")
+        # END TEMP CODE
         params=Parameters.initialise([config,
                                       layers.parameters])
         params.validate(template)

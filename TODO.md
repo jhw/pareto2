@@ -1,12 +1,13 @@
 ### short
 
-- complete hello get
-- test deployment
 - add ping scripts and test
 
 ### medium
 
-- hookup errors and test
+- avoid popping PackageRoot in deploy_stack.py
+- add error handling and slack
+- test hello add with bad errors
+  - remember has to be async ping
 
 ### long
 
@@ -21,6 +22,8 @@
 
 ### done
 
+- test deployment
+- complete hello get
 - complete apigw handler code and tests
 - remove cors endpoints if not authorized
 - allow APIGW endpoints to be unauthorized

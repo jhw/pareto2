@@ -15,6 +15,8 @@ class DemoHelloPostTest(Pareto2TestBase):
             reqbody={"message": "Hello world!"}
             event={"body": json.dumps(reqbody)}
             resp=handler(event)
+            self.assertTrue("statusCode" in resp)
+            self.assertEqual(resp["statusCode"], 200)
             self.assertTrue("body" in resp)
             respbody=json.loads(resp["body"])
             self.assertTrue("message" in respbody)
