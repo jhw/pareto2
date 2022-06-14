@@ -1,7 +1,5 @@
 ### short
 
-- test skeletons
-
 ### medium
 
 - replace s3 event lambda with direct eventbridge event
@@ -12,6 +10,7 @@
 
 ### done
 
+- test skeletons
 - base test class
 - pip package
 - github project
