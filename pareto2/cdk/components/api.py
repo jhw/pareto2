@@ -50,8 +50,9 @@ def init_deployment(api, actions):
     depends=[]
     for action in actions:
         if "endpoint" in action:
-            depends+=[H("%s-method" % action["name"]),
-                      H("%s-cors-method" % action["name"])]
+            depends.append(H("%s-method" % action["name"]))
+            if api.authorized:
+                depends.append(H("%s-cors-method" % action["name"]))            
     return (resourcename,            
             "AWS::ApiGateway::Deployment",
             props,
@@ -225,18 +226,21 @@ def init_resources(md):
     resources.append(init_deployment(api, actions))
     resources.append(init_stage(api))
     if api.authorized:
-        resources.append(init_authorizer(api, users))
-    for code in "4XX|5XX".split("|"):
-        resources.append(init_default_response(api, code))
+        resources.append(init_authorizer(api, users))    
+        for code in "4XX|5XX".split("|"):
+            resources.append(init_default_response(api, code))
     for action in md.actions:
         if not "endpoint" in action:
             continue
         for fn in [init_resource,
                    init_method,
-                   init_cors_method,
                    init_permission]:
             resource=fn(api, action)
             resources.append(resource)
+        if api.authorized:
+            for fn in [init_cors_method]:
+                resource=fn(api, action)
+                resources.append(resource)
         if "parameters" in action["endpoint"]:
             resources.append(init_validator(api, action))
         elif "schema" in action["endpoint"]:
