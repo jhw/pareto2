@@ -1,13 +1,14 @@
 ### short
 
-- demo
-- optional config path
+- base test class
 
 ### medium
 
 - replace s3 event lambda with direct eventbridge event
 - investigate eventbridge direct URL ping for Slack events
 - separate slack error, alert channels
+
+### thoughts
 
 ### done
 
