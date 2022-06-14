@@ -1,10 +1,8 @@
 ### short
 
-- replace package root in defaults
-  - use full package name in lambda
-- demo
 - github project
 - pip package
+- demo
 - optional config path
 
 ### medium
@@ -15,6 +13,8 @@
 
 ### done
 
+- replace package root in defaults
+  - use full package name in lambda
 - action class should be passed package root
 - replace cricket refs
 - remove bbc refs

@@ -25,8 +25,7 @@ def init_function(action, **kwargs):
     timeout=H("timeout-%s" % action["timeout"])
     code={"S3Bucket": {"Ref": H("artifacts-bucket")},
           "S3Key": {"Ref": H("artifacts-key")}}
-    handler={"Fn::Sub": "${%s}/%s/index.handler" % (H("package-root"),
-                                                    action["name"].replace("-", "/"))}
+    handler={"Fn::Sub": "%s/index.handler" % action["name"].replace("-", "/")}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memory},
