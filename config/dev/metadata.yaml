@@ -30,6 +30,7 @@ actions:
   timeout: short
 api:
   name: api
+  authorized: false
   stage:
     name: 1-0-0
 bucket:

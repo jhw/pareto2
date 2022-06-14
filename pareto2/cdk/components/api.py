@@ -118,12 +118,15 @@ def init_method(api, action):
     integration={"IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY",
                  "Uri": uri}
-    props={"AuthorizationType": "COGNITO_USER_POOLS",
-           "AuthorizerId": {"Ref": H("%s-authorizer" % api["name"])},
-           "HttpMethod": action["endpoint"]["method"],
+    props={"HttpMethod": action["endpoint"]["method"],
            "Integration": integration,
            "ResourceId": {"Ref": H("%s-resource" % action["name"])},
            "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
+    if api.authorized:
+        props.update({"AuthorizationType": "COGNITO_USER_POOLS",
+                      "AuthorizerId": {"Ref": H("%s-authorizer" % api["name"])}})
+    else:
+        props["AuthorizationType"]="NONE"
     if "parameters" in action["endpoint"]:
         props["RequestValidatorId"]={"Ref": H("%s-validator" % action["name"])}
         props["RequestParameters"]={"method.request.querystring.%s" % param: True
@@ -221,7 +224,8 @@ def init_resources(md):
     resources.append(init_rest_api(api))
     resources.append(init_deployment(api, actions))
     resources.append(init_stage(api))
-    resources.append(init_authorizer(api, users))
+    if api.authorized:
+        resources.append(init_authorizer(api, users))
     for code in "4XX|5XX".split("|"):
         resources.append(init_default_response(api, code))
     for action in md.actions:

@@ -1,6 +1,6 @@
 ### short
 
-- allow APIGW endpoints to be unauthorized
+- remove cors endpoints if not authorized
 - complete apigw handler code and tests
 - add demo ping scripts
 - deploy and test
@@ -20,6 +20,7 @@
 
 ### done
 
+- allow APIGW endpoints to be unauthorized
 - PackageRoot is being passed as parameter but not being consumed
 - test skeletons
 - base test class
