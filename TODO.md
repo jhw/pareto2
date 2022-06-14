@@ -9,6 +9,7 @@
 - add error handling and slack
 - test hello add with bad errors
   - remember has to be async ping
+- tagged release
 
 ### long
 
