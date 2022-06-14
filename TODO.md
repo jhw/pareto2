@@ -1,5 +1,6 @@
 ### short
 
+
 - replace cricket refs
 - replace package root in defaults
 - demo
@@ -15,6 +16,7 @@
 
 ### done
 
+- remove bbc refs
 - gitignore
 - refactor cdk, scripts roots
 - setenv
