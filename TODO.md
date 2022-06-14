@@ -1,25 +1,27 @@
 ### short
 
-- complete apigw handler code and tests
-- add demo ping scripts
-- deploy and test
+- complete hello get
+- test deployment
+- add ping scripts and test
 
 ### medium
 
-- hookup error handling to post to slack
-- cross check bucket/table names against mapped streaming functions
+- hookup errors and test
 
 ### long
 
-- replace unauthorised api with api tokens
-- replace slack with aws chat
+- replace unathorised api with api tokens
 - replace s3 event lambda with direct eventbridge event
 - investigate eventbridge direct URL ping for Slack events
+- replace slack with aws chat
 
 ### thoughts
 
+- cross check bucket/table names against mapped streaming functions?
+
 ### done
 
+- complete apigw handler code and tests
 - remove cors endpoints if not authorized
 - allow APIGW endpoints to be unauthorized
 - PackageRoot is being passed as parameter but not being consumed
