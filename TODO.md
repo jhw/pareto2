@@ -1,6 +1,5 @@
 ### short
 
-- consider replacing config with env variables
 - add ping scripts and test
 
 ### medium
@@ -19,9 +18,12 @@
 
 ### thoughts
 
+- consider replacing config with env variables?
+  - no is fine as long is not part of /cdk
 - cross check bucket/table names against mapped streaming functions?
 
 ### done
+
 
 - remove load_config from cdk
 - replace PackageRoot with env variable
