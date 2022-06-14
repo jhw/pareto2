@@ -41,7 +41,7 @@ if __name__=="__main__":
         print ("initialising/validating metadata")
         from datetime import datetime
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        from pareto2.scripts.helpers import load_config
+        from pareto2.scripts import load_config
         config=load_config()
         md=Metadata.initialise(stagename)
         md.validate().expand()
