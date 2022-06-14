@@ -1,5 +1,7 @@
 from jsonschema import Draft7Validator
 
+from pareto2.cdk import load_config
+
 from pareto2.cdk.components import uppercase
 
 import os, re, yaml
@@ -45,10 +47,9 @@ class Action(ComponentBase):
     - https://stackoverflow.com/questions/8569201/get-the-string-within-brackets-in-python
     """
 
-    def __init__(self, item={}, root="cricket"):    
+    def __init__(self, item={}):    
         ComponentBase.__init__(self, item)
-        path="%s/%s/index.py" % (root,
-                                 item["name"].replace("-", "/"))
+        path="%s/index.py" % item["name"].replace("-", "/")
         if not os.path.isfile(path):
             raise RuntimeError("%s handler not found" % item["name"])
         text=open(path).read()

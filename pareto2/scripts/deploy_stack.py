@@ -46,7 +46,9 @@ if __name__=="__main__":
         md=Metadata.initialise(stagename)
         md.validate().expand()
         print ("initialising/validating lambdas")
-        lambdas=Lambdas.initialise(md, timestamp)
+        lambdas=Lambdas.initialise(md=md,
+                                   timestamp=timestamp,
+                                   root=config["PackageRoot"])
         lambdas.validate()
         lambdas.dump_zip()
         config.update({"StageName": stagename,

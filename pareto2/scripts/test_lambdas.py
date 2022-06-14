@@ -1,6 +1,8 @@
+from pareto2.scripts import load_config
+
 import importlib, inspect, os, unittest
 
-def filter_tests(root="cricket"):
+def filter_tests(root):
     classes=[]
     for parent, _, itemnames in os.walk(root):
         if "__pycache__" in parent:
@@ -24,6 +26,7 @@ def run_tests(tests):
     return runner.run(suite)
 
 if __name__=="__main__":
-    classes=filter_tests()
+    root=load_config["PackageRoot"]
+    classes=filter_tests(root)
     run_tests(classes)
     
