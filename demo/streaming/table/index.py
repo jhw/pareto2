@@ -1,2 +1,2 @@
-def handler(event, context):
+def handler(event, context=None):
     print (event)

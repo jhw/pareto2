@@ -59,8 +59,9 @@ class Lambdas(list):
             raise RuntimeError("errors handler not found")
         elif len(paths) > 1:
             raise RuntimeError("multiple error handlers found")
-        
-    def validate(self):        
+
+    
+    def validate(self):
         self.validate_actions()
         self.validate_errors()
         

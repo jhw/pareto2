@@ -26,7 +26,7 @@ def run_tests(tests):
     return runner.run(suite)
 
 if __name__=="__main__":
-    root=load_config["PackageRoot"]
+    root=load_config()["PackageRoot"]
     classes=filter_tests(root)
     run_tests(classes)
     
