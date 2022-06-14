@@ -1,10 +1,11 @@
 ### short
 
+- replace PackageRoot with env variable
+- consider replacing config with env variables
 - add ping scripts and test
 
 ### medium
 
-- avoid popping PackageRoot in deploy_stack.py
 - add error handling and slack
 - test hello add with bad errors
   - remember has to be async ping
