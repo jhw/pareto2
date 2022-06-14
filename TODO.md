@@ -1,6 +1,6 @@
 ### short
 
-- Error: unknown parameter PackageRoot
+- PackageRoot is being passed as parameter but not being consumed
 
 ### medium
 
