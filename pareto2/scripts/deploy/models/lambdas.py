@@ -43,7 +43,6 @@ class Lambdas(list):
         for path in self:
             if path.endswith("index.py"):
                 actionname="-".join(path.split("/")[:-1])
-                print (actionname)
                 if "errors" not in path:
                     if actionname not in actionnames:
                         errors.append(actionname)

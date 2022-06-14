@@ -1,7 +1,5 @@
 from jsonschema import Draft7Validator
 
-from pareto2.cdk import load_config
-
 from pareto2.cdk.components import uppercase
 
 import os, re, yaml

@@ -1,6 +1,5 @@
 ### short
 
-- remove load_config from cdk
 - consider replacing config with env variables
 - add ping scripts and test
 
@@ -24,6 +23,7 @@
 
 ### done
 
+- remove load_config from cdk
 - replace PackageRoot with env variable
 - test deployment
 - complete hello get

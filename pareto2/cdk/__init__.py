@@ -16,7 +16,7 @@ from pareto2.cdk.template import Template
 
 from datetime import datetime
 
-import os, re, yaml
+import os, yaml
 
 StackNames=yaml.safe_load("""
 - actions
@@ -33,11 +33,6 @@ StackNames=yaml.safe_load("""
 - timers
 - users
 """)
-
-def load_config(filename="config/app.props"):
-    return dict([tok.split("=")
-                for tok in open(filename).read().split("\n")
-                 if re.sub("\\s", "", tok)!=''])
 
 class Defaults(dict):
 
