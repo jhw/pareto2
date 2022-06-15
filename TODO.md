@@ -1,11 +1,5 @@
 ### short
 
-- scripts to test get, post
-- add error handling and slack
-- test hello add with bad errors
-  - remember has to be async ping
-- tagged release
-
 ### medium
 
 ### long
@@ -17,32 +11,7 @@
 
 ### thoughts
 
-- consider replacing config with env variables?
-  - no is fine as long is not part of /cdk
 - cross check bucket/table names against mapped streaming functions?
 
 ### done
 
-
-- remove load_config from cdk
-- replace PackageRoot with env variable
-- test deployment
-- complete hello get
-- complete apigw handler code and tests
-- remove cors endpoints if not authorized
-- allow APIGW endpoints to be unauthorized
-- PackageRoot is being passed as parameter but not being consumed
-- test skeletons
-- base test class
-- pip package
-- github project
-- replace package root in defaults
-  - use full package name in lambda
-- action class should be passed package root
-- replace cricket refs
-- remove bbc refs
-- gitignore
-- refactor cdk, scripts roots
-- setenv
-- pyenv
-- requirements
