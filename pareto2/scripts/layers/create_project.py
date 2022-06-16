@@ -11,7 +11,7 @@ Statement:
 Version: '2012-10-17'
 """)
 
-BuildSpec=open("scripts/layers/buildspec.yaml").read()
+BuildSpec=open("pareto2/scripts/layers/buildspec.yaml").read()
 
 DockerImage="aws/codebuild/standard:4.0"
 
