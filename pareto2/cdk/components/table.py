@@ -25,7 +25,7 @@ def init_table(table, **kwargs):
                          "KeyType": "HASH"}]}
          for index in table["indexes"]]
     stream={"StreamViewType": table["stream"]["type"]}
-    name={"Fn::Sub": "streaming-table-${AWS::StackName}-${AWS::Region}"}
+    name={"Fn::Sub": "%s-table-${AWS::StackName}-${AWS::Region}" % table["name"]}
     props={"AttributeDefinitions": attrs,
            "BillingMode": "PAY_PER_REQUEST",
            "KeySchema": key,

@@ -1,5 +1,7 @@
 ### short
 
+- can't run component main scripts as metadata does not exist
+
 ### medium
 
 ### long
