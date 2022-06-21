@@ -17,6 +17,7 @@
 - avoid userpool/userpool_ nomenclature
 - pluralise all components modules which now take lists
 - components/api to be a package with root/open/cognito apis
+- metadata schema validation
 
 ### medium
 
