@@ -67,7 +67,7 @@ if __name__=="__main__":
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
         from pareto2.cdk.template import Template
-        template=Template("routing")
+        template=Template("events")
         from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)
         md.validate().expand()

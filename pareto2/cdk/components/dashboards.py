@@ -95,13 +95,13 @@ def init_actions(md):
     return (resourcename, "actions", Components(components))
 
 @render_dash
-def init_routing(md):
-    resourcename=H("%s-routing" % md.dashboard["name"])
+def init_events(md):
+    resourcename=H("%s-events" % md.dashboard["name"])
     components=[Component.initialise("event-rule",
                                      {"Title": rule,
                                       "ResourceName": "${%s}" % H(rule)})
                 for rule in sorted(md.actions.event_rules)]
-    return (resourcename, "routing", Components(components))
+    return (resourcename, "events", Components(components))
 
 @render_dash
 def init_timers(md):
@@ -145,7 +145,7 @@ def init_api(md):
 def init_resources(md):
     return dict([fn(md)
                  for fn in [init_actions,
-                            init_routing,
+                            init_events,
                             init_timers,
                             init_table,
                             init_bucket,

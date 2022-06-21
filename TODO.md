@@ -1,6 +1,7 @@
 ### short
 
-- rename routing as events
+- why are there fewer numbers of resources being created after "21 Jun 09:28"
+
 - rename users as userpool
 - add support for list of userpools
 - apis to specify actions
@@ -9,10 +10,10 @@
   - cross check api user pool against user pools
 - events to specify router
   - cross check event router against routers
-- pluralise all components modules which now take lists
 
-- apis to specify user pools
+- pluralise all components modules which now take lists
 - components/api to be a package with root/open/cognito apis
+- pareto2/cdk/__init__.py shouldn't hardcode stack names 
 
 ### medium
 
@@ -35,6 +36,7 @@
 
 ### done
 
+- rename routing as events
 - rename events as router
 - convert buckets and tables to be lists
 - convert dash to handle bucket and table lists
