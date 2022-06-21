@@ -216,28 +216,36 @@ def init_model(api, action):
             props)    
 
 def init_resources(md):
+    def init_resources(api, actions, users, resources):
+        resources.append(init_rest_api(api))
+        resources.append(init_deployment(api, actions))
+        resources.append(init_stage(api))
+        resources.append(init_authorizer(api, users))    
+        for code in "4XX|5XX".split("|"):
+            resources.append(init_default_response(api, code))
+        for action in md.actions:
+            if not "endpoint" in action:
+                continue
+            for fn in [init_resource,
+                       init_method,
+                       init_permission,
+                       init_cors_method]:
+                resource=fn(api, action)
+                resources.append(resource)
+            if "parameters" in action["endpoint"]:
+                resources.append(init_validator(api, action))
+            elif "schema" in action["endpoint"]:
+                resources.append(init_validator(api, action))
+                resources.append(init_model(api, action))
     resources=[]
-    api, actions, users = md.api, md.actions, md.users
-    resources.append(init_rest_api(api))
-    resources.append(init_deployment(api, actions))
-    resources.append(init_stage(api))
-    resources.append(init_authorizer(api, users))    
-    for code in "4XX|5XX".split("|"):
-        resources.append(init_default_response(api, code))
-    for action in md.actions:
-        if not "endpoint" in action:
-            continue
-        for fn in [init_resource,
-                   init_method,
-                   init_permission,
-                   init_cors_method]:
-            resource=fn(api, action)
-            resources.append(resource)
-        if "parameters" in action["endpoint"]:
-            resources.append(init_validator(api, action))
-        elif "schema" in action["endpoint"]:
-            resources.append(init_validator(api, action))
-            resources.append(init_model(api, action))
+    # START TEMP CODE
+    """
+    - for the minute, all actions and single user pool are bound to api
+    - in future these must be specified at api level
+    """
+    for api in md.apis:
+        init_resources(api, md.actions, md.users, resources)
+    # END TEMP CODE
     return dict(resources)
 
 """
@@ -245,14 +253,18 @@ def init_resources(md):
 """
 
 def init_outputs(md):
-    api=md.api
-    endpoint={"Fn::Sub": EndpointUrl % (H("%s-rest-api" % api["name"]),
-                                        H("%s-stage" % api["name"]))}
-    restapi={"Ref": H("%s-rest-api" % api["name"])}
-    stage={"Ref": H("%s-stage" % api["name"])}    
-    return {H("%s-endpoint" % api["name"]): {"Value": endpoint},
-            H("%s-rest-api" % api["name"]): {"Value": restapi},
-            H("%s-stage" % api["name"]): {"Value": stage}}
+    def init_outputs(api, outputs):
+        endpoint={"Fn::Sub": EndpointUrl % (H("%s-rest-api" % api["name"]),
+                                            H("%s-stage" % api["name"]))}
+        restapi={"Ref": H("%s-rest-api" % api["name"])}
+        stage={"Ref": H("%s-stage" % api["name"])}    
+        outputs.update({H("%s-endpoint" % api["name"]): {"Value": endpoint},
+                        H("%s-rest-api" % api["name"]): {"Value": restapi},
+                        H("%s-stage" % api["name"]): {"Value": stage}})
+    outputs={}
+    for api in md.apis:
+        init_outputs(api, outputs)
+    return outputs
 
 def update_template(template, md):
     template["Resources"].update(init_resources(md))

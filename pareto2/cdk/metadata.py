@@ -183,9 +183,11 @@ class Api(ComponentBase):
     def __init__(self, item={}):
         ComponentBase.__init__(self, item)
 
-    @property
-    def authorized(self):
-        return not ("authorized" in self and not self["authorized"])
+class Apis(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Api(item)
+                                       for item in items])
         
 class Events(ComponentBase):
 

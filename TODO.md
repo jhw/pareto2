@@ -1,8 +1,12 @@
 ### short
 
-- convert apis to be list
-- convert event bus to be list
-- action events to specify event bus
+- rename events as router
+- convert routers to be list
+  - will require all action events to specify router
+
+- actions must be specified as part of api
+- pluralise all components modules which now take lists
+
 - convert users to be list
 - apis to specify user pools
 

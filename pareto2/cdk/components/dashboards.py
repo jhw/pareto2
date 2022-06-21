@@ -136,8 +136,10 @@ def init_bucket(md):
 def init_api(md):
     resourcename=H("%s-api" % md.dashboard["name"])
     components=[Component.initialise("api",
-                                     {"Title": md.api["name"],
-                                      "ResourceName": "${%s}" % H("%s-rest-api" % md.api["name"])})]
+                                     {"Title": api["name"],
+                                      "ResourceName": "${%s}" % H("%s-rest-api" % api["name"])})
+                for api in sorted(md.apis,
+                                  key=lambda x: x["name"])]
     return (resourcename, "api", Components(components))
 
 def init_resources(md):
