@@ -1,6 +1,5 @@
 ### short
 
-- remove self.env declarations from test
 - allow lists of all root components, as per actions
 - event requires event bus to be specified
 - cross check bus name against available buses
@@ -31,4 +30,6 @@
 - cross check bucket/table names against mapped streaming functions?
 
 ### done
+
+- remove self.env declarations from test
 

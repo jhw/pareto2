@@ -73,7 +73,6 @@ class Pareto2TestBase(unittest.TestCase):
         client.create_table(**props)
         resource=boto3.resource("dynamodb")
         self.table=resource.Table(table["name"])
-        self.env["STREAMING_TABLE"]=table["name"]
         
     def teardown_ddb(self):
         self.table.delete()
@@ -85,10 +84,8 @@ class Pareto2TestBase(unittest.TestCase):
         config={'LocationConstraint': 'EU'}
         self.s3.create_bucket(Bucket=bucketname,
                               CreateBucketConfiguration=config)
-        self.env["STREAMING_BUCKET"]=bucketname
 
-    def teardown_s3(self):
-        bucketname=self.env["STREAMING_BUCKET"]
+    def teardown_s3(self, bucketname=BucketName):
         struct=self.s3.list_objects(Bucket=bucketname)
         if "Contents" in struct:
             for obj in struct["Contents"]:
@@ -125,7 +122,6 @@ class Pareto2TestBase(unittest.TestCase):
                      eventbusname=EventsEventBusName,
                      queuename=EventsQueueName,
                      ruleprefix=EventsRulePrefix):
-        self.env["EVENTS_EVENT_BUS"]=eventbusname # NB
         self.patterns=patterns
         self.events, self.sqs = (boto3.client("events"),
                                  boto3.client("sqs"))
