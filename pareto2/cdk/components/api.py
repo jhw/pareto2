@@ -44,14 +44,13 @@ def init_rest_api(api):
 """
 
 @resource
-def init_deployment(api, actions):
+def init_deployment(api, endpoints):
     resourcename=H("%s-deployment" % api["name"])
     props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
     depends=[]
-    for action in actions:
-        if "endpoint" in action:
-            depends+=[H("%s-method" % action["name"]),
-                      H("%s-cors-method" % action["name"])]
+    for endpoint in endpoints:
+        depends+=[H("%s-method" % endpoint["action"]),
+                  H("%s-cors-method" % endpoint["action"])]
     return (resourcename,            
             "AWS::ApiGateway::Deployment",
             props,
@@ -100,55 +99,55 @@ def init_default_response(api, code):
             props)
 
 @resource
-def init_resource(api, action):
-    resourcename=H("%s-resource" % action["name"])
+def init_resource(api, endpoint):
+    resourcename=H("%s-resource" % endpoint["action"])
     parentid={"Fn::GetAtt": [H("%s-rest-api" % api["name"]),
                              "RootResourceId"]}
     props={"ParentId": parentid,
-           "PathPart": action["endpoint"]["path"],
+           "PathPart": endpoint["path"],
            "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Resource",
             props)
 
 @resource
-def init_method(api, action):
-    resourcename=H("%s-method" % action["name"])
-    uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}}]}
+def init_method(api, endpoint):
+    resourcename=H("%s-method" % endpoint["action"])
+    uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
     integration={"IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY",
                  "Uri": uri}
-    props={"HttpMethod": action["endpoint"]["method"],
+    props={"HttpMethod": endpoint["method"],
            "Integration": integration,
-           "ResourceId": {"Ref": H("%s-resource" % action["name"])},
+           "ResourceId": {"Ref": H("%s-resource" % endpoint["action"])},
            "RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
            "AuthorizationType": "COGNITO_USER_POOLS",
            "AuthorizerId": {"Ref": H("%s-authorizer" % api["name"])}}
-    if "parameters" in action["endpoint"]:
-        props["RequestValidatorId"]={"Ref": H("%s-validator" % action["name"])}
+    if "parameters" in endpoint:
+        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["action"])}
         props["RequestParameters"]={"method.request.querystring.%s" % param: True
-                                    for param in action["endpoint"]["parameters"]}
-    elif "schema" in action["endpoint"]:
-        props["RequestValidatorId"]={"Ref": H("%s-validator" % action["name"])}
-        props["RequestModels"]={"application/json": H("%s-model" % action["name"])}
+                                    for param in endpoint["parameters"]}
+    elif "schema" in endpoint:
+        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["action"])}
+        props["RequestModels"]={"application/json": H("%s-model" % endpoint["action"])}
     return (resourcename,
             "AWS::ApiGateway::Method",
             props)
 
 @resource
-def init_cors_method(api, action):
-    def init_integration_response(action):
+def init_cors_method(api, endpoint):
+    def init_integration_response(endpoint):
         params={CorsMethodHeader % k.capitalize(): "'%s'" % v # NB quotes
                 for k, v in [("headers", ",".join(CorsHeaders)),
-                             ("methods", "%s,OPTIONS" % action["endpoint"]["method"]),
+                             ("methods", "%s,OPTIONS" % endpoint["method"]),
                              ("origin", "*")]}
         templates={"application/json": ""}
         return {"StatusCode": 200,
                 "ResponseParameters": params,
                 "ResponseTemplates": templates}
-    def init_integration(action):
+    def init_integration(endpoint):
         templates={"application/json": json.dumps({"statusCode": 200})}
-        response=init_integration_response(action)
+        response=init_integration_response(endpoint)
         return {"IntegrationResponses": [response],
                 "PassthroughBehavior": "WHEN_NO_MATCH",
                 "RequestTemplates": templates,
@@ -160,28 +159,28 @@ def init_cors_method(api, action):
         return {"StatusCode": 200,
                 "ResponseModels": models,
                 "ResponseParameters": params}
-    resourcename=H("%s-cors-method" % action["name"])
-    integration=init_integration(action)
+    resourcename=H("%s-cors-method" % endpoint["action"])
+    integration=init_integration(endpoint)
     response=init_response()
     props={"AuthorizationType": "NONE",
            "HttpMethod": "OPTIONS",
            "Integration": integration,
            "MethodResponses": [response],
-           "ResourceId": {"Ref": H("%s-resource" % action["name"])},
+           "ResourceId": {"Ref": H("%s-resource" % endpoint["action"])},
            "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Method",
             props)
 
 @resource
-def init_permission(api, action):
-    resourcename=H("%s-permission" % action["name"])
+def init_permission(api, endpoint):
+    resourcename=H("%s-permission" % endpoint["action"])
     sourcearn={"Fn::Sub": PermissionSrcArn % (H("%s-rest-api" % api["name"]),
                                               H("%s-stage" % api["name"]),
-                                              action["endpoint"]["method"],
-                                              action["endpoint"]["path"])}
+                                              endpoint["method"],
+                                              endpoint["path"])}
     props={"Action": "lambda:InvokeFunction",
-           "FunctionName": {"Ref": H("%s-function" % action["name"])},
+           "FunctionName": {"Ref": H("%s-function" % endpoint["action"])},
            "Principal": "apigateway.amazonaws.com",
            "SourceArn": sourcearn}
     return (resourcename, 
@@ -189,12 +188,12 @@ def init_permission(api, action):
             props)
 
 @resource
-def init_validator(api, action):
-    resourcename=H("%s-validator" % action["name"])
+def init_validator(api, endpoint):
+    resourcename=H("%s-validator" % endpoint["action"])
     props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
-    if "parameters" in action["endpoint"]:
+    if "parameters" in endpoint:
         props["ValidateRequestParameters"]=True
-    elif "schema" in action["endpoint"]:
+    elif "schema" in endpoint:
         props["ValidateRequestBody"]=True
     return (resourcename,
             "AWS::ApiGateway::RequestValidator",
@@ -205,46 +204,44 @@ def init_validator(api, action):
 """
 
 @resource
-def init_model(api, action):
-    resourcename=H("%s-model" % action["name"])
+def init_model(api, endpoint):
+    resourcename=H("%s-model" % endpoint["action"])
     props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
            "ContentType": "application/json",
            "Name": resourcename,
-           "Schema": action["endpoint"]["schema"]}
+           "Schema": endpoint["schema"]}
     return (resourcename,
             "AWS::ApiGateway::Model",
             props)    
 
 def init_resources(md):
-    def init_resources(api, actions, resources):
+    def init_resources(api, endpoints, resources):
         resources.append(init_rest_api(api))
-        resources.append(init_deployment(api, actions))
+        resources.append(init_deployment(api, endpoints))
         resources.append(init_stage(api))
         resources.append(init_authorizer(api))    
         for code in "4XX|5XX".split("|"):
             resources.append(init_default_response(api, code))
-        for action in md.actions:
-            if not "endpoint" in action:
-                continue
+        for endpoint in endpoints:
             for fn in [init_resource,
                        init_method,
                        init_permission,
                        init_cors_method]:
-                resource=fn(api, action)
+                resource=fn(api, endpoint)
                 resources.append(resource)
-            if "parameters" in action["endpoint"]:
-                resources.append(init_validator(api, action))
-            elif "schema" in action["endpoint"]:
-                resources.append(init_validator(api, action))
-                resources.append(init_model(api, action))
+            if "parameters" in endpoint:
+                resources.append(init_validator(api, endpoint))
+            elif "schema" in endpoint:
+                resources.append(init_validator(api, endpoint))
+                resources.append(init_model(api, endpoint))
     resources=[]
     # START TEMP CODE
     """
     - for the minute, all actions and single user pool are bound to api
     - in future these must be specified at api level
-    """
+    """    
     for api in md.apis:
-        init_resources(api, md.actions, resources)
+        init_resources(api, md.endpoints, resources)
     # END TEMP CODE
     return dict(resources)
 

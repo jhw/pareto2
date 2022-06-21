@@ -1,7 +1,8 @@
 ### short
 
-- api component to use md.endpoints
-- remove endpoints from actions
+- $schema declaration is missing
+
+- user endpoint["name"] rather than endpoint["action"] in api resource names
 
 - cross check api user pool against user pools
 - cross check event router against routers
@@ -39,6 +40,9 @@
 
 ### done
 
+- investigate why new api template post- endpoints integration is slightly smaller than prior template
+- api component to use md.endpoints
+- remove endpoints from actions
 - separate endpoint from actions
 - bind endpoints to apis
 - apis to specify user pool
