@@ -3,7 +3,6 @@
 - allow lists of all root components, as per actions
 - event requires event bus to be specified
 - cross check bus name against available buses
-- remove unauthorised api
 - api requires user pool to be specified
 - cross check pool name against available pools
 - components/api to be a package with root/open/cognito apis
@@ -31,5 +30,6 @@
 
 ### done
 
+- remove unauthorised api
 - remove self.env declarations from test
 

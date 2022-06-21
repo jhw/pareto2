@@ -50,9 +50,8 @@ def init_deployment(api, actions):
     depends=[]
     for action in actions:
         if "endpoint" in action:
-            depends.append(H("%s-method" % action["name"]))
-            if api.authorized:
-                depends.append(H("%s-cors-method" % action["name"]))            
+            depends+=[H("%s-method" % action["name"]),
+                      H("%s-cors-method" % action["name"])]
     return (resourcename,            
             "AWS::ApiGateway::Deployment",
             props,
@@ -122,12 +121,9 @@ def init_method(api, action):
     props={"HttpMethod": action["endpoint"]["method"],
            "Integration": integration,
            "ResourceId": {"Ref": H("%s-resource" % action["name"])},
-           "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
-    if api.authorized:
-        props.update({"AuthorizationType": "COGNITO_USER_POOLS",
-                      "AuthorizerId": {"Ref": H("%s-authorizer" % api["name"])}})
-    else:
-        props["AuthorizationType"]="NONE"
+           "RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
+           "AuthorizationType": "COGNITO_USER_POOLS",
+           "AuthorizerId": {"Ref": H("%s-authorizer" % api["name"])}}
     if "parameters" in action["endpoint"]:
         props["RequestValidatorId"]={"Ref": H("%s-validator" % action["name"])}
         props["RequestParameters"]={"method.request.querystring.%s" % param: True
@@ -225,22 +221,18 @@ def init_resources(md):
     resources.append(init_rest_api(api))
     resources.append(init_deployment(api, actions))
     resources.append(init_stage(api))
-    if api.authorized:
-        resources.append(init_authorizer(api, users))    
-        for code in "4XX|5XX".split("|"):
-            resources.append(init_default_response(api, code))
+    resources.append(init_authorizer(api, users))    
+    for code in "4XX|5XX".split("|"):
+        resources.append(init_default_response(api, code))
     for action in md.actions:
         if not "endpoint" in action:
             continue
         for fn in [init_resource,
                    init_method,
-                   init_permission]:
+                   init_permission,
+                   init_cors_method]:
             resource=fn(api, action)
             resources.append(resource)
-        if api.authorized:
-            for fn in [init_cors_method]:
-                resource=fn(api, action)
-                resources.append(resource)
         if "parameters" in action["endpoint"]:
             resources.append(init_validator(api, action))
         elif "schema" in action["endpoint"]:
