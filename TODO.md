@@ -1,7 +1,6 @@
 ### short
 
 - apis to specify actions
-- apis to specify user pool
 
 - cross check api actions against apis
 - cross check api user pool against user pools
@@ -17,6 +16,7 @@
 - avoid userpool/userpool_ nomenclature
 - pluralise all components modules which now take lists
 - components/api to be a package with root/open/cognito apis
+  - `type` variable ?
 - metadata schema validation
 
 ### medium
@@ -40,6 +40,7 @@
 
 ### done
 
+- apis to specify user pool
 - events to specify router
 - add support for list of userpools
 - rename users as userpool

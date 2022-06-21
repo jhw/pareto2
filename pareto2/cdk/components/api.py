@@ -68,10 +68,10 @@ def init_stage(api):
             props)
 
 @resource
-def init_authorizer(api, userpool):
+def init_authorizer(api):
     resourcename=H("%s-authorizer" % api["name"])
     name={"Fn::Sub": "%s-authorizer-${AWS::StackName}" % api["name"]}
-    providerarn={"Fn::GetAtt": [H("%s-userpool" % userpool["name"]), "Arn"]}
+    providerarn={"Fn::GetAtt": [H("%s-userpool" % api["userpool"]), "Arn"]}
     props={"IdentitySource": "method.request.header.Authorization",
            "Name": name,
            "ProviderARNs": [providerarn],
@@ -216,11 +216,11 @@ def init_model(api, action):
             props)    
 
 def init_resources(md):
-    def init_resources(api, actions, userpool, resources):
+    def init_resources(api, actions, resources):
         resources.append(init_rest_api(api))
         resources.append(init_deployment(api, actions))
         resources.append(init_stage(api))
-        resources.append(init_authorizer(api, userpool))    
+        resources.append(init_authorizer(api))    
         for code in "4XX|5XX".split("|"):
             resources.append(init_default_response(api, code))
         for action in md.actions:
@@ -243,9 +243,8 @@ def init_resources(md):
     - for the minute, all actions and single user pool are bound to api
     - in future these must be specified at api level
     """
-    userpool=md.userpools[0]
     for api in md.apis:
-        init_resources(api, md.actions, userpool, resources)
+        init_resources(api, md.actions, resources)
     # END TEMP CODE
     return dict(resources)
 
