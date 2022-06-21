@@ -57,23 +57,6 @@ class Action(ComponentBase):
                     elif src==self["name"]:
                         errors.append("%s event can't have self as function source" % src)
 
-    def validate_endpoint(self, errors):
-        if "method" not in self["endpoint"]:
-            errors.append("%s endpoint has missing method" % self["name"])
-        else:
-            method=self["endpoint"]["method"]
-            if method not in ["GET", "POST"]:
-                errors.append("%s method is invalid" % self["name"])
-            else:
-                if method=="GET":
-                    if "schema" in self["endpoint"]:
-                        errors.append("%s GET endpoint can't have schema" % self["name"])                    
-                elif method=="POST":
-                    if "schema" not in self["endpoint"]:
-                        errors.append("%s POST endpoint must have schema" % self["name"])
-                    if "parameters" in self["endpoint"]:
-                        errors.append("%s POST endpoint can't have parameters" % self["name"])                    
-
 class Actions(ComponentsBase):
 
     def __init__(self, items=[]):
@@ -84,15 +67,9 @@ class Actions(ComponentsBase):
         names=self.names
         for action in self:
             action.validate_events(errors, names)            
-
-    def validate_endpoints(self, errors):
-        for action in self:
-            if "endpoint" in action:
-                action.validate_endpoint(errors)
             
     def validate(self, errors):
         self.validate_events(errors)
-        self.validate_endpoints(errors)
 
     @property
     def names(self):
@@ -177,6 +154,23 @@ class Endpoint(ComponentBase):
         schema["$schema"]=Draft7Schema
         schema.update(self["schema"])        
         self["schema"]=schema
+
+    def validate(self, errors):
+        if "method" not in self:
+            errors.append("%s endpoint has missing method" % self["name"])
+        else:
+            method=self["method"]
+            if method not in ["GET", "POST"]:
+                errors.append("%s method is invalid" % self["name"])
+            else:
+                if method=="GET":
+                    if "schema" in self:
+                        errors.append("%s GET endpoint can't have schema" % self["name"])                    
+                elif method=="POST":
+                    if "schema" not in self:
+                        errors.append("%s POST endpoint must have schema" % self["name"])
+                    if "parameters" in self:
+                        errors.append("%s POST endpoint can't have parameters" % self["name"])                    
         
 class Endpoints(ComponentsBase):
 
@@ -188,7 +182,11 @@ class Endpoints(ComponentsBase):
         for endpoint in self:
             if endpoint["method"]=="POST":
                 endpoint.expand_schema(errors)
-        
+
+    def validate(self, errors):
+        for endpoint in self:
+            endpoint.validate(errors)
+                
 """
 - NB errors is an instance of action, a specially defined singleton
 """

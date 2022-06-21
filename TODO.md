@@ -1,7 +1,5 @@
 ### short
 
-- move endpoint validation code from action into endpoint
-
 - user endpoint["name"] rather than endpoint["action"] in api resource names
 
 - cross check api user pool against user pools
@@ -40,6 +38,7 @@
 
 ### done
 
+- move endpoint validation code from action into endpoint
 - $schema declaration is missing
 - investigate why new api template post- endpoints integration is slightly smaller than prior template
 - api component to use md.endpoints
