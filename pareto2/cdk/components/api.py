@@ -243,8 +243,9 @@ def init_resources(md):
     - for the minute, all actions and single user pool are bound to api
     - in future these must be specified at api level
     """
+    userpool=md.userpools[0]
     for api in md.apis:
-        init_resources(api, md.actions, md.userpool, resources)
+        init_resources(api, md.actions, userpool, resources)
     # END TEMP CODE
     return dict(resources)
 

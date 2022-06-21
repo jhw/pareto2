@@ -1,6 +1,5 @@
 ### short
 
-- add support for list of userpools
 - apis to specify actions
   - cross check api actions against apis
 - apis to specify user pool
@@ -10,7 +9,7 @@
 
 - pareto2/cdk/__init__.py shouldn't hardcode stack names 
   - and also shouldn't the recently updated ones be pluralised?
-
+- simplify init_resource, init_output routines
 - avoid userpool/userpool_ nomenclature
 - pluralise all components modules which now take lists
 - components/api to be a package with root/open/cognito apis
@@ -36,6 +35,7 @@
 
 ### done
 
+- add support for list of userpools
 - rename users as userpool
 - md.routers is blank
 - rename routing as events

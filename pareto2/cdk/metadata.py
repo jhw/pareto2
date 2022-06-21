@@ -204,6 +204,12 @@ class Userpool(ComponentBase):
 
     def __init__(self, item={}):
         ComponentBase.__init__(self, item)
+
+class Userpools(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Userpool(item)
+                                       for item in items])
         
 class Table(ComponentBase):
 

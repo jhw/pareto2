@@ -46,24 +46,27 @@ def init_web_client(userpool):
 
 def init_resources(md):
     resources=[]
-    userpool=md.userpool
-    for fn in [init_userpool,
-               init_admin_client,
-               init_web_client]:
-        resource=fn(userpool)
-        resources.append(resource)
+    for userpool in md.userpools:
+        for fn in [init_userpool,
+                   init_admin_client,
+                   init_web_client]:
+            resource=fn(userpool)
+            resources.append(resource)
     return dict(resources)
 
 def init_outputs(md):
-    userpool=md.userpool
-    userpool_={"Ref": H("%s-userpool" % userpool["name"])}
-    adminclient={"Ref": H("%s-admin-client" % userpool["name"])}
-    webclient={"Ref": H("%s-web-client" % userpool["name"])}
-    return {H("%s-userpool" % userpool["name"]): {"Value": userpool_},
-            H("%s-admin-client" % userpool["name"]): {"Value": adminclient},
-            H("%s-web-client" % userpool["name"]): {"Value": webclient}}
+    def init_outputs(userpool, outputs):
+        userpool_={"Ref": H("%s-userpool" % userpool["name"])}
+        adminclient={"Ref": H("%s-admin-client" % userpool["name"])}
+        webclient={"Ref": H("%s-web-client" % userpool["name"])}
+        outputs.update({H("%s-userpool" % userpool["name"]): {"Value": userpool_},
+                        H("%s-admin-client" % userpool["name"]): {"Value": adminclient},
+                        H("%s-web-client" % userpool["name"]): {"Value": webclient}})
+    outputs={}
+    for userpool in md.userpools:
+        init_outputs(userpool, outputs)
+    return outputs
             
-
 def update_template(template, md):
     template["Resources"].update(init_resources(md))
     template["Outputs"].update(init_outputs(md))
