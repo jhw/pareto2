@@ -116,16 +116,20 @@ def init_timers(md):
 def init_table(md):
     resourcename=H("%s-table" % md.dashboard["name"])
     components=[Component.initialise("table",
-                                     {"Title": md.table["name"],
-                                      "ResourceName": "${%s}" % H(md.table["name"])})]
+                                     {"Title": table["name"],
+                                      "ResourceName": "${%s}" % H(table["name"])})
+                for table in sorted(md.tables,
+                                    key=lambda x: x["name"])]
     return (resourcename, "table", Components(components))
 
 @render_dash
 def init_bucket(md):
     resourcename=H("%s-bucket" % md.dashboard["name"])
     components=[Component.initialise("bucket",
-                                     {"Title": md.bucket["name"],
-                                      "ResourceName": "${%s}" % H(md.bucket["name"])})]
+                                     {"Title": bucket["name"],
+                                      "ResourceName": "${%s}" % H(bucket["name"])})
+                for bucket in sorted(md.buckets,
+                                     key=lambda x: x["name"])]
     return (resourcename, "bucket", Components(components))
 
 @render_dash

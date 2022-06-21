@@ -1,14 +1,17 @@
 ### short
 
-- allow lists of all root components, as per actions
-- event requires event bus to be specified
-- cross check bus name against available buses
-- api requires user pool to be specified
-- cross check pool name against available pools
+- convert apis to be list
+- convert event bus to be list
+- action events to specify event bus
+- convert users to be list
+- apis to specify user pools
+
 - components/api to be a package with root/open/cognito apis
 - consider if there are any other cross- component references
 - re- check how table, bucket reference functions
 - check how to define and import a pip branch rather than a tag
+
+- stop symlink creating pareto2/pareto2
 
 ### medium
 
@@ -30,6 +33,8 @@
 
 ### done
 
+- convert buckets and tables to be lists
+- convert dash to handle bucket and table lists
 - copy config
 - allow option to ignore lambdas if required
 - test deploy_stack.py false

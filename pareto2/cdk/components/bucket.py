@@ -40,13 +40,14 @@ def init_permission(bucket):
             props)
 
 def init_resources(md):
-    return dict([fn(md.bucket)
+    return dict([fn(bucket)
                  for fn in [init_bucket,
-                            init_permission]])
+                            init_permission]
+                 for bucket in md.buckets])
 
 def init_outputs(md):
-    bucket=md.bucket
-    return {H(bucket["name"]): {"Value": {"Ref": H(bucket["name"])}}}
+    return {H(bucket["name"]): {"Value": {"Ref": H(bucket["name"])}}
+            for bucket in md.buckets}
 
 def update_template(template, md):
     template["Resources"].update(init_resources(md))
