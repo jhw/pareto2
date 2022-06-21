@@ -200,7 +200,7 @@ class Routers(ComponentsBase):
         ComponentsBase.__init__(self, [Router(item)
                                        for item in items])
         
-class Users(ComponentBase):
+class Userpool(ComponentBase):
 
     def __init__(self, item={}):
         ComponentBase.__init__(self, item)

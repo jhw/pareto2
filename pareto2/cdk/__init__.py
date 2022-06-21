@@ -10,7 +10,7 @@ from pareto2.cdk.components.router import update_template as init_router
 from pareto2.cdk.components.secrets import update_template as init_secrets
 from pareto2.cdk.components.table import update_template as init_table
 from pareto2.cdk.components.timers import update_template as init_timers
-from pareto2.cdk.components.users import update_template as init_users
+from pareto2.cdk.components.userpool import update_template as init_userpool
 
 from pareto2.cdk.template import Template
 
@@ -31,7 +31,7 @@ StackNames=yaml.safe_load("""
 - secrets
 - table
 - timers
-- users
+- userpool
 """)
 
 class Defaults(dict):

@@ -2,8 +2,8 @@ from pareto2.cdk.components import hungarorise as H
 from pareto2.cdk.components import resource
 
 @resource
-def init_userpool(users):
-    resourcename=H("%s-userpool" % users["name"])
+def init_userpool(userpool):
+    resourcename=H("%s-userpool" % userpool["name"])
     passwordpolicy={"MinimumLength": 8,
                     "RequireLowercase": True,
                     "RequireNumbers": True,
@@ -23,9 +23,9 @@ def init_userpool(users):
             props)
 
 @resource
-def init_admin_client(users):
-    resourcename=H("%s-admin-client" % users["name"])
-    props={"UserPoolId": {"Ref": H("%s-userpool" % users["name"])},
+def init_admin_client(userpool):
+    resourcename=H("%s-admin-client" % userpool["name"])
+    props={"UserPoolId": {"Ref": H("%s-userpool" % userpool["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_ADMIN_USER_PASSWORD_AUTH",
                                  "ALLOW_REFRESH_TOKEN_AUTH"]}
@@ -34,9 +34,9 @@ def init_admin_client(users):
             props)
 
 @resource
-def init_web_client(users):
-    resourcename=H("%s-web-client" % users["name"])
-    props={"UserPoolId": {"Ref": H("%s-userpool" % users["name"])},
+def init_web_client(userpool):
+    resourcename=H("%s-web-client" % userpool["name"])
+    props={"UserPoolId": {"Ref": H("%s-userpool" % userpool["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_USER_SRP_AUTH",
                                  "ALLOW_REFRESH_TOKEN_AUTH"]}
@@ -46,22 +46,22 @@ def init_web_client(users):
 
 def init_resources(md):
     resources=[]
-    users=md.users
+    userpool=md.userpool
     for fn in [init_userpool,
                init_admin_client,
                init_web_client]:
-        resource=fn(users)
+        resource=fn(userpool)
         resources.append(resource)
     return dict(resources)
 
 def init_outputs(md):
-    users=md.users
-    userpool={"Ref": H("%s-userpool" % users["name"])}
-    adminclient={"Ref": H("%s-admin-client" % users["name"])}
-    webclient={"Ref": H("%s-web-client" % users["name"])}
-    return {H("%s-userpool" % users["name"]): {"Value": userpool},
-            H("%s-admin-client" % users["name"]): {"Value": adminclient},
-            H("%s-web-client" % users["name"]): {"Value": webclient}}
+    userpool=md.userpool
+    userpool_={"Ref": H("%s-userpool" % userpool["name"])}
+    adminclient={"Ref": H("%s-admin-client" % userpool["name"])}
+    webclient={"Ref": H("%s-web-client" % userpool["name"])}
+    return {H("%s-userpool" % userpool["name"]): {"Value": userpool_},
+            H("%s-admin-client" % userpool["name"]): {"Value": adminclient},
+            H("%s-web-client" % userpool["name"]): {"Value": webclient}}
             
 
 def update_template(template, md):
@@ -75,7 +75,7 @@ if __name__=="__main__":
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
         from pareto2.cdk.template import Template
-        template=Template("users")
+        template=Template("userpool")
         from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)        
         md.validate().expand()
