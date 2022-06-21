@@ -1,9 +1,5 @@
 ### short
 
-- copy config
-- allow option to ignore lambdas if required
-- test deploy_stack.py false
-
 - allow lists of all root components, as per actions
 - event requires event bus to be specified
 - cross check bus name against available buses
@@ -34,6 +30,9 @@
 
 ### done
 
+- copy config
+- allow option to ignore lambdas if required
+- test deploy_stack.py false
 - remove unauthorised api
 - remove self.env declarations from test
 
