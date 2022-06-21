@@ -1,7 +1,7 @@
 ### short
 
-- separate endpoint from actions
-- bind endpoints to apis
+- api component to use md.endpoints
+- remove endpoints from actions
 
 - cross check api user pool against user pools
 - cross check event router against routers
@@ -39,6 +39,8 @@
 
 ### done
 
+- separate endpoint from actions
+- bind endpoints to apis
 - apis to specify user pool
 - events to specify router
 - add support for list of userpools

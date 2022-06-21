@@ -27,18 +27,7 @@ class ComponentsBase(list):
 
     def expand(self, errors):
         pass        
-                  
-class Secret(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
-class Secrets(ComponentsBase):
-
-    def __init__(self, items=[]):
-        ComponentsBase.__init__(self, [Secret(item)
-                                       for item in items])
-
+    
 class Action(ComponentBase):
 
     """
@@ -163,6 +152,44 @@ class Actions(ComponentsBase):
                 for action in self
                 if "timer" in action]
 
+class Api(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Apis(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Api(item)
+                                       for item in items])
+    
+class Bucket(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Buckets(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Bucket(item)
+                                       for item in items])
+        
+class Dashboard(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Endpoint(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Endpoints(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Endpoint(item)
+                                       for item in items])
+        
 """
 - NB errors is an instance of action, a specially defined singleton
 """
@@ -177,18 +204,7 @@ class Errors(Action):
 
     def expand(self, errors):
         pass
-    
-class Api(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
-class Apis(ComponentsBase):
-
-    def __init__(self, items=[]):
-        ComponentsBase.__init__(self, [Api(item)
-                                       for item in items])
-        
+            
 class Router(ComponentBase):
 
     def __init__(self, item={}):
@@ -198,6 +214,17 @@ class Routers(ComponentsBase):
 
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Router(item)
+                                       for item in items])
+
+class Secret(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Secrets(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Secret(item)
                                        for item in items])
         
 class Userpool(ComponentBase):
@@ -222,22 +249,6 @@ class Tables(ComponentsBase):
         ComponentsBase.__init__(self, [Table(item)
                                        for item in items])
         
-class Bucket(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
-class Buckets(ComponentsBase):
-
-    def __init__(self, items=[]):
-        ComponentsBase.__init__(self, [Bucket(item)
-                                       for item in items])
-        
-class Dashboard(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
 class Metadata:
 
     SrcPath="config/%s/metadata.yaml"
