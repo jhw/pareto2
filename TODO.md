@@ -1,7 +1,5 @@
 ### short
 
-- why are there fewer numbers of resources being created after "21 Jun 09:28"
-
 - rename users as userpool
 - add support for list of userpools
 - apis to specify actions
@@ -11,9 +9,11 @@
 - events to specify router
   - cross check event router against routers
 
+- pareto2/cdk/__init__.py shouldn't hardcode stack names 
+  - and also shouldn't the recently updated ones be pluralised?
+
 - pluralise all components modules which now take lists
 - components/api to be a package with root/open/cognito apis
-- pareto2/cdk/__init__.py shouldn't hardcode stack names 
 
 ### medium
 
@@ -36,6 +36,7 @@
 
 ### done
 
+- md.routers is blank
 - rename routing as events
 - rename events as router
 - convert buckets and tables to be lists

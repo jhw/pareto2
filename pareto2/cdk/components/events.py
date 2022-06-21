@@ -48,7 +48,7 @@ def init_component(router, action, event, i):
 def init_resources(md):
     resources=[]
     # START TEMP CODE
-    router=md.routers.pop()
+    router=md.routers[0]
     # END TEMP CODE
     for action in md.actions:
         if "events" in action:
