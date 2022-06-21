@@ -1,25 +1,22 @@
 ### short
 
-- rename events as router
-- convert routers to be list
-  - will require all action events to specify router
-
-- actions must be specified as part of api
+- rename routing as events
+- rename users as userpool
+- add support for list of userpools
+- apis to specify actions
+  - cross check api actions against apis
+- apis to specify user pool
+  - cross check api user pool against user pools
+- events to specify router
+  - cross check event router against routers
 - pluralise all components modules which now take lists
 
-- convert users to be list
 - apis to specify user pools
-
 - components/api to be a package with root/open/cognito apis
-- consider if there are any other cross- component references
-- re- check how table, bucket reference functions
-- check how to define and import a pip branch rather than a tag
-
-- stop symlink creating pareto2/pareto2
 
 ### medium
 
-- can't run component main scripts as metadata does not exist
+- stop symlink creating pareto2/pareto2
 
 ### long
 
@@ -33,10 +30,12 @@
 
 ### thoughts
 
+- remove eventbus discoverer ?
 - cross check bucket/table names against mapped streaming functions?
 
 ### done
 
+- rename events as router
 - convert buckets and tables to be lists
 - convert dash to handle bucket and table lists
 - copy config

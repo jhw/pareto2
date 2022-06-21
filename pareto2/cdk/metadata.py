@@ -193,6 +193,12 @@ class Router(ComponentBase):
 
     def __init__(self, item={}):
         ComponentBase.__init__(self, item)
+
+class Routers(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Router(item)
+                                       for item in items])
         
 class Users(ComponentBase):
 

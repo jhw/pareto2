@@ -26,18 +26,22 @@ def init_discoverer(router):
 
 def init_resources(md):
     resources=[]
-    router=md.router
-    for fn in [init_eventbus,
-               init_discoverer]:
-        resource=fn(router)
-        resources.append(resource)
+    for router in md.routers:
+        for fn in [init_eventbus,
+                   init_discoverer]:
+            resource=fn(router)
+            resources.append(resource)
     return dict(resources)
 
 def init_outputs(md):
-    router=md.router
-    eventbus={"Ref": H("%s-event-bus" % router["name"])}
-    return {H("%s-event-bus" % router["name"]): {"Value": eventbus}}
-
+    def init_outputs(router, outputs):
+        eventbus={"Ref": H("%s-event-bus" % router["name"])}
+        outputs.update({H("%s-event-bus" % router["name"]): {"Value": eventbus}})
+    outputs={}
+    for router in md.routers:
+        init_outputs(router, outputs)
+    return outputs
+    
 def update_template(template, md):
     template["Resources"].update(init_resources(md))
     template["Outputs"].update(init_outputs(md))

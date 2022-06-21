@@ -4,7 +4,7 @@ from pareto2.cdk.components import resource
 import json
 
 @resource
-def init_rule(events, action, event, i):
+def init_rule(router, action, event, i):
     def init_target(action, event, i):
         id={"Fn::Sub": "%s-rule-%i-${AWS::StackName}" % (action["name"], i)}
         arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
@@ -15,7 +15,7 @@ def init_rule(events, action, event, i):
     if "source" in event:
         pattern["source"]=[{"Ref": H("%s-function" % event["source"])}]
     target=init_target(action, event, i)
-    eventbusname={"Ref": H("%s-event-bus" % events["name"])}
+    eventbusname={"Ref": H("%s-event-bus" % router["name"])}
     props={"EventBusName": eventbusname,
            "EventPattern": pattern,
            "Targets": [target],
@@ -25,7 +25,7 @@ def init_rule(events, action, event, i):
             props)
 
 @resource
-def init_permission(events, action, event, i):
+def init_permission(router, action, event, i):
     resourcename=H("%s-permission-%i" % (action["name"], i))
     sourcearn={"Fn::GetAtt": [H("%s-rule-%i" % (action["name"], i)), "Arn"]}
     funcname={"Ref": H("%s-function" % action["name"])}
@@ -37,17 +37,19 @@ def init_permission(events, action, event, i):
             "AWS::Lambda::Permission",
             props)
 
-def init_component(events, action, event, i):
+def init_component(router, action, event, i):
     resources=[]
     for fn in [init_rule,
                init_permission]:
-        resource=fn(events, action, event, i)
+        resource=fn(router, action, event, i)
         resources.append(resource)
     return resources
 
 def init_resources(md):
     resources=[]
-    router=md.router
+    # START TEMP CODE
+    router=md.routers.pop()
+    # END TEMP CODE
     for action in md.actions:
         if "events" in action:
             for i, event in enumerate(action["events"]):
