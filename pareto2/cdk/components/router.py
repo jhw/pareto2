@@ -7,8 +7,8 @@ from pareto2.cdk.components import resource
 """
 
 @resource
-def init_event_bus(events):
-    resourcename=H("%s-event-bus" % events["name"])
+def init_eventbus(router):
+    resourcename=H("%s-event-bus" % router["name"])
     name={"Fn::Sub": "event-bus-${AWS::StackName}-${AWS::Region}"}
     props={"Name": name}
     return (resourcename, 
@@ -16,9 +16,9 @@ def init_event_bus(events):
             props)
 
 @resource
-def init_discoverer(events):
-    resourcename=H("%s-discoverer" % events["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-event-bus" % events["name"]), "Arn"]}
+def init_discoverer(router):
+    resourcename=H("%s-discoverer" % router["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-event-bus" % router["name"]), "Arn"]}
     props={"SourceArn": sourcearn}
     return (resourcename, 
             "AWS::EventSchemas::Discoverer",
@@ -26,17 +26,17 @@ def init_discoverer(events):
 
 def init_resources(md):
     resources=[]
-    events=md.events
-    for fn in [init_event_bus,
+    router=md.router
+    for fn in [init_eventbus,
                init_discoverer]:
-        resource=fn(events)
+        resource=fn(router)
         resources.append(resource)
     return dict(resources)
 
 def init_outputs(md):
-    events=md.events
-    eventbus={"Ref": H("%s-event-bus" % events["name"])}
-    return {H("%s-event-bus" % events["name"]): {"Value": eventbus}}
+    router=md.router
+    eventbus={"Ref": H("%s-event-bus" % router["name"])}
+    return {H("%s-event-bus" % router["name"]): {"Value": eventbus}}
 
 def update_template(template, md):
     template["Resources"].update(init_resources(md))
@@ -49,7 +49,7 @@ if __name__=="__main__":
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
         from pareto2.cdk.template import Template
-        template=Template("events")
+        template=Template("router")
         from pareto2.cdk.metadata import Metadata
         md=Metadata.initialise(stagename)        
         md.validate().expand()

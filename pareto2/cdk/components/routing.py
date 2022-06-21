@@ -47,11 +47,11 @@ def init_component(events, action, event, i):
 
 def init_resources(md):
     resources=[]
-    events=md.events
+    router=md.router
     for action in md.actions:
         if "events" in action:
             for i, event in enumerate(action["events"]):
-                component=init_component(events, action, event, i+1)
+                component=init_component(router, action, event, i+1)
                 resources+=component
     return dict(resources)
 

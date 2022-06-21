@@ -189,7 +189,7 @@ class Apis(ComponentsBase):
         ComponentsBase.__init__(self, [Api(item)
                                        for item in items])
         
-class Events(ComponentBase):
+class Router(ComponentBase):
 
     def __init__(self, item={}):
         ComponentBase.__init__(self, item)
