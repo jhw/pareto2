@@ -1,14 +1,13 @@
 ### short
 
-- apis to specify actions
+- separate endpoint from actions
+- bind endpoints to apis
 
-- cross check api actions against apis
 - cross check api user pool against user pools
 - cross check event router against routers
 
 - liberate events from actions as distinct metadata type
 - liberate timers from actions as distinct metadata type
-- liberate endpoints from actions as distinct metadata type
 
 - pareto2/cdk/__init__.py shouldn't hardcode stack names 
   - and also shouldn't the recently updated ones be pluralised?
