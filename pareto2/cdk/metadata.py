@@ -74,25 +74,6 @@ class Action(ComponentBase):
                     if "parameters" in self["endpoint"]:
                         errors.append("%s POST endpoint can't have parameters" % self["name"])                    
 
-    def validate_schema(fn):
-        def wrapped(self, errors):
-            fn(self, errors)
-            try:
-                resp=Draft7Validator.check_schema(self["endpoint"]["schema"])
-                if resp!=None:
-                    raise RuntimeError(resp)
-            except Exception as error:
-                errors.append("schema validation error: %s" % str(error))
-        return wrapped
-                        
-    @validate_schema
-    def expand_schema(self, errors):
-        from collections import OrderedDict
-        schema=OrderedDict()
-        schema["$schema"]=Draft7Schema
-        schema.update(self["endpoint"]["schema"])        
-        self["endpoint"]["schema"]=schema
-                        
 class Actions(ComponentsBase):
 
     def __init__(self, items=[]):
@@ -113,12 +94,6 @@ class Actions(ComponentsBase):
         self.validate_events(errors)
         self.validate_endpoints(errors)
 
-    def expand(self, errors):
-        for action in self:
-            if ("endpoint" in action and
-                action["endpoint"]["method"]=="POST"):            
-                action.expand_schema(errors)
-        
     @property
     def names(self):
         return [action["name"]
@@ -184,11 +159,35 @@ class Endpoint(ComponentBase):
     def __init__(self, item={}):
         ComponentBase.__init__(self, item)
 
+    def validate_schema(fn):
+        def wrapped(self, errors):
+            fn(self, errors)
+            try:
+                resp=Draft7Validator.check_schema(self["schema"])
+                if resp!=None:
+                    raise RuntimeError(resp)
+            except Exception as error:
+                errors.append("schema validation error: %s" % str(error))
+        return wrapped
+        
+    @validate_schema
+    def expand_schema(self, errors):
+        from collections import OrderedDict
+        schema=OrderedDict()
+        schema["$schema"]=Draft7Schema
+        schema.update(self["schema"])        
+        self["schema"]=schema
+        
 class Endpoints(ComponentsBase):
 
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Endpoint(item)
                                        for item in items])
+
+    def expand(self, errors):
+        for endpoint in self:
+            if endpoint["method"]=="POST":
+                endpoint.expand_schema(errors)
         
 """
 - NB errors is an instance of action, a specially defined singleton

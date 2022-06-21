@@ -1,6 +1,6 @@
 ### short
 
-- $schema declaration is missing
+- move endpoint validation code from action into endpoint
 
 - user endpoint["name"] rather than endpoint["action"] in api resource names
 
@@ -40,6 +40,7 @@
 
 ### done
 
+- $schema declaration is missing
 - investigate why new api template post- endpoints integration is slightly smaller than prior template
 - api component to use md.endpoints
 - remove endpoints from actions
