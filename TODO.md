@@ -1,8 +1,8 @@
 ### short
 
-- endpoint actions against action names
 - endpoint userpool against userpool names
 - event router against routers
+- event action / source validation
 
 ### medium
 
@@ -35,6 +35,7 @@
 
 ### done
 
+- endpoint actions against action names
 - event action against action names
 - timer action against action names
 - add cross validation to all cross references

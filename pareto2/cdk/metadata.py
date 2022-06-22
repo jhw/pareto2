@@ -123,6 +123,12 @@ class Endpoints(ComponentsBase):
         ComponentsBase.__init__(self, [Endpoint(item)
                                        for item in items])
 
+    def validate(self, md, errors):
+        actionnames=md.actions.names
+        for endpoint in self:
+            if endpoint["action"] not in actionnames:
+                errors.append("%s is not a valid action name (%s)" % (endpoint["action"], endpoint["name"]))
+        
     def expand(self, errors):
         for endpoint in self:
             if endpoint["method"]=="POST":
