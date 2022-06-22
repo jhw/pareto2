@@ -1,10 +1,15 @@
 ### short
 
-- liberate events from actions
 - move events validation into new md.events class
 
-- timer build fails if name!=action
+- think timer.rules should reference `name` not `action`
+  - see if this allows you to have different `name` and `action` attrs in config
+  - repeat for events
+- don't think u really need these `rules` properties
+
 - use endpoint["name"] rather than endpoint["action"] in api resource names
+
+- shouldn't need actions.functions any more
 
 ### medium
 
@@ -15,9 +20,9 @@
 - investigate why list of stack names is required in metadata, and why some are singular / some plural
 - add API type attr and nest API components 
 - new simple API 
-- metadata schema
 - avoid duplicating schema stuff with metadata validation code 
 - avoid userpool/userpool_ nomenclature
+- metadata schema
 - stop symlink creating pareto2/pareto2
 
 ### long
@@ -37,6 +42,7 @@
 
 ### done
 
+- liberate events from actions
 - liberate timers from actions
 - move timers validation into new md.timers class
 - bind endpoints to APIs 

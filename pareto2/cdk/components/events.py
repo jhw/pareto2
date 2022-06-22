@@ -4,17 +4,17 @@ from pareto2.cdk.components import resource
 import json
 
 @resource
-def init_rule(action, event, i):
-    def init_target(action, event, i):
-        id={"Fn::Sub": "%s-rule-%i-${AWS::StackName}" % (action["name"], i)}
-        arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
+def init_rule(event):
+    def init_target(event):
+        id={"Fn::Sub": "%s-rule-${AWS::StackName}" % event["name"]}
+        arn={"Fn::GetAtt": [H("%s-function" % event["action"]), "Arn"]}
         return {"Id": id,
                 "Arn": arn}
-    resourcename=H("%s-rule-%i" % (action["name"], i))
+    resourcename=H("%s-rule" % event["name"])
     pattern={"detail": event["pattern"]}
     if "source" in event:
         pattern["source"]=[{"Ref": H("%s-function" % event["source"])}]
-    target=init_target(action, event, i)
+    target=init_target(event)
     eventbusname={"Ref": H("%s-event-bus" % event["router"])}
     props={"EventBusName": eventbusname,
            "EventPattern": pattern,
@@ -25,10 +25,10 @@ def init_rule(action, event, i):
             props)
 
 @resource
-def init_permission(action, event, i):
-    resourcename=H("%s-permission-%i" % (action["name"], i))
-    sourcearn={"Fn::GetAtt": [H("%s-rule-%i" % (action["name"], i)), "Arn"]}
-    funcname={"Ref": H("%s-function" % action["name"])}
+def init_permission(event):
+    resourcename=H("%s-permission" % event["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-rule" % event["name"]), "Arn"]}
+    funcname={"Ref": H("%s-function" % event["action"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",
            "FunctionName": funcname,
@@ -37,21 +37,19 @@ def init_permission(action, event, i):
             "AWS::Lambda::Permission",
             props)
 
-def init_component(action, event, i):
+def init_component(event):
     resources=[]
     for fn in [init_rule,
                init_permission]:
-        resource=fn(action, event, i)
+        resource=fn(event)
         resources.append(resource)
     return resources
 
 def init_resources(md):
     resources=[]
-    for action in md.actions:
-        if "events" in action:
-            for i, event in enumerate(action["events"]):
-                component=init_component(action, event, i+1)
-                resources+=component
+    for event in md.events:
+        component=init_component(event)
+        resources+=component
     return dict(resources)
 
 def update_template(template, md):

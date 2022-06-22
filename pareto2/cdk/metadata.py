@@ -89,21 +89,6 @@ class Actions(ComponentsBase):
                 packages.update(set(action["packages"]))
         return list(packages)
     
-    @property
-    def event_rules(self):
-        rules=[]
-        for action in self:
-            if "events" in action:
-                for i, _ in enumerate(action["events"]):
-                    rules.append("%s-rule-%i" % (action["name"], i+1))
-        return rules
-
-    @property
-    def timer_rules(self):
-        return ["%s-rule" % action["name"]
-                for action in self
-                if "timer" in action]
-
 class Api(ComponentBase):
 
     def __init__(self, item={}):
@@ -201,7 +186,23 @@ class Errors(Action):
 
     def expand(self, errors):
         pass
-            
+
+class Event(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Events(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Event(item)
+                                       for item in items])
+
+    @property
+    def rules(self):
+        return ["%s-rule" % event["name"]
+                for event in self]
+
 class Router(ComponentBase):
 
     def __init__(self, item={}):

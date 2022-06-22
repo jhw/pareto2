@@ -100,7 +100,7 @@ def init_events(md):
     components=[Component.initialise("event-rule",
                                      {"Title": rule,
                                       "ResourceName": "${%s}" % H(rule)})
-                for rule in sorted(md.actions.event_rules)]
+                for rule in sorted(md.events.rules)]
     return (resourcename, "events", Components(components))
 
 @render_dash
