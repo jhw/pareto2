@@ -1,6 +1,5 @@
 ### short
 
-- bind endpoints to APIs 
 - liberate events from actions
 - move events validation into new md.events class
 - liberate timers from actions
@@ -38,6 +37,7 @@
 
 ### done
 
+- bind endpoints to APIs 
 - move endpoint validation code from action into endpoint
 - $schema declaration is missing
 - investigate why new api template post- endpoints integration is slightly smaller than prior template

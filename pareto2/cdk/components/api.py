@@ -234,15 +234,13 @@ def init_resources(md):
             elif "schema" in endpoint:
                 resources.append(init_validator(api, endpoint))
                 resources.append(init_model(api, endpoint))
+    endpoints={endpoint["name"]: endpoint
+               for endpoint in md.endpoints}
     resources=[]
-    # START TEMP CODE
-    """
-    - for the minute, all actions and single user pool are bound to api
-    - in future these must be specified at api level
-    """    
     for api in md.apis:
-        init_resources(api, md.endpoints, resources)
-    # END TEMP CODE
+        apiendpoints=[endpoints[name]
+                      for name in api["endpoints"]]                      
+        init_resources(api, apiendpoints, resources)
     return dict(resources)
 
 """
