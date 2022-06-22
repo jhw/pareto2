@@ -245,6 +245,22 @@ class Tables(ComponentsBase):
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Table(item)
                                        for item in items])
+
+class Timer(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Timers(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Timer(item)
+                                       for item in items])
+
+    @property
+    def rules(self):
+        return ["%s-rule" % timer["action"]
+                for timer in self]
         
 class Metadata:
 

@@ -4,17 +4,17 @@ from pareto2.cdk.components import resource
 import json
 
 @resource
-def init_rule(action):
-    def init_target(action):
-        id={"Fn::Sub": "%s-rule-${AWS::StackName}" % action["name"]}
-        input=json.dumps(action["timer"]["body"])
-        arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
+def init_rule(timer):
+    def init_target(timer):
+        id={"Fn::Sub": "%s-rule-${AWS::StackName}" % timer["name"]}
+        input=json.dumps(timer["body"])
+        arn={"Fn::GetAtt": [H("%s-function" % timer["action"]), "Arn"]}
         return {"Id": id,
                 "Input": input,
                 "Arn": arn}        
-    resourcename=H("%s-rule" % action["name"])
-    target=init_target(action)
-    scheduleexpr="rate(%s)" % action["timer"]["rate"]
+    resourcename=H("%s-rule" % timer["name"])
+    target=init_target(timer)
+    scheduleexpr="rate(%s)" % timer["rate"]
     props={"Targets": [target],
            "ScheduleExpression": scheduleexpr}
     return (resourcename,
@@ -22,10 +22,10 @@ def init_rule(action):
             props)
 
 @resource
-def init_permission(action):
-    resourcename=H("%s-permission" % action["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-rule" % action["name"]), "Arn"]}
-    funcname={"Ref": H("%s-function" % action["name"])}
+def init_permission(timer):
+    resourcename=H("%s-permission" % timer["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-rule" % timer["name"]), "Arn"]}
+    funcname={"Ref": H("%s-function" % timer["action"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",
            "FunctionName": funcname,
@@ -34,20 +34,19 @@ def init_permission(action):
             "AWS::Lambda::Permission",
             props)
 
-def init_component(action):
+def init_component(timer):
     resources=[]
     for fn in [init_rule,
                init_permission]:
-        resource=fn(action)
+        resource=fn(timer)
         resources.append(resource)
     return resources
 
 def init_resources(md):
     resources=[]
-    for action in md.actions:
-        if "timer" in action:
-            component=init_component(action)
-            resources+=component
+    for timer in md.timers:
+        component=init_component(timer)
+        resources+=component
     return dict(resources)
 
 def update_template(template, md):

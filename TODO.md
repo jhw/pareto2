@@ -2,8 +2,9 @@
 
 - liberate events from actions
 - move events validation into new md.events class
-- liberate timers from actions
-- move timers validation into new md.timers class
+
+- timer build fails if name!=action
+- use endpoint["name"] rather than endpoint["action"] in api resource names
 
 ### medium
 
@@ -16,7 +17,6 @@
 - new simple API 
 - metadata schema
 - avoid duplicating schema stuff with metadata validation code 
-- user endpoint["name"] rather than endpoint["action"] in api resource names
 - avoid userpool/userpool_ nomenclature
 - stop symlink creating pareto2/pareto2
 
@@ -37,6 +37,8 @@
 
 ### done
 
+- liberate timers from actions
+- move timers validation into new md.timers class
 - bind endpoints to APIs 
 - move endpoint validation code from action into endpoint
 - $schema declaration is missing

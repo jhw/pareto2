@@ -109,7 +109,7 @@ def init_timers(md):
     components=[Component.initialise("timer-rule",
                                      {"Title": rule,
                                       "ResourceName": "${%s}" % H(rule)})
-                for rule in sorted(md.actions.timer_rules)]
+                for rule in sorted(md.timers.rules)]
     return (resourcename, "timers", Components(components))
 
 @render_dash
