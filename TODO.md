@@ -1,7 +1,8 @@
 ### short
 
-- list all cross references 
-- add cross validation to all cross references
+- endpoint actions against action names
+- endpoint userpool against userpool names
+- event router against routers
 
 ### medium
 
@@ -34,6 +35,10 @@
 
 ### done
 
+- event action against action names
+- timer action against action names
+- add cross validation to all cross references
+- list all cross references 
 - use endpoint["name"] rather than endpoint["action"] in api resource names
 - get rid of actions.names
 - shouldn't need actions.functions any more

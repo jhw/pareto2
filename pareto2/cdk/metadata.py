@@ -11,7 +11,7 @@ class ComponentBase(dict):
     def __init__(self, items={}):
         dict.__init__(self, items)
 
-    def validate(self, errors):
+    def validate(self, md, errors):
         pass
 
     def expand(self, errors):
@@ -22,7 +22,12 @@ class ComponentsBase(list):
     def __init__(self, items=[]):
         list.__init__(self, items)
 
-    def validate(self, errors):
+    @property
+    def names(self):
+        return [item["name"]
+                for item in self]
+        
+    def validate(self, md, errors):
         pass
 
     def expand(self, errors):
@@ -112,7 +117,7 @@ class Endpoint(ComponentBase):
         schema.update(self["schema"])        
         self["schema"]=schema
 
-    def validate(self, errors):
+    def validate(self, md, errors):
         if "method" not in self:
             errors.append("%s endpoint has missing method" % self["name"])
         else:
@@ -140,9 +145,9 @@ class Endpoints(ComponentsBase):
             if endpoint["method"]=="POST":
                 endpoint.expand_schema(errors)
 
-    def validate(self, errors):
+    def validate(self, md, errors):
         for endpoint in self:
-            endpoint.validate(errors)
+            endpoint.validate(md, errors)
                 
 """
 - NB errors is an instance of action, a specially defined singleton
@@ -152,12 +157,6 @@ class Errors(Action):
 
     def __init__(self, item={}):
         Action.__init__(self, item)
-
-    def validate(self, errors):
-        pass
-
-    def expand(self, errors):
-        pass
 
 class Event(ComponentBase):
 
@@ -170,6 +169,12 @@ class Events(ComponentsBase):
         ComponentsBase.__init__(self, [Event(item)
                                        for item in items])
 
+    def validate(self, md, errors):
+        actionnames=md.actions.names
+        for event in self:
+            if event["action"] not in actionnames:
+                errors.append("%s is not a valid action name (%s)" % (event["action"], event["name"]))
+        
 class Router(ComponentBase):
 
     def __init__(self, item={}):
@@ -225,6 +230,13 @@ class Timers(ComponentsBase):
         ComponentsBase.__init__(self, [Timer(item)
                                        for item in items])
 
+    def validate(self, md, errors):
+        actionnames=md.actions.names
+        for timer in self:
+            if timer["action"] not in actionnames:
+                errors.append("%s is not a valid action name (%s)" % (timer["action"], timer["name"]))
+
+        
 class Metadata:
 
     SrcPath="config/%s/metadata.yaml"
@@ -246,7 +258,7 @@ class Metadata:
     def validate(self):
         errors=[]
         for k in self.keys:
-            getattr(self, k).validate(errors)
+            getattr(self, k).validate(self, errors)
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
         return self
