@@ -76,7 +76,14 @@ class Apis(ComponentsBase):
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Api(item)
                                        for item in items])
-    
+
+    def validate(self, md, errors):
+        userpoolnames=md.userpools.names
+        for api in self:
+            if api["userpool"] not in userpoolnames:
+                errors.append("%s is not a valid userpool name (%s)" % (api["userpool"], api["name"]))
+
+        
 class Bucket(ComponentBase):
 
     def __init__(self, item={}):

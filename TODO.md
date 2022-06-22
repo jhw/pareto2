@@ -1,6 +1,6 @@
 ### short
 
-- endpoint userpool against userpool names
+- endpoint actions against action names
 - event router against routers
 - event action / source validation
 
@@ -32,6 +32,7 @@
 
 ### done
 
+- api userpool against userpool names
 - endpoint actions against action names
 - event action against action names
 - timer action against action names
