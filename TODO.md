@@ -1,6 +1,5 @@
 ### short
 
-- use endpoint["name"] rather than endpoint["action"] in api resource names
 - list all cross references 
 - add cross validation to all cross references
 
@@ -35,6 +34,7 @@
 
 ### done
 
+- use endpoint["name"] rather than endpoint["action"] in api resource names
 - get rid of actions.names
 - shouldn't need actions.functions any more
 - don't think u really need these `rules` properties

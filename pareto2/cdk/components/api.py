@@ -49,8 +49,8 @@ def init_deployment(api, endpoints):
     props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
     depends=[]
     for endpoint in endpoints:
-        depends+=[H("%s-method" % endpoint["action"]),
-                  H("%s-cors-method" % endpoint["action"])]
+        depends+=[H("%s-method" % endpoint["name"]),
+                  H("%s-cors-method" % endpoint["name"])]
     return (resourcename,            
             "AWS::ApiGateway::Deployment",
             props,
@@ -100,7 +100,7 @@ def init_default_response(api, code):
 
 @resource
 def init_resource(api, endpoint):
-    resourcename=H("%s-resource" % endpoint["action"])
+    resourcename=H("%s-resource" % endpoint["name"])
     parentid={"Fn::GetAtt": [H("%s-rest-api" % api["name"]),
                              "RootResourceId"]}
     props={"ParentId": parentid,
@@ -112,24 +112,24 @@ def init_resource(api, endpoint):
 
 @resource
 def init_method(api, endpoint):
-    resourcename=H("%s-method" % endpoint["action"])
+    resourcename=H("%s-method" % endpoint["name"])
     uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
     integration={"IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY",
                  "Uri": uri}
     props={"HttpMethod": endpoint["method"],
            "Integration": integration,
-           "ResourceId": {"Ref": H("%s-resource" % endpoint["action"])},
+           "ResourceId": {"Ref": H("%s-resource" % endpoint["name"])},
            "RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
            "AuthorizationType": "COGNITO_USER_POOLS",
            "AuthorizerId": {"Ref": H("%s-authorizer" % api["name"])}}
     if "parameters" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["action"])}
+        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
         props["RequestParameters"]={"method.request.querystring.%s" % param: True
                                     for param in endpoint["parameters"]}
     elif "schema" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["action"])}
-        props["RequestModels"]={"application/json": H("%s-model" % endpoint["action"])}
+        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
+        props["RequestModels"]={"application/json": H("%s-model" % endpoint["name"])}
     return (resourcename,
             "AWS::ApiGateway::Method",
             props)
@@ -159,14 +159,14 @@ def init_cors_method(api, endpoint):
         return {"StatusCode": 200,
                 "ResponseModels": models,
                 "ResponseParameters": params}
-    resourcename=H("%s-cors-method" % endpoint["action"])
+    resourcename=H("%s-cors-method" % endpoint["name"])
     integration=init_integration(endpoint)
     response=init_response()
     props={"AuthorizationType": "NONE",
            "HttpMethod": "OPTIONS",
            "Integration": integration,
            "MethodResponses": [response],
-           "ResourceId": {"Ref": H("%s-resource" % endpoint["action"])},
+           "ResourceId": {"Ref": H("%s-resource" % endpoint["name"])},
            "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Method",
@@ -174,7 +174,7 @@ def init_cors_method(api, endpoint):
 
 @resource
 def init_permission(api, endpoint):
-    resourcename=H("%s-permission" % endpoint["action"])
+    resourcename=H("%s-permission" % endpoint["name"])
     sourcearn={"Fn::Sub": PermissionSrcArn % (H("%s-rest-api" % api["name"]),
                                               H("%s-stage" % api["name"]),
                                               endpoint["method"],
@@ -189,7 +189,7 @@ def init_permission(api, endpoint):
 
 @resource
 def init_validator(api, endpoint):
-    resourcename=H("%s-validator" % endpoint["action"])
+    resourcename=H("%s-validator" % endpoint["name"])
     props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
     if "parameters" in endpoint:
         props["ValidateRequestParameters"]=True
@@ -205,7 +205,7 @@ def init_validator(api, endpoint):
 
 @resource
 def init_model(api, endpoint):
-    resourcename=H("%s-model" % endpoint["action"])
+    resourcename=H("%s-model" % endpoint["name"])
     props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
            "ContentType": "application/json",
            "Name": resourcename,
