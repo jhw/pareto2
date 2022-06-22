@@ -1,18 +1,20 @@
 ### short
 
-- endpoint actions against action names
-- event action / source validation
-
-### medium
-
+- action to validate binding uniqueness
 - clean up all init resource/output functions 
 - pluralise all plural component modules
 - investigate why list of stack names is required in metadata, and why some are singular / some plural
+
+### medium
+
+- *** bucket and table function specification ***
+
+- see if nested config items can be flattened
 - add API type attr and nest API components 
-- new simple API 
-- avoid duplicating schema stuff with metadata validation code 
+  - new simple/public API 
 - avoid userpool/userpool_ nomenclature
 - metadata schema
+
 - stop symlink creating pareto2/pareto2
 
 ### long
@@ -31,6 +33,9 @@
 
 ### done
 
+- avoid duplicating schema stuff with metadata validation code 
+- event action / source validation
+- api endpoints against endpoint names 
 - event router against routers
 - api userpool against userpool names
 - endpoint actions against action names

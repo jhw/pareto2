@@ -77,12 +77,22 @@ class Apis(ComponentsBase):
         ComponentsBase.__init__(self, [Api(item)
                                        for item in items])
 
-    def validate(self, md, errors):
+    def validate_userpool(self, md, errors):
         userpoolnames=md.userpools.names
         for api in self:
             if api["userpool"] not in userpoolnames:
-                errors.append("%s is not a valid userpool name (%s)" % (api["userpool"], api["name"]))
+                errors.append("%s is not a valid userpool name (api %s)" % (api["userpool"], api["name"]))
 
+    def validate_endpoints(self, md, errors):
+        allendpointnames=md.endpoints.names
+        for api in self:
+            for endpointname in api["endpoints"]:
+                if endpointname not in allendpointnames:
+                    errors.append("%s is not a valid endpoint name (api %s)" % (endpointname, api["name"]))
+
+    def validate(self, md, errors):
+        self.validate_userpool(md, errors)
+        self.validate_endpoints(md, errors)
         
 class Bucket(ComponentBase):
 
@@ -134,7 +144,7 @@ class Endpoints(ComponentsBase):
         actionnames=md.actions.names
         for endpoint in self:
             if endpoint["action"] not in actionnames:
-                errors.append("%s is not a valid action name (%s)" % (endpoint["action"], endpoint["name"]))
+                errors.append("%s is not a valid action name (endpoint %s)" % (endpoint["action"], endpoint["name"]))
         
     def expand(self, errors):
         for endpoint in self:
@@ -164,11 +174,17 @@ class Events(ComponentsBase):
     def validate(self, md, errors):
         actionnames, routernames = md.actions.names, md.routers.names
         for event in self:
-            if event["action"] not in actionnames:
-                errors.append("%s is not a valid action name (%s)" % (event["action"], event["name"]))
             if event["router"] not in routernames:
-                errors.append("%s is not a valid router name (%s)" % (event["router"], event["name"]))
-                        
+                errors.append("%s is not a valid router name (event %s)" % (event["router"], event["name"]))                
+            if ("source" in event and
+                event["source"] not in actionnames):
+                errors.append("%s is not a valid action name (event %s)" % (event["source"], event["name"]))
+            if event["action"] not in actionnames:
+                errors.append("%s is not a valid action name (event %s)" % (event["action"], event["name"]))
+            if ("source" in event and
+                event["source"]==event["action"]):
+                errors.append("%s circular dependency (event %s)" % (event["action"], event["name"]))
+                                    
 class Router(ComponentBase):
 
     def __init__(self, item={}):
@@ -228,8 +244,7 @@ class Timers(ComponentsBase):
         actionnames=md.actions.names
         for timer in self:
             if timer["action"] not in actionnames:
-                errors.append("%s is not a valid action name (%s)" % (timer["action"], timer["name"]))
-
+                errors.append("%s is not a valid action name (timer %s)" % (timer["action"], timer["name"]))
         
 class Metadata:
 
