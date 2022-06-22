@@ -1,15 +1,16 @@
 ### short
 
-- action to validate binding uniqueness
+- ensure all resources created with suffix, including table and bucket
+  - all ancilliary resources (eg roles) should include this suffix as well
+  - rename bucket and table as demo-streaming
+- add bucket, table optional action
 - clean up all init resource/output functions 
 - pluralise all plural component modules
 - investigate why list of stack names is required in metadata, and why some are singular / some plural
 
 ### medium
 
-- *** bucket and table function specification ***
-
-- see if nested config items can be flattened
+- flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 
 - avoid userpool/userpool_ nomenclature
@@ -29,6 +30,8 @@
 
 ### thoughts
 
+- action to validate binding uniqueness ?
+  - probably overkill at this stage
 - remove eventbus discoverer ?
 
 ### done
