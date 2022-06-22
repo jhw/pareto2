@@ -1,9 +1,5 @@
 ### short
 
-
-- think timer.rules should reference `name` not `action`
-  - see if this allows you to have different `name` and `action` attrs in config
-  - repeat for events
 - don't think u really need these `rules` properties
 
 - use endpoint["name"] rather than endpoint["action"] in api resource names
@@ -43,6 +39,9 @@
 
 ### done
 
+- think timer.rules should reference `name` not `action`
+  - see if this allows you to have different `name` and `action` attrs in config
+  - repeat for events
 - liberate events from actions
 - liberate timers from actions
 - move timers validation into new md.timers class

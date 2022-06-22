@@ -242,7 +242,7 @@ class Timers(ComponentsBase):
 
     @property
     def rules(self):
-        return ["%s-rule" % timer["action"]
+        return ["%s-rule" % timer["name"]
                 for timer in self]
         
 class Metadata:
