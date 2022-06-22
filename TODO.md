@@ -28,10 +28,7 @@
 
 ### thoughts
 
-- move events validation into new md.events class ?
-  - removed as very dependant on nesting within functions
 - remove eventbus discoverer ?
-- cross check bucket/table names against mapped streaming functions?
 
 ### done
 
