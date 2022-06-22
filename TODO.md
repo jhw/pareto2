@@ -1,6 +1,5 @@
 ### short
 
-- move events validation into new md.events class
 
 - think timer.rules should reference `name` not `action`
   - see if this allows you to have different `name` and `action` attrs in config
@@ -37,6 +36,8 @@
 
 ### thoughts
 
+- move events validation into new md.events class ?
+  - removed as very dependant on nesting within functions
 - remove eventbus discoverer ?
 - cross check bucket/table names against mapped streaming functions?
 

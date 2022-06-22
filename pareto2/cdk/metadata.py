@@ -47,29 +47,11 @@ class Action(ComponentBase):
                        len(tok) > 3)]
         self["env"]={"variables": variables} if variables!=[] else {"variables": []}
 
-    def validate_events(self, errors, names):
-        if "events" in self:
-            for event in self["events"]:
-                if "source" in event:
-                    src=event["source"]
-                    if src not in names:
-                        errors.append("unknown event source %s" % src)
-                    elif src==self["name"]:
-                        errors.append("%s event can't have self as function source" % src)
-
 class Actions(ComponentsBase):
 
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Action(item)
                                        for item in items])
-
-    def validate_events(self, errors):
-        names=self.names
-        for action in self:
-            action.validate_events(errors, names)            
-            
-    def validate(self, errors):
-        self.validate_events(errors)
 
     @property
     def names(self):
