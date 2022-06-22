@@ -54,11 +54,6 @@ class Actions(ComponentsBase):
                                        for item in items])
 
     @property
-    def names(self):
-        return [action["name"]
-                for action in self]
-            
-    @property
     def packages(self):
         packages=set()
         for action in self:

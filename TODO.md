@@ -1,6 +1,5 @@
 ### short
 
-- get rid of actions.names
 - use endpoint["name"] rather than endpoint["action"] in api resource names
 - list all cross references 
 - add cross validation to all cross references
@@ -36,6 +35,7 @@
 
 ### done
 
+- get rid of actions.names
 - shouldn't need actions.functions any more
 - don't think u really need these `rules` properties
 - think timer.rules should reference `name` not `action`
