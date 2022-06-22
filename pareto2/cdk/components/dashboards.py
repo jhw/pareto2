@@ -89,9 +89,10 @@ def render_dash(fn):
 def init_actions(md):
     resourcename=H("%s-actions" % md.dashboard["name"])
     components=[Component.initialise("function",
-                                     {"Title": fn,
-                                      "ResourceName": "${%s}" % H(fn)})
-                for fn in sorted(md.actions.functions)]
+                                     {"Title": action["name"],
+                                      "ResourceName": "${%s}" % H("%s-function" % action["name"])})
+                for action in sorted(md.actions,
+                                     key=lambda x: x["name"])]
     return (resourcename, "actions", Components(components))
 
 @render_dash

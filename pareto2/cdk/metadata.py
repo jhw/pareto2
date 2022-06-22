@@ -59,11 +59,6 @@ class Actions(ComponentsBase):
                 for action in self]
             
     @property
-    def functions(self):
-        return ["%s-function" % action["name"]
-                for action in self]
-
-    @property
     def packages(self):
         packages=set()
         for action in self:
