@@ -1,15 +1,12 @@
 ### short
 
-- don't think u really need these `rules` properties
-
-- use endpoint["name"] rather than endpoint["action"] in api resource names
-
 - shouldn't need actions.functions any more
+- use endpoint["name"] rather than endpoint["action"] in api resource names
+- list all cross references 
+- add cross validation to all cross references
 
 ### medium
 
-- list all cross references 
-- add cross validation to all cross references
 - clean up all init resource/output functions 
 - pluralise all plural component modules
 - investigate why list of stack names is required in metadata, and why some are singular / some plural
@@ -39,6 +36,7 @@
 
 ### done
 
+- don't think u really need these `rules` properties
 - think timer.rules should reference `name` not `action`
   - see if this allows you to have different `name` and `action` attrs in config
   - repeat for events

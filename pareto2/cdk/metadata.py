@@ -180,11 +180,6 @@ class Events(ComponentsBase):
         ComponentsBase.__init__(self, [Event(item)
                                        for item in items])
 
-    @property
-    def rules(self):
-        return ["%s-rule" % event["name"]
-                for event in self]
-
 class Router(ComponentBase):
 
     def __init__(self, item={}):
@@ -240,11 +235,6 @@ class Timers(ComponentsBase):
         ComponentsBase.__init__(self, [Timer(item)
                                        for item in items])
 
-    @property
-    def rules(self):
-        return ["%s-rule" % timer["name"]
-                for timer in self]
-        
 class Metadata:
 
     SrcPath="config/%s/metadata.yaml"
