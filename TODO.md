@@ -1,21 +1,21 @@
 ### short
 
+- bind endpoints to APIs 
+- liberate events from actions
+- move events validation into new md.events class
+- liberate timers from actions
+- move timers validation into new md.timers class
+- list all cross references 
+- add cross validation to all cross references
+- clean up all init resource/output functions 
+- pluralise all plural component modules
+- investigate why list of stack names is required in metadata, and why some are singular / some plural
+- add API type attr and nest API components 
+- new simple API 
+- metadata schema
+- avoid duplicating schema stuff with metadata validation code 
 - user endpoint["name"] rather than endpoint["action"] in api resource names
-
-- cross check api user pool against user pools
-- cross check event router against routers
-
-- liberate events from actions as distinct metadata type
-- liberate timers from actions as distinct metadata type
-
-- pareto2/cdk/__init__.py shouldn't hardcode stack names 
-  - and also shouldn't the recently updated ones be pluralised?
-- simplify init_resource, init_output routines
 - avoid userpool/userpool_ nomenclature
-- pluralise all components modules which now take lists
-- components/api to be a package with root/open/cognito apis
-  - `type` variable ?
-- metadata schema validation
 
 ### medium
 
