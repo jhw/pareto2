@@ -5,6 +5,9 @@
 - move events validation into new md.events class
 - liberate timers from actions
 - move timers validation into new md.timers class
+
+### medium
+
 - list all cross references 
 - add cross validation to all cross references
 - clean up all init resource/output functions 
@@ -16,9 +19,6 @@
 - avoid duplicating schema stuff with metadata validation code 
 - user endpoint["name"] rather than endpoint["action"] in api resource names
 - avoid userpool/userpool_ nomenclature
-
-### medium
-
 - stop symlink creating pareto2/pareto2
 
 ### long
