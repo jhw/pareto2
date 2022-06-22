@@ -1,7 +1,6 @@
 ### short
 
 - endpoint actions against action names
-- event router against routers
 - event action / source validation
 
 ### medium
@@ -32,6 +31,7 @@
 
 ### done
 
+- event router against routers
 - api userpool against userpool names
 - endpoint actions against action names
 - event action against action names
