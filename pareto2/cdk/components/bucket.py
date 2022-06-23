@@ -12,7 +12,7 @@ from pareto2.cdk.components import resource
 
 @resource
 def init_bucket(bucket):
-    resourcename=H(bucket["name"])    
+    resourcename=H("%s-bucket" % bucket["name"])    
     funcarn={"Fn::GetAtt": [H("%s-function" % bucket["action"]), "Arn"]}
     lambdaconf=[{"Event": "s3:ObjectCreated:*",
                  "Function": funcarn}]
@@ -46,7 +46,7 @@ def init_resources(md):
                  for bucket in md.buckets])
 
 def init_outputs(md):
-    return {H(bucket["name"]): {"Value": {"Ref": H(bucket["name"])}}
+    return {H(bucket["name"]): {"Value": {"Ref": H("%s-bucket" % bucket["name"])}}
             for bucket in md.buckets}
 
 def update_template(template, md):

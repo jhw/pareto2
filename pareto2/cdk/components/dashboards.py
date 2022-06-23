@@ -130,7 +130,7 @@ def init_bucket(md):
     resourcename=H("%s-bucket" % md.dashboard["name"])
     components=[Component.initialise("bucket",
                                      {"Title": bucket["name"],
-                                      "ResourceName": "${%s}" % H(bucket["name"])})
+                                      "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
                 for bucket in sorted(md.buckets,
                                      key=lambda x: x["name"])]
     return (resourcename, "bucket", Components(components))
