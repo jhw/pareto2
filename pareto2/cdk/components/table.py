@@ -9,7 +9,7 @@ from pareto2.cdk.components import resource
 
 @resource
 def init_table(table, **kwargs):
-    resourcename=H(table["name"])
+    resourcename=H("%s-table" % table["name"])
     attrs=[{"AttributeName": name,
             "AttributeType": type_}
            for name, type_ in [("pk", "S"),
@@ -40,7 +40,7 @@ def init_table(table, **kwargs):
 def init_table_mapping(table, errors):
     resourcename=H("%s-mapping" % table["name"])
     funcname={"Ref": H("%s-function" % table["action"])}
-    sourcearn={"Fn::GetAtt": [H(table["name"]),
+    sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
     destarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
     destconfig={"OnFailure": {"Destination": destarn}}
@@ -64,7 +64,7 @@ def init_resources(md):
                  for table in md.tables])
 
 def init_outputs(md):
-    return {H(table["name"]): {"Value": {"Ref": H(table["name"])}}
+    return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}
             for table in md.tables}
                                
 def update_template(template, md):

@@ -120,7 +120,7 @@ def init_table(md):
     resourcename=H("%s-table" % md.dashboard["name"])
     components=[Component.initialise("table",
                                      {"Title": table["name"],
-                                      "ResourceName": "${%s}" % H(table["name"])})
+                                      "ResourceName": "${%s}" % H("%s-table" % table["name"])})
                 for table in sorted(md.tables,
                                     key=lambda x: x["name"])]
     return (resourcename, "table", Components(components))

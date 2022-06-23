@@ -46,7 +46,7 @@ def init_resources(md):
                  for bucket in md.buckets])
 
 def init_outputs(md):
-    return {H(bucket["name"]): {"Value": {"Ref": H("%s-bucket" % bucket["name"])}}
+    return {H("%s-bucket" % bucket["name"]): {"Value": {"Ref": H("%s-bucket" % bucket["name"])}}
             for bucket in md.buckets}
 
 def update_template(template, md):
