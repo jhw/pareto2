@@ -1,7 +1,7 @@
 ### short
 
-- ensure all resources created with suffix, including table and bucket
-  - all ancilliary resources (eg roles) should include this suffix as well
+- harmonise all resource names so they are of form `%s-#{type}`
+
 - make bucket, table action optional
 - clean up all init resource/output functions 
 - pluralise all plural component modules
@@ -15,8 +15,6 @@
 - avoid userpool/userpool_ nomenclature
 - metadata schema
 
-- stop symlink creating pareto2/pareto2
-
 ### long
 
 - api w/ key access
@@ -29,6 +27,8 @@
 
 ### thoughts
 
+- stop symlink creating pareto2/pareto2 ?
+  - probably overkill at this stage
 - action to validate binding uniqueness ?
   - probably overkill at this stage
 - remove eventbus discoverer ?
