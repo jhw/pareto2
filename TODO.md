@@ -1,11 +1,11 @@
 ### short
 
-- add bucket, table action
 - validate bucket, table action
+- rename bucket and table as demo-streaming
 
 - ensure all resources created with suffix, including table and bucket
   - all ancilliary resources (eg roles) should include this suffix as well
-  - rename bucket and table as demo-streaming
+
 - make bucket, table action optional
 - clean up all init resource/output functions 
 - pluralise all plural component modules
@@ -39,6 +39,7 @@
 
 ### done
 
+- add bucket, table action
 - avoid duplicating schema stuff with metadata validation code 
 - event action / source validation
 - api endpoints against endpoint names 

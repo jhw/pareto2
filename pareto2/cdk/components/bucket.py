@@ -13,7 +13,7 @@ from pareto2.cdk.components import resource
 @resource
 def init_bucket(bucket):
     resourcename=H(bucket["name"])    
-    funcarn={"Fn::GetAtt": [H("%s-function" % bucket["name"]), "Arn"]}
+    funcarn={"Fn::GetAtt": [H("%s-function" % bucket["action"]), "Arn"]}
     lambdaconf=[{"Event": "s3:ObjectCreated:*",
                  "Function": funcarn}]
     name={"Fn::Sub": "%s-${AWS::StackName}-${AWS::Region}" % bucket["name"]}
@@ -29,7 +29,7 @@ def init_bucket(bucket):
 def init_permission(bucket):
     resourcename=H("%s-permission" % bucket["name"])
     sourcearn={"Fn::Sub": "arn:aws:s3:::%s-${AWS::StackName}-${AWS::Region}" % bucket["name"]}
-    funcname={"Ref": H("%s-function" % bucket["name"])}
+    funcname={"Ref": H("%s-function" % bucket["action"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "s3.amazonaws.com",
            "SourceArn": sourcearn,
