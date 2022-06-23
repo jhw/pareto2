@@ -104,6 +104,13 @@ class Buckets(ComponentsBase):
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Bucket(item)
                                        for item in items])
+
+    def validate(self, md, errors):
+        actionnames=md.actions.names
+        for bucket in self:
+            if bucket["action"] not in actionnames:
+                errors.append("%s is not a valid action name (bucket %s)" % (bucket["action"], bucket["name"]))
+
         
 class Dashboard(ComponentBase):
 
@@ -229,6 +236,12 @@ class Tables(ComponentsBase):
         ComponentsBase.__init__(self, [Table(item)
                                        for item in items])
 
+    def validate(self, md, errors):
+        actionnames=md.actions.names
+        for table in self:
+            if table["action"] not in actionnames:
+                errors.append("%s is not a valid action name (table %s)" % (table["action"], table["name"]))
+        
 class Timer(ComponentBase):
 
     def __init__(self, item={}):

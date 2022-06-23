@@ -1,6 +1,5 @@
 ### short
 
-- validate bucket, table action
 - rename bucket and table as demo-streaming
 
 - ensure all resources created with suffix, including table and bucket
@@ -39,6 +38,7 @@
 
 ### done
 
+- validate bucket, table action
 - add bucket, table action
 - avoid duplicating schema stuff with metadata validation code 
 - event action / source validation
