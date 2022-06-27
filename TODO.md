@@ -1,7 +1,5 @@
 ### short
 
-- harmonise all resource names so they are of form `%s-#{type}`
-
 - make bucket, table action optional
 - clean up all init resource/output functions 
 - pluralise all plural component modules
@@ -27,6 +25,8 @@
 
 ### thoughts
 
+- add checks for `function`, `table`, `bucket` etc suffixes in names ?
+  - may be overkill
 - stop symlink creating pareto2/pareto2 ?
   - probably overkill at this stage
 - action to validate binding uniqueness ?
@@ -35,6 +35,7 @@
 
 ### done
 
+- check StackName refs
 - rename bucket and table as demo-streaming
 - validate bucket, table action
 - add bucket, table action

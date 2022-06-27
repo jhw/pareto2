@@ -9,7 +9,7 @@ from pareto2.cdk.components import resource
 @resource
 def init_eventbus(router):
     resourcename=H("%s-event-bus" % router["name"])
-    name={"Fn::Sub": "event-bus-${AWS::StackName}-${AWS::Region}"}
+    name={"Fn::Sub": "%s-event-bus-${AWS::StackName}-${AWS::Region}" % router["name"]}
     props={"Name": name}
     return (resourcename, 
             "AWS::Events::EventBus",
