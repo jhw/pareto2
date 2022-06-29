@@ -1,7 +1,6 @@
 ### short
 
-- investigate why some stack names are pluralised
-- investigate why list of stack names is required in metadata
+- replace dynamic imports
 
 ### medium
 
@@ -35,6 +34,8 @@
 
 ### done
 
+- investigate why some stack names are pluralised
+- investigate why list of stack names is required in metadata
 - pluralise all plural component modules
 - check StackName refs
 - rename bucket and table as demo-streaming

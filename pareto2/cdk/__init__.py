@@ -18,22 +18,6 @@ from datetime import datetime
 
 import os, yaml
 
-StackNames=yaml.safe_load("""
-- actions
-- apis
-- buckets
-- dashboards
-- errors
-- events
-- layers
-- queues
-- routers
-- secrets
-- tables
-- timers
-- userpools
-""")
-
 class Defaults(dict):
 
     @classmethod
@@ -49,10 +33,14 @@ class Defaults(dict):
 def init_template(md,
                   name="main",
                   timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
-                  stacknames=StackNames):
+                  home="pareto2/cdk/components"):
     template=Template(name=name,
                       timestamp=timestamp)
-    for stackname in stacknames:
+    for filename in os.listdir(home):
+        if ("__init__" in filename or
+            "__pycache__" in filename):
+            continue
+        stackname=filename.split(".")[0]
         fn=eval("init_%s" % stackname)        
         fn(template=template,
            md=md)
