@@ -1,13 +1,16 @@
 ### short [liberate-queues]
 
-- add new metadata queue class
-- validate queue action against actions
 - refactor queue config in pareto2-demo
 - refactor queues.py to work off queue config not action config
 - move queue binding code from actions.py to queues.py
 
+### pending
+
+- uncomment layers check
+
 ### medium
 
+- check online before performing layers check
 - add check so type can't appear in component name
 - flatten nested config items where possible
 - add API type attr and nest API components 
@@ -40,6 +43,8 @@
 
 ### done
 
+- add new metadata queue class
+- validate queue action against actions
 - make bucket, table action optional
 - replace dynamic imports
 - investigate why some stack names are pluralised

@@ -55,7 +55,9 @@ if __name__=="__main__":
         print ("initialising/validating layers")
         s3=boto3.client("s3")
         layers=Layers.initialise(md)
+        """
         layers.validate(s3, config)
+        """
         print ("initialising/validating template")
         from pareto2.cdk import init_template
         template=init_template(md,

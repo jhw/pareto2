@@ -191,7 +191,24 @@ class Events(ComponentsBase):
             if ("source" in event and
                 event["source"]==event["action"]):
                 errors.append("%s circular dependency (event %s)" % (event["action"], event["name"]))
-                                    
+
+class Queue(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Queues(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Queue(item)
+                                       for item in items])
+
+    def validate(self, md, errors):
+        actionnames=md.actions.names
+        for queue in self:
+            if queue["action"] not in actionnames:
+                errors.append("%s is not a valid action name (queue %s)" % (queue["action"], queue["name"]))
+        
 class Router(ComponentBase):
 
     def __init__(self, item={}):
