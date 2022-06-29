@@ -2,9 +2,10 @@
 
 - investigate why list of stack names is required in metadata, and why some are singular / some plural
 
-
 ### medium
 
+- consider extending resource name of subordinate types, eg -function-role
+- add check so type can't appear in component name
 - make bucket, table action optional
 - clean up all init resource/output functions 
 - flatten nested config items where possible
@@ -25,8 +26,6 @@
 
 ### thoughts
 
-- add checks for `function`, `table`, `bucket` etc suffixes in names ?
-  - may be overkill
 - stop symlink creating pareto2/pareto2 ?
   - probably overkill at this stage
 - action to validate binding uniqueness ?
