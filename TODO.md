@@ -1,6 +1,7 @@
 ### short
 
-- investigate why list of stack names is required in metadata, and why some are singular / some plural
+- investigate why some stack names are pluralised
+- investigate why list of stack names is required in metadata
 
 ### medium
 
