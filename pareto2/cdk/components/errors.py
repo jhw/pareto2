@@ -1,6 +1,6 @@
-from pareto2.cdk.components.actions import init_function, init_function_role
+from pareto2.cdk.components.actions import init_function, init_role
 
-from pareto2.cdk.components.queues import init_queue_binding
+from pareto2.cdk.components.queues import init_binding
 
 from pareto2.cdk.components import hungarorise as H
 
@@ -18,10 +18,15 @@ def init_error_queue(action):
 
 def init_component(action):
     resources=[]
+    """
     fns=[init_function,
-         init_function_role,
+         init_role,
          init_error_queue,
-         init_queue_binding]
+         init_binding]
+    """
+    fns=[init_function,
+         init_role,
+         init_error_queue]
     for fn in fns:
         resource=fn(action)
         resources.append(resource)
