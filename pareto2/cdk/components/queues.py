@@ -17,9 +17,9 @@ from pareto2.cdk.components import resource
 """
 
 @resource
-def init_queue(action, errors):
-    resourcename=H("%s-queue" % action["name"])
-    retries=action["retries"] if "retries" in action else 0
+def init_queue(queue, errors):
+    resourcename=H("%s-queue" % queue["name"])
+    retries=queue["retries"] if "retries" in queue else 0
     dlqarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
     redrivepolicy={"deadLetterTargetArn": dlqarn,
                    "maxReceiveCount": 1+retries}
@@ -29,14 +29,14 @@ def init_queue(action, errors):
             props)
 
 """
-- init_queue_binding needs **kwargs because queues.py wants to pass it errors arg but errors.py does not
+- init_binding needs **kwargs because queues.py wants to pass it errors arg but errors.py does not
 """
 
 @resource
-def init_queue_binding(action, **kwargs):
-    resourcename=H("%s-queue-binding" % action["name"])
-    funcname={"Ref": H("%s-function" % action["name"])}
-    sourcearn={"Fn::GetAtt": [H("%s-queue" % action["name"]),
+def init_binding(queue, **kwargs):
+    resourcename=H("%s-binding" % queue["name"])
+    funcname={"Ref": H("%s-function" % queue["action"])}
+    sourcearn={"Fn::GetAtt": [H("%s-queue" % queue["name"]),
                               "Arn"]}
     props={"FunctionName": funcname,
            "EventSourceArn": sourcearn}
@@ -44,22 +44,20 @@ def init_queue_binding(action, **kwargs):
             "AWS::Lambda::EventSourceMapping",
             props)
 
-def init_component(action, errors):
+def init_component(queue, errors):
     resources=[]
     for fn in [init_queue,
-               init_queue_binding]:
-        resource=fn(action, errors=errors)
+               init_binding]:
+        resource=fn(queue, errors=errors)
         resources.append(resource)
     return resources
 
 def init_resources(md):
     resources=[]
     errors=md.errors
-    for action in md.actions:
-        if ("queue" in action and
-            action["queue"]):
-            component=init_component(action, errors)
-            resources+=component
+    for queue in md.queues:
+        component=init_component(queue, errors)
+        resources+=component
     return dict(resources)
 
 def update_template(template, md):

@@ -1,7 +1,5 @@
 ### short [liberate-queues]
 
-- refactor queue config in pareto2-demo
-- refactor queues.py to work off queue config not action config
 - move queue binding code from actions.py to queues.py
 
 ### pending
@@ -46,6 +44,8 @@
 
 ### done
 
+- refactor queues.py to work off queue config not action config
+- refactor queue config in pareto2-demo
 - add new metadata queue class
 - validate queue action against actions
 - make bucket, table action optional
