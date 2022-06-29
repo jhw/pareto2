@@ -2,10 +2,11 @@
 
 ### medium
 
+- clean up all init resource/output functions 
+- liberate queues from actions
 - consider extending resource name of subordinate types, eg -function-role
 - add check so type can't appear in component name
 - make bucket, table action optional
-- clean up all init resource/output functions 
 - flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 

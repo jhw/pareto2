@@ -57,11 +57,14 @@ def init_table_mapping(table, errors):
             props)
 
 def init_resources(md):
-    return dict([fn(table,
-                    errors=md.errors)
-                 for fn in [init_table,
-                            init_table_mapping]
-                 for table in md.tables])
+    resources=[]
+    for table in md.tables:
+        for fn in [init_table,
+                   init_table_mapping]:
+            resources.append(fn(table,
+                                errors=md.errors))
+    return dict(resources)
+
 
 def init_outputs(md):
     return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}
