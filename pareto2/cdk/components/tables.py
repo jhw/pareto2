@@ -24,14 +24,16 @@ def init_table(table, **kwargs):
           "KeySchema": [{"AttributeName": index["name"],
                          "KeyType": "HASH"}]}
          for index in table["indexes"]]
-    stream={"StreamViewType": table["stream"]["type"]}
     name={"Fn::Sub": "%s-table-${AWS::StackName}-${AWS::Region}" % table["name"]}
     props={"AttributeDefinitions": attrs,
            "BillingMode": "PAY_PER_REQUEST",
            "KeySchema": key,
            "GlobalSecondaryIndexes": gsi,
-           "StreamSpecification": stream,
+
            "TableName": name}
+    if "action" in table:
+        stream={"StreamViewType": table["stream"]["type"]}
+        props["StreamSpecification"]=stream
     return (resourcename,
             "AWS::DynamoDB::Table",
             props)
@@ -59,12 +61,11 @@ def init_table_mapping(table, errors):
 def init_resources(md):
     resources=[]
     for table in md.tables:
-        for fn in [init_table,
-                   init_table_mapping]:
-            resources.append(fn(table,
-                                errors=md.errors))
+        resources.append(init_table(table))
+        if "action" in table:
+            resources.append(init_table_mapping(table,
+                                                errors=md.errors))
     return dict(resources)
-
 
 def init_outputs(md):
     return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}

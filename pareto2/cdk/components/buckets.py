@@ -12,14 +12,15 @@ from pareto2.cdk.components import resource
 
 @resource
 def init_bucket(bucket):
-    resourcename=H("%s-bucket" % bucket["name"])    
-    funcarn={"Fn::GetAtt": [H("%s-function" % bucket["action"]), "Arn"]}
-    lambdaconf=[{"Event": "s3:ObjectCreated:*",
-                 "Function": funcarn}]
+    resourcename=H("%s-bucket" % bucket["name"])
     name={"Fn::Sub": "%s-bucket-${AWS::StackName}-${AWS::Region}" % bucket["name"]}
-    props={"NotificationConfiguration": {"LambdaConfigurations": lambdaconf},
-           "BucketName": name}
-    depends=[H("%s-permission" % bucket["name"])]
+    props, depends = {"BucketName": name}, []
+    if "action" in bucket:
+        funcarn={"Fn::GetAtt": [H("%s-function" % bucket["action"]), "Arn"]}
+        lambdaconf=[{"Event": "s3:ObjectCreated:*",
+                     "Function": funcarn}]
+        props["NotificationConfiguration"]={"LambdaConfigurations": lambdaconf},
+        depends.append(H("%s-permission" % bucket["name"]))
     return (resourcename,
             "AWS::S3::Bucket",
             props,
@@ -42,9 +43,9 @@ def init_permission(bucket):
 def init_resources(md):
     resources=[]
     for bucket in md.buckets:
-        for fn in [init_bucket,
-                   init_permission]:
-            resources.append(fn(bucket))
+        resources.append(init_bucket(bucket))
+        if "action" in bucket:
+            resources.append(init_permission(bucket))
     return dict(resources)
 
 def init_outputs(md):

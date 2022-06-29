@@ -1,12 +1,12 @@
 ### short
 
+- add check so type can't appear in component name
+
 ### medium
 
 - clean up all init resource/output functions 
 - liberate queues from actions
 - consider extending resource name of subordinate types, eg -function-role
-- add check so type can't appear in component name
-- make bucket, table action optional
 - flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 
@@ -33,6 +33,7 @@
 
 ### done
 
+- make bucket, table action optional
 - replace dynamic imports
 - investigate why some stack names are pluralised
 - investigate why list of stack names is required in metadata
