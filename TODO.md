@@ -1,6 +1,9 @@
 ### short [liberate-queues]
 
-- need to define an error queue
+- check how function event config binds to errors queue
+- remove errors
+- add back errors as function plus queue
+- ensure event config not created for errors function
 
 ### pending
 
@@ -10,13 +13,13 @@
 
 - cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
-
 - check online before performing layers check
 - add check so type can't appear in component name
 - flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 
 - metadata schema
+- compact dsl ?
 
 ### long
 
