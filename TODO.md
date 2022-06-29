@@ -2,6 +2,8 @@
 
 - move queue binding code from actions.py to queues.py
 
+- don't define event_config for sync actions
+
 ### pending
 
 - uncomment layers check

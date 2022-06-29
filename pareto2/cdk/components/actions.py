@@ -49,7 +49,7 @@ def init_function(action, **kwargs):
 """
 
 @resource
-def init_function_role(action, **kwargs):
+def init_role(action, **kwargs):
     def init_permissions(action,
                          defaultpermissions=DefaultPermissions,
                          patternpermissions=PatternPermissions):
@@ -83,7 +83,7 @@ def init_function_role(action, **kwargs):
             props)
 
 @resource
-def init_function_event_config(action, errors):
+def init_event_config(action, errors):
     resourcename=H("%s-event-config" % action["name"])
     retries=action["retries"] if "retries" in action else 0
     funcname=H("%s-function" % action["name"])
@@ -97,17 +97,11 @@ def init_function_event_config(action, errors):
             "AWS::Lambda::EventInvokeConfig",
             props)
 
-"""
-- only actions which are *not* bound to queues have event config defined (async)
-- otherwise retries and dlq is controlled by bound queue (sync)
-"""
-
 def init_component(action, errors):
     resources=[]
     fns=[init_function,
-         init_function_role]
-    if "queue" not in action:
-        fns.append(init_function_event_config)
+         init_role,
+         init_event_config]
     for fn in fns:
         resource=fn(action, errors=errors)
         resources.append(resource)
