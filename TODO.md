@@ -10,6 +10,9 @@
 
 ### medium
 
+- cdk/__init__.py function to initialise component map
+- modify component initialisation to allow nested apis
+
 - check online before performing layers check
 - add check so type can't appear in component name
 - flatten nested config items where possible
