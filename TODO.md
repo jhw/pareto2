@@ -1,8 +1,8 @@
 ### short [liberate-queues]
 
-- check how function event config binds to errors queue
+- remove sync errors dlq
 - remove errors
-- add back errors as function plus queue
+- add back async errors as function plus queue
 - ensure event config not created for errors function
 
 ### pending
