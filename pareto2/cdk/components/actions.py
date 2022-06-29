@@ -97,21 +97,24 @@ def init_event_config(action, errors):
             "AWS::Lambda::EventInvokeConfig",
             props)
 
-def init_component(action, errors):
+def init_component(action, errors, sync):
     resources=[]
     fns=[init_function,
-         init_role,
-         init_event_config]
+         init_role]
+    if not sync:
+        fns.append(init_event_config)
     for fn in fns:
         resource=fn(action, errors=errors)
         resources.append(resource)
     return resources
 
 def init_resources(md):
-    resources=[]
+    queuenames=[queue["name"] for queue in md.queues]
     errors=md.errors
+    resources=[]
     for action in md.actions:
-        component=init_component(action, errors)
+        sync=action["name"] in queuenames
+        component=init_component(action, errors, sync)
         resources+=component
     return dict(resources)
 

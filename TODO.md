@@ -1,7 +1,5 @@
 ### short [liberate-queues]
 
-- don't define event_config for sync actions
-
 - need to define an error queue
 
 ### pending
@@ -46,6 +44,7 @@
 
 ### done
 
+- don't define event_config for sync actions
 - refactor queues.py to work off queue config not action config
 - refactor queue config in pareto2-demo
 - add new metadata queue class
