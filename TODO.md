@@ -1,16 +1,17 @@
-### short
+### short [liberate-queues]
 
-- add check so type can't appear in component name
+- add new metadata queue class
+- validate queue action against actions
+- refactor queue config in pareto2-demo
+- refactor queues.py to work off queue config not action config
+- move queue binding code from actions.py to queues.py
 
 ### medium
 
-- clean up all init resource/output functions 
-- liberate queues from actions
-- consider extending resource name of subordinate types, eg -function-role
+- add check so type can't appear in component name
 - flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 
-- avoid userpool/userpool_ nomenclature
 - metadata schema
 
 ### long
@@ -25,6 +26,12 @@
 
 ### thoughts
 
+- consider extending resource name of subordinate types, eg -function-role ?
+  - not worth it
+- clean up all init resource/output functions ?
+  - not worth it
+- avoid userpool/userpool_ nomenclature ?
+  - not worth it
 - stop symlink creating pareto2/pareto2 ?
   - probably overkill at this stage
 - action to validate binding uniqueness ?
