@@ -1,7 +1,5 @@
 ### short
 
-- replace dynamic imports
-
 ### medium
 
 - consider extending resource name of subordinate types, eg -function-role
@@ -34,6 +32,7 @@
 
 ### done
 
+- replace dynamic imports
 - investigate why some stack names are pluralised
 - investigate why list of stack names is required in metadata
 - pluralise all plural component modules
