@@ -1,12 +1,12 @@
 ### short
 
-- make bucket, table action optional
-- clean up all init resource/output functions 
-- pluralise all plural component modules
 - investigate why list of stack names is required in metadata, and why some are singular / some plural
+
 
 ### medium
 
+- make bucket, table action optional
+- clean up all init resource/output functions 
 - flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 
@@ -35,6 +35,7 @@
 
 ### done
 
+- pluralise all plural component modules
 - check StackName refs
 - rename bucket and table as demo-streaming
 - validate bucket, table action

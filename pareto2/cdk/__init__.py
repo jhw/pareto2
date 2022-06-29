@@ -1,16 +1,16 @@
 from pareto2.cdk.components.actions import update_template as init_actions
-from pareto2.cdk.components.api import update_template as init_api
-from pareto2.cdk.components.bucket import update_template as init_bucket
+from pareto2.cdk.components.apis import update_template as init_api
+from pareto2.cdk.components.buckets import update_template as init_bucket
 from pareto2.cdk.components.dashboards import update_template as init_dashboard
 from pareto2.cdk.components.errors import update_template as init_errors
 from pareto2.cdk.components.events import update_template as init_events
 from pareto2.cdk.components.layers import update_template as init_layers
 from pareto2.cdk.components.queues import update_template as init_queues
-from pareto2.cdk.components.router import update_template as init_router
+from pareto2.cdk.components.routers import update_template as init_router
 from pareto2.cdk.components.secrets import update_template as init_secrets
-from pareto2.cdk.components.table import update_template as init_table
+from pareto2.cdk.components.tables import update_template as init_table
 from pareto2.cdk.components.timers import update_template as init_timers
-from pareto2.cdk.components.userpool import update_template as init_userpool
+from pareto2.cdk.components.userpools import update_template as init_userpool
 
 from pareto2.cdk.template import Template
 
