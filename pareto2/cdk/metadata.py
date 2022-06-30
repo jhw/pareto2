@@ -158,15 +158,6 @@ class Endpoints(ComponentsBase):
             if endpoint["method"]=="POST":
                 endpoint.expand_schema(errors)
 
-"""
-- NB errors is an instance of action, a specially defined singleton
-"""
-    
-class Errors(Action):
-
-    def __init__(self, item={}):
-        Action.__init__(self, item)
-
 class Event(ComponentBase):
 
     def __init__(self, item={}):
