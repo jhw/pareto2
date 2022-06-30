@@ -18,7 +18,7 @@ PatternPermissions=[("\\-table", "dynamodb"),
                     ("\\-bucket", "s3")]
 
 @resource            
-def init_function(action, **kwargs):
+def init_function(action):
     resourcename=H("%s-function" % action["name"])
     rolename=H("%s-role" % action["name"])
     memory=H("memory-size-%s" % action["size"])
@@ -82,6 +82,7 @@ def init_role(action, **kwargs):
             "AWS::IAM::Role",
             props)
 
+"""
 @resource
 def init_event_config(action, errors):
     resourcename=H("%s-event-config" % action["name"])
@@ -96,25 +97,26 @@ def init_event_config(action, errors):
     return (resourcename,
             "AWS::Lambda::EventInvokeConfig",
             props)
+"""
 
-def init_component(action, errors, sync):
+def init_component(action):
     resources=[]
+    """
+    fns=[init_function,
+         init_role,
+         init_event_config]
+    """
     fns=[init_function,
          init_role]
-    if not sync:
-        fns.append(init_event_config)
     for fn in fns:
-        resource=fn(action, errors=errors)
+        resource=fn(action)
         resources.append(resource)
     return resources
 
 def init_resources(md):
-    queuenames=[queue["name"] for queue in md.queues]
-    errors=md.errors
     resources=[]
     for action in md.actions:
-        sync=action["name"] in queuenames
-        component=init_component(action, errors, sync)
+        component=init_component(action)
         resources+=component
     return dict(resources)
 

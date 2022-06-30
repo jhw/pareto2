@@ -1,6 +1,5 @@
 ### short [liberate-queues]
 
-- comment out event config generation
 - remove queue errors dlq
 - remove md.errors 
 - define async error function and queue
@@ -48,6 +47,7 @@
 
 ### done
 
+- comment out event config generation
 - don't define event_config for sync actions
 - refactor queues.py to work off queue config not action config
 - refactor queue config in pareto2-demo
