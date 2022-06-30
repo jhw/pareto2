@@ -9,6 +9,15 @@ from botocore.exceptions import ClientError, WaiterError
 
 import boto3, yaml
 
+def has_internet():
+    import http.client as httplib
+    conn=httplib.HTTPSConnection("8.8.8.8", timeout=5)
+    try:
+        conn.request("HEAD", "/")
+        return True
+    except:
+        return False
+
 def deploy_stack(cf, config, params, template):
     def stack_exists(stackname):
         stacknames=[stack["StackName"]
@@ -55,9 +64,8 @@ if __name__=="__main__":
         print ("initialising/validating layers")
         s3=boto3.client("s3")
         layers=Layers.initialise(md)
-        """
-        layers.validate(s3, config)
-        """
+        if has_internet():
+            layers.validate(s3, config)
         print ("initialising/validating template")
         from pareto2.cdk import init_template
         template=init_template(md,
