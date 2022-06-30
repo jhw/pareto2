@@ -29,7 +29,6 @@ def init_table(table, **kwargs):
            "BillingMode": "PAY_PER_REQUEST",
            "KeySchema": key,
            "GlobalSecondaryIndexes": gsi,
-
            "TableName": name}
     if "action" in table:
         stream={"StreamViewType": table["stream"]["type"]}
@@ -44,18 +43,17 @@ def init_table_mapping(table):
     funcname={"Ref": H("%s-function" % table["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
-    """
-    destarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
-    destconfig={"OnFailure": {"Destination": destarn}}
-    """
     window=table["stream"]["batch"]["window"]
     retries=table["stream"]["retries"]
     props={"FunctionName": funcname,
            "StartingPosition": "LATEST",
            "MaximumBatchingWindowInSeconds": window,
            "EventSourceArn": sourcearn,
-           # "DestinationConfig": destconfig,
            "MaximumRetryAttempts": retries}
+    if "errors" in table:
+        destarn={"Fn::GetAtt": [H("%s-queue" % table["errors"]), "Arn"]}
+        destconfig={"OnFailure": {"Destination": destarn}}
+        props["DestinationConfig"]=destconfig
     return (resourcename,
             "AWS::Lambda::EventSourceMapping",
             props)

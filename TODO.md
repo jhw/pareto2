@@ -1,10 +1,13 @@
 ### short
 
-- add back table error mapping
+- validate table errors attr
+- rename binding as mapping
 - validate sync (queue, api) vs async (errors) actions
 
 ### medium
 
+- investigate bucket destination config [errors]
+- investogate eventbridge as lambda destination
 - cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
 - add check so type can't appear in component name
@@ -40,6 +43,7 @@
 
 ### done
 
+- add back table error mapping
 - check online before performing layers check
 - uncomment layers check
 - validate errors field against action
