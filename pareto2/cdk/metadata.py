@@ -58,16 +58,13 @@ class Actions(ComponentsBase):
         ComponentsBase.__init__(self, [Action(item)
                                        for item in items])
 
-    def validate_errors(self, md, errors):
+    def validate(self, md, errors):
         actionnames=md.actions.names
         for action in self:            
             if "errors" in action:
                 if action["errors"] not in actionnames:
                     errors.append("%s is not a valid (errors) action name (action %s)" % (action["errors"], action["name"]))
 
-    def validate(self, md, errors):
-        self.validate_errors(md, errors)
-        
     @property
     def packages(self):
         packages=set()
