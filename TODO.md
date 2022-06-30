@@ -1,11 +1,19 @@
 ### short
 
-- investigate handling of bucket destination config for errors
+- remove error handlers from bucket/table configurations
 
-- action sync/async validation
+- check for invalid error handlers
+  - if bound to queue
+  - if bound to apigw
+  - if bound to table
+  - if bound to bucket
+
+- check if s3 invocation of lambda is indeed synchronous
+- check failure options for s3 notification configuration
 
 ### medium
 
+- table stream shouldn't be defined as part of config
 - investigate eventbridge as lambda destination
 - cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
@@ -19,6 +27,7 @@
 ### long
 
 - sync lambda error handling
+- lambda alarms
 - api w/ key access
 - s3 eventbridge connector
 - eventbridge urls
