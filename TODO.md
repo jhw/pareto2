@@ -1,6 +1,5 @@
 ### short
 
-- validate table errors attr
 - rename binding as mapping
 - validate sync (queue, api) vs async (errors) actions
 
@@ -43,6 +42,7 @@
 
 ### done
 
+- validate table errors attr
 - add back table error mapping
 - check online before performing layers check
 - uncomment layers check
