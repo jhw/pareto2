@@ -1,9 +1,10 @@
 ### short [liberate-queues]
 
-- remove sync errors dlq
-- remove errors
-- add back async errors as function plus queue
-- ensure event config not created for errors function
+- comment out event config generation
+- remove queue errors dlq
+- remove md.errors 
+- define async error function and queue
+- add errors field to action which triggers generation of event config
 
 ### pending
 
