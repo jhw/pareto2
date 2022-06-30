@@ -1,6 +1,5 @@
 ### short [liberate-queues]
 
-- validate errors field against action
 - uncomment layers check
 - add back table error mapping
 
@@ -42,6 +41,7 @@
 
 ### done
 
+- validate errors field against action
 - add errors field to action which triggers generation of event config
 - define async error function and queue
 - remove md.errors 
