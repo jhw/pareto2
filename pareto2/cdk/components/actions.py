@@ -82,13 +82,12 @@ def init_role(action, **kwargs):
             "AWS::IAM::Role",
             props)
 
-"""
 @resource
-def init_event_config(action, errors):
+def init_event_config(action):
     resourcename=H("%s-event-config" % action["name"])
     retries=action["retries"] if "retries" in action else 0
     funcname=H("%s-function" % action["name"])
-    destarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
+    destarn={"Fn::GetAtt": [H("%s-queue" % action["errors"]), "Arn"]}
     destconfig={"OnFailure": {"Destination": destarn}}
     props={"MaximumRetryAttempts": retries,
            "FunctionName": {"Ref": funcname},
@@ -97,17 +96,13 @@ def init_event_config(action, errors):
     return (resourcename,
             "AWS::Lambda::EventInvokeConfig",
             props)
-"""
 
 def init_component(action):
     resources=[]
-    """
-    fns=[init_function,
-         init_role,
-         init_event_config]
-    """
     fns=[init_function,
          init_role]
+    if "errors" in action:
+        fns.append(init_event_config)
     for fn in fns:
         resource=fn(action)
         resources.append(resource)

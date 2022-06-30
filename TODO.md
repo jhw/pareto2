@@ -1,8 +1,7 @@
 ### short [liberate-queues]
 
-- uncomment layers check
-- add errors field to action which triggers generation of event config
 - validate errors field against action
+- uncomment layers check
 - add back table error mapping
 
 ### medium
@@ -43,6 +42,7 @@
 
 ### done
 
+- add errors field to action which triggers generation of event config
 - define async error function and queue
 - remove md.errors 
 - remove queue errors dlq
