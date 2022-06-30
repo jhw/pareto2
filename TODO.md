@@ -12,10 +12,12 @@
 
 ### medium
 
+- validate sync (queue, api) vs async (errors) actions
 - cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
 - check online before performing layers check
 - add check so type can't appear in component name
+- extend resource names suffixes for subordinate types
 - flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 
@@ -34,8 +36,6 @@
 
 ### thoughts
 
-- consider extending resource name of subordinate types, eg -function-role ?
-  - not worth it
 - clean up all init resource/output functions ?
   - not worth it
 - avoid userpool/userpool_ nomenclature ?
