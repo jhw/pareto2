@@ -1,10 +1,10 @@
 ### short
 
 - add back table error mapping
+- validate sync (queue, api) vs async (errors) actions
 
 ### medium
 
-- validate sync (queue, api) vs async (errors) actions
 - cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
 - add check so type can't appear in component name
