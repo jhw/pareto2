@@ -1,13 +1,9 @@
 ### short [liberate-queues]
 
-- define async error function and queue
-- add errors field to action which triggers generation of event config
-
-- add back table error mapping
-
-### pending
-
 - uncomment layers check
+- add errors field to action which triggers generation of event config
+- validate errors field against action
+- add back table error mapping
 
 ### medium
 
@@ -21,7 +17,6 @@
 - add API type attr and nest API components 
   - new simple/public API 
 - metadata schema
-- compact dsl ?
 
 ### long
 
@@ -35,6 +30,7 @@
 
 ### thoughts
 
+- compact dsl ?
 - clean up all init resource/output functions ?
   - not worth it
 - avoid userpool/userpool_ nomenclature ?
@@ -47,6 +43,7 @@
 
 ### done
 
+- define async error function and queue
 - remove md.errors 
 - remove queue errors dlq
 - comment out event config generation
