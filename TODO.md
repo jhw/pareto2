@@ -1,9 +1,10 @@
 ### short [liberate-queues]
 
-- remove queue errors dlq
 - remove md.errors 
 - define async error function and queue
 - add errors field to action which triggers generation of event config
+
+- add back table error mapping
 
 ### pending
 
@@ -47,6 +48,7 @@
 
 ### done
 
+- remove queue errors dlq
 - comment out event config generation
 - don't define event_config for sync actions
 - refactor queues.py to work off queue config not action config

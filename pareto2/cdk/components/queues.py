@@ -1,6 +1,6 @@
 from pareto2.cdk.components import hungarorise as H
 from pareto2.cdk.components import resource
-            
+
 """
 - queues are the only part of the messaging system which are tightly coupled to lambdas
 - rest of the system is loosely coupled via eventbridge (*)
@@ -17,23 +17,22 @@ from pareto2.cdk.components import resource
 """
 
 @resource
-def init_queue(queue, errors):
+def init_queue(queue):
     resourcename=H("%s-queue" % queue["name"])
+    """
     retries=queue["retries"] if "retries" in queue else 0
     dlqarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
     redrivepolicy={"deadLetterTargetArn": dlqarn,
                    "maxReceiveCount": 1+retries}
     props={"RedrivePolicy": redrivepolicy}
+    """
+    props={}
     return (resourcename,
             "AWS::SQS::Queue",
             props)
 
-"""
-- init_binding needs **kwargs because queues.py wants to pass it errors arg but errors.py does not
-"""
-
 @resource
-def init_binding(queue, **kwargs):
+def init_binding(queue):
     resourcename=H("%s-binding" % queue["name"])
     funcname={"Ref": H("%s-function" % queue["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-queue" % queue["name"]),
@@ -44,19 +43,18 @@ def init_binding(queue, **kwargs):
             "AWS::Lambda::EventSourceMapping",
             props)
 
-def init_component(queue, errors):
+def init_component(queue):
     resources=[]
     for fn in [init_queue,
                init_binding]:
-        resource=fn(queue, errors=errors)
+        resource=fn(queue)
         resources.append(resource)
     return resources
 
 def init_resources(md):
     resources=[]
-    errors=md.errors
     for queue in md.queues:
-        component=init_component(queue, errors)
+        component=init_component(queue)
         resources+=component
     return dict(resources)
 

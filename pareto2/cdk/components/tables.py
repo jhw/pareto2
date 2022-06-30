@@ -39,20 +39,22 @@ def init_table(table, **kwargs):
             props)
 
 @resource
-def init_table_mapping(table, errors):
+def init_table_mapping(table):
     resourcename=H("%s-mapping" % table["name"])
     funcname={"Ref": H("%s-function" % table["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
+    """
     destarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
     destconfig={"OnFailure": {"Destination": destarn}}
+    """
     window=table["stream"]["batch"]["window"]
     retries=table["stream"]["retries"]
     props={"FunctionName": funcname,
            "StartingPosition": "LATEST",
            "MaximumBatchingWindowInSeconds": window,
            "EventSourceArn": sourcearn,
-           "DestinationConfig": destconfig,
+           # "DestinationConfig": destconfig,
            "MaximumRetryAttempts": retries}
     return (resourcename,
             "AWS::Lambda::EventSourceMapping",
@@ -63,8 +65,7 @@ def init_resources(md):
     for table in md.tables:
         resources.append(init_table(table))
         if "action" in table:
-            resources.append(init_table_mapping(table,
-                                                errors=md.errors))
+            resources.append(init_table_mapping(table))
     return dict(resources)
 
 def init_outputs(md):
