@@ -38,7 +38,7 @@ def init_table(table, **kwargs):
             props)
 
 @resource
-def init_table_mapping(table):
+def init_binding(table):
     resourcename=H("%s-mapping" % table["name"])
     funcname={"Ref": H("%s-function" % table["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
@@ -63,7 +63,7 @@ def init_resources(md):
     for table in md.tables:
         resources.append(init_table(table))
         if "action" in table:
-            resources.append(init_table_mapping(table))
+            resources.append(init_binding(table))
     return dict(resources)
 
 def init_outputs(md):

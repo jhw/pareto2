@@ -1,12 +1,12 @@
 ### short
 
-- rename binding as mapping
-- validate sync (queue, api) vs async (errors) actions
+- investigate handling of bucket destination config for errors
+
+- action sync/async validation
 
 ### medium
 
-- investigate bucket destination config [errors]
-- investogate eventbridge as lambda destination
+- investigate eventbridge as lambda destination
 - cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
 - add check so type can't appear in component name
@@ -15,10 +15,10 @@
 - add API type attr and nest API components 
   - new simple/public API 
 - metadata schema
-- sync lambda error handling
 
 ### long
 
+- sync lambda error handling
 - api w/ key access
 - s3 eventbridge connector
 - eventbridge urls
@@ -42,6 +42,7 @@
 
 ### done
 
+- rename binding as mapping
 - validate table errors attr
 - add back table error mapping
 - check online before performing layers check
