@@ -115,9 +115,9 @@ class Buckets(ComponentsBase):
     def validate(self, md, errors):
         actionnames=md.actions.names
         for bucket in self:
-            if bucket["action"] not in actionnames:
+            if ("action" in bucket and
+                bucket["action"] not in actionnames):
                 errors.append("%s is not a valid action name (bucket %s)" % (bucket["action"], bucket["name"]))
-
         
 class Dashboard(ComponentBase):
 
@@ -254,9 +254,10 @@ class Tables(ComponentsBase):
     def validate(self, md, errors):
         actionnames=md.actions.names
         for table in self:
-            if table["action"] not in actionnames:
+            if ("action" in table and
+                table["action"] not in actionnames):
                 errors.append("%s is not a valid action name (table %s)" % (table["action"], table["name"]))
-        
+
 class Timer(ComponentBase):
 
     def __init__(self, item={}):
