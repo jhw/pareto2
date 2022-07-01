@@ -1,18 +1,10 @@
 ### short
 
-- remove error handlers from bucket/table configurations
-
-- check for invalid error handlers
-  - if bound to queue
-  - if bound to apigw
-  - if bound to table
-  - if bound to bucket
-
-- check if s3 invocation of lambda is indeed synchronous
 - check failure options for s3 notification configuration
 
 ### medium
 
+- simplify validate_async_errors
 - table stream shouldn't be defined as part of config
 - investigate eventbridge as lambda destination
 - cdk/__init__.py function to initialise component map
@@ -38,6 +30,7 @@
 
 ### thoughts
 
+- is s3 invocation of lambda is synchronous ?
 - compact dsl ?
 - clean up all init resource/output functions ?
   - not worth it
@@ -51,6 +44,12 @@
 
 ### done
 
+- check for invalid error handlers
+  - if bound to apigw
+  - if bound to table
+  - if bound to bucket
+  - if bound to queue
+- remove error handlers from bucket/table configurations
 - rename binding as mapping
 - validate table errors attr
 - add back table error mapping

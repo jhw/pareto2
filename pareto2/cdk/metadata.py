@@ -58,13 +58,43 @@ class Actions(ComponentsBase):
         ComponentsBase.__init__(self, [Action(item)
                                        for item in items])
 
-    def validate(self, md, errors):
+    def validate_errors(self, md, errors):
         actionnames=md.actions.names
         for action in self:            
             if "errors" in action:
                 if action["errors"] not in actionnames:
                     errors.append("%s is not a valid (errors) action name (action %s)" % (action["errors"], action["name"]))
 
+    def validate_async_errors(self, md, errors):
+        queues={queue["action"]:queue
+                for queue in md.queues}
+        endpoints={endpoint["action"]:endpoint
+                   for endpoint in md.endpoints}
+        tables={table["action"]:table
+                for table in md.tables
+                if "action" in table}
+        buckets={bucket["action"]:bucket
+                for bucket in md.buckets
+                if "action" in bucket}
+        for action in self:
+            if "errors" in action:
+                if action["name"] in queues:
+                    queue=queues[action["name"]]
+                    errors.append("%s can't have errors attr as is bound to queue %s" % (action["name"], queue["name"]))
+                if action["name"] in endpoints:
+                    endpoint=endpoints[action["name"]]
+                    errors.append("%s can't have errors attr as is bound to endpoint %s" % (action["name"], endpoint["name"]))
+                if action["name"] in tables:
+                    table=tables[action["name"]]
+                    errors.append("%s can't have errors attr as is bound to table %s" % (action["name"], table["name"]))
+                if action["name"] in buckets:
+                    bucket=buckets[action["name"]]
+                    errors.append("%s can't have errors attr as is bound to bucket %s" % (action["name"], bucket["name"]))
+                    
+    def validate(self, md, errors):
+        self.validate_errors(md, errors)
+        self.validate_async_errors(md, errors)
+                    
     @property
     def packages(self):
         packages=set()
