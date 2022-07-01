@@ -1,13 +1,11 @@
 ### short
 
-- check failure options for s3 notification configuration
+- table stream shouldn't be defined as part of config
+- simplify validate_async_errors
+- cdk/__init__.py function to initialise component map
 
 ### medium
 
-- simplify validate_async_errors
-- table stream shouldn't be defined as part of config
-- investigate eventbridge as lambda destination
-- cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
 - add check so type can't appear in component name
 - extend resource names suffixes for subordinate types
@@ -22,6 +20,7 @@
 - lambda alarms
 - api w/ key access
 - s3 eventbridge connector
+- eventbridge as lambda destination
 - eventbridge urls
 - iam role lockdown
 - step functions
@@ -30,6 +29,7 @@
 
 ### thoughts
 
+- failure options for s3 notifications ?
 - is s3 invocation of lambda is synchronous ?
 - compact dsl ?
 - clean up all init resource/output functions ?
@@ -44,6 +44,7 @@
 
 ### done
 
+- check failure options for s3 notification configuration
 - check for invalid error handlers
   - if bound to apigw
   - if bound to table

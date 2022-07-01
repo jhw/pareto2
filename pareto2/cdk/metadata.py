@@ -65,6 +65,12 @@ class Actions(ComponentsBase):
                 if action["errors"] not in actionnames:
                     errors.append("%s is not a valid (errors) action name (action %s)" % (action["errors"], action["name"]))
 
+    """
+    - table stream is invoked synchronously
+    - https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html
+    - but not clear how bucket notification is invoked
+    """
+                    
     def validate_async_errors(self, md, errors):
         queues={queue["action"]:queue
                 for queue in md.queues}
