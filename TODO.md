@@ -1,11 +1,15 @@
 ### short
 
-- table stream shouldn't be defined as part of config
+- rename errors as errors/async
+- new errors/sync
+- bind table to errors/sync
+- add errors/sync handling to queues
 - simplify validate_async_errors
-- cdk/__init__.py function to initialise component map
 
 ### medium
 
+- table stream shouldn't be defined as part of config
+- cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
 - add check so type can't appear in component name
 - extend resource names suffixes for subordinate types
@@ -16,7 +20,7 @@
 
 ### long
 
-- sync lambda error handling
+- s3 sync error handling
 - lambda alarms
 - api w/ key access
 - s3 eventbridge connector
