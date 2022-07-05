@@ -1,6 +1,6 @@
 ### short
 
-- handle multiple buckets
+- use local table definition
 - handle multiple tables
 - handle multiple routers
 
@@ -52,6 +52,7 @@
 
 ### done
 
+- handle multiple buckets
 - replace EventsEventBusName/EventsQueueName/EventsRulePrefix with router name
 - check failure options for s3 notification configuration
 - check for invalid error handlers

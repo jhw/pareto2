@@ -2,17 +2,25 @@ import boto3, json, unittest, warnings, yaml
 
 from botocore.exceptions import ClientError
 
-import os
+import os, yaml
 
 BucketName="my-bucket"
 
-TableName="my-bucket"
+TableName="my-table"
 
 RouterName="my-router"
 
 FunctionName="my-function"
 
-TableConfig=yaml.safe_load(open("config/dev/metadata.yaml").read())["table"]
+TableConfig=yaml.safe_load("""
+indexes: []
+name: my-table
+stream:
+  retries: 3
+  batch:
+    window: 1
+  type: NEW_AND_OLD_IMAGES    
+""")
 
 class Context:
 
@@ -79,20 +87,28 @@ class Pareto2TestBase(unittest.TestCase):
 
     ### s3
 
-    def setup_s3(self, bucketname=BucketName):
+    def setup_s3(self, bucketnames=[BucketName]):
+        def create_bucket(s3, bucketname):
+            config={'LocationConstraint': 'EU'}
+            s3.create_bucket(Bucket=bucketname,
+                                  CreateBucketConfiguration=config)
         self.s3=boto3.client("s3")
-        config={'LocationConstraint': 'EU'}
-        self.s3.create_bucket(Bucket=bucketname,
-                              CreateBucketConfiguration=config)
+        for bucketname in bucketnames:
+            create_bucket(s3, bucketname)
 
-    def teardown_s3(self, bucketname=BucketName):
-        struct=self.s3.list_objects(Bucket=bucketname)
-        if "Contents" in struct:
-            for obj in struct["Contents"]:
-                self.s3.delete_object(Bucket=bucketname,
-                                      Key=obj["Key"])
-        self.s3.delete_bucket(Bucket=bucketname)
-        
+    def teardown_s3(self, bucketnames=[BucketName]):
+        def empty_bucket(s3, bucketname):            
+            struct=s3.list_objects(Bucket=bucketname)
+            if "Contents" in struct:
+                for obj in struct["Contents"]:
+                    s3.delete_object(Bucket=bucketname,
+                                          Key=obj["Key"])
+        def delete_bucket(s3, bucketname):
+            s3.delete_bucket(Bucket=bucketname)
+        for bucketname in bucketnames:
+            empty_bucket(self.s3, bucketname)
+            delete_bucket(self.s3, bucketname)
+                
     ### sqs
 
     def setup_sqs(self, queuenames):
