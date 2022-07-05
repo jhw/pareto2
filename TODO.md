@@ -1,5 +1,6 @@
 ### short
 
+- rename events-queue as events-target queue
 - drain_sqs to drain by name ?
 - timer root should set queue in env using name
 
