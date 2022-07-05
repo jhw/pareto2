@@ -1,6 +1,5 @@
 ### short
 
-- rename events-queue as events-target queue
 - drain_sqs to drain by name ?
 - add (router) prefix to events lookup
 - timer root should set queue in env using name
@@ -53,6 +52,7 @@
 
 ### done
 
+- rename events-queue as events-target queue
 - remove self.queues state
 - teardown_events to lookup and delete sqs queue
 - delete queue based on name

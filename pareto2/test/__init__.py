@@ -154,7 +154,7 @@ class Pareto2TestBase(unittest.TestCase):
     def setup_events(self, routers=[MyRouter]):
         def init_events(events, sqs, router):
             eventbusname="%s-event-bus" % router["name"]
-            queuename="%s-queue" % router["name"]
+            queuename="%s-target-queue" % router["name"]
             ruleprefix="%s-rule-prefix" % router["name"]        
             events.create_event_bus(Name=eventbusname)
             statement=[{"Effect": "Allow",
@@ -187,7 +187,7 @@ class Pareto2TestBase(unittest.TestCase):
                         routers=[MyRouter]):
         def delete_events(events, sqs, router, queues):
             eventbusname="%s-event-bus" % router["name"]
-            queuename="%s-queue" % router["name"]
+            queuename="%s-target-queue" % router["name"]
             for rule in events.list_rules(EventBusName=eventbusname)["Rules"]:
                 targets=events.list_targets_by_rule(Rule=rule["Name"])["Targets"]
                 for target in targets:
