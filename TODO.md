@@ -1,5 +1,7 @@
 ### short
 
+- refactor sqs handlers with decorator which tests for http prefix
+
 - rename errors as errors/async
 - new errors/sync
 - bind table to errors/sync
