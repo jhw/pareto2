@@ -1,6 +1,7 @@
 ### short
 
-- handle multiple routers
+- pass dict of routers and patterns
+- teardown_events to lookup and delete sqs queue
 
 - fix lambda test error
 
@@ -52,6 +53,7 @@
 
 ### done
 
+- handle multiple routers
 - use local table definition
 - handle multiple tables
 - handle multiple buckets

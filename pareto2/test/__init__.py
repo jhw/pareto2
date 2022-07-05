@@ -6,10 +6,6 @@ import os, yaml
 
 BucketName="my-bucket"
 
-RouterName="my-router"
-
-FunctionName="my-function"
-
 MyTable=yaml.safe_load("""
 indexes: []
 name: my-table
@@ -19,6 +15,10 @@ stream:
     window: 1
   type: NEW_AND_OLD_IMAGES    
 """)
+
+RouterName="my-router"
+
+FunctionName="my-function"
 
 class Context:
 
@@ -136,49 +136,49 @@ class Pareto2TestBase(unittest.TestCase):
 
     ### events
 
-    def setup_events(self, patterns=[],
-                     routername=RouterName):
-        eventbusname="%s-event-bus" % routername
-        queuename="%s-queue" % routername
-        ruleprefix="%s-rule-prefix" % routername        
-        self.patterns=patterns
+    def setup_events(self, patterns={},
+                     routernames=[RouterName]):
+        def init_events(events, sqs, patterns, routername):
+            eventbusname="%s-event-bus" % routername
+            queuename="%s-queue" % routername
+            ruleprefix="%s-rule-prefix" % routername        
+            events.create_event_bus(Name=eventbusname)
+            statement=[{"Effect": "Allow",
+                        "Principal": {"Service": "events.amazonaws.com"},
+                        "Action": "sqs:SendMessage",
+                        "Resource": "*"}]
+            policy=json.dumps({"Version": "2012-10-17",
+                               "Statement": [statement]})
+            queue=sqs.create_queue(QueueName=queuename,
+                                   Attributes={"Policy": policy})
+            queueattrs=sqs.get_queue_attributes(QueueUrl=queue["QueueUrl"])
+            queuearn=queueattrs["Attributes"]["QueueArn"]
+            for i, pattern in enumerate(patterns):
+                rulename="%s-%i" % (ruleprefix, i+1)
+                ruletargetid="%s-target-%i" % (ruleprefix, i+1)
+                events.put_rule(EventBusName=eventbusname,
+                                Name=rulename,
+                                State="ENABLED",
+                                EventPattern=json.dumps(pattern))
+                events.put_targets(EventBusName=eventbusname,
+                                   Rule=rulename,
+                                   Targets=[{"Id": ruletargetid,
+                                             "Arn": queuearn}])
         self.events, self.sqs = (boto3.client("events"),
                                  boto3.client("sqs"))
-        self.events.create_event_bus(Name=eventbusname)
-        statement=[{"Effect": "Allow",
-                    "Principal": {"Service": "events.amazonaws.com"},
-                    "Action": "sqs:SendMessage",
-                    "Resource": "*"}]
-        policy=json.dumps({"Version": "2012-10-17",
-                           "Statement": [statement]})
-        queue=self.sqs.create_queue(QueueName=queuename,
-                                    Attributes={"Policy": policy})
-        self.eventqueueurl=queue["QueueUrl"]
-        queueattrs=self.sqs.get_queue_attributes(QueueUrl=self.eventqueueurl)
-        queuearn=queueattrs["Attributes"]["QueueArn"]
-        for i, pattern in enumerate(patterns):
-            rulename="%s-%i" % (ruleprefix, i+1)
-            ruletargetid="%s-target-%i" % (ruleprefix, i+1)
-            self.events.put_rule(EventBusName=eventbusname,
-                                 Name=rulename,
-                                 State="ENABLED",
-                                 EventPattern=json.dumps(pattern))
-            self.events.put_targets(EventBusName=eventbusname,
-                                    Rule=rulename,
-                                    Targets=[{"Id": ruletargetid,
-                                              "Arn": queuearn}])        
-
+        for routername in routernames:
+            init_events(self.events, self.sqs, patterns, routername)
+                        
     def teardown_events(self,
                         routername=RouterName):
         eventbusname="%s-event-bus" % routername
-        ruleprefix="%s-rule-prefix" % routername        
-        for i, pattern in enumerate(self.patterns):
-            rulename="%s-%i" % (ruleprefix, i+1)  
-            ruletargetid="%s-target-%i" % (ruleprefix, i+1)
-            self.events.remove_targets(Rule=rulename,
-                                       Ids=[ruletargetid])
-            self.events.delete_rule(Name=rulename)
-        self.sqs.delete_queue(QueueUrl=self.eventqueueurl)
+        for rule in self.events.list_rules(EventBusName=eventbusname)["Rules"]:
+            targets=self.events.list_targets_by_rule(Rule=rule["Name"])["Targets"]
+            for target in targets:
+                self.events.remove_targets(Rule=rule["Name"],
+                                           Ids=[target["Id"]])
+            self.events.delete_rule(Name=rule["Name"])
+        # self.sqs.delete_queue(QueueUrl=self.eventqueueurl)
         self.events.delete_event_bus(Name=eventbusname)
             
 if __name__=="___main__":
