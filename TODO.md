@@ -1,5 +1,9 @@
 ### short
 
+- replace EventsEventBusName/EventsQueueName/EventsRulePrefix with router name
+- test to allow multiple tables, buckets, routers
+  - requires self.patterns to be a dict or similar
+
 - rename errors as errors/async
 - new errors/sync
 - bind table to errors/sync
