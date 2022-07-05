@@ -1,6 +1,6 @@
 ### short
 
-- queue listing utilities
+- delete queue based on name
 - remove self.queues state
 - teardown_events to lookup and delete sqs queue
 
@@ -52,6 +52,7 @@
 
 ### done
 
+- queue listing utilities
 - bucket test code to work with objects
 - fix lambda test error
 - check deletion of rules and targets

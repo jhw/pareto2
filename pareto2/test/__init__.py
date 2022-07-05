@@ -118,11 +118,21 @@ class Pareto2TestBase(unittest.TestCase):
                 
     ### sqs
 
+    
     def setup_sqs(self, queuenames):
         self.sqs=boto3.client("sqs")
         self.queues={queuename: self.sqs.create_queue(QueueName=queuename)
                      for queuename in queuenames}            
 
+    def list_queues(self):
+        def fetch_queue(queueurl):
+            queue=self.sqs.get_queue_attributes(QueueUrl=queueurl)["Attributes"]
+            queue["QueueName"]=queue["QueueArn"]
+            queue["QueueUrl"]=queueurl
+            return queue        
+        return [fetch_queue(queueurl)
+                for queueurl in self.sqs.list_queues()["QueueUrls"]]
+        
     def drain_sqs(self, queueurl, nmax=100):
         messages, count = [], 0
         while True:
@@ -185,6 +195,9 @@ class Pareto2TestBase(unittest.TestCase):
                 events.delete_rule(Name=rule["Name"])
             # self.sqs.delete_queue(QueueUrl=self.eventqueueurl)
             events.delete_event_bus(Name=eventbusname)
+        # START TEMP CODE
+        print (self.list_queues())
+        # END TEMP CODE
         for router in routers:
             delete_events(self.events, self.sqs, router)
             
