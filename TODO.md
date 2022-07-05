@@ -4,6 +4,8 @@
 - handle multiple tables
 - handle multiple routers
 
+- fix lambda test error
+
 - rename errors as errors/async
 - new errors/sync
 - bind table to errors/sync

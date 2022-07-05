@@ -6,13 +6,11 @@ import os, yaml
 
 BucketName="my-bucket"
 
-TableName="my-table"
-
 RouterName="my-router"
 
 FunctionName="my-function"
 
-TableConfig=yaml.safe_load("""
+MyTable=yaml.safe_load("""
 indexes: []
 name: my-table
 stream:
@@ -56,7 +54,7 @@ class Pareto2TestBase(unittest.TestCase):
     ### dynamodb
         
     def setup_ddb(self,
-                  table=TableConfig):
+                  tables=[MyTable]):
         def init_table(table):
             attrs=[{"AttributeName": name,
                     "AttributeType": type_}
@@ -76,14 +74,18 @@ class Pareto2TestBase(unittest.TestCase):
                     "AttributeDefinitions": attrs,
                     "KeySchema": key,
                     "GlobalSecondaryIndexes": gsi}
+        def create_table(client, resource, table):            
+            props=init_table(table)
+            client.create_table(**props)
+            return resource.Table(table["name"])
         client=boto3.client("dynamodb")
-        props=init_table(table)
-        client.create_table(**props)
         resource=boto3.resource("dynamodb")
-        self.table=resource.Table(table["name"])
-        
+        self.tables=[create_table(client, resource, table)
+                     for table in tables]
+                
     def teardown_ddb(self):
-        self.table.delete()
+        for table in self.tables:
+            table.delete()
 
     ### s3
 
