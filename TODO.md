@@ -1,9 +1,8 @@
 ### short
 
 - bucket test code to work with objects
+- remove self.queues state
 - teardown_events to lookup and delete sqs queue
-- fix lambda test error
-- check deletion of rules and targets
 
 ### medium
 
@@ -53,6 +52,8 @@
 
 ### done
 
+- fix lambda test error
+- check deletion of rules and targets
 - re- test router code
 - pass router object
 - handle multiple routers
