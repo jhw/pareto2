@@ -1,8 +1,7 @@
 ### short
 
-- delete queue based on name
-- remove self.queues state
-- teardown_events to lookup and delete sqs queue
+- drain_sqs to drain by name ?
+- timer root should set queue in env using name
 
 ### medium
 
@@ -52,6 +51,9 @@
 
 ### done
 
+- remove self.queues state
+- teardown_events to lookup and delete sqs queue
+- delete queue based on name
 - queue listing utilities
 - bucket test code to work with objects
 - fix lambda test error

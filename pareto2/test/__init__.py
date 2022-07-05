@@ -121,13 +121,13 @@ class Pareto2TestBase(unittest.TestCase):
     
     def setup_sqs(self, queuenames):
         self.sqs=boto3.client("sqs")
-        self.queues={queuename: self.sqs.create_queue(QueueName=queuename)
-                     for queuename in queuenames}            
-
+        for queuename in queuenames:
+            self.sqs.create_queue(QueueName=queuename)
+        
     def list_queues(self):
         def fetch_queue(queueurl):
             queue=self.sqs.get_queue_attributes(QueueUrl=queueurl)["Attributes"]
-            queue["QueueName"]=queue["QueueArn"]
+            queue["QueueName"]=queue["QueueArn"].split(":")[-1]
             queue["QueueUrl"]=queueurl
             return queue        
         return [fetch_queue(queueurl)
@@ -144,9 +144,9 @@ class Pareto2TestBase(unittest.TestCase):
             count+=1
         return messages
 
-    def teardown_sqs(self, queuenames):
-        for queuename in queuenames:
-            queue=self.queues[queuename]
+    def teardown_sqs(self):
+        queues=self.list_queues()
+        for queue in queues:
             self.sqs.delete_queue(QueueUrl=queue["QueueUrl"])
 
     ### events
@@ -185,21 +185,22 @@ class Pareto2TestBase(unittest.TestCase):
                         
     def teardown_events(self,
                         routers=[MyRouter]):
-        def delete_events(events, sqs, router):
+        def delete_events(events, sqs, router, queues):
             eventbusname="%s-event-bus" % router["name"]
+            queuename="%s-queue" % router["name"]
             for rule in events.list_rules(EventBusName=eventbusname)["Rules"]:
                 targets=events.list_targets_by_rule(Rule=rule["Name"])["Targets"]
                 for target in targets:
                     events.remove_targets(Rule=rule["Name"],
                                           Ids=[target["Id"]])
                 events.delete_rule(Name=rule["Name"])
-            # self.sqs.delete_queue(QueueUrl=self.eventqueueurl)
+            queue=queues[queuename]
+            self.sqs.delete_queue(QueueUrl=queue["QueueName"])
             events.delete_event_bus(Name=eventbusname)
-        # START TEMP CODE
-        print (self.list_queues())
-        # END TEMP CODE
+        queues={queue["QueueName"]: queue
+                for queue in self.list_queues()}
         for router in routers:
-            delete_events(self.events, self.sqs, router)
+            delete_events(self.events, self.sqs, router, queues)
             
 if __name__=="___main__":
     pass
