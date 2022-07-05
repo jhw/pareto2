@@ -1,7 +1,7 @@
 ### short
 
-- add (router) prefix to events lookup
-- timer root should set queue in env using name
+- fetch_queue helper
+- simplify/harmonise timer/root, errors tests
 
 ### medium
 
@@ -36,6 +36,8 @@
 
 ### thoughts
 
+- use QueueNamePrefix when looking up queues ?
+  - probably not worth it
 - failure options for s3 notifications ?
 - is s3 invocation of lambda is synchronous ?
 - compact dsl ?
@@ -51,6 +53,8 @@
 
 ### done
 
+- timer root should set queue in env using name
+- add (router) prefix to events lookup
 - drain_sqs to drain by name ?
 - rename events-queue as events-target queue
 - remove self.queues state
