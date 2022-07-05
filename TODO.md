@@ -1,15 +1,12 @@
 ### short
 
-- fetch_queue helper
-- simplify/harmonise timer/root, errors tests
-
-### medium
-
 - rename errors as errors/async
 - new errors/sync
 - bind table to errors/sync
 - add errors/sync handling to queues
 - simplify validate_async_errors
+
+### medium
 
 - table stream shouldn't be defined as part of config
 - cdk/__init__.py function to initialise component map
@@ -53,6 +50,8 @@
 
 ### done
 
+- simplify/harmonise timer/root, errors tests
+- fetch_queue helper
 - timer root should set queue in env using name
 - add (router) prefix to events lookup
 - drain_sqs to drain by name ?

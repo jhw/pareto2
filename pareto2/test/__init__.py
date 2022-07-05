@@ -133,10 +133,13 @@ class Pareto2TestBase(unittest.TestCase):
         return [fetch_queue(queueurl)
                 for queueurl in self.sqs.list_queues()["QueueUrls"]]
 
-    def drain_queue_name(self, queuename):
+    def fetch_queue_name(self, queuename):
         queues={queue["QueueName"]:queue
                 for queue in self.list_queues()}
-        queue=queues[queuename]
+        return queues[queuename]
+    
+    def drain_queue_name(self, queuename):
+        queue=self.fetch_queue_name(queuename)
         return self.drain_queue_url(queue["QueueUrl"])
     
     def drain_queue_url(self, queueurl, nmax=100):
