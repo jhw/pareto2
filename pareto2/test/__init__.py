@@ -6,11 +6,11 @@ import os
 
 BucketName="my-bucket"
 
-EventsEventBusName, EventsQueueName, EventsRulePrefix = "my-events-event-bus", "my-events-queue", "my-events-rule"
+TableName="my-bucket"
+
+RouterName="my-router"
 
 FunctionName="my-function"
-
-TableName="my-bucket"
 
 TableConfig=yaml.safe_load(open("config/dev/metadata.yaml").read())["table"]
 
@@ -119,9 +119,10 @@ class Pareto2TestBase(unittest.TestCase):
     ### events
 
     def setup_events(self, patterns=[],
-                     eventbusname=EventsEventBusName,
-                     queuename=EventsQueueName,
-                     ruleprefix=EventsRulePrefix):
+                     routername=RouterName):
+        eventbusname="%s-event-bus" % routername
+        queuename="%s-queue" % routername
+        ruleprefix="%s-rule-prefix" % routername        
         self.patterns=patterns
         self.events, self.sqs = (boto3.client("events"),
                                  boto3.client("sqs"))
@@ -150,8 +151,9 @@ class Pareto2TestBase(unittest.TestCase):
                                               "Arn": queuearn}])        
 
     def teardown_events(self,
-                        eventbusname=EventsEventBusName,
-                        ruleprefix=EventsRulePrefix):
+                        routername=RouterName):
+        eventbusname="%s-event-bus" % routername
+        ruleprefix="%s-rule-prefix" % routername        
         for i, pattern in enumerate(self.patterns):
             rulename="%s-%i" % (ruleprefix, i+1)  
             ruletargetid="%s-target-%i" % (ruleprefix, i+1)

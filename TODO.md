@@ -1,8 +1,8 @@
 ### short
 
-- replace EventsEventBusName/EventsQueueName/EventsRulePrefix with router name
-- test to allow multiple tables, buckets, routers
-  - requires self.patterns to be a dict or similar
+- handle multiple buckets
+- handle multiple tables
+- handle multiple routers
 
 - rename errors as errors/async
 - new errors/sync
@@ -52,6 +52,7 @@
 
 ### done
 
+- replace EventsEventBusName/EventsQueueName/EventsRulePrefix with router name
 - check failure options for s3 notification configuration
 - check for invalid error handlers
   - if bound to apigw
