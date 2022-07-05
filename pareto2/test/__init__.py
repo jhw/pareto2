@@ -16,7 +16,10 @@ stream:
   type: NEW_AND_OLD_IMAGES    
 """)
 
-RouterName="my-router"
+MyRouter=yaml.safe_load("""
+name: my-router
+patterns: []
+""")
 
 FunctionName="my-function"
 
@@ -136,12 +139,11 @@ class Pareto2TestBase(unittest.TestCase):
 
     ### events
 
-    def setup_events(self, patterns={},
-                     routernames=[RouterName]):
-        def init_events(events, sqs, patterns, routername):
-            eventbusname="%s-event-bus" % routername
-            queuename="%s-queue" % routername
-            ruleprefix="%s-rule-prefix" % routername        
+    def setup_events(self, routers=[MyRouter]):
+        def init_events(events, sqs, router):
+            eventbusname="%s-event-bus" % router["name"]
+            queuename="%s-queue" % router["name"]
+            ruleprefix="%s-rule-prefix" % router["name"]        
             events.create_event_bus(Name=eventbusname)
             statement=[{"Effect": "Allow",
                         "Principal": {"Service": "events.amazonaws.com"},
@@ -153,7 +155,7 @@ class Pareto2TestBase(unittest.TestCase):
                                    Attributes={"Policy": policy})
             queueattrs=sqs.get_queue_attributes(QueueUrl=queue["QueueUrl"])
             queuearn=queueattrs["Attributes"]["QueueArn"]
-            for i, pattern in enumerate(patterns):
+            for i, pattern in enumerate(router["patterns"]):
                 rulename="%s-%i" % (ruleprefix, i+1)
                 ruletargetid="%s-target-%i" % (ruleprefix, i+1)
                 events.put_rule(EventBusName=eventbusname,
@@ -166,20 +168,23 @@ class Pareto2TestBase(unittest.TestCase):
                                              "Arn": queuearn}])
         self.events, self.sqs = (boto3.client("events"),
                                  boto3.client("sqs"))
-        for routername in routernames:
-            init_events(self.events, self.sqs, patterns, routername)
+        for router in routers:
+            init_events(self.events, self.sqs, router)
                         
     def teardown_events(self,
-                        routername=RouterName):
-        eventbusname="%s-event-bus" % routername
-        for rule in self.events.list_rules(EventBusName=eventbusname)["Rules"]:
-            targets=self.events.list_targets_by_rule(Rule=rule["Name"])["Targets"]
-            for target in targets:
-                self.events.remove_targets(Rule=rule["Name"],
-                                           Ids=[target["Id"]])
-            self.events.delete_rule(Name=rule["Name"])
-        # self.sqs.delete_queue(QueueUrl=self.eventqueueurl)
-        self.events.delete_event_bus(Name=eventbusname)
+                        routers=[MyRouter]):
+        def delete_events(events, sqs, router):
+            eventbusname="%s-event-bus" % routername
+            for rule in events.list_rules(EventBusName=eventbusname)["Rules"]:
+                targets=events.list_targets_by_rule(Rule=rule["Name"])["Targets"]
+                for target in targets:
+                    events.remove_targets(Rule=rule["Name"],
+                                          Ids=[target["Id"]])
+                events.delete_rule(Name=rule["Name"])
+            # self.sqs.delete_queue(QueueUrl=self.eventqueueurl)
+            events.delete_event_bus(Name=eventbusname)
+        for router in routers:
+            delete_events(self.events, self.sqs, router)
             
 if __name__=="___main__":
     pass
