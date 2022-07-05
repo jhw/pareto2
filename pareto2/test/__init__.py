@@ -132,8 +132,14 @@ class Pareto2TestBase(unittest.TestCase):
             return queue        
         return [fetch_queue(queueurl)
                 for queueurl in self.sqs.list_queues()["QueueUrls"]]
-        
-    def drain_sqs(self, queueurl, nmax=100):
+
+    def drain_queue_name(self, queuename):
+        queues={queue["QueueName"]:queue
+                for queue in self.list_queues()}
+        queue=queues[queuename]
+        return self.drain_queue_url(queue["QueueUrl"])
+    
+    def drain_queue_url(self, queueurl, nmax=100):
         messages, count = [], 0
         while True:
             resp=self.sqs.receive_message(QueueUrl=queueurl)
