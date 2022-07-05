@@ -1,7 +1,5 @@
 ### short
 
-- use local table definition
-- handle multiple tables
 - handle multiple routers
 
 - fix lambda test error
@@ -54,6 +52,8 @@
 
 ### done
 
+- use local table definition
+- handle multiple tables
 - handle multiple buckets
 - replace EventsEventBusName/EventsQueueName/EventsRulePrefix with router name
 - check failure options for s3 notification configuration
