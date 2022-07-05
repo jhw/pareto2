@@ -1,17 +1,17 @@
 ### short
 
-- re- test router code
+- bucket test code to work with objects
 - teardown_events to lookup and delete sqs queue
-
 - fix lambda test error
+- check deletion of rules and targets
+
+### medium
 
 - rename errors as errors/async
 - new errors/sync
 - bind table to errors/sync
 - add errors/sync handling to queues
 - simplify validate_async_errors
-
-### medium
 
 - table stream shouldn't be defined as part of config
 - cdk/__init__.py function to initialise component map
@@ -53,6 +53,7 @@
 
 ### done
 
+- re- test router code
 - pass router object
 - handle multiple routers
 - use local table definition

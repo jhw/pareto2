@@ -174,7 +174,7 @@ class Pareto2TestBase(unittest.TestCase):
     def teardown_events(self,
                         routers=[MyRouter]):
         def delete_events(events, sqs, router):
-            eventbusname="%s-event-bus" % routername
+            eventbusname="%s-event-bus" % router["name"]
             for rule in events.list_rules(EventBusName=eventbusname)["Rules"]:
                 targets=events.list_targets_by_rule(Rule=rule["Name"])["Targets"]
                 for target in targets:
