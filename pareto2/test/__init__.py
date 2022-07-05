@@ -4,7 +4,9 @@ from botocore.exceptions import ClientError
 
 import os, yaml
 
-BucketName="my-bucket"
+MyBucket=yaml.safe_load("""
+name: my-bucket
+""")
 
 MyTable=yaml.safe_load("""
 indexes: []
@@ -92,27 +94,27 @@ class Pareto2TestBase(unittest.TestCase):
 
     ### s3
 
-    def setup_s3(self, bucketnames=[BucketName]):
-        def create_bucket(s3, bucketname):
+    def setup_s3(self, buckets=[MyBucket]):
+        def create_bucket(s3, bucket):
             config={'LocationConstraint': 'EU'}
-            s3.create_bucket(Bucket=bucketname,
-                                  CreateBucketConfiguration=config)
+            s3.create_bucket(Bucket=bucket["name"],
+                             CreateBucketConfiguration=config)
         self.s3=boto3.client("s3")
-        for bucketname in bucketnames:
-            create_bucket(s3, bucketname)
+        for bucket in buckets:
+            create_bucket(s3, bucket)
 
-    def teardown_s3(self, bucketnames=[BucketName]):
-        def empty_bucket(s3, bucketname):            
-            struct=s3.list_objects(Bucket=bucketname)
+    def teardown_s3(self, bucket=[MyBucket]):
+        def empty_bucket(s3, bucket):            
+            struct=s3.list_objects(Bucket=bucket["name"])
             if "Contents" in struct:
                 for obj in struct["Contents"]:
-                    s3.delete_object(Bucket=bucketname,
-                                          Key=obj["Key"])
-        def delete_bucket(s3, bucketname):
-            s3.delete_bucket(Bucket=bucketname)
-        for bucketname in bucketnames:
-            empty_bucket(self.s3, bucketname)
-            delete_bucket(self.s3, bucketname)
+                    s3.delete_object(Bucket=bucket["name"],
+                                     Key=obj["Key"])
+        def delete_bucket(s3, bucket):
+            s3.delete_bucket(Bucket=bucket["name"])
+        for bucket in buckets:
+            empty_bucket(self.s3, bucket)
+            delete_bucket(self.s3, bucket)
                 
     ### sqs
 
