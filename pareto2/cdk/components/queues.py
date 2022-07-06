@@ -31,7 +31,7 @@ def init_queue(queue):
 
 @resource
 def init_binding(queue):
-    resourcename=H("%s-binding" % queue["name"])
+    resourcename=H("%s-queue-binding" % queue["name"])
     funcname={"Ref": H("%s-function" % queue["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-queue" % queue["name"]),
                               "Arn"]}

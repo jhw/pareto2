@@ -20,7 +20,7 @@ PatternPermissions=[("\\-table", "dynamodb"),
 @resource            
 def init_function(action):
     resourcename=H("%s-function" % action["name"])
-    rolename=H("%s-role" % action["name"])
+    rolename=H("%s-function-role" % action["name"])
     memory=H("memory-size-%s" % action["size"])
     timeout=H("timeout-%s" % action["timeout"])
     code={"S3Bucket": {"Ref": H("artifacts-bucket")},
@@ -62,7 +62,7 @@ def init_role(action, **kwargs):
         if "permissions" in action:
             permissions.update(set(action["permissions"]))
         return permissions        
-    resourcename=H("%s-role" % action["name"])
+    resourcename=H("%s-function-role" % action["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
@@ -73,7 +73,7 @@ def init_role(action, **kwargs):
                               "Effect": "Allow",
                               "Resource": "*"}
                              for permission in sorted(list(permissions))]}
-    policyname={"Fn::Sub": "%s-role-policy-${AWS::StackName}" % action["name"]}
+    policyname={"Fn::Sub": "%s-function-role-policy-${AWS::StackName}" % action["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,
@@ -84,7 +84,7 @@ def init_role(action, **kwargs):
 
 @resource
 def init_event_config(action):
-    resourcename=H("%s-event-config" % action["name"])
+    resourcename=H("%s-function-event-config" % action["name"])
     retries=action["retries"] if "retries" in action else 0
     funcname=H("%s-function" % action["name"])
     destarn={"Fn::GetAtt": [H("%s-queue" % action["errors"]), "Arn"]}

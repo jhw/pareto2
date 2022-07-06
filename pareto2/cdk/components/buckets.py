@@ -20,7 +20,7 @@ def init_bucket(bucket):
         lambdaconf=[{"Event": "s3:ObjectCreated:*",
                      "Function": funcarn}]
         props["NotificationConfiguration"]={"LambdaConfigurations": lambdaconf},
-        depends.append(H("%s-permission" % bucket["name"]))
+        depends.append(H("%s-bucket-permission" % bucket["name"]))
     return (resourcename,
             "AWS::S3::Bucket",
             props,
@@ -28,7 +28,7 @@ def init_bucket(bucket):
 
 @resource
 def init_permission(bucket):
-    resourcename=H("%s-permission" % bucket["name"])
+    resourcename=H("%s-bucket-permission" % bucket["name"])
     sourcearn={"Fn::Sub": "arn:aws:s3:::%s-bucket-${AWS::StackName}-${AWS::Region}" % bucket["name"]}
     funcname={"Ref": H("%s-function" % bucket["action"])}
     props={"Action": "lambda:InvokeFunction",

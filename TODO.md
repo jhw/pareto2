@@ -1,5 +1,6 @@
 ### short
 
+- extend resource names suffixes for subordinate types
 - refactor sqs handlers with decorator which tests for http prefix
 
 ### medium
@@ -8,7 +9,6 @@
 - table stream shouldn't be defined as part of config
 - add check so type can't appear in component name
 - modify component initialisation to allow nested apis
-- extend resource names suffixes for subordinate types
 - flatten nested config items where possible
 - add API type attr and nest API components 
   - new simple/public API 

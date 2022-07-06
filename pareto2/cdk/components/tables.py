@@ -39,7 +39,7 @@ def init_table(table, **kwargs):
 
 @resource
 def init_binding(table):
-    resourcename=H("%s-mapping" % table["name"])
+    resourcename=H("%s-table-mapping" % table["name"])
     funcname={"Ref": H("%s-function" % table["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
