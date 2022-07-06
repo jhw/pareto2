@@ -1,15 +1,12 @@
 ### short
 
-- refactor sqs handlers with decorator which tests for http prefix
-
-- rename errors as errors/async
-- new errors/sync
-- bind table to errors/sync
 - add errors/sync handling to queues
 - simplify validate_async_errors
+- queue did not fail when bad action listed
 
 ### medium
 
+- refactor sqs handlers with decorator which tests for http prefix
 - table stream shouldn't be defined as part of config
 - cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
@@ -52,6 +49,9 @@
 
 ### done
 
+- rename errors as errors/async
+- new errors/sync
+- bind table to errors/sync
 - simplify/harmonise timer/root, errors tests
 - fetch_queue helper
 - timer root should set queue in env using name
