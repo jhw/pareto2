@@ -6,13 +6,13 @@ import json
 @resource
 def init_rule(timer):
     def init_target(timer):
-        id={"Fn::Sub": "%s-rule-${AWS::StackName}" % timer["name"]}
+        id={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
         input=json.dumps(timer["body"])
         arn={"Fn::GetAtt": [H("%s-function" % timer["action"]), "Arn"]}
         return {"Id": id,
                 "Input": input,
                 "Arn": arn}        
-    resourcename=H("%s-rule" % timer["name"])
+    resourcename=H("%s-timer-rule" % timer["name"])
     target=init_target(timer)
     scheduleexpr="rate(%s)" % timer["rate"]
     props={"Targets": [target],
@@ -23,8 +23,8 @@ def init_rule(timer):
 
 @resource
 def init_permission(timer):
-    resourcename=H("%s-permission" % timer["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-rule" % timer["name"]), "Arn"]}
+    resourcename=H("%s-timer-permission" % timer["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-timer-rule" % timer["name"]), "Arn"]}
     funcname={"Ref": H("%s-function" % timer["action"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",

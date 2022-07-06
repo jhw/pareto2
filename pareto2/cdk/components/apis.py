@@ -32,7 +32,7 @@ CorsHeaders=yaml.safe_load("""
 @resource
 def init_rest_api(api):
     resourcename=H("%s-api-rest-api" % api["name"])
-    name={"Fn::Sub": "%s-rest-api-${AWS::StackName}" % api["name"]}
+    name={"Fn::Sub": "%s-api-rest-api-${AWS::StackName}" % api["name"]}
     props={"Name": name}
     return (resourcename,            
             "AWS::ApiGateway::RestApi",

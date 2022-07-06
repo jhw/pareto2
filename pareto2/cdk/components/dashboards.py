@@ -100,7 +100,7 @@ def init_events(md):
     resourcename=H("%s-events" % md.dashboard["name"])
     components=[Component.initialise("event-rule",
                                      {"Title": event["name"],
-                                      "ResourceName": "${%s}" % H("%s-rule" % event["name"])})
+                                      "ResourceName": "${%s}" % H("%s-event-rule" % event["name"])})
                 for event in sorted(md.events,
                                     key=lambda x: x["name"])]
     return (resourcename, "events", Components(components))
@@ -110,7 +110,7 @@ def init_timers(md):
     resourcename=H("%s-timers" % md.dashboard["name"])
     components=[Component.initialise("timer-rule",
                                      {"Title": timer["name"],
-                                      "ResourceName": "${%s}" % H("%s-rule" % timer["name"])})
+                                      "ResourceName": "${%s}" % H("%s-timer-rule" % timer["name"])})
                 for timer in sorted(md.timers,
                                     key=lambda x: x["name"])]
     return (resourcename, "timers", Components(components))
