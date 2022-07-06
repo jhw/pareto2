@@ -10,6 +10,7 @@
 - errors queue can't have its own dlq
 - table stream shouldn't be defined as part of config
 - add check so type can't appear in component name
+- check output values still match references in scripts
 - flatten nested config items where possible
 - metadata schema
 
