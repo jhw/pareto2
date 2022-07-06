@@ -1,17 +1,17 @@
 ### short
 
 - extend resource names suffixes for subordinate types
+- refactor cdk/__init__.py iteration to iterate over metadata not components
 - refactor sqs handlers with decorator which tests for http prefix
 
 ### medium
 
+- allow nested components
 - errors queue can't have its own dlq
 - table stream shouldn't be defined as part of config
 - add check so type can't appear in component name
-- modify component initialisation to allow nested apis
 - flatten nested config items where possible
-- add API type attr and nest API components 
-  - new simple/public API 
+- public, cognito APIs
 - metadata schema
 
 ### long
