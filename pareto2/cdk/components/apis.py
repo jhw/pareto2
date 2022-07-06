@@ -31,7 +31,7 @@ CorsHeaders=yaml.safe_load("""
 
 @resource
 def init_rest_api(api):
-    resourcename=H("%s-rest-api" % api["name"])
+    resourcename=H("%s-api-rest-api" % api["name"])
     name={"Fn::Sub": "%s-rest-api-${AWS::StackName}" % api["name"]}
     props={"Name": name}
     return (resourcename,            
@@ -45,12 +45,12 @@ def init_rest_api(api):
 
 @resource
 def init_deployment(api, endpoints):
-    resourcename=H("%s-deployment" % api["name"])
-    props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
+    resourcename=H("%s-api-deployment" % api["name"])
+    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     depends=[]
     for endpoint in endpoints:
-        depends+=[H("%s-method" % endpoint["name"]),
-                  H("%s-cors-method" % endpoint["name"])]
+        depends+=[H("%s-api-method" % endpoint["name"]),
+                  H("%s-api-cors-method" % endpoint["name"])]
     return (resourcename,            
             "AWS::ApiGateway::Deployment",
             props,
@@ -58,23 +58,23 @@ def init_deployment(api, endpoints):
 
 @resource
 def init_stage(api):
-    resourcename=H("%s-stage" % api["name"])
+    resourcename=H("%s-api-stage" % api["name"])
     props={"StageName": api["stage"]["name"],
-           "DeploymentId": {"Ref": H("%s-deployment" % api["name"])},
-           "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
+           "DeploymentId": {"Ref": H("%s-api-deployment" % api["name"])},
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Stage",
             props)
 
 @resource
 def init_authorizer(api):
-    resourcename=H("%s-authorizer" % api["name"])
-    name={"Fn::Sub": "%s-authorizer-${AWS::StackName}" % api["name"]}
+    resourcename=H("%s-api-authorizer" % api["name"])
+    name={"Fn::Sub": "%s-api-authorizer-${AWS::StackName}" % api["name"]}
     providerarn={"Fn::GetAtt": [H("%s-userpool" % api["userpool"]), "Arn"]}
     props={"IdentitySource": "method.request.header.Authorization",
            "Name": name,
            "ProviderARNs": [providerarn],
-           "RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
            "Type": "COGNITO_USER_POOLS"}
     return (resourcename,
             "AWS::ApiGateway::Authorizer",
@@ -90,8 +90,8 @@ def init_default_response(api, code):
     params={CorsGatewayHeader % k.capitalize(): "'%s'" % v # NB quotes
             for k, v in [("headers", "*"),
                          ("origin", "*")]}
-    resourcename=H("%s-cors-default-%s" % (api["name"], code))
-    props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
+    resourcename=H("%s-api-cors-default-%s" % (api["name"], code))
+    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
            "ResponseType": "DEFAULT_%s" % code,
            "ResponseParameters": params}
     return (resourcename,
@@ -100,36 +100,36 @@ def init_default_response(api, code):
 
 @resource
 def init_resource(api, endpoint):
-    resourcename=H("%s-resource" % endpoint["name"])
-    parentid={"Fn::GetAtt": [H("%s-rest-api" % api["name"]),
+    resourcename=H("%s-api-resource" % endpoint["name"])
+    parentid={"Fn::GetAtt": [H("%s-api-rest-api" % api["name"]),
                              "RootResourceId"]}
     props={"ParentId": parentid,
            "PathPart": endpoint["path"],
-           "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Resource",
             props)
 
 @resource
 def init_method(api, endpoint):
-    resourcename=H("%s-method" % endpoint["name"])
+    resourcename=H("%s-api-method" % endpoint["name"])
     uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
     integration={"IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY",
                  "Uri": uri}
     props={"HttpMethod": endpoint["method"],
            "Integration": integration,
-           "ResourceId": {"Ref": H("%s-resource" % endpoint["name"])},
-           "RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
+           "ResourceId": {"Ref": H("%s-api-resource" % endpoint["name"])},
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
            "AuthorizationType": "COGNITO_USER_POOLS",
-           "AuthorizerId": {"Ref": H("%s-authorizer" % api["name"])}}
+           "AuthorizerId": {"Ref": H("%s-api-authorizer" % api["name"])}}
     if "parameters" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
+        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
         props["RequestParameters"]={"method.request.querystring.%s" % param: True
                                     for param in endpoint["parameters"]}
     elif "schema" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
-        props["RequestModels"]={"application/json": H("%s-model" % endpoint["name"])}
+        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
+        props["RequestModels"]={"application/json": H("%s-api-model" % endpoint["name"])}
     return (resourcename,
             "AWS::ApiGateway::Method",
             props)
@@ -159,24 +159,24 @@ def init_cors_method(api, endpoint):
         return {"StatusCode": 200,
                 "ResponseModels": models,
                 "ResponseParameters": params}
-    resourcename=H("%s-cors-method" % endpoint["name"])
+    resourcename=H("%s-api-cors-method" % endpoint["name"])
     integration=init_integration(endpoint)
     response=init_response()
     props={"AuthorizationType": "NONE",
            "HttpMethod": "OPTIONS",
            "Integration": integration,
            "MethodResponses": [response],
-           "ResourceId": {"Ref": H("%s-resource" % endpoint["name"])},
-           "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
+           "ResourceId": {"Ref": H("%s-api-resource" % endpoint["name"])},
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Method",
             props)
 
 @resource
 def init_permission(api, endpoint):
-    resourcename=H("%s-permission" % endpoint["name"])
-    sourcearn={"Fn::Sub": PermissionSrcArn % (H("%s-rest-api" % api["name"]),
-                                              H("%s-stage" % api["name"]),
+    resourcename=H("%s-api-permission" % endpoint["name"])
+    sourcearn={"Fn::Sub": PermissionSrcArn % (H("%s-api-rest-api" % api["name"]),
+                                              H("%s-api-stage" % api["name"]),
                                               endpoint["method"],
                                               endpoint["path"])}
     props={"Action": "lambda:InvokeFunction",
@@ -189,8 +189,8 @@ def init_permission(api, endpoint):
 
 @resource
 def init_validator(api, endpoint):
-    resourcename=H("%s-validator" % endpoint["name"])
-    props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
+    resourcename=H("%s-api-validator" % endpoint["name"])
+    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     if "parameters" in endpoint:
         props["ValidateRequestParameters"]=True
     elif "schema" in endpoint:
@@ -205,8 +205,8 @@ def init_validator(api, endpoint):
 
 @resource
 def init_model(api, endpoint):
-    resourcename=H("%s-model" % endpoint["name"])
-    props={"RestApiId": {"Ref": H("%s-rest-api" % api["name"])},
+    resourcename=H("%s-api-model" % endpoint["name"])
+    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
            "ContentType": "application/json",
            "Name": resourcename,
            "Schema": endpoint["schema"]}
@@ -249,13 +249,13 @@ def init_resources(md):
 
 def init_outputs(md):
     def init_outputs(api, outputs):
-        endpoint={"Fn::Sub": EndpointUrl % (H("%s-rest-api" % api["name"]),
-                                            H("%s-stage" % api["name"]))}
-        restapi={"Ref": H("%s-rest-api" % api["name"])}
-        stage={"Ref": H("%s-stage" % api["name"])}    
-        outputs.update({H("%s-endpoint" % api["name"]): {"Value": endpoint},
-                        H("%s-rest-api" % api["name"]): {"Value": restapi},
-                        H("%s-stage" % api["name"]): {"Value": stage}})
+        endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
+                                            H("%s-api-stage" % api["name"]))}
+        restapi={"Ref": H("%s-api-rest-api" % api["name"])}
+        stage={"Ref": H("%s-api-stage" % api["name"])}    
+        outputs.update({H("%s-api-endpoint" % api["name"]): {"Value": endpoint},
+                        H("%s-api-rest-api" % api["name"]): {"Value": restapi},
+                        H("%s-api-stage" % api["name"]): {"Value": stage}})
     outputs={}
     for api in md.apis:
         init_outputs(api, outputs)

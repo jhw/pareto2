@@ -24,7 +24,7 @@ def init_userpool(userpool):
 
 @resource
 def init_admin_client(userpool):
-    resourcename=H("%s-admin-client" % userpool["name"])
+    resourcename=H("%s-userpool-admin-client" % userpool["name"])
     props={"UserPoolId": {"Ref": H("%s-userpool" % userpool["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_ADMIN_USER_PASSWORD_AUTH",
@@ -35,7 +35,7 @@ def init_admin_client(userpool):
 
 @resource
 def init_web_client(userpool):
-    resourcename=H("%s-web-client" % userpool["name"])
+    resourcename=H("%s-userpool-web-client" % userpool["name"])
     props={"UserPoolId": {"Ref": H("%s-userpool" % userpool["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_USER_SRP_AUTH",
@@ -57,11 +57,11 @@ def init_resources(md):
 def init_outputs(md):
     def init_outputs(userpool, outputs):
         userpool_={"Ref": H("%s-userpool" % userpool["name"])}
-        adminclient={"Ref": H("%s-admin-client" % userpool["name"])}
-        webclient={"Ref": H("%s-web-client" % userpool["name"])}
+        adminclient={"Ref": H("%s-userpool-admin-client" % userpool["name"])}
+        webclient={"Ref": H("%s-userpool-web-client" % userpool["name"])}
         outputs.update({H("%s-userpool" % userpool["name"]): {"Value": userpool_},
-                        H("%s-admin-client" % userpool["name"]): {"Value": adminclient},
-                        H("%s-web-client" % userpool["name"]): {"Value": webclient}})
+                        H("%s-userpool-admin-client" % userpool["name"]): {"Value": adminclient},
+                        H("%s-userpool-web-client" % userpool["name"]): {"Value": webclient}})
     outputs={}
     for userpool in md.userpools:
         init_outputs(userpool, outputs)
