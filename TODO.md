@@ -1,15 +1,16 @@
 ### short
 
 - refactor cdk/__init__.py iteration to iterate over metadata not components
+- refactor init_components to iterate over directories
+- nest api and add type parameter to api config
 
 ### medium
 
-- allow nested components
+- separate public, cognito APIs
 - errors queue can't have its own dlq
 - table stream shouldn't be defined as part of config
 - add check so type can't appear in component name
 - flatten nested config items where possible
-- public, cognito APIs
 - metadata schema
 
 ### long
