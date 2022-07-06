@@ -1,14 +1,14 @@
 ### short
 
-- add errors/sync handling to queues
-- simplify validate_async_errors
 - queue did not fail when bad action listed
+- simplify validate_async_errors
+- refactor sqs handlers with decorator which tests for http prefix
+- cdk/__init__.py function to initialise component map
 
 ### medium
 
-- refactor sqs handlers with decorator which tests for http prefix
+
 - table stream shouldn't be defined as part of config
-- cdk/__init__.py function to initialise component map
 - modify component initialisation to allow nested apis
 - add check so type can't appear in component name
 - extend resource names suffixes for subordinate types
@@ -49,6 +49,7 @@
 
 ### done
 
+- add errors/sync handling to queues
 - rename errors as errors/async
 - new errors/sync
 - bind table to errors/sync

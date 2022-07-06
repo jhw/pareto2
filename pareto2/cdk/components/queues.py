@@ -19,14 +19,12 @@ from pareto2.cdk.components import resource
 @resource
 def init_queue(queue):
     resourcename=H("%s-queue" % queue["name"])
-    """
     retries=queue["retries"] if "retries" in queue else 0
-    dlqarn={"Fn::GetAtt": [H("%s-queue" % errors["name"]), "Arn"]}
-    redrivepolicy={"deadLetterTargetArn": dlqarn,
-                   "maxReceiveCount": 1+retries}
+    redrivepolicy={"maxReceiveCount": 1+retries}
+    if "errors" in queue:
+        dlqarn={"Fn::GetAtt": [H("%s-queue" % queue["errors"]), "Arn"]}
+        redrivepolicy["deadLetterTargetArn"]=dlqarn
     props={"RedrivePolicy": redrivepolicy}
-    """
-    props={}
     return (resourcename,
             "AWS::SQS::Queue",
             props)
