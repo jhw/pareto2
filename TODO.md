@@ -1,16 +1,14 @@
 ### short
 
-- queue did not fail when bad action listed
-- simplify validate_async_errors
-- refactor sqs handlers with decorator which tests for http prefix
 - cdk/__init__.py function to initialise component map
+- refactor sqs handlers with decorator which tests for http prefix
 
 ### medium
 
-
+- errors queue can't have its own dlq
 - table stream shouldn't be defined as part of config
-- modify component initialisation to allow nested apis
 - add check so type can't appear in component name
+- modify component initialisation to allow nested apis
 - extend resource names suffixes for subordinate types
 - flatten nested config items where possible
 - add API type attr and nest API components 
@@ -19,19 +17,22 @@
 
 ### long
 
+- eventbridge lambda destination
+- s3 eventbridge notifications
+- eventbridge urls
 - s3 sync error handling
 - lambda alarms
 - api w/ key access
-- s3 eventbridge connector
-- eventbridge as lambda destination
-- eventbridge urls
+- aws chat
+
 - iam role lockdown
 - step functions
 - appsync + graphql
-- aws chat
 
 ### thoughts
 
+- simplify validate_async_errors
+  - is fine
 - use QueueNamePrefix when looking up queues ?
   - probably not worth it
 - failure options for s3 notifications ?
@@ -49,6 +50,7 @@
 
 ### done
 
+- queue did not fail when bad action listed
 - add errors/sync handling to queues
 - rename errors as errors/async
 - new errors/sync
