@@ -49,20 +49,8 @@ class Lambdas(list):
         if errors!=[]:
             raise RuntimeError("action not defined for %s" % ", ".join(errors))
 
-    def validate_errors(self):
-        paths=[]
-        for path in self:
-            if path.endswith("index.py"):
-                if "errors" in path:
-                    paths.append(path)
-        if paths==[]:
-            raise RuntimeError("errors handler not found")
-        elif len(paths) > 1:
-            raise RuntimeError("multiple error handlers found")
-    
     def validate(self):
         self.validate_actions()
-        self.validate_errors()
         
     @property
     def s3_key_zip(self):
