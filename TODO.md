@@ -1,6 +1,5 @@
 ### short
 
-- add router suffix
 - refactor cdk/__init__.py iteration to iterate over metadata not components
 
 ### medium
@@ -48,6 +47,7 @@
 
 ### done
 
+- add router suffix
 - add event, timer resource suffixes
 - extend resource names suffixes for subordinate types
 - refactor sqs handlers with decorator which tests for http prefix

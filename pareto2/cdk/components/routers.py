@@ -8,8 +8,8 @@ from pareto2.cdk.components import resource
 
 @resource
 def init_eventbus(router):
-    resourcename=H("%s-event-bus" % router["name"])
-    name={"Fn::Sub": "%s-event-bus-${AWS::StackName}-${AWS::Region}" % router["name"]}
+    resourcename=H("%s-router-event-bus" % router["name"])
+    name={"Fn::Sub": "%s-router-event-bus-${AWS::StackName}-${AWS::Region}" % router["name"]}
     props={"Name": name}
     return (resourcename, 
             "AWS::Events::EventBus",
@@ -17,8 +17,8 @@ def init_eventbus(router):
 
 @resource
 def init_discoverer(router):
-    resourcename=H("%s-discoverer" % router["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-event-bus" % router["name"]), "Arn"]}
+    resourcename=H("%s-router-discoverer" % router["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-router-event-bus" % router["name"]), "Arn"]}
     props={"SourceArn": sourcearn}
     return (resourcename, 
             "AWS::EventSchemas::Discoverer",
@@ -35,8 +35,8 @@ def init_resources(md):
 
 def init_outputs(md):
     def init_outputs(router, outputs):
-        eventbus={"Ref": H("%s-event-bus" % router["name"])}
-        outputs.update({H("%s-event-bus" % router["name"]): {"Value": eventbus}})
+        eventbus={"Ref": H("%s-router-event-bus" % router["name"])}
+        outputs.update({H("%s-router-event-bus" % router["name"]): {"Value": eventbus}})
     outputs={}
     for router in md.routers:
         init_outputs(router, outputs)
