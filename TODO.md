@@ -1,6 +1,5 @@
 ### short
 
-- cdk/__init__.py function to initialise component map
 - refactor sqs handlers with decorator which tests for http prefix
 
 ### medium
@@ -50,6 +49,7 @@
 
 ### done
 
+- cdk/__init__.py function to initialise component map
 - queue did not fail when bad action listed
 - add errors/sync handling to queues
 - rename errors as errors/async

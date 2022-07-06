@@ -18,20 +18,26 @@ class Defaults(dict):
     def __init__(self, items={}):
         dict.__init__(self, items)
 
-def init_template(md,
-                  name="main",
-                  timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
-                  home="pareto2/cdk/components"):
-    template=Template(name=name,
-                      timestamp=timestamp)
+def init_components(home="pareto2/cdk/components"):
+    components={}
     for filename in os.listdir(home):
         if ("__init__" in filename or
             "__pycache__" in filename):
             continue
-        modname="%s.%s" % (home.replace("/", "."),
-                           filename.split(".")[0])
+        key=filename.split(".")[0]
+        modname="%s.%s" % (home.replace("/", "."), key)
         mod=import_module(modname)
         fn=getattr(mod, "update_template")
+        components[key]=fn
+    return components
+        
+def init_template(md,
+                  name="main",
+                  timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
+    template=Template(name=name,
+                      timestamp=timestamp)
+    components=init_components()
+    for key, fn in components.items():
         fn(template=template,
            md=md)
     defaults=Defaults.initialise(md.stagename)
