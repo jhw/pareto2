@@ -2,7 +2,6 @@
 
 - extend resource names suffixes for subordinate types
 - refactor cdk/__init__.py iteration to iterate over metadata not components
-- refactor sqs handlers with decorator which tests for http prefix
 
 ### medium
 
@@ -49,6 +48,7 @@
 
 ### done
 
+- refactor sqs handlers with decorator which tests for http prefix
 - cdk/__init__.py function to initialise component map
 - queue did not fail when bad action listed
 - add errors/sync handling to queues

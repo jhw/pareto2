@@ -133,16 +133,23 @@ class Pareto2TestBase(unittest.TestCase):
         return [fetch_queue(queueurl)
                 for queueurl in self.sqs.list_queues()["QueueUrls"]]
 
-    def fetch_queue_name(self, queuename):
+    def fetch_queue(self, queuename):
         queues={queue["QueueName"]:queue
                 for queue in self.list_queues()}
         return queues[queuename]
-    
-    def drain_queue_name(self, queuename):
-        queue=self.fetch_queue_name(queuename)
-        return self.drain_queue_url(queue["QueueUrl"])
-    
-    def drain_queue_url(self, queueurl, nmax=100):
+
+    def name_to_url(fn):
+        def wrapped(self, key, **kwargs):
+            if not key.startswith("http"):
+                queues={queue["QueueName"]:queue
+                        for queue in self.list_queues()}
+                queue=queues[key]
+                key=queue["QueueUrl"]
+            return fn(self, key, **kwargs)
+        return wrapped
+
+    @name_to_url
+    def drain_queue(self, queueurl, nmax=100):
         messages, count = [], 0
         while True:
             resp=self.sqs.receive_message(QueueUrl=queueurl)
