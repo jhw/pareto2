@@ -1,6 +1,5 @@
 ### short
 
-- remove types from names
 - add check so type can't appear in component name
 
 ### medium
@@ -50,6 +49,7 @@
 
 ### done
 
+- remove types from names
 - errors queue can't have its own dlq
 - validate apigw type
 - validate userpool if cognito
