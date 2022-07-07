@@ -1,10 +1,11 @@
 ### short
 
 - dashboard should not require specification
+- add check so type can't appear in component name
+- replace action with function
 
 ### medium
 
-- add check so type can't appear in component name
 - flatten nested config items where possible
 - check output values still match references in scripts
 - metadata schema
