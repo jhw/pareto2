@@ -1,16 +1,14 @@
 ### short
 
-- validate apigw type
-- validate userpool if cognito
+- add check so type can't appear in component name
+- errors queue can't have its own dlq
 
 ### medium
 
 - consider nesting events under router
-- errors queue can't have its own dlq
-- add check so type can't appear in component name
 - flatten nested config items where possible
-- metadata schema
 - check output values still match references in scripts
+- metadata schema
 
 ### long
 
@@ -51,6 +49,8 @@
 
 ### done
 
+- validate apigw type
+- validate userpool if cognito
 - new simple, cognito apigw
 - add type to apigw
 - add router suffix

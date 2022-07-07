@@ -116,14 +116,22 @@ class Api(ComponentBase):
 
 class Apis(ComponentsBase):
 
+    Types=["simple", "cognito"]
+    
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Api(item)
                                        for item in items])
 
+    def validate_types(self, md, errors):
+        for api in self:
+            if api["type"] not in self.Types:
+                errors.append("%s is not a valid api type (api %s)" % (api["type"], api["name"]))
+        
     def validate_userpools(self, md, errors):
         userpoolnames=md.userpools.names
         for api in self:
-            if api["userpool"] not in userpoolnames:
+            if (api["type"]=="cognito" and
+                api["userpool"] not in userpoolnames):
                 errors.append("%s is not a valid userpool name (api %s)" % (api["userpool"], api["name"]))
 
     def validate_endpoints(self, md, errors):
@@ -134,6 +142,7 @@ class Apis(ComponentsBase):
                     errors.append("%s is not a valid endpoint name (api %s)" % (endpointname, api["name"]))
 
     def validate(self, md, errors):
+        self.validate_types(md, errors)
         self.validate_userpools(md, errors)
         self.validate_endpoints(md, errors)
         
