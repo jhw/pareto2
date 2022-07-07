@@ -1,11 +1,9 @@
 ### short
 
 - add check so type can't appear in component name
-- errors queue can't have its own dlq
 
 ### medium
 
-- consider nesting events under router
 - flatten nested config items where possible
 - check output values still match references in scripts
 - metadata schema
@@ -28,6 +26,8 @@
 
 ### thoughts
 
+- consider nesting events under router ?
+  - no think things are fine as they are 
 - table stream shouldn't be defined as part of config ?
   - no is fine; is already abstracted somewhat
 - simplify validate_async_errors
@@ -49,6 +49,7 @@
 
 ### done
 
+- errors queue can't have its own dlq
 - validate apigw type
 - validate userpool if cognito
 - new simple, cognito apigw

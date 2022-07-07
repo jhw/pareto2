@@ -246,12 +246,22 @@ class Queues(ComponentsBase):
         ComponentsBase.__init__(self, [Queue(item)
                                        for item in items])
 
-    def validate(self, md, errors):
+    def validate_actions(self, md, errors):
         actionnames=md.actions.names
         for queue in self:
             if queue["action"] not in actionnames:
                 errors.append("%s is not a valid action name (queue %s)" % (queue["action"], queue["name"]))
-        
+
+    def validate_errors(self, md, errors):
+        for queue in self:
+            if ("error" in queue["name"]
+                and "errors" in queue):            
+                errors.append("errors function not permitted (queue %s)" % queue["name"])
+                
+    def validate(self, md, errors):
+        self.validate_actions(md, errors)
+        self.validate_errors(md, errors)
+                
 class Router(ComponentBase):
 
     def __init__(self, item={}):
