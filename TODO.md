@@ -1,6 +1,6 @@
 ### short
 
-- check output values still match references in scripts
+- check where setenv has gone
 
 ### medium
 
@@ -23,6 +23,8 @@
 
 ### thoughts
 
+- check output values still match references in scripts ?
+  - not worth it
 - flatten nested config items where possible ?
   - no real need if no metadata schema, and possibly not even then
 - dashboard should not require specification ?
