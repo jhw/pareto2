@@ -1,19 +1,14 @@
 ### short
 
-- dashboard should not require specification
-- add check so type can't appear in component name
-- replace action with function
+- check output values still match references in scripts
 
 ### medium
-
-- flatten nested config items where possible
-- check output values still match references in scripts
-- metadata schema
 
 ### long
 
 - layer management app
 
+- metadata schema
 - eventbridge lambda destination
 - s3 eventbridge notifications
 - eventbridge urls
@@ -28,6 +23,14 @@
 
 ### thoughts
 
+- flatten nested config items where possible ?
+  - no real need if no metadata schema, and possibly not even then
+- dashboard should not require specification ?
+  - think it's probably best made explicit for now
+- add check so type can't appear in component name ?
+  - probably too tightly prescriptive
+- replace action with function ?
+  - no particular need, esp if no type checking as per above
 - consider nesting events under router ?
   - no think things are fine as they are 
 - table stream shouldn't be defined as part of config ?
