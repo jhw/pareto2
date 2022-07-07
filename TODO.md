@@ -1,20 +1,20 @@
 ### short
 
-- refactor cdk/__init__.py iteration to iterate over metadata not components
-- refactor init_components to iterate over directories
-- nest api and add type parameter to api config
+- add type to apigw
+- new simple, cognito apigw
 
 ### medium
 
-- separate public, cognito APIs
+- consider nesting events under router
 - errors queue can't have its own dlq
-- table stream shouldn't be defined as part of config
 - add check so type can't appear in component name
-- check output values still match references in scripts
 - flatten nested config items where possible
 - metadata schema
+- check output values still match references in scripts
 
 ### long
+
+- layer management app
 
 - eventbridge lambda destination
 - s3 eventbridge notifications
@@ -30,8 +30,10 @@
 
 ### thoughts
 
+- table stream shouldn't be defined as part of config ?
+  - no is fine; is already abstracted somewhat
 - simplify validate_async_errors
-  - is fine
+  - no is fine
 - use QueueNamePrefix when looking up queues ?
   - probably not worth it
 - failure options for s3 notifications ?
