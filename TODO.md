@@ -1,5 +1,6 @@
 ### short
 
+- remove types from names
 - add check so type can't appear in component name
 
 ### medium
