@@ -3,7 +3,7 @@ env
 __pycache__
 tmp
 
-config
-demo
-fixtures
-setenv.sh
+# config
+# demo
+# fixtures
+# setenv.sh
