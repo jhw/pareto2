@@ -1,6 +1,5 @@
 ### short
 
-- stuff doesn't get produced if `-dashboard` suffix not specified
 - dashboard should not require specification
 
 ### medium
@@ -51,6 +50,7 @@
 
 ### done
 
+- stuff doesn't get produced if `-dashboard` suffix not specified
 - remove types from names
 - errors queue can't have its own dlq
 - validate apigw type

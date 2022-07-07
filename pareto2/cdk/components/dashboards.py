@@ -77,7 +77,7 @@ def render_dash(fn):
     def wrapped(md):
         resourcename, dashprefix, components = fn(md)
         dashbody={"Fn::Sub": json.dumps(components.render())}
-        dashname={"Fn::Sub": "${AppName}-%s-${StageName}" % dashprefix}
+        dashname={"Fn::Sub": "${AppName}-%s-dash-${StageName}" % dashprefix}
         props={"DashboardBody":  dashbody,
                "DashboardName": dashname}
         struct={"Type": "AWS::CloudWatch::Dashboard",
@@ -87,7 +87,7 @@ def render_dash(fn):
 
 @render_dash
 def init_actions(md):
-    resourcename=H("%s-actions" % md.dashboard["name"])
+    resourcename=H("%s-dash-actions" % md.dashboard["name"])
     components=[Component.initialise("function",
                                      {"Title": action["name"],
                                       "ResourceName": "${%s}" % H("%s-function" % action["name"])})
@@ -97,7 +97,7 @@ def init_actions(md):
 
 @render_dash
 def init_events(md):
-    resourcename=H("%s-events" % md.dashboard["name"])
+    resourcename=H("%s-dash-events" % md.dashboard["name"])
     components=[Component.initialise("event-rule",
                                      {"Title": event["name"],
                                       "ResourceName": "${%s}" % H("%s-event-rule" % event["name"])})
@@ -107,7 +107,7 @@ def init_events(md):
 
 @render_dash
 def init_timers(md):
-    resourcename=H("%s-timers" % md.dashboard["name"])
+    resourcename=H("%s-dash-timers" % md.dashboard["name"])
     components=[Component.initialise("timer-rule",
                                      {"Title": timer["name"],
                                       "ResourceName": "${%s}" % H("%s-timer-rule" % timer["name"])})
@@ -117,7 +117,7 @@ def init_timers(md):
 
 @render_dash
 def init_table(md):
-    resourcename=H("%s-table" % md.dashboard["name"])
+    resourcename=H("%s-dash-table" % md.dashboard["name"])
     components=[Component.initialise("table",
                                      {"Title": table["name"],
                                       "ResourceName": "${%s}" % H("%s-table" % table["name"])})
@@ -127,7 +127,7 @@ def init_table(md):
 
 @render_dash
 def init_bucket(md):
-    resourcename=H("%s-bucket" % md.dashboard["name"])
+    resourcename=H("%s-dash-bucket" % md.dashboard["name"])
     components=[Component.initialise("bucket",
                                      {"Title": bucket["name"],
                                       "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
@@ -137,7 +137,7 @@ def init_bucket(md):
 
 @render_dash
 def init_api(md):
-    resourcename=H("%s-api" % md.dashboard["name"])
+    resourcename=H("%s-dash-api" % md.dashboard["name"])
     components=[Component.initialise("api",
                                      {"Title": api["name"],
                                       "ResourceName": "${%s}" % H("%s-api-rest-api" % api["name"])})
