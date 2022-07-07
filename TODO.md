@@ -1,7 +1,7 @@
 ### short
 
-- add type to apigw
-- new simple, cognito apigw
+- validate apigw type
+- validate userpool if cognito
 
 ### medium
 
@@ -51,6 +51,8 @@
 
 ### done
 
+- new simple, cognito apigw
+- add type to apigw
 - add router suffix
 - add event, timer resource suffixes
 - extend resource names suffixes for subordinate types

@@ -110,8 +110,7 @@ def init_resource(api, endpoint):
             "AWS::ApiGateway::Resource",
             props)
 
-@resource
-def init_simple_method(api, endpoint):
+def init_method(api, endpoint, authorisation):
     resourcename=H("%s-api-method" % endpoint["name"])
     uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
     integration={"IntegrationHttpMethod": "POST",
@@ -120,8 +119,8 @@ def init_simple_method(api, endpoint):
     props={"HttpMethod": endpoint["method"],
            "Integration": integration,
            "ResourceId": {"Ref": H("%s-api-resource" % endpoint["name"])},
-           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
-           "AuthorizationType": "NONE"}
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
+    props.update(authorisation)
     if "parameters" in endpoint:
         props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
         props["RequestParameters"]={"method.request.querystring.%s" % param: True
@@ -134,28 +133,15 @@ def init_simple_method(api, endpoint):
             props)
 
 @resource
+def init_simple_method(api, endpoint):
+    authorisation={"AuthorizationType": "NONE"}
+    return init_method(api, endpoint, authorisation)
+
+@resource
 def init_cognito_method(api, endpoint):
-    resourcename=H("%s-api-method" % endpoint["name"])
-    uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
-    integration={"IntegrationHttpMethod": "POST",
-                 "Type": "AWS_PROXY",
-                 "Uri": uri}
-    props={"HttpMethod": endpoint["method"],
-           "Integration": integration,
-           "ResourceId": {"Ref": H("%s-api-resource" % endpoint["name"])},
-           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
-           "AuthorizationType": "COGNITO_USER_POOLS",
-           "AuthorizerId": {"Ref": H("%s-api-authorizer" % api["name"])}}
-    if "parameters" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
-        props["RequestParameters"]={"method.request.querystring.%s" % param: True
-                                    for param in endpoint["parameters"]}
-    elif "schema" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
-        props["RequestModels"]={"application/json": H("%s-api-model" % endpoint["name"])}
-    return (resourcename,
-            "AWS::ApiGateway::Method",
-            props)
+    authorisation={"AuthorizationType": "COGNITO_USER_POOLS",
+                   "AuthorizerId": {"Ref": H("%s-api-authorizer" % api["name"])}}
+    return init_method(api, endpoint, authorisation)
 
 @resource
 def init_cors_method(api, endpoint):
