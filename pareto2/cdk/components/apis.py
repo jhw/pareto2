@@ -67,7 +67,7 @@ def init_stage(api):
             props)
 
 @resource
-def init_authorizer(api):
+def init_cognito_authorizer(api):
     resourcename=H("%s-api-authorizer" % api["name"])
     name={"Fn::Sub": "%s-api-authorizer-${AWS::StackName}" % api["name"]}
     providerarn={"Fn::GetAtt": [H("%s-userpool" % api["userpool"]), "Arn"]}
@@ -111,7 +111,30 @@ def init_resource(api, endpoint):
             props)
 
 @resource
-def init_method(api, endpoint):
+def init_simple_method(api, endpoint):
+    resourcename=H("%s-api-method" % endpoint["name"])
+    uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
+    integration={"IntegrationHttpMethod": "POST",
+                 "Type": "AWS_PROXY",
+                 "Uri": uri}
+    props={"HttpMethod": endpoint["method"],
+           "Integration": integration,
+           "ResourceId": {"Ref": H("%s-api-resource" % endpoint["name"])},
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
+           "AuthorizationType": "NONE"}
+    if "parameters" in endpoint:
+        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
+        props["RequestParameters"]={"method.request.querystring.%s" % param: True
+                                    for param in endpoint["parameters"]}
+    elif "schema" in endpoint:
+        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
+        props["RequestModels"]={"application/json": H("%s-api-model" % endpoint["name"])}
+    return (resourcename,
+            "AWS::ApiGateway::Method",
+            props)
+
+@resource
+def init_cognito_method(api, endpoint):
     resourcename=H("%s-api-method" % endpoint["name"])
     uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
     integration={"IntegrationHttpMethod": "POST",
@@ -214,33 +237,58 @@ def init_model(api, endpoint):
             "AWS::ApiGateway::Model",
             props)    
 
+def init_simple_resources(api, endpoints, resources):
+    resources.append(init_rest_api(api))
+    resources.append(init_deployment(api, endpoints))
+    resources.append(init_stage(api))
+    for code in "4XX|5XX".split("|"):
+        resources.append(init_default_response(api, code))
+    for endpoint in endpoints:
+        for fn in [init_resource,
+                   init_simple_method,
+                   init_permission,
+                   init_cors_method]:
+            resource=fn(api, endpoint)
+            resources.append(resource)
+        if "parameters" in endpoint:
+            resources.append(init_validator(api, endpoint))
+        elif "schema" in endpoint:
+            resources.append(init_validator(api, endpoint))
+            resources.append(init_model(api, endpoint))
+
+def init_cognito_resources(api, endpoints, resources):
+    resources.append(init_rest_api(api))
+    resources.append(init_deployment(api, endpoints))
+    resources.append(init_stage(api))
+    resources.append(init_cognito_authorizer(api))    
+    for code in "4XX|5XX".split("|"):
+        resources.append(init_default_response(api, code))
+    for endpoint in endpoints:
+        for fn in [init_resource,
+                   init_cognito_method,
+                   init_permission,
+                   init_cors_method]:
+            resource=fn(api, endpoint)
+            resources.append(resource)
+        if "parameters" in endpoint:
+            resources.append(init_validator(api, endpoint))
+        elif "schema" in endpoint:
+            resources.append(init_validator(api, endpoint))
+            resources.append(init_model(api, endpoint))
+
 def init_resources(md):
-    def init_resources(api, endpoints, resources):
-        resources.append(init_rest_api(api))
-        resources.append(init_deployment(api, endpoints))
-        resources.append(init_stage(api))
-        resources.append(init_authorizer(api))    
-        for code in "4XX|5XX".split("|"):
-            resources.append(init_default_response(api, code))
-        for endpoint in endpoints:
-            for fn in [init_resource,
-                       init_method,
-                       init_permission,
-                       init_cors_method]:
-                resource=fn(api, endpoint)
-                resources.append(resource)
-            if "parameters" in endpoint:
-                resources.append(init_validator(api, endpoint))
-            elif "schema" in endpoint:
-                resources.append(init_validator(api, endpoint))
-                resources.append(init_model(api, endpoint))
     endpoints={endpoint["name"]: endpoint
                for endpoint in md.endpoints}
     resources=[]
     for api in md.apis:
         apiendpoints=[endpoints[name]
-                      for name in api["endpoints"]]                      
-        init_resources(api, apiendpoints, resources)
+                      for name in api["endpoints"]]
+        if api["type"]=="simple":
+            init_simple_resources(api, apiendpoints, resources)
+        elif api["type"]=="cognito":
+            init_cognito_resources(api, apiendpoints, resources)
+        else:
+            raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["type"]))
     return dict(resources)
 
 """
