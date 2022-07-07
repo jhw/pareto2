@@ -1,9 +1,11 @@
 ### short
 
-- add check so type can't appear in component name
+- stuff doesn't get produced if `-dashboard` suffix not specified
+- dashboard should not require specification
 
 ### medium
 
+- add check so type can't appear in component name
 - flatten nested config items where possible
 - check output values still match references in scripts
 - metadata schema
