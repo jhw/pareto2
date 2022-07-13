@@ -18,24 +18,6 @@ def has_internet():
     except:
         return False
 
-def deploy_stack(cf, config, params, template):
-    def stack_exists(stackname):
-        stacknames=[stack["StackName"]
-                    for stack in cf.describe_stacks()["Stacks"]]
-        return stackname in stacknames
-    stackname="%s-%s" % (config["AppName"],
-                         config["StageName"])
-    action="update" if stack_exists(stackname) else "create"
-    
-    fn=getattr(cf, "%s_stack" % action)
-    url=template.url(config["ArtifactsBucket"])
-    fn(StackName=stackname,
-       Parameters=params.render(),
-       TemplateURL=url,
-       Capabilities=["CAPABILITY_IAM"])
-    waiter=cf.get_waiter("stack_%s_complete" % action)
-    waiter.wait(StackName=stackname)
-
 if __name__=="__main__":
     try:
         import os, sys
@@ -76,22 +58,6 @@ if __name__=="__main__":
         params=Parameters.initialise([config,
                                       layers.parameters])
         params.validate(template)
-        cf=boto3.client("cloudformation")
-        print ("pushing lambdas -> %s" % lambdas.s3_key_zip)
-        s3.upload_file(Filename=lambdas.filename_zip,
-                       Bucket=config["ArtifactsBucket"],
-                       Key=lambdas.s3_key_zip,
-                       ExtraArgs={'ContentType': 'application/zip'})
-        print ("pushing template -> %s" % template.s3_key_json)
-        s3.put_object(Bucket=config["ArtifactsBucket"],
-                      Key=template.s3_key_json,
-                      Body=template.to_json(),
-                      ContentType="application/json")
-        print ("deploying stack")
-        deploy_stack(config=config,
-                     params=params,
-                     template=template,
-                     cf=cf)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:

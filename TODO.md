@@ -1,9 +1,5 @@
 ### short
 
-- split deploy stack into two scripts, create artifacts and deploy stack
-- remove stuff below flag in create artifacts
-- remove flag from deploy stack
-
 - remove all layer related code from pareto deploy 
 - create artifacts to dump output file name
 - check a Template can be initialised from a JSON struct
@@ -85,6 +81,9 @@
 
 ### done
 
+- remove stuff below flag in create artifacts
+- remove flag from deploy stack
+- split deploy stack into two scripts, create artifacts and deploy stack
 - move deployment related code into pareto deploy 
 - flatten both pareto deploy and pareto cli
 - consider renaming pareto deploy as pareto actions 
