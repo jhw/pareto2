@@ -2,11 +2,26 @@ from pareto2.core.template import Template
 from pareto2.core.metadata import Metadata
 
 from pareto2.actions.lambdas import Lambdas
-from pareto2.actions.layers import Layers
 
 from botocore.exceptions import ClientError, WaiterError
 
 import boto3, json, os, sys
+
+from pareto2.cli import hungarorise
+
+class Layers(list):
+
+    @classmethod
+    def initialise(self, md):
+        return Layers(md.actions.packages)
+    
+    def __init__(self, items=[]):
+        list.__init__(self, items)
+
+    @property
+    def parameters(self):
+        return {hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
+                for pkgname in self}
 
 class Parameters(dict):
 
@@ -66,6 +81,11 @@ if __name__=="__main__":
         from pareto2.cli import load_config
         config=load_config()
         md=Metadata.initialise(stagename)
+        timestamp="-".join(filename.split(".")[0].split("-")[1:])
+        lambdas=Lambdas.initialise(md=md,
+                                   timestamp=timestamp)
+        config.update({"StageName": stagename,
+                       "ArtifactsKey": lambdas.s3_key_zip})
         layers=Layers.initialise(md)
         params=Parameters.initialise([config,
                                       layers.parameters])

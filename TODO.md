@@ -1,15 +1,9 @@
 ### short
 
 - build_artifacts needs to test lambdas
-- move parameters inline into deployment
+- build_artifacts needs to push lambdas to s3
+- simplify layer code in deploy_stack.py
 
-- remove all layer related code from pareto deploy 
-- create artifacts to dump output file name
-- check a Template can be initialised from a JSON struct
-- change deploy stack to ask for filename and create template
--remove template generation, template validation, lambda test, lambda push from deployent script 
-
-- check how template references lambda deployables
 - add template code to populate default parameters
 - modify validation code so doesn't have to involve defaults 
 
@@ -84,6 +78,11 @@
 
 ### done
 
+- remove template generation, template validation, lambda test, lambda push from deployent script 
+- change deploy stack to ask for filename and create template
+- create artifacts to dump output file name
+- check a Template can be initialised from a JSON struct
+- move parameters inline into deployment
 - remove stuff below flag in create artifacts
 - remove flag from deploy stack
 - split deploy stack into two scripts, create artifacts and deploy stack
