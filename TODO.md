@@ -1,9 +1,7 @@
 ### short
 
-- remove errors restriction on actions bound to queues
 - add error type to actions (destination/dlq)
 - add dlq support to actions
-
 - check metadata components can be optional
 
 ### medium
@@ -73,6 +71,7 @@
 
 ### done
 
+- remove errors restriction on actions bound to queues
 - rename packages as pareto.core, pareto.cli
 - scripts/deploy/redeploy_api.py will fail
   - check all scripts which rely on outputs
