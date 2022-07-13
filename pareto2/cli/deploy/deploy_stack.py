@@ -1,5 +1,4 @@
 from pareto2.core.template import Template
-from pareto2.core.metadata import Metadata
 
 from botocore.exceptions import ClientError, WaiterError
 
@@ -30,15 +29,15 @@ if __name__=="__main__":
         stagename, filename = sys.argv[1:3]
         if not os.path.exists(filename):
             raise RuntimeError("file does not exist")
-        template=Template(items=json.loads(open(filename).read()))
+        name="-".join(filename.split("/")[-1].split(".")[0].split("-")[:-6])
+        template=Template(name=name,
+                          items=json.loads(open(filename).read()))
         config=load_config()
-        """
-        print ("deploying stack")
+        config["StageName"]=stagename
         cf=boto3.client("cloudformation")
         deploy_stack(config=config,
                      template=template,
                      cf=cf)
-        """
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:

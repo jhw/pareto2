@@ -9,7 +9,7 @@ from datetime import datetime
 
 from pareto2.cli import load_config
 
-import importlib, inspect, os, sys, unittest, zipfile
+import boto3, importlib, inspect, os, sys, unittest, zipfile
 
 def filter_tests(root=os.environ["APP_ROOT"]):
     classes=[]
@@ -133,19 +133,17 @@ if __name__=="__main__":
         print ("dumping to %s" % template.filename_json)
         template.dump_json(template.filename_json)
         template.validate_root()
-        """
         s3=boto3.client("s3")
-        print ("pushing lambdas -> %s" % lambdas.s3_key_zip)
+        print ("pushing %s" % lambdas.s3_key_zip)
         s3.upload_file(Filename=lambdas.filename_zip,
                        Bucket=config["ArtifactsBucket"],
                        Key=lambdas.s3_key_zip,
                        ExtraArgs={'ContentType': 'application/zip'})
-        print ("pushing template -> %s" % template.s3_key_json)
+        print ("pushing %s" % template.s3_key_json)
         s3.put_object(Bucket=config["ArtifactsBucket"],
                       Key=template.s3_key_json,
                       Body=template.to_json(),
                       ContentType="application/json")
-        """
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 

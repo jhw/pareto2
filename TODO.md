@@ -1,21 +1,15 @@
 ### short
 
-- build_artifacts to push lambdas to s3
-- build_artifacts to push template to s3
-- check deploy_stack creates template with correct URL (timestamp)
+- some kind of s3 error on stack deployment
 
 ### medium
 
-- template should really have separate Parameter/Resource/Output classes
+- separate template Parameter/Resource/Output classes
 - remove _json suffix from filename, dumping
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 - token api example/support
 - layer management application [notes]
-- refactor cli api
-  - combine lambda test/push, template generation/validation into single step
-  - embed all variables in template
-  - simple deployment stack
 - test codebuild notification handling (CI pipeline)
 - test cloudformation remote error handling
 - pareto.ci
@@ -73,6 +67,14 @@
 
 ### done
 
+- refactor cli api
+  - combine lambda test/push, template generation/validation into single step
+  - embed all variables in template
+  - simple deployment stack
+- check deploy_stack creates template with correct URL (timestamp)
+- deploy stack
+- build_artifacts to push lambdas to s3
+- build_artifacts to push template to s3
 - populate template defaults
 - assert every template param has a default value
 - avoid hardcoding paths in build_artifacts
