@@ -184,6 +184,11 @@ class Pareto2TestBase(unittest.TestCase):
             queueattrs=sqs.get_queue_attributes(QueueUrl=queue["QueueUrl"])
             queuearn=queueattrs["Attributes"]["QueueArn"]
             for i, pattern in enumerate(router["patterns"]):
+                """
+                - because accidental list pattern detail seems to match everything, regardless of list contents
+            """
+                if not isinstance(pattern["detail"], dict):
+                    raise RuntimeError("pattern detail must be a dict")
                 rulename="%s-%i" % (ruleprefix, i+1)
                 ruletargetid="%s-target-%i" % (ruleprefix, i+1)
                 events.put_rule(EventBusName=eventbusname,
