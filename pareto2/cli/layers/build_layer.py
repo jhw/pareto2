@@ -76,7 +76,7 @@ if __name__=="__main__":
         pkgtype, pkgname = sys.argv[1:3]
         if pkgtype not in [Pip, Git]:
             raise RuntimeError("pkg type not supported")
-        from pareto2.scripts import load_config
+        from pareto2.cli import load_config
         config=load_config()
         layer={"type": pkgtype,
                "name": pkgname}

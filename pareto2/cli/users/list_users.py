@@ -1,4 +1,4 @@
-from pareto2.scripts.users import *
+from pareto2.cli.users import *
 
 import boto3, yaml
 

@@ -1,4 +1,4 @@
-from pareto2.scripts import load_config
+from pareto2.cli import load_config
 
 import importlib, inspect, os, unittest
 

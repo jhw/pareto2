@@ -1,4 +1,4 @@
-from pareto2.scripts import hungarorise
+from pareto2.cli import hungarorise
 
 import boto3, re, sys, time
 
@@ -66,7 +66,7 @@ def fetch_events(logs, kwargs):
 
 if __name__=="__main__":
     try:
-        from pareto2.scripts import load_config
+        from pareto2.cli import load_config
         config=load_config()
         if len(sys.argv) < 5:
             raise RuntimeError("Please enter stage, lambda, window, query")

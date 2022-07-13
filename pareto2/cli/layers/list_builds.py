@@ -15,7 +15,7 @@ def list_builds(cb, config):
     
 if __name__=="__main__":
     try:
-        from pareto2.scripts import load_config
+        from pareto2.cli import load_config
         config=load_config()
         cb=boto3.client("codebuild")
         list_builds(cb, config)

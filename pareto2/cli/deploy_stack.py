@@ -1,9 +1,9 @@
 from pareto2.cdk.metadata import Metadata
 from pareto2.cdk.template import Template
 
-from pareto2.scripts.deploy.models.lambdas import Lambdas
-from pareto2.scripts.deploy.models.layers import Layers
-from pareto2.scripts.deploy.models.parameters import Parameters
+from pareto2.cli.deploy.models.lambdas import Lambdas
+from pareto2.cli.deploy.models.layers import Layers
+from pareto2.cli.deploy.models.parameters import Parameters
 
 from botocore.exceptions import ClientError, WaiterError
 
@@ -50,7 +50,7 @@ if __name__=="__main__":
         print ("initialising/validating metadata")
         from datetime import datetime
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        from pareto2.scripts import load_config
+        from pareto2.cli import load_config
         config=load_config()
         md=Metadata.initialise(stagename)
         md.validate().expand()

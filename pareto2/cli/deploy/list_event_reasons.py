@@ -31,7 +31,7 @@ if __name__=="__main__":
         if not re.search("^\\d+$", n):
             raise RuntimeError("n is invalid")
         n=int(n)
-        from pareto2.scripts import load_config
+        from pareto2.cli import load_config
         config=load_config()
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["AppName"],

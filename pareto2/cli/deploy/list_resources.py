@@ -31,7 +31,7 @@ if __name__=="__main__":
         if len(sys.argv) < 3:
             raise RuntimeError("please enter stage, pattern")
         stagename, pattern = sys.argv[1:3]
-        from pareto2.scripts import load_config
+        from pareto2.cli import load_config
         config=load_config()
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["AppName"],
