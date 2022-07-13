@@ -35,7 +35,7 @@ class Parameters(dict):
         
     def render(self):
         return [{"ParameterKey": k,
-                 "ParameterValue": str(v)} # NB CF requires all values as strings
+                 "ParameterValue": str(v)} # NB
                 for k, v in self.items()]
 
 def deploy_stack(cf, config, params, template):
@@ -46,7 +46,6 @@ def deploy_stack(cf, config, params, template):
     stackname="%s-%s" % (config["AppName"],
                          config["StageName"])
     action="update" if stack_exists(stackname) else "create"
-    
     fn=getattr(cf, "%s_stack" % action)
     url=template.url(config["ArtifactsBucket"])
     fn(StackName=stackname,

@@ -1,13 +1,12 @@
 ### short
 
-- change deployent to use template body rather than template URL
-- remove template URL code 
-
-- build_artifacts needs to test lambdas
-- build_artifacts needs to push lambdas to s3
-
 - add template code to populate default parameters
 - modify validation code so doesn't have to involve defaults 
+
+- how to capture unittest errors
+- build_artifacts to test lambdas
+- build_artifacts to push lambdas to s3
+- deploy_stack to push template to s3
 
 - move deployment script into cli
 
@@ -41,6 +40,8 @@
 
 ### thoughts
 
+- change deployent to use template body rather than template URL ?
+  - problem is max of 51.2k bytes
 - codebuild project ?
   - not sure it's a core component, more like a something one- off
 - check metadata components can be optional ?
