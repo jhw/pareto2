@@ -1,5 +1,6 @@
 ### short
 
+- move lambdas inline
 - build_artifacts needs to test lambdas
 - build_artifacts needs to push lambdas to s3
 - simplify layer code in deploy_stack.py

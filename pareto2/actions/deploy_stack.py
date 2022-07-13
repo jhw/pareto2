@@ -1,13 +1,13 @@
 from pareto2.core.template import Template
 from pareto2.core.metadata import Metadata
 
-from pareto2.actions.lambdas import Lambdas
+from pareto2.cli import hungarorise
 
 from botocore.exceptions import ClientError, WaiterError
 
-import boto3, json, os, sys
+from pareto2.cli import load_config
 
-from pareto2.cli import hungarorise
+import boto3, json, os, sys
 
 class Layers(list):
 
@@ -78,14 +78,12 @@ if __name__=="__main__":
         if not os.path.exists(filename):
             raise RuntimeError("file does not exist")
         template=Template(items=json.loads(open(filename).read()))
-        from pareto2.cli import load_config
         config=load_config()
         md=Metadata.initialise(stagename)
-        timestamp="-".join(filename.split(".")[0].split("-")[1:])
-        lambdas=Lambdas.initialise(md=md,
-                                   timestamp=timestamp)
+        timestamp="-".join(filename.split(".")[0].split("-")[-6:])
+        artifactskey="lambdas-%s.zip" % timestamp
         config.update({"StageName": stagename,
-                       "ArtifactsKey": lambdas.s3_key_zip})
+                       "ArtifactsKey": artifactskey})
         layers=Layers.initialise(md)
         params=Parameters.initialise([config,
                                       layers.parameters])

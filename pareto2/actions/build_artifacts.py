@@ -4,7 +4,10 @@ from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
 from pareto2.actions.lambdas import Lambdas
-from pareto2.actions.layers import Layers
+
+from datetime import datetime
+
+from pareto2.cli import load_config
 
 import os, sys
 
@@ -16,21 +19,15 @@ if __name__=="__main__":
             raise RuntimeError("please enter stage")
         stagename=sys.argv[1]
         # initialising/validating metadata
-        from datetime import datetime
-        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        from pareto2.cli import load_config
         config=load_config()
         md=Metadata.initialise(stagename)
         md.validate().expand()
         # initialising/validating lambdas
+        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         lambdas=Lambdas.initialise(md=md,
                                    timestamp=timestamp)
         lambdas.validate()
         lambdas.dump_zip()
-        config.update({"StageName": stagename,
-                       "ArtifactsKey": lambdas.s3_key_zip})
-        # initialising/validating layers
-        layers=Layers.initialise(md)
         # initialising/validating template
         template=init_template(md,
                                name="main",
