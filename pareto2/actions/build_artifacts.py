@@ -1,12 +1,7 @@
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
-
 from pareto2.actions.lambdas import Lambdas
 from pareto2.actions.layers import Layers
-
-from botocore.exceptions import ClientError, WaiterError
-
-import boto3, yaml
 
 if __name__=="__main__":
     try:
@@ -31,7 +26,6 @@ if __name__=="__main__":
         config.update({"StageName": stagename,
                        "ArtifactsKey": lambdas.s3_key_zip})
         # initialising/validating layers
-        s3=boto3.client("s3")
         layers=Layers.initialise(md)
         # initialising/validating template
         from pareto2.core import init_template
@@ -43,8 +37,5 @@ if __name__=="__main__":
         template.validate_root()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
-    except ClientError as error:
-        print ("Error: %s" % str(error))
-    except WaiterError as error:
-        print ("Error: %s" % str(error))
+
 
