@@ -15,20 +15,10 @@ def init_eventbus(router):
             "AWS::Events::EventBus",
             props)
 
-@resource
-def init_discoverer(router):
-    resourcename=H("%s-router-discoverer" % router["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-router-event-bus" % router["name"]), "Arn"]}
-    props={"SourceArn": sourcearn}
-    return (resourcename, 
-            "AWS::EventSchemas::Discoverer",
-            props)
-
 def init_resources(md):
     resources=[]
     for router in md.routers:
-        for fn in [init_eventbus,
-                   init_discoverer]:
+        for fn in [init_eventbus]:
             resource=fn(router)
             resources.append(resource)
     return dict(resources)

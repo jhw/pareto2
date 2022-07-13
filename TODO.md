@@ -1,6 +1,5 @@
 ### short
 
-- remove eventbridge message analyzer
 - add pattern matching utility
 - raise error if events pattern is not a dict
 - scripts/deploy/redeploy_api.py will fail
@@ -75,6 +74,7 @@
 
 ### done
 
+- remove eventbridge message analyzer
 - add back setenv.sh
 - check where setenv has gone
 - stuff doesn't get produced if `-dashboard` suffix not specified
