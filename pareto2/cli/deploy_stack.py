@@ -1,9 +1,9 @@
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
-from pareto2.cli.deploy.models.lambdas import Lambdas
-from pareto2.cli.deploy.models.layers import Layers
-from pareto2.cli.deploy.models.parameters import Parameters
+from pareto2.cli.models.lambdas import Lambdas
+from pareto2.cli.models.layers import Layers
+from pareto2.cli.models.parameters import Parameters
 
 from botocore.exceptions import ClientError, WaiterError
 
