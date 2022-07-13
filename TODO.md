@@ -1,12 +1,33 @@
 ### short
 
-- check where setenv has gone
+- remove eventbridge message analyzer
+- add pattern matching utility
+- raise error if events pattern is not a dict
+- scripts/deploy/redeploy_api.py will fail
+  - check all scripts which rely on outputs
+
+- rename packages as pareto.core, pareto.cli
+- check metadata components can be optional
+- token api example/support
+- codebuild project
 
 ### medium
 
-### long
+- move layer stuff into separate management stack
 
-- layer management app
+- split pareto into pareto.core and pareto.cli
+- refactor cli stuff
+  - push method which 
+    - runs tests
+	- pushes to s3
+	- creates self- contained templae
+  - deploy method
+
+- test codebuild notification capabilities
+- test cloudformation pushing errors to eventbridge
+- new pareto.ci
+
+### long [features]
 
 - metadata schema
 - eventbridge lambda destination
@@ -14,9 +35,7 @@
 - eventbridge urls
 - s3 sync error handling
 - lambda alarms
-- api w/ key access
 - aws chat
-
 - iam role lockdown
 - step functions
 - appsync + graphql
@@ -56,6 +75,8 @@
 
 ### done
 
+- add back setenv.sh
+- check where setenv has gone
 - stuff doesn't get produced if `-dashboard` suffix not specified
 - remove types from names
 - errors queue can't have its own dlq
