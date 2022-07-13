@@ -1,14 +1,11 @@
 ### short
 
-- add template code to populate default parameters
-- modify validation code so doesn't have to involve defaults 
-
-- how to capture unittest errors
-- build_artifacts to test lambdas
+- populate template defaults
+- assert every template param has a default value
+- avoid hardcoding paths in build_artifacts
 - build_artifacts to push lambdas to s3
-- deploy_stack to push template to s3
-
-- move deployment script into cli
+- build_artifacts to push template to s3
+- check deploy_stack creates template with correct URL (timestamp)
 
 ### medium
 
@@ -78,6 +75,9 @@
 
 ### done
 
+- move deployment script into cli
+- how to capture unittest errors
+- build_artifacts to test lambdas
 - simplify layer code in deploy_stack.py by reference to md.layers
 - move lambdas inline
 - remove template generation, template validation, lambda test, lambda push from deployent script 

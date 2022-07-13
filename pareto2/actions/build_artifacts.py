@@ -3,11 +3,39 @@ from pareto2.core import init_template
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
+from pareto2.cli import hungarorise
+
 from datetime import datetime
 
 from pareto2.cli import load_config
 
-import os, sys, zipfile
+import importlib, inspect, os, sys, unittest, zipfile
+
+def filter_tests(root=os.environ["APP_ROOT"]):
+    classes=[]
+    for parent, _, itemnames in os.walk(root):
+        if "__pycache__" in parent:
+            continue
+        for itemname in itemnames:
+            if (not itemname.endswith(".py") or
+                itemname=="index.py"):
+                continue
+            modname="%s.%s" % (parent.replace("/", "."),
+                               itemname.split(".")[0])
+            mod=importlib.import_module(modname)
+            classes+=[obj for name, obj in inspect.getmembers(mod, inspect.isclass)
+                      if name.endswith("Test")]
+    return classes
+
+def run_tests(tests):
+    suite=unittest.TestSuite()
+    for test in tests:
+        suite.addTest(unittest.makeSuite(test))
+    runner=unittest.TextTestRunner()
+    result=runner.run(suite)
+    if (result.errors!=[] or
+        result.failures!=[]):
+        raise RuntimeError("unit tests failed")
 
 class Lambdas(list):
 
@@ -77,10 +105,11 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stage")
         stagename=sys.argv[1]
-        # initialising/validating metadata
         config=load_config()
         md=Metadata.initialise(stagename)
         md.validate().expand()
+        # run unit tests
+        run_tests(filter_tests())
         # initialising/validating lambdas
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         lambdas=Lambdas.initialise(md=md,
@@ -91,9 +120,29 @@ if __name__=="__main__":
         template=init_template(md,
                                name="main",
                                timestamp=timestamp)
-        print ("dumping to %s" % template.filename_json)
         template.dump_json(template.filename_json)
         template.validate_root()
+        # collect parameters
+        artifactskey="lambdas-%s.zip" % timestamp
+        config.update({"StageName": stagename,
+                       "ArtifactsKey": artifactskey})
+        layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
+                     for pkgname in md.actions.packages}
+        config.update(layerparams)
+        print (config)        
+        """
+        s3=boto3.client("s3")
+        print ("pushing lambdas -> %s" % lambdas.s3_key_zip)
+        s3.upload_file(Filename=lambdas.filename_zip,
+                       Bucket=config["ArtifactsBucket"],
+                       Key=lambdas.s3_key_zip,
+                       ExtraArgs={'ContentType': 'application/zip'})
+        print ("pushing template -> %s" % template.s3_key_json)
+        s3.put_object(Bucket=config["ArtifactsBucket"],
+                      Key=template.s3_key_json,
+                      Body=template.to_json(),
+                      ContentType="application/json")
+        """
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 
