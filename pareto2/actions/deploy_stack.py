@@ -1,4 +1,5 @@
 from pareto2.core.template import Template
+from pareto2.core.metadata import Metadata
 
 from pareto2.actions.lambdas import Lambdas
 from pareto2.actions.layers import Layers
@@ -62,10 +63,15 @@ if __name__=="__main__":
         if not os.path.exists(filename):
             raise RuntimeError("file does not exist")
         template=Template(items=json.loads(open(filename).read()))
-        """        
+        from pareto2.cli import load_config
+        config=load_config()
+        md=Metadata.initialise(stagename)
+        layers=Layers.initialise(md)
         params=Parameters.initialise([config,
                                       layers.parameters])
         params.validate(template)
+        print (params)
+        """
         cf=boto3.client("cloudformation")
         print ("pushing lambdas -> %s" % lambdas.s3_key_zip)
         s3.upload_file(Filename=lambdas.filename_zip,
