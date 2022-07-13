@@ -123,9 +123,8 @@ if __name__=="__main__":
         template.dump_json(template.filename_json)
         template.validate_root()
         # collect parameters
-        artifactskey="lambdas-%s.zip" % timestamp
         config.update({"StageName": stagename,
-                       "ArtifactsKey": artifactskey})
+                       "ArtifactsKey": lambdas.s3_key_zip})
         layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
                      for pkgname in md.actions.packages}
         config.update(layerparams)
