@@ -1,13 +1,12 @@
 ### short
 
-- populate template defaults
-- assert every template param has a default value
 - build_artifacts to push lambdas to s3
 - build_artifacts to push template to s3
 - check deploy_stack creates template with correct URL (timestamp)
 
 ### medium
 
+- template should really have separate Parameter/Resource/Output classes
 - remove _json suffix from filename, dumping
 - add error type to actions (destination/dlq)
 - add dlq support to actions
@@ -74,6 +73,8 @@
 
 ### done
 
+- populate template defaults
+- assert every template param has a default value
 - avoid hardcoding paths in build_artifacts
 - move deployment script into cli
 - how to capture unittest errors

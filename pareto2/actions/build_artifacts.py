@@ -116,19 +116,23 @@ if __name__=="__main__":
                                    timestamp=timestamp)
         lambdas.validate()
         lambdas.dump_zip()
-        # initialising/validating template
+        # initialising template
         template=init_template(md,
                                name="main",
                                timestamp=timestamp)
-        template.dump_json(template.filename_json)
-        template.validate_root()
-        # collect parameters
+        # updating template with env parameters
         config.update({"StageName": stagename,
                        "ArtifactsKey": lambdas.s3_key_zip})
         layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
                      for pkgname in md.actions.packages}
         config.update(layerparams)
-        print (config)        
+        template.update_parameter_defaults(config)
+        if not template.are_parameters_complete:
+            raise RuntimeError("template is not complete")
+        # dump, validate template
+        print ("dumping to %s" % template.filename_json)
+        template.dump_json(template.filename_json)
+        template.validate_root()
         """
         s3=boto3.client("s3")
         print ("pushing lambdas -> %s" % lambdas.s3_key_zip)
