@@ -1,16 +1,21 @@
 ### short
 
-- add pattern matching utility
 - raise error if events pattern is not a dict
 - scripts/deploy/redeploy_api.py will fail
   - check all scripts which rely on outputs
 
+- remove errors restriction on actions bound to queues
+- add error type to actions (destination/dlq)
+- add dlq support to actions
+
 - rename packages as pareto.core, pareto.cli
 - check metadata components can be optional
-- token api example/support
-- codebuild project
+
 
 ### medium
+
+- token api example/support
+- codebuild project
 
 - move layer stuff into separate management stack
 
@@ -74,6 +79,7 @@
 
 ### done
 
+- add pattern matching utility
 - remove eventbridge message analyzer
 - add back setenv.sh
 - check where setenv has gone
