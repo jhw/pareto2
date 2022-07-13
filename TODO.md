@@ -1,5 +1,8 @@
 ### short
 
+- run_tests.py no longer finding any lambdas
+- remove _json suffix from filename, dumping
+
 ### medium
 
 - add error type to actions (destination/dlq)

@@ -74,7 +74,7 @@ if __name__=="__main__":
         print ()
         print (yaml.safe_dump(template.metrics,
                               default_flow_style=False))
-        template.dump_yaml(template.filename_yaml)
+        template.dump_json(template.filename_json)
         template.validate_root()
         params=Parameters.initialise([config,
                                       layers.parameters])

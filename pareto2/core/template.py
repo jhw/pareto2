@@ -218,31 +218,5 @@ class Template(dict):
         with open(filename, "w") as f:
             f.write(self.to_json())
 
-    """
-    - yaml renderers for local dumps
-    """
-
-    @property
-    def s3_key_yaml(self):
-        return "%s-%s.yaml" % (self.name,
-                               self.timestamp)
-
-    """
-    - json conversion as simple way to clean out classes which pyyaml can't represent
-    """
-    
-    def to_yaml(self):
-        return yaml.safe_dump(json.loads(json.dumps(self)),
-                              default_flow_style=False)
-
-    @property
-    def filename_yaml(self):
-        return "tmp/%s-%s.yaml" % (self.name,
-                                   self.timestamp)
-            
-    def dump_yaml(self, filename):
-        with open(filename, "w") as f:
-            f.write(self.to_yaml())
-        
 if __name__=="__main__":
     pass
