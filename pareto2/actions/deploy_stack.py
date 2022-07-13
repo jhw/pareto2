@@ -1,13 +1,40 @@
-from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
 from pareto2.actions.lambdas import Lambdas
 from pareto2.actions.layers import Layers
-from pareto2.actions.parameters import Parameters
 
 from botocore.exceptions import ClientError, WaiterError
 
-import boto3, yaml
+import boto3, json, os, sys
+
+class Parameters(dict):
+
+    @classmethod
+    def initialise(self, items):
+        params=Parameters()
+        for item in items:
+            params.update(item)
+        return params
+    
+    def __init__(self, items={}):
+        dict.__init__(self, items)
+
+    def validate(self, template):
+        errors=[]
+        for paramname in self:
+            if paramname not in template["Parameters"]:
+                errors.append("unknown parameter %s" % paramname)
+        for paramname, param in template["Parameters"].items():
+            if ("Default" not in param and
+                paramname not in self):
+                errors.append("missing parameter %s" % paramname)
+        if errors!=[]:
+            raise RuntimeError("; ".join(errors))
+        
+    def render(self):
+        return [{"ParameterKey": k,
+                 "ParameterValue": str(v)} # NB CF requires all values as strings
+                for k, v in self.items()]
 
 def deploy_stack(cf, config, params, template):
     def stack_exists(stackname):
@@ -29,40 +56,13 @@ def deploy_stack(cf, config, params, template):
 
 if __name__=="__main__":
     try:
-        import os, sys
-        if not os.path.exists("tmp"):
-            os.mkdir("tmp")
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter deploy stage")
-        stagename=sys.argv[1]
-        print ("initialising/validating metadata")
-        from datetime import datetime
-        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        from pareto2.cli import load_config
-        config=load_config()
-        md=Metadata.initialise(stagename)
-        md.validate().expand()
-        print ("initialising/validating lambdas")
-        lambdas=Lambdas.initialise(md=md,
-                                   timestamp=timestamp)
-        lambdas.validate()
-        lambdas.dump_zip()
-        config.update({"StageName": stagename,
-                       "ArtifactsKey": lambdas.s3_key_zip})
-        print ("initialising/validating layers")
-        s3=boto3.client("s3")
-        layers=Layers.initialise(md)
-        print ("initialising/validating template")
-        from pareto2.core import init_template
-        template=init_template(md,
-                               name="main",
-                               timestamp=timestamp)
-
-        print ()
-        print (yaml.safe_dump(template.metrics,
-                              default_flow_style=False))
-        template.dump_json(template.filename_json)
-        template.validate_root()
+        if len(sys.argv) < 3:
+            raise RuntimeError("please enter stage, template")
+        stagename, filename = sys.argv[1:3]
+        if not os.path.exists(filename):
+            raise RuntimeError("file does not exist")
+        template=Template(items=json.loads(open(filename).read()))
+        """        
         params=Parameters.initialise([config,
                                       layers.parameters])
         params.validate(template)
@@ -82,6 +82,7 @@ if __name__=="__main__":
                      params=params,
                      template=template,
                      cf=cf)
+        """
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:

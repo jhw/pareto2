@@ -1,5 +1,8 @@
 ### short
 
+- build_artifacts needs to test lambdas
+- move parameters inline into deployment
+
 - remove all layer related code from pareto deploy 
 - create artifacts to dump output file name
 - check a Template can be initialised from a JSON struct

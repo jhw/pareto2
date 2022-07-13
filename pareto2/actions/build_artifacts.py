@@ -1,15 +1,19 @@
+from pareto2.core import init_template
+
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
+
 from pareto2.actions.lambdas import Lambdas
 from pareto2.actions.layers import Layers
 
+import os, sys
+
 if __name__=="__main__":
     try:
-        import os, sys
         if not os.path.exists("tmp"):
             os.mkdir("tmp")
         if len(sys.argv) < 2:
-            raise RuntimeError("please enter deploy stage")
+            raise RuntimeError("please enter stage")
         stagename=sys.argv[1]
         # initialising/validating metadata
         from datetime import datetime
@@ -28,7 +32,6 @@ if __name__=="__main__":
         # initialising/validating layers
         layers=Layers.initialise(md)
         # initialising/validating template
-        from pareto2.core import init_template
         template=init_template(md,
                                name="main",
                                timestamp=timestamp)
