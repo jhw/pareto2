@@ -1,13 +1,11 @@
 ### short
 
-- codebuild project
-
 ### medium
 
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 - token api example/support
-- layer management application
+- layer management application [notes]
 - refactor cli api
   - combine lambda test/push, template generation/validation into single step
   - embed all variables in template
@@ -31,6 +29,8 @@
 
 ### thoughts
 
+- codebuild project ?
+  - not sure it's a core component, more like a something one- off
 - check metadata components can be optional ?
   - not really possible with current metadata structure which uses objects
   - not even sure is really desirable; may be better to explicitly all keys but then allow them to be empty lists
