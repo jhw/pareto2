@@ -1,6 +1,5 @@
 ### short
 
-- run_tests.py no longer finding any lambdas
 - remove _json suffix from filename, dumping
 
 ### medium
@@ -68,6 +67,7 @@
 
 ### done
 
+- run_tests.py no longer finding any lambdas
 - move test into pareto core
 - remove errors restriction on actions bound to queues
 - rename packages as pareto.core, pareto.cli
