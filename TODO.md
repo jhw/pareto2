@@ -1,7 +1,5 @@
 ### short
 
-- move test into pareto core
-
 - codebuild project
 
 ### medium
@@ -67,6 +65,7 @@
 
 ### done
 
+- move test into pareto core
 - remove errors restriction on actions bound to queues
 - rename packages as pareto.core, pareto.cli
 - scripts/deploy/redeploy_api.py will fail
