@@ -1,14 +1,13 @@
 ### short
 
-- simplify layer code in deploy_stack.py by reference to md.layers
+- change deployent to use template body rather than template URL
+- remove template URL code 
+
 - build_artifacts needs to test lambdas
 - build_artifacts needs to push lambdas to s3
 
 - add template code to populate default parameters
 - modify validation code so doesn't have to involve defaults 
-
-- change deployent to use template body rather than template URL
-- remove template URL code 
 
 - move deployment script into cli
 
@@ -78,6 +77,7 @@
 
 ### done
 
+- simplify layer code in deploy_stack.py by reference to md.layers
 - move lambdas inline
 - remove template generation, template validation, lambda test, lambda push from deployent script 
 - change deploy stack to ask for filename and create template

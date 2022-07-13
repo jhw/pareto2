@@ -9,20 +9,6 @@ from pareto2.cli import load_config
 
 import boto3, json, os, sys
 
-class Layers(list):
-
-    @classmethod
-    def initialise(self, md):
-        return Layers(md.actions.packages)
-    
-    def __init__(self, items=[]):
-        list.__init__(self, items)
-
-    @property
-    def parameters(self):
-        return {hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
-                for pkgname in self}
-
 class Parameters(dict):
 
     @classmethod
@@ -84,9 +70,10 @@ if __name__=="__main__":
         artifactskey="lambdas-%s.zip" % timestamp
         config.update({"StageName": stagename,
                        "ArtifactsKey": artifactskey})
-        layers=Layers.initialise(md)
+        layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
+                     for pkgname in md.actions.packages}
         params=Parameters.initialise([config,
-                                      layers.parameters])
+                                      layerparams])
         params.validate(template)
         print (params)
         """
