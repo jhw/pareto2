@@ -1,27 +1,22 @@
 ### short
 
-- add error type to actions (destination/dlq)
-- add dlq support to actions
-- check metadata components can be optional
+- move test into pareto core
+
+- codebuild project
 
 ### medium
 
+- add error type to actions (destination/dlq)
+- add dlq support to actions
 - token api example/support
-- codebuild project
-
-- move layer stuff into separate management stack
-
-- split pareto into pareto.core and pareto.cli
-- refactor cli stuff
-  - push method which 
-    - runs tests
-	- pushes to s3
-	- creates self- contained templae
-  - deploy method
-
-- test codebuild notification capabilities
-- test cloudformation pushing errors to eventbridge
-- new pareto.ci
+- layer management application
+- refactor cli api
+  - combine lambda test/push, template generation/validation into single step
+  - embed all variables in template
+  - simple deployment stack
+- test codebuild notification handling (CI pipeline)
+- test cloudformation remote error handling
+- pareto.ci
 
 ### long [features]
 
@@ -38,8 +33,9 @@
 
 ### thoughts
 
-- check output values still match references in scripts ?
-  - not worth it
+- check metadata components can be optional ?
+  - not really possible with current metadata structure which uses objects
+  - not even sure is really desirable; may be better to explicitly all keys but then allow them to be empty lists
 - flatten nested config items where possible ?
   - no real need if no metadata schema, and possibly not even then
 - dashboard should not require specification ?
