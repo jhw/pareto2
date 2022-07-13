@@ -1,12 +1,12 @@
 ### short
 
+- rename packages as pareto.core, pareto.cli
+
 - remove errors restriction on actions bound to queues
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 
-- rename packages as pareto.core, pareto.cli
 - check metadata components can be optional
-
 
 ### medium
 
