@@ -1,7 +1,5 @@
 ### short
 
-- rename packages as pareto.core, pareto.cli
-
 - remove errors restriction on actions bound to queues
 - add error type to actions (destination/dlq)
 - add dlq support to actions
@@ -75,6 +73,7 @@
 
 ### done
 
+- rename packages as pareto.core, pareto.cli
 - scripts/deploy/redeploy_api.py will fail
   - check all scripts which rely on outputs
 - raise error if events pattern is not a dict

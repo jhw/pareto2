@@ -1,5 +1,5 @@
-from pareto2.cdk.metadata import Metadata
-from pareto2.cdk.template import Template
+from pareto2.core.metadata import Metadata
+from pareto2.core.template import Template
 
 from pareto2.cli.deploy.models.lambdas import Lambdas
 from pareto2.cli.deploy.models.layers import Layers
@@ -67,7 +67,7 @@ if __name__=="__main__":
         if has_internet():
             layers.validate(s3, config)
         print ("initialising/validating template")
-        from pareto2.cdk import init_template
+        from pareto2.core import init_template
         template=init_template(md,
                                name="main",
                                timestamp=timestamp)

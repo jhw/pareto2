@@ -1,4 +1,4 @@
-from pareto2.cdk.template import Template
+from pareto2.core.template import Template
 
 from importlib import import_module
 
@@ -18,7 +18,7 @@ class Defaults(dict):
     def __init__(self, items={}):
         dict.__init__(self, items)
 
-def init_components(home="pareto2/cdk/components"):
+def init_components(home="pareto2/core/components"):
     components={}
     for filename in os.listdir(home):
         if ("__init__" in filename or
@@ -50,7 +50,7 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
-        from pareto2.cdk.metadata import Metadata
+        from pareto2.core.metadata import Metadata
         md=Metadata.initialise(stagename)
         md.validate()
         template=init_template(md)

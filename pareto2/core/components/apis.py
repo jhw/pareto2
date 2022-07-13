@@ -6,8 +6,8 @@
 - much less confidence about this on the YAML side; but if you ever do need to try and ensure compliance between local and remote YAML parsers, try ruamel.yaml in place of pyyaml
 """
 
-from pareto2.cdk.components import hungarorise as H
-from pareto2.cdk.components import resource
+from pareto2.core.components import hungarorise as H
+from pareto2.core.components import resource
 
 import json, yaml
 
@@ -305,9 +305,9 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stagename")
         stagename=sys.argv[1]
-        from pareto2.cdk.template import Template
+        from pareto2.core.template import Template
         template=Template("api")
-        from pareto2.cdk.metadata import Metadata
+        from pareto2.core.metadata import Metadata
         md=Metadata.initialise(stagename)        
         md.validate().expand()
         update_template(template, md)
