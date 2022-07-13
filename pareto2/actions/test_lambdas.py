@@ -5,7 +5,6 @@ import importlib, inspect, os, unittest
 def filter_tests(root=os.environ["APP_ROOT"]):
     classes=[]
     for parent, _, itemnames in os.walk(root):
-        print (parent, itemnames)
         if "__pycache__" in parent:
             continue
         for itemname in itemnames:

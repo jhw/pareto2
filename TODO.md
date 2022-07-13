@@ -1,9 +1,27 @@
 ### short
 
-- remove _json suffix from filename, dumping
+- split deploy stack into two scripts, create artifacts and deploy stack
+- remove stuff below flag in create artifacts
+- remove flag from deploy stack
+
+- remove all layer related code from pareto deploy 
+- create artifacts to dump output file name
+- check a Template can be initialised from a JSON struct
+- change deploy stack to ask for filename and create template
+-remove template generation, template validation, lambda test, lambda push from deployent script 
+
+- check how template references lambda deployables
+- add template code to populate default parameters
+- modify validation code so doesn't have to involve defaults 
+
+- change deployent to use template body rather than template URL
+- remove template URL code 
+
+- move deployment script into cli
 
 ### medium
 
+- remove _json suffix from filename, dumping
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 - token api example/support
@@ -67,6 +85,9 @@
 
 ### done
 
+- move deployment related code into pareto deploy 
+- flatten both pareto deploy and pareto cli
+- consider renaming pareto deploy as pareto actions 
 - run_tests.py no longer finding any lambdas
 - move test into pareto core
 - remove errors restriction on actions bound to queues
