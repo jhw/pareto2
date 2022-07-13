@@ -1,9 +1,8 @@
 ### short
 
-- move lambdas inline
+- simplify layer code in deploy_stack.py by reference to md.layers
 - build_artifacts needs to test lambdas
 - build_artifacts needs to push lambdas to s3
-- simplify layer code in deploy_stack.py
 
 - add template code to populate default parameters
 - modify validation code so doesn't have to involve defaults 
@@ -79,6 +78,7 @@
 
 ### done
 
+- move lambdas inline
 - remove template generation, template validation, lambda test, lambda push from deployent script 
 - change deploy stack to ask for filename and create template
 - create artifacts to dump output file name
