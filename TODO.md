@@ -1,6 +1,7 @@
 ### short
 
-- separate template Parameter/Resource/Output classes
+- simplify (template) autofill_parameters with Parameter class
+- Template shouldn't extend dict but should then have a render method
 - remove _json suffix from filename, dumping
 
 ### medium
@@ -68,6 +69,7 @@
 
 ### done
 
+- separate template Parameter/Resource/Output classes
 - refactor cli api
   - combine lambda test/push, template generation/validation into single step
   - embed all variables in template

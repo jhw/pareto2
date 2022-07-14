@@ -11,95 +11,18 @@ StageName:
   Type: String
 """)
 
-class Parameters(dict):
+class Component(dict):
 
-    def __init__(self, items=DefaultParameters):
-        dict.__init__(self, items)
-
-    def update_defaults(self, params):
-        for k, v in params.items():
-            if k in self:
-                self[k]["Default"]=str(v)
-
-    @property
-    def is_complete(self):
-        for v in self.values():
-            if "Default" not in v:
-                return False
-        return True
-        
-class Resources(dict):
-
-    def __init__(self, items={}):
-        dict.__init__(self, items)
-
-class Outputs(dict):
-
-    def __init__(self, items={}):
-        dict.__init__(self, items)
-    
-class Template(dict):
-
-    def __init__(self,
-                 name="template",
-                 timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
-                 items={}):
-        dict.__init__(self, items)
-        self.name=name
-        self.timestamp=timestamp
-        self["AWSTemplateFormatVersion"]="2010-09-09"        
-        for attr in ["Parameters",
-                     "Resources",
-                     "Outputs"]:
-            klass=eval(attr)
-            self.setdefault(attr, klass())
-
-    def init_parameters(self, types={}):
-        def param_type(value):
-            return "Number" if (isinstance(value, int) or
-                                re.search("^\\d+$", str(value))) else "String"
-        def render_param(value):
-            param={"Type": param_type(value)}
-            if value:
-                param["Default"]=value
-            return param
-        def init_param(id, types):
-            return render_param(types[id] if id in types else None)
-        return {id: init_param(id, types)
-                for id in self.inferred_parameter_ids}
-
-    def autofill_parameters(self,
-                            types={}):
-        self["Parameters"].update(self.init_parameters(types))
-        
-    """
-    - what parameters does a template need, because a resource is referenced within the resources block, but that same resource isn't declared locally; ie needs to be imported ?
-    - note that method doesn't look at existing parameters; is a theoretical ("inferred") construct
-    """
-    
-    @property
-    def inferred_parameter_ids(self):
-        refs, ids = self.resource_refs, self.resource_ids
-        return sorted([ref for ref in refs
-                       if ref not in ids])
-    
-    @property
-    def resource_refs(self):
-        refs=set()
-        refs.update(set(self.nested_refs(["Resources"])))
-        refs.update(set(self.inline_refs(["Resources"])))
-        return sorted(list(refs))
-
-    @property
-    def output_refs(self):
-        return self.nested_refs(["Outputs"])
+    def __init__(self, item={}):
+        dict.__init__(self, item)
 
     """
     - /\\$\\{\\w+\\}/ will exclude double- colon expressions such as `AWS::Region`
     - lowercase check is to remove any local expressions used in Fn::Sub
     """
-    
-    def inline_refs(self, attrs):
+
+    @property
+    def inline_refs(self):
         def filter_exprs(text):
             return [tok[2:-1]
                     for tok in re.findall("\\$\\{\\w+\\}", text)
@@ -118,11 +41,11 @@ class Template(dict):
                     else:
                         filter_refs(subelement, refs)
         refs=set()
-        for attr in attrs:
-            filter_refs(self[attr], refs)
+        filter_refs(self, refs)
         return list(refs)
-    
-    def nested_refs(self, attrs):
+
+    @property
+    def nested_refs(self):
         def is_ref(key, element):
             return (key=="Ref" and
                     type(element)==str and
@@ -152,32 +75,95 @@ class Template(dict):
                     else:
                         filter_refs(subelement, refs)
         refs=set()
-        for attr in attrs:
-            filter_refs(self[attr], refs)
+        filter_refs(self, refs)
         return list(refs)
 
     @property
-    def parameter_ids(self):
-        return sorted(self.required_parameter_ids+self.optional_parameter_ids)
+    def refs(self):
+        refs=set()
+        for _refs in [self.nested_refs,
+                      self.inline_refs]:            
+            refs.update(set(_refs))
+        return sorted(list(refs))
+
+    @property
+    def ids(self):
+        return sorted(list(self.keys()))
+    
+class Parameters(Component):
+
+    def __init__(self, item=DefaultParameters):
+        Component.__init__(self, item)
+
+    def update_defaults(self, params):
+        for k, v in params.items():
+            if k in self:
+                self[k]["Default"]=str(v)
+
+    @property
+    def is_complete(self):
+        for v in self.values():
+            if "Default" not in v:
+                return False
+        return True
+        
+class Resources(Component):
+
+    def __init__(self, item={}):
+        Component.__init__(self, item)
+
+class Outputs(Component):
+
+    def __init__(self, item={}):
+        Component.__init__(self, item)
+    
+class Template(dict):
+
+    def __init__(self,
+                 name="template",
+                 timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
+                 items={}):
+        dict.__init__(self, items)
+        self.name=name
+        self.timestamp=timestamp
+        self["AWSTemplateFormatVersion"]="2010-09-09"        
+        for attr in ["Parameters",
+                     "Resources",
+                     "Outputs"]:
+            klass=eval(attr)
+            self.setdefault(attr, klass())
+
+    """
+    - what parameters does a template need, because a resource is referenced within the resources block, but that same resource isn't declared locally; ie needs to be imported ?
+    - note that method doesn't look at existing parameters; is a theoretical ("inferred") construct
+    """
     
     @property
-    def required_parameter_ids(self):
-        return sorted([k for k, v in self["Parameters"].items()
-                       if "Default" not in v])
-
-    @property
-    def optional_parameter_ids(self):
-        return sorted([k for k, v in self["Parameters"].items()
-                       if "Default" in v])
-    
-    @property
-    def resource_ids(self):
-        return sorted(list(self["Resources"].keys()))
-
-    @property
-    def output_ids(self):
-        return sorted(list(self["Outputs"].keys()))
-
+    def inferred_parameter_ids(self):
+        refs, ids = self["Resources"].refs, self["Resources"].ids
+        return sorted([ref for ref in refs
+                       if ref not in ids])
+            
+    def autofill_parameters(self,
+                            types={}):
+        def param_type(value):
+            return "Number" if (isinstance(value, int) or
+                                re.search("^\\d+$", str(value))) else "String"
+        def render_param(value):
+            param={"Type": param_type(value)}
+            if value:
+                param["Default"]=value
+            return param
+        def init_param(id, types):
+            return render_param(types[id] if id in types else None)
+        def init_params(ids, types={}):
+            return {id: init_param(id, types)
+                    for id in ids}
+        ids=self.inferred_parameter_ids
+        params=init_params(ids=ids,
+                           types=types)
+        self["Parameters"].update(params)
+            
     @property
     def metrics(self):
         metrics={k.lower(): len(self[k])
@@ -188,8 +174,8 @@ class Template(dict):
         return metrics
     
     def validate(self, tempkey, errors):
-        ids=self.parameter_ids+self.resource_ids
-        refs=self.resource_refs+self.output_refs
+        ids=self["Parameters"].ids+self["Resources"].ids
+        refs=self["Resources"].refs+self["Outputs"].refs
         for ref in refs:
             if ref not in ids:
                 errors.append("%s %s not defined" % (tempkey, ref))
