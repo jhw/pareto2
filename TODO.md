@@ -1,11 +1,10 @@
 ### short
 
-- some kind of s3 error on stack deployment
+- separate template Parameter/Resource/Output classes
+- remove _json suffix from filename, dumping
 
 ### medium
 
-- separate template Parameter/Resource/Output classes
-- remove _json suffix from filename, dumping
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 - token api example/support
@@ -29,6 +28,8 @@
 
 ### thoughts
 
+- some kind of s3 error on stack deployment ?
+  - replaced py version with sh
 - change deployent to use template body rather than template URL ?
   - problem is max of 51.2k bytes
 - codebuild project ?
