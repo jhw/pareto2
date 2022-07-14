@@ -89,6 +89,25 @@ class Component(dict):
     @property
     def ids(self):
         return sorted(list(self.keys()))
+
+class Parameter:
+
+    def __init__(self, value):
+        self.value=value
+
+    @property
+    def type(self):
+        if (isinstance(self.value, int) or
+            re.search("^\\d+$", str(self.value))):
+            return "Number"
+        else:
+            return "String"
+        
+    def render(self):
+        item={"Type": self.type}
+        if self.value:
+            item["Default"]=self.value
+        return item
     
 class Parameters(Component):
 
@@ -121,11 +140,11 @@ class Template:
 
     def __init__(self,
                  name="template",
+                 version="2010-09-09",
                  timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         self.name=name
+        self.version=version
         self.timestamp=timestamp
-        # self["AWSTemplateFormatVersion"]="2010-09-09"
-        self.version="2010-09-09"
         for attr in ["parameters",
                      "resources",
                      "outputs"]:
@@ -134,33 +153,16 @@ class Template:
 
     """
     - what parameters does a template need, because a resource is referenced within the resources block, but that same resource isn't declared locally; ie needs to be imported ?
-    - note that method doesn't look at existing parameters; is a theoretical ("inferred") construct
     """
-    
-    @property
-    def inferred_parameter_ids(self):
-        refs, ids = self.resources.refs, self.resources.ids
-        return sorted([ref for ref in refs
-                       if ref not in ids])
-            
+                
     def autofill_parameters(self,
-                            types={}):
-        def param_type(value):
-            return "Number" if (isinstance(value, int) or
-                                re.search("^\\d+$", str(value))) else "String"
-        def render_param(value):
-            param={"Type": param_type(value)}
-            if value:
-                param["Default"]=value
-            return param
-        def init_param(id, types):
-            return render_param(types[id] if id in types else None)
-        def init_params(ids, types={}):
-            return {id: init_param(id, types)
-                    for id in ids}
-        ids=self.inferred_parameter_ids
-        params=init_params(ids=ids,
-                           types=types)
+                            defaults={}):
+        refs, ids = self.resources.refs, self.resources.ids
+        keys=sorted([ref for ref in refs
+                     if ref not in ids])
+        params={key: Parameter(defaults[key]
+                               if key in defaults else None).render()
+                for key in keys}
         self.parameters.update(params)
 
     def render(self):
@@ -168,15 +170,6 @@ class Template:
                 "Parameters": self.parameters,
                 "Resources": self.resources,
                 "Outputs": self.outputs}
-    
-    @property
-    def metrics(self):
-        metrics={k.lower(): len(getattr(self, k))
-                 for k in ["parameters",
-                           "resources",
-                           "outputs"]}
-        metrics["size"]=len(json.dumps(self.render()))
-        return metrics
     
     def validate(self, tempkey, errors):
         ids=self.parameters.ids+self.resources.ids
@@ -198,10 +191,6 @@ class Template:
                               bucketname,
                               self.name,
                               self.timestamp)
-
-    """
-    - json renderers for s3
-    """
 
     @property
     def s3_key(self):
