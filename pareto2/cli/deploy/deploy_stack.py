@@ -16,9 +16,11 @@ def deploy_stack(cf, config, template):
     action="update" if stack_exists(stackname) else "create"
     fn=getattr(cf, "%s_stack" % action)
     url=template.url(config["ArtifactsBucket"])
-    fn(StackName=stackname,
-       TemplateURL=url,
-       Capabilities=["CAPABILITY_IAM"])
+    kwargs={"StackName": stackname,
+            "TemplateURL": url,
+            "Capabilities": ["CAPABILITY_IAM"]}
+    print (kwargs)
+    fn(**kwargs)
     waiter=cf.get_waiter("stack_%s_complete" % action)
     waiter.wait(StackName=stackname)
 

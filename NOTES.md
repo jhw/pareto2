@@ -1,3 +1,9 @@
+### deployment 14/07/22
+
+```
+aws cloudformation create-stack --stack-name pareto2-demo-dev --template-url http://s3.eu-west-1.amazonaws.com/pareto2-demo-artifacts/main-2022-07-13-16-32-23.json --capabilities CAPABILITY_NAMED_IAM
+```
+
 ### layer management 07/07/22
 
 - how would a layer management app work ?
