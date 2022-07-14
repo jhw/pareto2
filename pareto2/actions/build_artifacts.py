@@ -126,8 +126,8 @@ if __name__=="__main__":
         layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
                      for pkgname in md.actions.packages}
         config.update(layerparams)
-        template.update_parameter_defaults(config)
-        if not template.are_parameters_complete:
+        template["Parameters"].update_defaults(config)
+        if not template["Parameters"].is_complete:
             raise RuntimeError("template is not complete")
         # dump, validate template
         print ("dumping to %s" % template.filename_json)

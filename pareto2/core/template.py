@@ -16,6 +16,18 @@ class Parameters(dict):
     def __init__(self, items=DefaultParameters):
         dict.__init__(self, items)
 
+    def update_defaults(self, params):
+        for k, v in params.items():
+            if k in self:
+                self[k]["Default"]=str(v)
+
+    @property
+    def is_complete(self):
+        for v in self.values():
+            if "Default" not in v:
+                return False
+        return True
+        
 class Resources(dict):
 
     def __init__(self, items={}):
@@ -59,18 +71,6 @@ class Template(dict):
     def autofill_parameters(self,
                             types={}):
         self["Parameters"].update(self.init_parameters(types))
-
-    def update_parameter_defaults(self, params):
-        for k, v in params.items():
-            if k in self["Parameters"]:
-                self["Parameters"][k]["Default"]=str(v)
-
-    @property
-    def are_parameters_complete(self):
-        for v in self["Parameters"].values():
-            if "Default" not in v:
-                return False
-        return True
         
     """
     - what parameters does a template need, because a resource is referenced within the resources block, but that same resource isn't declared locally; ie needs to be imported ?
