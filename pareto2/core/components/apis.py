@@ -296,8 +296,8 @@ def init_outputs(md):
     return outputs
 
 def update_template(template, md):
-    template["Resources"].update(init_resources(md))
-    template["Outputs"].update(init_outputs(md))
+    template.resources.update(init_resources(md))
+    template.outputs.update(init_outputs(md))
 
 if __name__=="__main__":
     try:

@@ -116,7 +116,7 @@ def init_resources(md):
     return dict(resources)
 
 def update_template(template, md):
-    template["Resources"].update(init_resources(md))
+    template.resources.update(init_resources(md))
 
 if __name__=="__main__":
     try:

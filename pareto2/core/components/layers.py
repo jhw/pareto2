@@ -18,7 +18,7 @@ def init_resources(md):
                  for pkgname in md.actions.packages])
 
 def update_template(template, md):
-    template["Resources"].update(init_resources(md))
+    template.resources.update(init_resources(md))
 
 if __name__=="__main__":
     try:

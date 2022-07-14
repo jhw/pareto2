@@ -117,21 +117,20 @@ class Outputs(Component):
     def __init__(self, item={}):
         Component.__init__(self, item)
     
-class Template(dict):
+class Template:
 
     def __init__(self,
                  name="template",
-                 timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
-                 items={}):
-        dict.__init__(self, items)
+                 timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         self.name=name
         self.timestamp=timestamp
-        self["AWSTemplateFormatVersion"]="2010-09-09"        
-        for attr in ["Parameters",
-                     "Resources",
-                     "Outputs"]:
-            klass=eval(attr)
-            self.setdefault(attr, klass())
+        # self["AWSTemplateFormatVersion"]="2010-09-09"
+        self.version="2010-09-09"
+        for attr in ["parameters",
+                     "resources",
+                     "outputs"]:
+            klass=eval(attr.capitalize())
+            setattr(self, attr, klass())
 
     """
     - what parameters does a template need, because a resource is referenced within the resources block, but that same resource isn't declared locally; ie needs to be imported ?
@@ -140,7 +139,7 @@ class Template(dict):
     
     @property
     def inferred_parameter_ids(self):
-        refs, ids = self["Resources"].refs, self["Resources"].ids
+        refs, ids = self.resources.refs, self.resources.ids
         return sorted([ref for ref in refs
                        if ref not in ids])
             
@@ -162,20 +161,26 @@ class Template(dict):
         ids=self.inferred_parameter_ids
         params=init_params(ids=ids,
                            types=types)
-        self["Parameters"].update(params)
-            
+        self.parameters.update(params)
+
+    def render(self):
+        return {"AWSTemplateFormatVersion": self.version,
+                "Parameters": self.parameters,
+                "Resources": self.resources,
+                "Outputs": self.outputs}
+    
     @property
     def metrics(self):
-        metrics={k.lower(): len(self[k])
-                 for k in ["Parameters",
-                           "Resources",
-                           "Outputs"]}
-        metrics["size"]=len(json.dumps(self))
+        metrics={k.lower(): len(getattr(self, k))
+                 for k in ["parameters",
+                           "resources",
+                           "outputs"]}
+        metrics["size"]=len(json.dumps(self.render()))
         return metrics
     
     def validate(self, tempkey, errors):
-        ids=self["Parameters"].ids+self["Resources"].ids
-        refs=self["Resources"].refs+self["Outputs"].refs
+        ids=self.parameters.ids+self.resources.ids
+        refs=self.resources.refs+self.outputs.refs
         for ref in refs:
             if ref not in ids:
                 errors.append("%s %s not defined" % (tempkey, ref))
@@ -204,7 +209,7 @@ class Template(dict):
                                self.timestamp)
     
     def to_json(self):
-        return json.dumps(self,
+        return json.dumps(self.render(),
                           indent=2)
 
     @property
