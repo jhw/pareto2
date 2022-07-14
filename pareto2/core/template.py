@@ -204,7 +204,7 @@ class Template:
     """
 
     @property
-    def s3_key_json(self):
+    def s3_key(self):
         return "%s-%s.json" % (self.name,
                                self.timestamp)
     
@@ -213,7 +213,7 @@ class Template:
                           indent=2)
 
     @property
-    def filename_json(self):
+    def filename(self):
         return "tmp/%s-%s.json" % (self.name,
                                    self.timestamp)
     

@@ -1,7 +1,6 @@
 ### short
 
 - simplify (template) autofill_parameters with Parameter class
-- remove _json suffix from filename, dumping
 
 ### medium
 
@@ -68,6 +67,7 @@
 
 ### done
 
+- remove _json suffix from filename, dumping
 - Template shouldn't extend dict but should then have a render method
 - separate template Parameter/Resource/Output classes
 - refactor cli api

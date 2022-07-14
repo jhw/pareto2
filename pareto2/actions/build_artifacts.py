@@ -130,8 +130,8 @@ if __name__=="__main__":
         if not template.parameters.is_complete:
             raise RuntimeError("template is not complete")
         # dump, validate template
-        print ("dumping to %s" % template.filename_json)
-        template.dump_json(template.filename_json)
+        print ("dumping to %s" % template.filename)
+        template.dump_json(template.filename)
         template.validate_root()
         s3=boto3.client("s3")
         print ("pushing %s" % lambdas.s3_key_zip)
@@ -139,9 +139,9 @@ if __name__=="__main__":
                        Bucket=config["ArtifactsBucket"],
                        Key=lambdas.s3_key_zip,
                        ExtraArgs={'ContentType': 'application/zip'})
-        print ("pushing %s" % template.s3_key_json)
+        print ("pushing %s" % template.s3_key)
         s3.put_object(Bucket=config["ArtifactsBucket"],
-                      Key=template.s3_key_json,
+                      Key=template.s3_key,
                       Body=template.to_json(),
                       ContentType="application/json")
     except RuntimeError as error:
