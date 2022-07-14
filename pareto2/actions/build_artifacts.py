@@ -131,7 +131,7 @@ if __name__=="__main__":
             raise RuntimeError("template is not complete")
         # dump, validate template
         print ("dumping to %s" % template.filename)
-        template.dump_json(template.filename)
+        template.dump(template.filename)
         template.validate_root()
         s3=boto3.client("s3")
         print ("pushing %s" % lambdas.s3_key_zip)

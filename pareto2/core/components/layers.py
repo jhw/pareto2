@@ -32,7 +32,7 @@ if __name__=="__main__":
         md=Metadata.initialise(stagename)
         md.validate().expand()
         update_template(template, md)
-        template.dump_json(template.filename)
+        template.dump(template.filename)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 
