@@ -114,6 +114,16 @@ class Parameters(Component):
     def __init__(self, item=DefaultParameters):
         Component.__init__(self, item)
 
+    @property
+    def required_keys(self):
+        return [k for k, v in self.items()
+                if "Default" not in v]
+
+    @property
+    def optional_keys(self):
+        return [k for k, v in self.items()
+                if "Default" in v]
+        
     def update_defaults(self, params):
         for k, v in params.items():
             if k in self:

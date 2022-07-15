@@ -123,10 +123,11 @@ if __name__=="__main__":
                      for pkgname in md.actions.packages}
         config.update(layerparams)
         template.parameters.update_defaults(config)
-        """
-        if not template.parameters.is_complete:
-            raise RuntimeError("template is not complete")
-        """
+        required=template.parameters.required_keys
+        if "StageName" not in required:
+            raise RuntimeError("StageName not specified as required key")
+        if len(required)!=1:
+            raise RuntimeError("Invalid required parameters - %s" % ", ".join(required))
         # dump, validate template
         print ("dumping to %s" % template.filename)
         template.dump(template.filename)

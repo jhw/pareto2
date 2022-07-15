@@ -1,8 +1,5 @@
 ### short
 
-- helper to list default, optional components
-- check only optional component is StageName
-
 ### layman2-skel
 
 - custom component test
@@ -72,6 +69,8 @@
 
 ### done
 
+- helper to list default, optional components
+- check only optional component is StageName
 - add notes re metadata suitability for extension
 - add multiple paths to init_template
 - remove stagename from all component main blocks
