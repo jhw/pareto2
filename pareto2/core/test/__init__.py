@@ -4,13 +4,13 @@ from botocore.exceptions import ClientError
 
 import os, yaml
 
-MyBucket=yaml.safe_load("""
-name: my-bucket
+TestBucket=yaml.safe_load("""
+name: test-bucket
 """)
 
-MyTable=yaml.safe_load("""
+TestTable=yaml.safe_load("""
 indexes: []
-name: my-table
+name: test-table
 stream:
   retries: 3
   batch:
@@ -18,12 +18,12 @@ stream:
   type: NEW_AND_OLD_IMAGES    
 """)
 
-MyRouter=yaml.safe_load("""
-name: my-router
+TestRouter=yaml.safe_load("""
+name: test-router
 patterns: []
 """)
 
-FunctionName="my-function"
+FunctionName="test-function"
 
 class Context:
 
@@ -59,7 +59,7 @@ class Pareto2TestBase(unittest.TestCase):
     ### dynamodb
         
     def setup_ddb(self,
-                  tables=[MyTable]):
+                  tables=[TestTable]):
         def init_table(table):
             attrs=[{"AttributeName": name,
                     "AttributeType": type_}
@@ -94,7 +94,7 @@ class Pareto2TestBase(unittest.TestCase):
 
     ### s3
 
-    def setup_s3(self, buckets=[MyBucket]):
+    def setup_s3(self, buckets=[TestBucket]):
         def create_bucket(s3, bucket):
             config={'LocationConstraint': 'EU'}
             s3.create_bucket(Bucket=bucket["name"],
@@ -103,7 +103,7 @@ class Pareto2TestBase(unittest.TestCase):
         for bucket in buckets:
             create_bucket(self.s3, bucket)
 
-    def teardown_s3(self, buckets=[MyBucket]):
+    def teardown_s3(self, buckets=[TestBucket]):
         def empty_bucket(s3, bucket):            
             struct=s3.list_objects(Bucket=bucket["name"])
             if "Contents" in struct:
@@ -167,7 +167,7 @@ class Pareto2TestBase(unittest.TestCase):
 
     ### events
 
-    def setup_events(self, routers=[MyRouter]):
+    def setup_events(self, routers=[TestRouter]):
         def init_events(events, sqs, router):
             eventbusname="%s-event-bus" % router["name"]
             queuename="%s-target-queue" % router["name"]
@@ -205,7 +205,7 @@ class Pareto2TestBase(unittest.TestCase):
             init_events(self.events, self.sqs, router)
                         
     def teardown_events(self,
-                        routers=[MyRouter]):
+                        routers=[TestRouter]):
         def delete_events(events, sqs, router, queues):
             eventbusname="%s-event-bus" % router["name"]
             queuename="%s-target-queue" % router["name"]

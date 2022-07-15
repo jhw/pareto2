@@ -1,7 +1,6 @@
 ### short
 
 - remove stagename from all component main blocks
-- rename MyTable etc as TestTable
 - helper to list default, optional components
 - check only optional component is StageName
 - component, metadata hooks for custom components (codebuild)
@@ -71,6 +70,7 @@
 
 ### done
 
+- rename MyTable etc as TestTable
 - build_artifacts shouldn't accept stagename
 - simplify (template) autofill_parameters with Parameter class
 - remove _json suffix from filename, dumping
