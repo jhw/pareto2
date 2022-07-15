@@ -103,7 +103,7 @@ class Pareto2TestBase(unittest.TestCase):
         for bucket in buckets:
             create_bucket(self.s3, bucket)
 
-    def teardown_s3(self, bucket=[MyBucket]):
+    def teardown_s3(self, buckets=[MyBucket]):
         def empty_bucket(s3, bucket):            
             struct=s3.list_objects(Bucket=bucket["name"])
             if "Contents" in struct:
