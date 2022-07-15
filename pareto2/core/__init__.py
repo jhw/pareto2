@@ -9,10 +9,10 @@ import os, yaml
 class Defaults(dict):
 
     @classmethod
-    def initialise(self, stagename):
-        filename="config/%s/defaults.yaml" % stagename
+    def initialise(self,
+                   filename="config/defaults.yaml"):
         if not os.path.exists(filename):
-            raise RuntimeError("%s defaults does not exist" % stagename)
+            raise RuntimeError("defaults.yaml does not exist")
         return Defaults(yaml.safe_load(open(filename).read()))
 
     def __init__(self, items={}):
@@ -40,18 +40,14 @@ def init_template(md,
     for key, fn in components.items():
         fn(template=template,
            md=md)
-    defaults=Defaults.initialise(md.stagename)
+    defaults=Defaults.initialise()
     template.autofill_parameters(defaults)
     return template
 
 if __name__=="__main__":
     try:
-        import sys
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter stagename")
-        stagename=sys.argv[1]
         from pareto2.core.metadata import Metadata
-        md=Metadata.initialise(stagename)
+        md=Metadata.initialise()
         md.validate()
         template=init_template(md)
         template.dump_yaml(template.filename_yaml)

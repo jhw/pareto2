@@ -9,7 +9,7 @@ from datetime import datetime
 
 from pareto2.cli import load_config
 
-import boto3, importlib, inspect, os, sys, unittest, zipfile
+import boto3, importlib, inspect, os, unittest, zipfile
 
 def filter_tests(root=os.environ["APP_ROOT"]):
     classes=[]
@@ -102,11 +102,8 @@ if __name__=="__main__":
     try:
         if not os.path.exists("tmp"):
             os.mkdir("tmp")
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter stage")
-        stagename=sys.argv[1]
         config=load_config()
-        md=Metadata.initialise(stagename)
+        md=Metadata.initialise()
         md.validate().expand()
         # run unit tests
         run_tests(filter_tests())
@@ -121,14 +118,15 @@ if __name__=="__main__":
                                name="main",
                                timestamp=timestamp)
         # updating template with env parameters
-        config.update({"StageName": stagename,
-                       "ArtifactsKey": lambdas.s3_key_zip})
+        config.update({"ArtifactsKey": lambdas.s3_key_zip})
         layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
                      for pkgname in md.actions.packages}
         config.update(layerparams)
         template.parameters.update_defaults(config)
+        """
         if not template.parameters.is_complete:
             raise RuntimeError("template is not complete")
+        """
         # dump, validate template
         print ("dumping to %s" % template.filename)
         template.dump(template.filename)

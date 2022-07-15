@@ -302,17 +302,14 @@ class Timers(ComponentsBase):
         
 class Metadata:
 
-    SrcPath="config/%s/metadata.yaml"
-    
     @classmethod
-    def initialise(self, stagename):
-        filename=self.SrcPath % stagename
+    def initialise(self, filename="config/metadata.yaml"):
+        print (filename)
         if not os.path.exists(filename):
-            raise RuntimeError("%s metadata does not exist" % stagename)
-        return Metadata(stagename, yaml.safe_load(open(filename).read()))
+            raise RuntimeError("metadata.yaml does not exist")
+        return Metadata(yaml.safe_load(open(filename).read()))
 
-    def __init__(self, stagename, struct):
-        self.stagename=stagename
+    def __init__(self, struct):
         self.keys=list(struct.keys())
         for k, v in struct.items():
             klass=eval(k.capitalize())
@@ -336,11 +333,7 @@ class Metadata:
         
 if __name__=="__main__":
     try:
-        import sys
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter stagename")
-        stagename=sys.argv[1]
-        md=Metadata.initialise(stagename)
+        md=Metadata.initialise()
         md.validate().expand()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

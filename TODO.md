@@ -1,8 +1,10 @@
 ### short
 
-- build_artifacts shouldn't accept stagename
-- component, metadata hooks for custom components (codebuild)
+- remove stagename from all component main blocks
 - rename MyTable etc as TestTable
+- helper to list default, optional components
+- check only optional component is StageName
+- component, metadata hooks for custom components (codebuild)
 
 ### medium
 
@@ -69,6 +71,7 @@
 
 ### done
 
+- build_artifacts shouldn't accept stagename
 - simplify (template) autofill_parameters with Parameter class
 - remove _json suffix from filename, dumping
 - Template shouldn't extend dict but should then have a render method
