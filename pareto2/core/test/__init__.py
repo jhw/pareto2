@@ -101,7 +101,7 @@ class Pareto2TestBase(unittest.TestCase):
                              CreateBucketConfiguration=config)
         self.s3=boto3.client("s3")
         for bucket in buckets:
-            create_bucket(s3, bucket)
+            create_bucket(self.s3, bucket)
 
     def teardown_s3(self, bucket=[MyBucket]):
         def empty_bucket(s3, bucket):            
