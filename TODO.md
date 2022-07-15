@@ -1,6 +1,8 @@
 ### short
 
-- build_artifacts should leave StageName as non- default parameter
+- build_artifacts shouldn't accept stagename
+- component, metadata hooks for custom components (codebuild)
+- rename MyTable etc as TestTable
 
 ### medium
 
@@ -10,6 +12,7 @@
 - layer management application [notes]
 - test codebuild notification handling (CI pipeline)
 - test cloudformation remote error handling
+- scaffold cli
 - pareto.ci
 
 ### long [features]
@@ -18,8 +21,7 @@
 - eventbridge lambda destination
 - s3 eventbridge notifications
 - eventbridge urls
-- s3 sync error handling
-- lambda alarms
+- lambda alarms, timeouts
 - aws chat
 - iam role lockdown
 - step functions
