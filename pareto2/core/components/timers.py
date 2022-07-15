@@ -54,14 +54,10 @@ def update_template(template, md):
 
 if __name__=="__main__":
     try:
-        import sys
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter stagename")
-        stagename=sys.argv[1]
         from pareto2.core.template import Template
         template=Template("timers")
         from pareto2.core.metadata import Metadata
-        md=Metadata.initialise(stagename)
+        md=Metadata.initialise()
         md.validate().expand()
         update_template(template, md)
         template.dump(template.filename)

@@ -304,7 +304,6 @@ class Metadata:
 
     @classmethod
     def initialise(self, filename="config/metadata.yaml"):
-        print (filename)
         if not os.path.exists(filename):
             raise RuntimeError("metadata.yaml does not exist")
         return Metadata(yaml.safe_load(open(filename).read()))
