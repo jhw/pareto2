@@ -1,5 +1,7 @@
 ### short
 
+- build_artifacts should leave StageName as non- default parameter
+
 ### medium
 
 - add error type to actions (destination/dlq)
