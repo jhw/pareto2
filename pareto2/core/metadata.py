@@ -299,7 +299,13 @@ class Timers(ComponentsBase):
         for timer in self:
             if timer["action"] not in actionnames:
                 errors.append("%s is not a valid action name (timer %s)" % (timer["action"], timer["name"]))
-        
+
+"""
+- if you want to include custom classes in metadata
+- add relevant keys to metadata.yaml file
+- define custom classes (singular, plural) ahead of md.initialise
+"""
+                
 class Metadata:
 
     @classmethod

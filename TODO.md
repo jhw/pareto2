@@ -1,9 +1,11 @@
 ### short
 
-- add notes re metadata suitability for extension
-- add multiple paths to init_template
 - helper to list default, optional components
 - check only optional component is StageName
+
+### layman2-skel
+
+- custom component test
 
 ### medium
 
@@ -70,6 +72,8 @@
 
 ### done
 
+- add notes re metadata suitability for extension
+- add multiple paths to init_template
 - remove stagename from all component main blocks
 - rename MyTable etc as TestTable
 - build_artifacts shouldn't accept stagename
