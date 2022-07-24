@@ -1,6 +1,5 @@
 ### short
 
-- move artifacts dump code
 - move template dump code
 
 - component path option
@@ -73,6 +72,7 @@
 
 ### done
 
+- move artifacts dump code
 - helper to list default, optional components
 - check only optional component is StageName
 - add notes re metadata suitability for extension

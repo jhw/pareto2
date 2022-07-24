@@ -79,25 +79,33 @@ class Artifacts:
             result.failures!=[]):
             raise RuntimeError("unit tests failed")
 
-    def build(self, md):
-        self.run_tests()
-        self.validate(md)
-        self.dump_zip()
-        
     @property
-    def s3_key_zip(self):
-        return "lambdas-%s.zip" % self.timestamp
-    
-    @property
-    def filename_zip(self):
-        return "tmp/%s" % self.s3_key_zip
+    def local_filename(self):
+        return "tmp/%s" % self.s3_key
         
-    def dump_zip(self):
-        zf=zipfile.ZipFile(self.filename_zip, 'w', zipfile.ZIP_DEFLATED)
+    def dump_local(self):
+        zf=zipfile.ZipFile(self.local_filename, 'w', zipfile.ZIP_DEFLATED)
         for path in self.paths:
             zf.write(path)
         zf.close()
-
+        
+    def build(self, md, run_tests=True, validate=True):
+        if run_tests:
+            self.run_tests()
+        if validate:            
+            self.validate(md)
+        self.dump_local()
+        
+    @property
+    def s3_key(self):
+        return "lambdas-%s.zip" % self.timestamp
+            
+    def dump_s3(self, s3, bucketname):
+        s3.upload_file(Filename=self.local_filename,
+                       Bucket=bucketname,
+                       Key=self.s3_key,
+                       ExtraArgs={'ContentType': 'application/zip'})
+        
 if __name__=="__main__":
     try:
         if not os.path.exists("tmp"):
@@ -114,7 +122,7 @@ if __name__=="__main__":
                                name="main",
                                timestamp=timestamp)
         # updating template with env parameters
-        config.update({"ArtifactsKey": artifacts.s3_key_zip})
+        config.update({"ArtifactsKey": artifacts.s3_key})
         layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
                      for pkgname in md.actions.packages}
         config.update(layerparams)
@@ -129,11 +137,8 @@ if __name__=="__main__":
         template.dump(template.filename)
         template.validate_root()
         s3=boto3.client("s3")
-        print ("pushing %s" % artifacts.s3_key_zip)
-        s3.upload_file(Filename=artifacts.filename_zip,
-                       Bucket=config["ArtifactsBucket"],
-                       Key=artifacts.s3_key_zip,
-                       ExtraArgs={'ContentType': 'application/zip'})
+        print ("pushing %s" % artifacts.s3_key)
+        artifacts.dump_s3(s3, config["ArtifactsBucket"])
         print ("pushing %s" % template.s3_key)
         s3.put_object(Bucket=config["ArtifactsBucket"],
                       Key=template.s3_key,
