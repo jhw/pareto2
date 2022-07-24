@@ -1,8 +1,8 @@
 ### short
 
-- convert artifacts into configurable class
-  - options for component path, tests, codebuild mode
-  - single lambda iteration loop
+- component path option
+- run tests option
+- codebuild output option
 
 ### gists
 

@@ -7,44 +7,20 @@ import boto3, importlib, inspect, os, unittest, zipfile
 
 from datetime import datetime
 
-def filter_tests(root=os.environ["APP_ROOT"]):
-    classes=[]
-    for parent, _, itemnames in os.walk(root):
-        if "__pycache__" in parent:
-            continue
-        for itemname in itemnames:
-            if (not itemname.endswith(".py") or
-                itemname=="index.py"):
-                continue
-            modname="%s.%s" % (parent.replace("/", "."),
-                               itemname.split(".")[0])
-            mod=importlib.import_module(modname)
-            classes+=[obj for name, obj in inspect.getmembers(mod, inspect.isclass)
-                      if name.endswith("Test")]
-    return classes
+class Artifacts:
 
-def run_tests(tests):
-    suite=unittest.TestSuite()
-    for test in tests:
-        suite.addTest(unittest.makeSuite(test))
-    runner=unittest.TextTestRunner()
-    result=runner.run(suite)
-    if (result.errors!=[] or
-        result.failures!=[]):
-        raise RuntimeError("unit tests failed")
-
-class Lambdas:
-
-    def __init__(self, timestamp):
+    def __init__(self, timestamp, root=os.environ["APP_ROOT"]):
+        self.timestamp=timestamp
+        self.root=root
         paths, errors = self.filter_paths()
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
         self.paths=paths
-        self.timestamp=timestamp
+        self.tests=self.filter_tests()
 
-    def filter_paths(self, root=os.environ["APP_ROOT"]):
+    def filter_paths(self):
         paths, errors = [], []
-        for parent, _, itemnames in os.walk(root):
+        for parent, _, itemnames in os.walk(self.root):
             if ("__pycache__" in parent or
                 "tests" in parent):
                 continue
@@ -59,7 +35,24 @@ class Lambdas:
                     if "os.environ" in text:
                         errors.append("invalid os.environ ref in %s" % path)
         return paths, errors
-        
+
+    def filter_tests(self):
+        classes=[]
+        for parent, _, itemnames in os.walk(self.root):
+            if "__pycache__" in parent:
+                continue
+            for itemname in itemnames:
+                if (not itemname.endswith(".py") or
+                    itemname=="index.py"):
+                    continue
+                modname="%s.%s" % (parent.replace("/", "."),
+                                   itemname.split(".")[0])
+                mod=importlib.import_module(modname)
+                classes+=[obj for name, obj in inspect.getmembers(mod,
+                                                                  inspect.isclass)
+                          if name.endswith("Test")]
+        return classes
+    
     def validate_actions(self, md):
         actionnames=[action["name"]
                      for action in md.actions]
@@ -76,6 +69,16 @@ class Lambdas:
     def validate(self, md):
         self.validate_actions(md)
 
+    def run_tests(self):
+        suite=unittest.TestSuite()
+        for test in self.tests:
+            suite.addTest(unittest.makeSuite(test))
+        runner=unittest.TextTestRunner()
+        result=runner.run(suite)
+        if (result.errors!=[] or
+            result.failures!=[]):
+            raise RuntimeError("unit tests failed")
+        
     @property
     def s3_key_zip(self):
         return "lambdas-%s.zip" % self.timestamp
@@ -97,19 +100,18 @@ if __name__=="__main__":
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()
-        # run unit tests
-        run_tests(filter_tests())
         # initialising/validating lambdas
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        lambdas=Lambdas(timestamp=timestamp)
-        lambdas.validate(md)
-        lambdas.dump_zip()
+        artifacts=Artifacts(timestamp=timestamp)
+        artifacts.run_tests()
+        artifacts.validate(md)
+        artifacts.dump_zip()
         # initialising template
         template=init_template(md,
                                name="main",
                                timestamp=timestamp)
         # updating template with env parameters
-        config.update({"ArtifactsKey": lambdas.s3_key_zip})
+        config.update({"ArtifactsKey": artifacts.s3_key_zip})
         layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
                      for pkgname in md.actions.packages}
         config.update(layerparams)
@@ -124,10 +126,10 @@ if __name__=="__main__":
         template.dump(template.filename)
         template.validate_root()
         s3=boto3.client("s3")
-        print ("pushing %s" % lambdas.s3_key_zip)
-        s3.upload_file(Filename=lambdas.filename_zip,
+        print ("pushing %s" % artifacts.s3_key_zip)
+        s3.upload_file(Filename=artifacts.filename_zip,
                        Bucket=config["ArtifactsBucket"],
-                       Key=lambdas.s3_key_zip,
+                       Key=artifacts.s3_key_zip,
                        ExtraArgs={'ContentType': 'application/zip'})
         print ("pushing %s" % template.s3_key)
         s3.put_object(Bucket=config["ArtifactsBucket"],
