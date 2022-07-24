@@ -38,7 +38,11 @@ class Artifacts:
                      for pkgname in md.actions.packages}
         defaults.update(layerparams)
         return defaults
-    
+
+    @property
+    def is_codebuild(self):
+        return "CODEBUILD_BUILD_ID" in os.environ
+            
     def build_template(self,
                        paths,
                        lambdas,
@@ -52,9 +56,13 @@ class Artifacts:
                                              lambdas)
         template.parameters.update_defaults(defaults)
         template.parameters.validate()
-        template.dump_local()
+        if not self.is_codebuild:
+            template.dump_local()
+        else:
+            template.dump_codebuild()
         template.validate_root()
-        template.dump_s3(self.s3, self.config["ArtifactsBucket"])
+        if not self.is_codebuild:
+            template.dump_s3(self.s3, self.config["ArtifactsBucket"])
 
     def build(self,
               component_paths=["pareto2/core/components"],

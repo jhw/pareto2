@@ -1,7 +1,6 @@
 ### short
 
 - artifacts.py to take cli args for options
-- codebuild output option
 
 ### gists
 
@@ -29,6 +28,8 @@
 
 ### thoughts
 
+- codebuild output option
+ - https://stackoverflow.com/a/67192915/124179
 - some kind of s3 error on stack deployment ?
   - replaced py version with sh
 - change deployent to use template body rather than template URL ?
@@ -69,6 +70,9 @@
 
 ### done
 
+- codebuild mode to generate stack without timestamp, or symlink
+  - check for codebuild os variables and just save to main.json
+  - don't push to s3
 - component path option for template
 - separate build_lambdas, build_template
 - move template parameter validation code in actions/artifacts.py into template
