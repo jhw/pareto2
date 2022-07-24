@@ -17,12 +17,11 @@ class Artifacts:
         self.timestamp=timestamp
         self.s3=s3
 
-    def build_lambdas(self, run_tests, validate):
+    def build_lambdas(self, run_tests):
         lambdas=Lambdas(self.timestamp)
         if run_tests:
             lambdas.run_tests()
-        if validate:            
-            lambdas.validate(self.md)
+        lambdas.validate(self.md)
         lambdas.dump_local()
         bucketname=self.config["ArtifactsBucket"]
         lambdas.dump_s3(self.s3, bucketname)
@@ -54,8 +53,8 @@ class Artifacts:
         template.validate_root()
         template.dump_s3(self.s3, self.config["ArtifactsBucket"])
 
-    def build(self, run_tests=True, validate=True):
-        lambdas=self.build_lambdas(run_tests, validate)
+    def build(self, run_tests=True):
+        lambdas=self.build_lambdas(run_tests)
         self.build_template(lambdas)
         
 if __name__=="__main__":
