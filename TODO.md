@@ -1,7 +1,6 @@
 ### short
 
-- separate build_lambdas, build_template
-- component path option
+- component path option for template
 - codebuild output option
 
 ### gists
@@ -70,6 +69,7 @@
 
 ### done
 
+- separate build_lambdas, build_template
 - move template parameter validation code in actions/artifacts.py into template
 - change template.dump_local so takes local_filename by default
 - fix bad ref to dump_yaml in core/components/__init__.py
