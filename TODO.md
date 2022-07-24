@@ -1,7 +1,5 @@
 ### short
 
-- change template.dump_local so takes local_filename by default
-
 - component path option
 - codebuild output option
 
@@ -71,6 +69,7 @@
 
 ### done
 
+- change template.dump_local so takes local_filename by default
 - fix bad ref to dump_yaml in core/components/__init__.py
 - run tests option
 - move template dump code

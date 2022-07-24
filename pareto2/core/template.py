@@ -211,8 +211,8 @@ class Template:
         return "tmp/%s-%s.json" % (self.name,
                                    self.timestamp)
     
-    def dump_local(self, filename):
-        with open(filename, "w") as f:
+    def dump_local(self):
+        with open(self.local_filename, "w") as f:
             f.write(self.to_json())
 
     @property

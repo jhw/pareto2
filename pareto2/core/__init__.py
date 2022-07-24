@@ -52,6 +52,6 @@ if __name__=="__main__":
         md=Metadata.initialise()
         md.validate()
         template=init_template(md)
-        template.dump_local(template.local_filename)
+        template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
