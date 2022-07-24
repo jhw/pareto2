@@ -1,15 +1,11 @@
 from pareto2.core import init_template
-
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
-
-from pareto2.cli import hungarorise
-
-from datetime import datetime
-
-from pareto2.cli import load_config
+from pareto2.cli import hungarorise, load_config
 
 import boto3, importlib, inspect, os, unittest, zipfile
+
+from datetime import datetime
 
 def filter_tests(root=os.environ["APP_ROOT"]):
     classes=[]
@@ -37,33 +33,33 @@ def run_tests(tests):
         result.failures!=[]):
         raise RuntimeError("unit tests failed")
 
-def filter_paths(root):
-    paths, errors = [], []
-    for parent, _, itemnames in os.walk(root):
-        if ("__pycache__" in parent or
-            "tests" in parent):
-            continue
-        for itemname in itemnames:
-            path="%s/%s" % (parent, itemname)
-            if not (itemname in ["test.py"] or
-                    itemname.endswith(".pyc")):
-                paths.append(path)
-            if itemname not in ["index.py",
-                                "test.py"]:
-                text=open(path).read()
-                if "os.environ" in text:
-                    errors.append("invalid os.environ ref in %s" % path)
-    return paths, errors
-    
 class Lambdas:
 
-    def __init__(self, timestamp, root=os.environ["APP_ROOT"]):
-        paths, errors = filter_paths(root)
+    def __init__(self, timestamp):
+        paths, errors = self.filter_paths()
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
         self.paths=paths
         self.timestamp=timestamp
 
+    def filter_paths(self, root=os.environ["APP_ROOT"]):
+        paths, errors = [], []
+        for parent, _, itemnames in os.walk(root):
+            if ("__pycache__" in parent or
+                "tests" in parent):
+                continue
+            for itemname in itemnames:
+                path="%s/%s" % (parent, itemname)
+                if not (itemname in ["test.py"] or
+                        itemname.endswith(".pyc")):
+                    paths.append(path)
+                if itemname not in ["index.py",
+                                    "test.py"]:
+                    text=open(path).read()
+                    if "os.environ" in text:
+                        errors.append("invalid os.environ ref in %s" % path)
+        return paths, errors
+        
     def validate_actions(self, md):
         actionnames=[action["name"]
                      for action in md.actions]
