@@ -1,7 +1,6 @@
 ### short
 
 - artifacts building must include template artifacts
-- move template parameter validation code in actions/artifacts.py into template
 - component path option
 - codebuild output option
 
@@ -71,6 +70,7 @@
 
 ### done
 
+- move template parameter validation code in actions/artifacts.py into template
 - change template.dump_local so takes local_filename by default
 - fix bad ref to dump_yaml in core/components/__init__.py
 - run tests option

@@ -115,7 +115,7 @@ class Parameters(Component):
         Component.__init__(self, item)
 
     @property
-    def required_keys(self):
+    def mandatory_keys(self):
         return [k for k, v in self.items()
                 if "Default" not in v]
 
@@ -135,7 +135,15 @@ class Parameters(Component):
             if "Default" not in v:
                 return False
         return True
-        
+
+    def validate(self, mandatory=["StageName"]):
+        params=self.mandatory_keys
+        for key in mandatory:
+            if key not in params:
+                raise RuntimeError("%s not specified as mandatory key" % key)
+        if len(params)!=len(mandatory):
+            raise RuntimeError("Invalid mandatory parameters - %s" % ", ".join(params))
+    
 class Resources(Component):
 
     def __init__(self, item={}):

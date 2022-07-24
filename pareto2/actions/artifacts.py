@@ -126,11 +126,7 @@ if __name__=="__main__":
         config.update(layerparams)
         # END TEMP LAYER STUFF
         template.parameters.update_defaults(config)
-        required=template.parameters.required_keys
-        if "StageName" not in required:
-            raise RuntimeError("StageName not specified as required key")
-        if len(required)!=1:
-            raise RuntimeError("Invalid required parameters - %s" % ", ".join(required))
+        template.parameters.validate()
         template.dump_local()
         template.validate_root()
         s3=boto3.client("s3")
