@@ -1,19 +1,17 @@
 ### short
 
-### layman2-skel
-
-- custom component test
+- convert artifacts into configurable class
+  - options for component path, tests, codebuild mode
+  - single lambda iteration loop
 
 ### medium
 
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 - token api example/support
-- layer management application [notes]
 - test codebuild notification handling (CI pipeline)
 - test cloudformation remote error handling
 - scaffold cli
-- pareto.ci
 
 ### long [features]
 
