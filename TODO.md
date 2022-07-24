@@ -1,7 +1,7 @@
 ### short
 
+- artifacts building must include template artifacts
 - move template parameter validation code in actions/artifacts.py into template
-
 - component path option
 - codebuild output option
 
