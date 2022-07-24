@@ -32,7 +32,7 @@ def init_components(paths):
             components[key]=fn
     return components
         
-def init_template(md,
+def init_template(md,                  
                   name="main",
                   paths=["pareto2/core/components"],
                   timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):

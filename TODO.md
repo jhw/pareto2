@@ -1,6 +1,6 @@
 ### short
 
-- component path option for template
+- artifacts.py to take cli args for options
 - codebuild output option
 
 ### gists
@@ -16,13 +16,13 @@
 
 ### medium
 
+- metadata schema
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 - scaffold cli
 
 ### long [features]
 
-- metadata schema
 - lambda alarms, timeouts
 - aws chat
 - iam role lockdown
@@ -69,6 +69,7 @@
 
 ### done
 
+- component path option for template
 - separate build_lambdas, build_template
 - move template parameter validation code in actions/artifacts.py into template
 - change template.dump_local so takes local_filename by default

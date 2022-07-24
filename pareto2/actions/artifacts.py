@@ -39,9 +39,12 @@ class Artifacts:
         defaults.update(layerparams)
         return defaults
     
-    def build_template(self, lambdas,
+    def build_template(self,
+                       paths,
+                       lambdas,
                        templatename="main"):
         template=init_template(md,
+                               paths=paths,
                                name=templatename,
                                timestamp=self.timestamp)
         defaults=self.init_template_defaults(self.config,
@@ -53,9 +56,12 @@ class Artifacts:
         template.validate_root()
         template.dump_s3(self.s3, self.config["ArtifactsBucket"])
 
-    def build(self, run_tests=True):
+    def build(self,
+              component_paths=["pareto2/core/components"],
+              run_tests=True):
         lambdas=self.build_lambdas(run_tests)
-        self.build_template(lambdas)
+        self.build_template(paths=component_paths,
+                            lambdas=lambdas)
         
 if __name__=="__main__":
     try:
