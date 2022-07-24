@@ -1,6 +1,8 @@
 ### short
 
-- artifacts.py to take cli args for options
+- pass logger to artifacts building
+- validate metadata schema
+- new tag
 
 ### gists
 
@@ -15,7 +17,6 @@
 
 ### medium
 
-- metadata schema
 - add error type to actions (destination/dlq)
 - add dlq support to actions
 - scaffold cli
@@ -70,6 +71,7 @@
 
 ### done
 
+- artifacts.py to take cli args for options
 - codebuild mode to generate stack without timestamp, or symlink
   - check for codebuild os variables and just save to main.json
   - don't push to s3

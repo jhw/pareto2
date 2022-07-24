@@ -73,6 +73,13 @@ class Artifacts:
         
 if __name__=="__main__":
     try:
+        import sys
+        if len(sys.argv) < 2:
+            raise RuntimeError("please enter run_tests")
+        runtests=sys.argv[1]
+        if runtests not in ["true", "false"]:
+            raise RuntimeError("run_tests is invalid")
+        runtests=runtests=="true"
         if not os.path.exists("tmp"):
             os.mkdir("tmp")
         config=load_config()
@@ -84,7 +91,7 @@ if __name__=="__main__":
                             md=md,
                             timestamp=timestamp,
                             s3=s3)
-        artifacts.build()
+        artifacts.build(run_tests=runtests)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 
