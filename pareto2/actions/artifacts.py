@@ -113,19 +113,18 @@ if __name__=="__main__":
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()
-        # initialising/validating lambdas
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         artifacts=Artifacts(timestamp=timestamp)
         artifacts.build(md)
-        # initialising template
         template=init_template(md,
                                name="main",
                                timestamp=timestamp)
-        # updating template with env parameters
         config.update({"ArtifactsKey": artifacts.s3_key})
+        # START TEMP LAYER STUFF
         layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
                      for pkgname in md.actions.packages}
         config.update(layerparams)
+        # END TEMP LAYER STUFF
         template.parameters.update_defaults(config)
         required=template.parameters.required_keys
         if "StageName" not in required:
@@ -138,10 +137,7 @@ if __name__=="__main__":
         print ("pushing %s" % artifacts.s3_key)
         artifacts.dump_s3(s3, config["ArtifactsBucket"])
         print ("pushing %s" % template.s3_key)
-        s3.put_object(Bucket=config["ArtifactsBucket"],
-                      Key=template.s3_key,
-                      Body=template.to_json(),
-                      ContentType="application/json")
+        template.dump_s3(s3, config["ArtifactsBucket"])
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 

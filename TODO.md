@@ -1,5 +1,7 @@
 ### short
 
+- move template parameter validation code in actions/artifacts.py into template
+
 - component path option
 - codebuild output option
 
