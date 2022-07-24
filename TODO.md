@@ -4,26 +4,29 @@
   - options for component path, tests, codebuild mode
   - single lambda iteration loop
 
+### gists
+
+- api with keys
+- codebuild notifications
+- cloudformation notification arns
+- eventbridge as lambda destination
+- s3 eventbridge notifications
+- eventbridge urls (?)
+- step functions
+- appsync + graphql
+
 ### medium
 
 - add error type to actions (destination/dlq)
 - add dlq support to actions
-- token api example/support
-- test codebuild notification handling (CI pipeline)
-- test cloudformation remote error handling
 - scaffold cli
 
 ### long [features]
 
 - metadata schema
-- eventbridge lambda destination
-- s3 eventbridge notifications
-- eventbridge urls
 - lambda alarms, timeouts
 - aws chat
 - iam role lockdown
-- step functions
-- appsync + graphql
 
 ### thoughts
 
