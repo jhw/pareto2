@@ -1,6 +1,8 @@
 ### short
 
-- artifacts building must include template artifacts
+- separate Lambdas, Artifacts classes
+  - Artifacts includes Lambdas, Template
+  
 - component path option
 - codebuild output option
 
