@@ -201,24 +201,31 @@ class Template:
                               bucketname,
                               self.name,
                               self.timestamp)
-
-    @property
-    def s3_key(self):
-        return "%s-%s.json" % (self.name,
-                               self.timestamp)
     
     def to_json(self):
         return json.dumps(self.render(),
                           indent=2)
 
     @property
-    def filename(self):
+    def local_filename(self):
         return "tmp/%s-%s.json" % (self.name,
                                    self.timestamp)
     
-    def dump(self, filename):
+    def dump_local(self, filename):
         with open(filename, "w") as f:
             f.write(self.to_json())
 
+    @property
+    def s3_key(self):
+        return "%s-%s.json" % (self.name,
+                               self.timestamp)
+            
+    def dump_s3(self, s3, bucketname):
+        s3.put_object(Bucket=bucketname,
+                      Key=self.s3_key,
+                      Body=self.to_json(),
+                      ContentType="application/json")
+
+            
 if __name__=="__main__":
     pass

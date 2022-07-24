@@ -1,9 +1,9 @@
 ### short
 
-- move template dump code
+- fix bad ref to dump_yaml in core/components/__init__.py
+- change template.dump_local so takes local_filename by default
 
 - component path option
-- run tests option
 - codebuild output option
 
 ### gists
@@ -72,6 +72,8 @@
 
 ### done
 
+- run tests option
+- move template dump code
 - move artifacts dump code
 - helper to list default, optional components
 - check only optional component is StageName

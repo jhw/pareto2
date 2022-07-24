@@ -133,8 +133,8 @@ if __name__=="__main__":
         if len(required)!=1:
             raise RuntimeError("Invalid required parameters - %s" % ", ".join(required))
         # dump, validate template
-        print ("dumping to %s" % template.filename)
-        template.dump(template.filename)
+        print ("dumping to %s" % template.local_filename)
+        template.dump_local(template.local_filename)
         template.validate_root()
         s3=boto3.client("s3")
         print ("pushing %s" % artifacts.s3_key)
