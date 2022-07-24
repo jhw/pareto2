@@ -78,6 +78,11 @@ class Artifacts:
         if (result.errors!=[] or
             result.failures!=[]):
             raise RuntimeError("unit tests failed")
+
+    def build(self, md):
+        self.run_tests()
+        self.validate(md)
+        self.dump_zip()
         
     @property
     def s3_key_zip(self):
@@ -103,9 +108,7 @@ if __name__=="__main__":
         # initialising/validating lambdas
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         artifacts=Artifacts(timestamp=timestamp)
-        artifacts.run_tests()
-        artifacts.validate(md)
-        artifacts.dump_zip()
+        artifacts.build(md)
         # initialising template
         template=init_template(md,
                                name="main",

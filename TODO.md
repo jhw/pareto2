@@ -1,5 +1,8 @@
 ### short
 
+- move artifacts dump code
+- move template dump code
+
 - component path option
 - run tests option
 - codebuild output option
