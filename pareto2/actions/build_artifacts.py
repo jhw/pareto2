@@ -37,42 +37,38 @@ def run_tests(tests):
         result.failures!=[]):
         raise RuntimeError("unit tests failed")
 
-class Lambdas(list):
+def filter_paths(root):
+    paths, errors = [], []
+    for parent, _, itemnames in os.walk(root):
+        if ("__pycache__" in parent or
+            "tests" in parent):
+            continue
+        for itemname in itemnames:
+            path="%s/%s" % (parent, itemname)
+            if not (itemname in ["test.py"] or
+                    itemname.endswith(".pyc")):
+                paths.append(path)
+            if itemname not in ["index.py",
+                                "test.py"]:
+                text=open(path).read()
+                if "os.environ" in text:
+                    errors.append("invalid os.environ ref in %s" % path)
+    return paths, errors
+    
+class Lambdas:
 
-    @classmethod
-    def initialise(self, md, timestamp, root=os.environ["APP_ROOT"]):
-        def filter_paths(root):
-            paths, errors = [], []
-            for parent, _, itemnames in os.walk(root):
-                if ("__pycache__" in parent or
-                    "tests" in parent):
-                    continue
-                for itemname in itemnames:
-                    path="%s/%s" % (parent, itemname)
-                    if not (itemname in ["test.py"] or
-                        itemname.endswith(".pyc")):
-                        paths.append(path)
-                    if itemname not in ["index.py",
-                                        "test.py"]:
-                        text=open(path).read()
-                        if "os.environ" in text:
-                            errors.append("invalid os.environ ref in %s" % path)
-            return paths, errors
+    def __init__(self, timestamp, root=os.environ["APP_ROOT"]):
         paths, errors = filter_paths(root)
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
-        return Lambdas(paths, md.actions, timestamp)
-
-    def __init__(self, paths, actions, timestamp):
-        list.__init__(self, paths)
-        self.actions=actions
+        self.paths=paths
         self.timestamp=timestamp
 
-    def validate_actions(self):
+    def validate_actions(self, md):
         actionnames=[action["name"]
-                     for action in self.actions]
+                     for action in md.actions]
         errors=[]
-        for path in self:
+        for path in self.paths:
             if path.endswith("index.py"):
                 actionname="-".join(path.split("/")[:-1])
                 if "errors" not in path:
@@ -81,8 +77,8 @@ class Lambdas(list):
         if errors!=[]:
             raise RuntimeError("action not defined for %s" % ", ".join(errors))
 
-    def validate(self):
-        self.validate_actions()
+    def validate(self, md):
+        self.validate_actions(md)
 
     @property
     def s3_key_zip(self):
@@ -94,7 +90,7 @@ class Lambdas(list):
         
     def dump_zip(self):
         zf=zipfile.ZipFile(self.filename_zip, 'w', zipfile.ZIP_DEFLATED)
-        for path in self:
+        for path in self.paths:
             zf.write(path)
         zf.close()
 
@@ -109,9 +105,8 @@ if __name__=="__main__":
         run_tests(filter_tests())
         # initialising/validating lambdas
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        lambdas=Lambdas.initialise(md=md,
-                                   timestamp=timestamp)
-        lambdas.validate()
+        lambdas=Lambdas(timestamp=timestamp)
+        lambdas.validate(md)
         lambdas.dump_zip()
         # initialising template
         template=init_template(md,
