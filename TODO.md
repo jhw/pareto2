@@ -1,6 +1,5 @@
 ### short
 
-- fix bad ref to dump_yaml in core/components/__init__.py
 - change template.dump_local so takes local_filename by default
 
 - component path option
@@ -72,6 +71,7 @@
 
 ### done
 
+- fix bad ref to dump_yaml in core/components/__init__.py
 - run tests option
 - move template dump code
 - move artifacts dump code
