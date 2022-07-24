@@ -1,8 +1,6 @@
 ### short
 
-- separate Lambdas, Artifacts classes
-  - Artifacts includes Lambdas, Template
-  
+- separate build_lambdas, build_template
 - component path option
 - codebuild output option
 

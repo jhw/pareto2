@@ -7,7 +7,7 @@ import boto3, importlib, inspect, os, unittest, zipfile
 
 from datetime import datetime
 
-class Artifacts:
+class Lambdas:
 
     def __init__(self, timestamp, root=os.environ["APP_ROOT"]):
         self.timestamp=timestamp
@@ -89,13 +89,6 @@ class Artifacts:
             zf.write(path)
         zf.close()
         
-    def build(self, md, run_tests=True, validate=True):
-        if run_tests:
-            self.run_tests()
-        if validate:            
-            self.validate(md)
-        self.dump_local()
-        
     @property
     def s3_key(self):
         return "lambdas-%s.zip" % self.timestamp
@@ -105,6 +98,44 @@ class Artifacts:
                        Bucket=bucketname,
                        Key=self.s3_key,
                        ExtraArgs={'ContentType': 'application/zip'})
+
+class Artifacts:
+
+    def __init__(self, config, md, s3, timestamp):
+        self.config=config
+        self.md=md
+        self.s3=s3
+        self.lambdas=Lambdas(timestamp)
+
+    """
+    - layer stuff here is temporary and should be replaced by dedicated layer management stack
+    """
+        
+    def init_template_defaults(self):
+        defaults=dict(self.config)
+        defaults.update({"ArtifactsKey": self.lambdas.s3_key})
+        layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
+                     for pkgname in md.actions.packages}
+        defaults.update(layerparams)
+        return defaults
+    
+    def build(self, run_tests=True, validate=True):
+        if run_tests:
+            self.lambdas.run_tests()
+        if validate:            
+            self.lambdas.validate(self.md)
+        self.lambdas.dump_local()
+        bucketname=self.config["ArtifactsBucket"]
+        self.lambdas.dump_s3(self.s3, bucketname)
+        self.template=init_template(md,
+                                    name="main",
+                                    timestamp=timestamp)
+        defaults=self.init_template_defaults()
+        self.template.parameters.update_defaults(defaults)
+        self.template.parameters.validate()
+        self.template.dump_local()
+        self.template.validate_root()
+        self.template.dump_s3(self.s3, bucketname)
         
 if __name__=="__main__":
     try:
@@ -113,27 +144,13 @@ if __name__=="__main__":
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()
-        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        artifacts=Artifacts(timestamp=timestamp)
-        artifacts.build(md)
-        template=init_template(md,
-                               name="main",
-                               timestamp=timestamp)
-        config.update({"ArtifactsKey": artifacts.s3_key})
-        # START TEMP LAYER STUFF
-        layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
-                     for pkgname in md.actions.packages}
-        config.update(layerparams)
-        # END TEMP LAYER STUFF
-        template.parameters.update_defaults(config)
-        template.parameters.validate()
-        template.dump_local()
-        template.validate_root()
         s3=boto3.client("s3")
-        print ("pushing %s" % artifacts.s3_key)
-        artifacts.dump_s3(s3, config["ArtifactsBucket"])
-        print ("pushing %s" % template.s3_key)
-        template.dump_s3(s3, config["ArtifactsBucket"])
+        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+        artifacts=Artifacts(config=config,
+                            md=md,
+                            s3=s3,
+                            timestamp=timestamp)
+        artifacts.build()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 
