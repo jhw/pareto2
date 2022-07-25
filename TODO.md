@@ -1,5 +1,8 @@
 ### short
 
+- add notes re codebuild halting
+- check try/catch positioning in artifacts building
+- try moving layer params into app.props
 - pass logger to artifacts building
 - validate metadata schema
 - new tag
