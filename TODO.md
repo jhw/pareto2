@@ -1,6 +1,5 @@
 ### short
 
-- pass template name
 - try moving layer params into app.props
 - new tag
 
@@ -73,6 +72,7 @@
 
 ### done
 
+- pass template name
 - check try/catch positioning in artifacts building
 - pass logger to artifacts building
 - add notes re codebuild halting

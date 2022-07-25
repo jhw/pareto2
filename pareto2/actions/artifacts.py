@@ -50,12 +50,12 @@ class Artifacts:
         return "CODEBUILD_BUILD_ID" in os.environ
         
     def build_template(self,
+                       name,
                        paths,
-                       lambdas,
-                       templatename="main"):
+                       lambdas):
         template=init_template(md,
                                paths=paths,
-                               name=templatename,
+                               name=name,
                                timestamp=self.timestamp)
         defaults=self.init_template_defaults(self.config,
                                              self.md,
@@ -75,10 +75,12 @@ class Artifacts:
 
     def build(self,
               component_paths=["pareto2/core/components"],
+              template_name="main",
               run_tests=True):
         try:
             lambdas=self.build_lambdas(run_tests)
-            self.build_template(paths=component_paths,
+            self.build_template(name=template_name,
+                                paths=component_paths,                                
                                 lambdas=lambdas)
         except Exception as error:
             """
@@ -105,9 +107,9 @@ if __name__=="__main__":
         init_stdout_logger()
         if not os.path.exists("tmp"):
             os.mkdir("tmp")                
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter run_tests")
-        runtests=sys.argv[1]
+        if len(sys.argv) < 3:
+            raise RuntimeError("please enter template_name, run_tests")
+        templatename, runtests = sys.argv[1:3]
         if runtests not in ["true", "false"]:
             raise RuntimeError("run_tests is invalid")
         runtests=runtests=="true"
@@ -120,7 +122,8 @@ if __name__=="__main__":
                             md=md,
                             timestamp=timestamp,
                             s3=s3)
-        artifacts.build(run_tests=runtests)
+        artifacts.build(template_name=templatename,
+                        run_tests=runtests)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 
