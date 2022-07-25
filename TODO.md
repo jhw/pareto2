@@ -1,9 +1,11 @@
 ### short
 
-- try moving layer params into app.props
 - new tag
 
-- validate metadata schema
+- implement and validate metadata schema
+
+- add error type to actions (destination/dlq)
+- add dlq support to actions
 
 ### gists
 
@@ -18,11 +20,9 @@
 
 ### medium
 
-- add error type to actions (destination/dlq)
-- add dlq support to actions
 - scaffold cli
 
-### long [features]
+### long
 
 - lambda alarms, timeouts
 - aws chat
@@ -72,6 +72,7 @@
 
 ### done
 
+- try moving layer params into app.props
 - pass template name
 - check try/catch positioning in artifacts building
 - pass logger to artifacts building

@@ -33,18 +33,6 @@ class Artifacts:
         lambdas.dump_s3(self.s3, bucketname)
         return lambdas
         
-    """
-    - layer stuff here is temporary and should be replaced by dedicated layer management stack
-    """
-        
-    def init_template_defaults(self, config, md, lambdas):
-        defaults=dict(config)
-        defaults.update({"ArtifactsKey": lambdas.s3_key})
-        layerparams={hungarorise("layer-key-%s" % pkgname): "layer-%s.zip" % pkgname
-                     for pkgname in md.actions.packages}
-        defaults.update(layerparams)
-        return defaults
-
     @property
     def is_codebuild(self):
         return "CODEBUILD_BUILD_ID" in os.environ
@@ -57,9 +45,8 @@ class Artifacts:
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)
-        defaults=self.init_template_defaults(self.config,
-                                             self.md,
-                                             lambdas)
+        defaults=dict(self.config)
+        defaults.update({"ArtifactsKey": lambdas.s3_key})
         template.parameters.update_defaults(defaults)
         template.parameters.validate()
         if not self.is_codebuild:
