@@ -1,9 +1,7 @@
 ### short
 
-- add notes re codebuild halting
 - check try/catch positioning in artifacts building
 - try moving layer params into app.props
-- pass logger to artifacts building
 - validate metadata schema
 - new tag
 
@@ -74,6 +72,8 @@
 
 ### done
 
+- pass logger to artifacts building
+- add notes re codebuild halting
 - artifacts.py to take cli args for options
 - codebuild mode to generate stack without timestamp, or symlink
   - check for codebuild os variables and just save to main.json
