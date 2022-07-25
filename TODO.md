@@ -1,9 +1,10 @@
 ### short
 
-- check try/catch positioning in artifacts building
+- pass template name
 - try moving layer params into app.props
-- validate metadata schema
 - new tag
+
+- validate metadata schema
 
 ### gists
 
@@ -72,6 +73,7 @@
 
 ### done
 
+- check try/catch positioning in artifacts building
 - pass logger to artifacts building
 - add notes re codebuild halting
 - artifacts.py to take cli args for options

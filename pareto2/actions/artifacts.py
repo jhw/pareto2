@@ -45,10 +45,6 @@ class Artifacts:
         defaults.update(layerparams)
         return defaults
 
-    """
-    - https://stackoverflow.com/a/67192915/124179
-    """
-    
     @property
     def is_codebuild(self):
         return "CODEBUILD_BUILD_ID" in os.environ
@@ -80,9 +76,20 @@ class Artifacts:
     def build(self,
               component_paths=["pareto2/core/components"],
               run_tests=True):
-        lambdas=self.build_lambdas(run_tests)
-        self.build_template(paths=component_paths,
-                            lambdas=lambdas)
+        try:
+            lambdas=self.build_lambdas(run_tests)
+            self.build_template(paths=component_paths,
+                                lambdas=lambdas)
+        except Exception as error:
+            """
+            - capture error but re- raise
+            - cli error will be captured by main block below
+            - codebuild error should cause process to terminate
+            - https://stackoverflow.com/a/67192915/124179
+            """
+            logger.error(str(error))
+            raise RuntimeError("artifacts build process failed")
+
         
 if __name__=="__main__":
     try:
