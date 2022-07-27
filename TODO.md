@@ -1,11 +1,8 @@
 ### short
 
-- new tag
-
-- implement and validate metadata schema
-
 - add error type to actions (destination/dlq)
 - add dlq support to actions
+- implement, validate metadata schema
 
 ### gists
 
@@ -72,6 +69,9 @@
 
 ### done
 
+- remove queue redrive
+- consider removing table errors
+- remove sync/async errors
 - try moving layer params into app.props
 - pass template name
 - check try/catch positioning in artifacts building
