@@ -41,7 +41,7 @@ class Artifacts:
                        name,
                        paths,
                        lambdas):
-        template=init_template(md,
+        template=init_template(self.md,
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)

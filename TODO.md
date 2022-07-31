@@ -1,11 +1,10 @@
 ### short
 
-- add error type to actions (destination/dlq)
-- add dlq support to actions
 - implement, validate metadata schema
 
 ### gists
 
+- sync error test -> queue redrive or lambda dlq ?
 - api with keys
 - codebuild notifications
 - cloudformation notification arns
