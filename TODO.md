@@ -16,6 +16,7 @@
 
 ### medium
 
+- replace metadata data- binding solution
 - scaffold cli
 
 ### long

@@ -302,15 +302,27 @@ class Timers(ComponentsBase):
 class Metadata:
 
     @classmethod
-    def initialise(self, filename="config/metadata.yaml"):
+    def initialise(self, extras={}, filename="config/metadata.yaml"):
         if not os.path.exists(filename):
             raise RuntimeError("metadata.yaml does not exist")
-        return Metadata(yaml.safe_load(open(filename).read()))
+        return Metadata(yaml.safe_load(open(filename).read()), extras)
 
-    def __init__(self, struct):
+    def __init__(self, struct, extras, globalz={"Actions": Actions,
+                                                "Apis": Apis,
+                                                "Buckets": Buckets,
+                                                "Dashboard": Dashboard,
+                                                "Endpoints": Endpoints,
+                                                "Events": Events,
+                                                "Queues": Queues,
+                                                "Routers": Routers,
+                                                "Secrets": Secrets,
+                                                "Tables": Tables,
+                                                "Timers": Timers,
+                                                "Userpools": Userpools}):
+        globalz.update(extras)
         self.keys=list(struct.keys())
         for k, v in struct.items():
-            klass=eval(k.capitalize())
+            klass=eval(k.capitalize(), globalz)
             setattr(self, k, klass(v))
 
     def validate(self):
