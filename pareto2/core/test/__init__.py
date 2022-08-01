@@ -76,6 +76,7 @@ class Pareto2TestBase(unittest.TestCase):
                                  "KeyType": "HASH"}]}
                  for index in table["indexes"]]
             return {"TableName": table["name"],
+                    "BillingMode": "PAY_PER_REQUEST",
                     "AttributeDefinitions": attrs,
                     "KeySchema": key,
                     "GlobalSecondaryIndexes": gsi}
