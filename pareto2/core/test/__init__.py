@@ -70,16 +70,19 @@ class Pareto2TestBase(unittest.TestCase):
                   "KeyType": v}
                  for k, v in [("pk", "HASH"),
                               ("sk", "RANGE")]]
-            gsi=[{"IndexName": "%s-index" % index["name"],
-                  "Projection": {"ProjectionType": "ALL"},
-                  "KeySchema": [{"AttributeName": index["name"],
-                                 "KeyType": "HASH"}]}
-                 for index in table["indexes"]]
-            return {"TableName": table["name"],
-                    "BillingMode": "PAY_PER_REQUEST",
-                    "AttributeDefinitions": attrs,
-                    "KeySchema": key,
-                    "GlobalSecondaryIndexes": gsi}
+            props={"TableName": table["name"],
+                   "BillingMode": "PAY_PER_REQUEST",
+                   "AttributeDefinitions": attrs,
+                   "KeySchema": key}
+            if ("indexes" in table and
+                table["indexes"]):
+                gsi=[{"IndexName": "%s-index" % index["name"],
+                      "Projection": {"ProjectionType": "ALL"},
+                      "KeySchema": [{"AttributeName": index["name"],
+                                     "KeyType": "HASH"}]}
+                     for index in table["indexes"]]
+                props["GlobalSecondaryIndexes"]=gsi
+            return props
         def create_table(client, resource, table):            
             props=init_table(table)
             client.create_table(**props)
