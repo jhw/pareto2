@@ -16,7 +16,6 @@
 
 ### medium
 
-- replace metadata data- binding solution
 - scaffold cli
 
 ### long
@@ -69,6 +68,7 @@
 
 ### done
 
+- replace metadata data- binding solution
 - remove queue redrive
 - consider removing table errors
 - remove sync/async errors

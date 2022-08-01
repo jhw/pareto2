@@ -1,8 +1,6 @@
 from jsonschema import Draft7Validator
 
-from pareto2.core.components import uppercase
-
-import os, re, yaml
+import os, re
 
 Draft7Schema="http://json-schema.org/draft-07/schema#"
 
@@ -243,18 +241,7 @@ class Secrets(ComponentsBase):
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Secret(item)
                                        for item in items])
-        
-class Userpool(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
-class Userpools(ComponentsBase):
-
-    def __init__(self, items=[]):
-        ComponentsBase.__init__(self, [Userpool(item)
-                                       for item in items])
-        
+                
 class Table(ComponentBase):
 
     def __init__(self, item={}):
@@ -293,57 +280,16 @@ class Timers(ComponentsBase):
             if timer["action"] not in actionnames:
                 errors.append("%s is not a valid action name (timer %s)" % (timer["action"], timer["name"]))
 
-"""
-- if you want to include custom classes in metadata
-- add relevant keys to metadata.yaml file
-- define custom classes (singular, plural) ahead of md.initialise
-"""
+class Userpool(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Userpools(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Userpool(item)
+                                       for item in items])
                 
-class Metadata:
-
-    @classmethod
-    def initialise(self, extras={}, filename="config/metadata.yaml"):
-        if not os.path.exists(filename):
-            raise RuntimeError("metadata.yaml does not exist")
-        return Metadata(yaml.safe_load(open(filename).read()), extras)
-
-    def __init__(self, struct, extras, globalz={"Actions": Actions,
-                                                "Apis": Apis,
-                                                "Buckets": Buckets,
-                                                "Dashboard": Dashboard,
-                                                "Endpoints": Endpoints,
-                                                "Events": Events,
-                                                "Queues": Queues,
-                                                "Routers": Routers,
-                                                "Secrets": Secrets,
-                                                "Tables": Tables,
-                                                "Timers": Timers,
-                                                "Userpools": Userpools}):
-        globalz.update(extras)
-        self.keys=list(struct.keys())
-        for k, v in struct.items():
-            klass=eval(k.capitalize(), globalz)
-            setattr(self, k, klass(v))
-
-    def validate(self):
-        errors=[]
-        for k in self.keys:
-            getattr(self, k).validate(self, errors)
-        if errors!=[]:
-            raise RuntimeError("; ".join(errors))
-        return self
-
-    def expand(self):
-        errors=[]
-        for k in self.keys:
-            getattr(self, k).expand(errors)
-        if errors!=[]:
-            raise RuntimeError("; ".join(errors))
-        return self
-        
 if __name__=="__main__":
-    try:
-        md=Metadata.initialise()
-        md.validate().expand()
-    except RuntimeError as error:
-        print ("Error: %s" % str(error))
+    pass
