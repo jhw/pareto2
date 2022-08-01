@@ -1,9 +1,5 @@
 ### short
 
-- upgrade moto to get mock_codebuild
-  - requires changes to sqs
-  - remove docker
-
 ### gists
 
 - sync error test -> queue redrive or lambda dlq ?
@@ -72,6 +68,9 @@
 
 ### done
 
+- upgrade moto to get mock_codebuild
+  - requires changes to sqs
+  - remove docker
 - replace metadata data- binding solution
 - remove queue redrive
 - consider removing table errors

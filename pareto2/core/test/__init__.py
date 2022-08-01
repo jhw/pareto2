@@ -123,13 +123,23 @@ class Pareto2TestBase(unittest.TestCase):
         self.sqs=boto3.client("sqs")
         for queuename in queuenames:
             self.sqs.create_queue(QueueName=queuename)
-        
+
+    def queue_url_to_arn(self, queueurl):
+        tokens=queueurl.split("/")[2:]
+        region=tokens[0].split(".")[0]
+        accountid, queuename = tokens[-2:]
+        return "arn:aws:sqs:%s:%s:%s" % (region, accountid, queuename)
+
+    def queue_url_to_name(self, queueurl):
+        return queueurl.split("/")[-1]
+
     def list_queues(self):
         def fetch_queue(queueurl):
-            queue=self.sqs.get_queue_attributes(QueueUrl=queueurl)["Attributes"]
-            queue["QueueName"]=queue["QueueArn"].split(":")[-1]
-            queue["QueueUrl"]=queueurl
-            return queue        
+            queuearn=self.queue_url_to_arn(queueurl)
+            queuename=self.queue_url_to_name(queueurl)            
+            return {"QueueUrl": queueurl,
+                    "QueueArn": queuearn,
+                    "QueueName": queuename}
         return [fetch_queue(queueurl)
                 for queueurl in self.sqs.list_queues()["QueueUrls"]]
 
@@ -181,8 +191,7 @@ class Pareto2TestBase(unittest.TestCase):
                                "Statement": [statement]})
             queue=sqs.create_queue(QueueName=queuename,
                                    Attributes={"Policy": policy})
-            queueattrs=sqs.get_queue_attributes(QueueUrl=queue["QueueUrl"])
-            queuearn=queueattrs["Attributes"]["QueueArn"]
+            queuearn=self.queue_url_to_arn(queue["QueueUrl"])
             for i, pattern in enumerate(router["patterns"]):
                 """
                 - because accidental list pattern detail seems to match everything, regardless of list contents
