@@ -1,6 +1,8 @@
 ### short
 
-- implement, validate metadata schema
+- upgrade moto to get mock_codebuild
+  - requires changes to sqs
+  - remove docker
 
 ### gists
 
@@ -15,6 +17,8 @@
 - appsync + graphql
 
 ### medium
+
+- implement, validate metadata schema
 
 - scaffold cli
 
