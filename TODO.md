@@ -1,6 +1,5 @@
 ### short
 
-- remove cli/layers
 - remove core/components/layer
 - check layer refs in pareto2-demo
 - check will pass thru layerppyaml values in defaults
@@ -74,6 +73,7 @@
 
 ### done
 
+- remove cli/layers
 - upgrade moto to get mock_codebuild
   - requires changes to sqs
   - remove docker
