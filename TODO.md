@@ -1,15 +1,12 @@
 ### short
 
-- remove core/components/layer
-- check layer refs in pareto2-demo
-- check will pass thru layerppyaml values in defaults
-- check compiles/deploys
+- populate pyyaml arn
+- deploy and check layer works
 
 ### gists
 
 - sync error test -> queue redrive or lambda dlq ?
 - api with keys
-- codebuild notifications
 - cloudformation notification arns
 - eventbridge as lambda destination
 - s3 eventbridge notifications
@@ -20,11 +17,11 @@
 ### medium
 
 - implement, validate metadata schema
-
 - scaffold cli
 
 ### long
 
+- burningmonk apigw stuff
 - lambda alarms, timeouts
 - aws chat
 - iam role lockdown
@@ -73,6 +70,10 @@
 
 ### done
 
+- codebuild notifications
+- check will pass thru layerppyaml values in defaults
+- check layer refs in pareto2-demo
+- remove core/components/layer
 - remove cli/layers
 - upgrade moto to get mock_codebuild
   - requires changes to sqs

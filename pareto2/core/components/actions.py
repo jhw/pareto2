@@ -34,7 +34,7 @@ def init_function(action):
            "Handler": handler,
            "Runtime": runtime}
     if "packages" in action:
-        props["Layers"]=[{"Ref": H("layer-%s" % pkgname)}
+        props["Layers"]=[{"Ref": H("%s-layer-arn" % pkgname)}
                          for pkgname in action["packages"]]
     if "env" in action:
         variables={U(k): {"Ref": H(k)}
