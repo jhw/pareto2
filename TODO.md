@@ -1,5 +1,11 @@
 ### short
 
+- remove cli/layers
+- remove core/components/layer
+- check layer refs in pareto2-demo
+- check will pass thru layerppyaml values in defaults
+- check compiles/deploys
+
 ### gists
 
 - sync error test -> queue redrive or lambda dlq ?
