@@ -2,6 +2,8 @@
 
 - new python deploy stack script which checks
 
+- abstract latest template url
+
 - include builder
 - add sns topic
 
