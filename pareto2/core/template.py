@@ -215,25 +215,30 @@ class Template:
                           indent=2)
 
     @property
-    def local_filename(self):
+    def local_filename_timestamped(self):
         return "tmp/%s-%s.json" % (self.name,
                                    self.timestamp)
     
-    def dump_local(self):
-        with open(self.local_filename, "w") as f:
+    def dump_local_timestamped(self):
+        with open(self.local_filename_timestamped, "w") as f:
             f.write(self.to_json())
 
+    def dump_local(self):
+        self.dump_local_timestamped()
+            
     @property
-    def s3_key(self):
+    def s3_key_timestamped(self):
         return "%s-%s.json" % (self.name,
                                self.timestamp)
             
-    def dump_s3(self, s3, bucketname):
+    def dump_s3_timestamped(self, s3, bucketname):
         s3.put_object(Bucket=bucketname,
-                      Key=self.s3_key,
+                      Key=self.s3_key_timestamped,
                       Body=self.to_json(),
                       ContentType="application/json")
 
+    def dump_s3(self, s3, bucketname):
+        self.dump_s3_timestamped(s3, bucketname)
             
 if __name__=="__main__":
     pass

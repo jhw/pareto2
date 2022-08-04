@@ -26,10 +26,8 @@ class Artifacts:
             logger.info("running tests")
             lambdas.run_tests()
         lambdas.validate(self.md)
-        logger.info("writing lambdas to %s" % lambdas.local_filename)
         lambdas.dump_local()
         bucketname=self.config["ArtifactsBucket"]
-        logger.info("pushing lambdas to %s" % lambdas.s3_key)
         lambdas.dump_s3(self.s3, bucketname)
         return lambdas
         
@@ -45,31 +43,18 @@ class Artifacts:
         defaults.update({"ArtifactsKey": lambdas.s3_key})
         template.parameters.update_defaults(defaults)
         template.parameters.validate()
-        logger.info("writing template to %s" % template.local_filename)
         template.dump_local()
         template.validate_root()
-        logger.info("pushing template to %s" % template.s3_key)
         template.dump_s3(self.s3, self.config["ArtifactsBucket"])
 
     def build(self,
               component_paths=["pareto2/core/components"],
               template_name="template",
               run_tests=True):
-        try:
-            lambdas=self.build_lambdas(run_tests)
-            self.build_template(name=template_name,
-                                paths=component_paths,                                
-                                lambdas=lambdas)
-        except Exception as error:
-            """
-            - capture error but re- raise
-            - cli error will be captured by main block below
-            - codebuild error should cause process to terminate
-            - https://stackoverflow.com/a/67192915/124179
-            """
-            logger.error(str(error))
-            raise RuntimeError("artifacts build process failed")
-
+        lambdas=self.build_lambdas(run_tests)
+        self.build_template(name=template_name,
+                            paths=component_paths,                                
+                            lambdas=lambdas)
         
 if __name__=="__main__":
     try:
