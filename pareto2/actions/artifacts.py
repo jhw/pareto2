@@ -9,9 +9,6 @@ import boto3, logging, os
 
 from datetime import datetime
 
-logger=logging.getLogger()
-logger.setLevel(logging.INFO)
-
 class Artifacts:
 
     def __init__(self, config, md, timestamp, s3):
@@ -23,8 +20,7 @@ class Artifacts:
     def build_lambdas(self, run_tests):
         lambdas=Lambdas(self.timestamp)
         if run_tests:
-            logger.info("running tests")
-            lambdas.run_tests()
+            lambdas.run_tests() # raises RuntimeError on failure
         lambdas.validate(self.md)
         lambdas.dump_local()
         bucketname=self.config["ArtifactsBucket"]
@@ -51,22 +47,15 @@ class Artifacts:
               component_paths=["pareto2/core/components"],
               template_name="template",
               run_tests=True):
+        if not os.path.exists("tmp"):
+            os.mkdir("tmp")                
         lambdas=self.build_lambdas(run_tests)
         self.build_template(name=template_name,
-                            paths=component_paths,                                
+                            paths=component_paths,
                             lambdas=lambdas)
         
 if __name__=="__main__":
     try:
-        import sys
-        def init_stdout_logger():
-            handler=logging.StreamHandler(sys.stdout)
-            formatter=logging.Formatter('[%(asctime)s] %(levelname)s [%(filename)s.%(funcName)s:%(lineno)d] %(message)s', datefmt='%a, %d %b %Y %H:%M:%S')
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-        init_stdout_logger()
-        if not os.path.exists("tmp"):
-            os.mkdir("tmp")                
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()

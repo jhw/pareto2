@@ -1,7 +1,5 @@
 ### short
 
-- re- raise exception if tests fail and is_codebuild
-
 - include builder
 
 - add sns topic
@@ -75,6 +73,7 @@
 
 ### done
 
+- re- raise exception if tests fail and is_codebuild
 - abstract latest template url
 - new python deploy stack script which checks
 - deploy stack to use latest template 
