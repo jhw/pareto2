@@ -128,7 +128,35 @@ class Buckets(ComponentsBase):
             if ("action" in bucket and
                 bucket["action"] not in actionnames):
                 errors.append("%s is not a valid action name (bucket %s)" % (bucket["action"], bucket["name"]))
-        
+
+class Builder(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Builders(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Builder(item)
+                                       for item in items])
+
+    def validate_actions(self, md, errors):
+        actionnames=md.actions.names
+        for builder in self:
+            for rule in builder["rules"]:
+                if rule["action"] not in actionnames:
+                    errors.append("%s is not a valid action name (builder %s/rule %s)" % (rule["action"], builder["name"], rule["name"]))
+
+    def validate_buckets(self, md, errors):
+        bucketnames=md.buckets.names
+        for builder in self:
+            if builder["bucket"] not in bucketnames:
+                errors.append("%s is not a valid bucket name (builder %s)" % (builder["bucket"], builder["name"]))
+                    
+    def validate(self, md, errors):
+        self.validate_actions(md, errors)
+        self.validate_buckets(md, errors)
+                
 class Dashboard(ComponentBase):
 
     def __init__(self, item={}):
