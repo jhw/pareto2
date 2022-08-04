@@ -62,7 +62,7 @@ class Artifacts:
 
     def build(self,
               component_paths=["pareto2/core/components"],
-              template_name="main",
+              template_name="template",
               run_tests=True):
         try:
             lambdas=self.build_lambdas(run_tests)
@@ -83,9 +83,6 @@ class Artifacts:
 if __name__=="__main__":
     try:
         import sys
-        """
-        - codebuild will provide its own logger
-        """
         def init_stdout_logger():
             handler=logging.StreamHandler(sys.stdout)
             formatter=logging.Formatter('[%(asctime)s] %(levelname)s [%(filename)s.%(funcName)s:%(lineno)d] %(message)s', datefmt='%a, %d %b %Y %H:%M:%S')
@@ -94,12 +91,6 @@ if __name__=="__main__":
         init_stdout_logger()
         if not os.path.exists("tmp"):
             os.mkdir("tmp")                
-        if len(sys.argv) < 3:
-            raise RuntimeError("please enter template_name, run_tests")
-        templatename, runtests = sys.argv[1:3]
-        if runtests not in ["true", "false"]:
-            raise RuntimeError("run_tests is invalid")
-        runtests=runtests=="true"
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()
@@ -109,8 +100,7 @@ if __name__=="__main__":
                             md=md,
                             timestamp=timestamp,
                             s3=s3)
-        artifacts.build(template_name=templatename,
-                        run_tests=runtests)
+        artifacts.build()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 

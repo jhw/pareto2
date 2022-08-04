@@ -1,7 +1,5 @@
 ### short
 
-- add template as default template mame
-- remove template naming option
 - copy template to latest.json 
 - deploy stack to use latest template 
 - new python deploy stack script which checks
@@ -78,6 +76,8 @@
 
 ### done
 
+- add template as default template mame
+- remove template naming option
 - populate pyyaml arn
 - deploy and check layer works
 - codebuild notifications
