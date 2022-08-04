@@ -224,14 +224,6 @@ class Template:
             f.write(self.to_json())
 
     @property
-    def codebuild_filename(self):
-        return "%s.json" % self.name
-    
-    def dump_codebuild(self):
-        with open(self.codebuild_filename, "w") as f:
-            f.write(self.to_json())
-            
-    @property
     def s3_key(self):
         return "%s-%s.json" % (self.name,
                                self.timestamp)

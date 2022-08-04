@@ -33,10 +33,6 @@ class Artifacts:
         lambdas.dump_s3(self.s3, bucketname)
         return lambdas
         
-    @property
-    def is_codebuild(self):
-        return "CODEBUILD_BUILD_ID" in os.environ
-        
     def build_template(self,
                        name,
                        paths,
@@ -49,16 +45,11 @@ class Artifacts:
         defaults.update({"ArtifactsKey": lambdas.s3_key})
         template.parameters.update_defaults(defaults)
         template.parameters.validate()
-        if not self.is_codebuild:
-            logger.info("writing template to %s" % template.local_filename)
-            template.dump_local()
-        else:
-            logger.info("writing template to %s" % template.codebuild_filename)
-            template.dump_codebuild()
+        logger.info("writing template to %s" % template.local_filename)
+        template.dump_local()
         template.validate_root()
-        if not self.is_codebuild:
-            logger.info("pushing template to %s" % template.s3_key)
-            template.dump_s3(self.s3, self.config["ArtifactsBucket"])
+        logger.info("pushing template to %s" % template.s3_key)
+        template.dump_s3(self.s3, self.config["ArtifactsBucket"])
 
     def build(self,
               component_paths=["pareto2/core/components"],
