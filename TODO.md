@@ -1,7 +1,5 @@
 ### short
 
-- python deployment script
-
 - artifacts no timestamp option
 
 ### medium
@@ -29,6 +27,8 @@
 
 ### thoughts
 
+- python deployment script ?
+  - is probably fine to have just a shell option, even if slightly more inconvenient; you're not supposed to be investing in the cli really
 - codebuild output option
  - https://stackoverflow.com/a/67192915/124179
 - some kind of s3 error on stack deployment ?
