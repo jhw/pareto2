@@ -1,30 +1,31 @@
 ### short
 
-- populate pyyaml arn
-- deploy and check layer works
+- python deployment script
 
-### gists
-
-- sync error test -> queue redrive or lambda dlq ?
-- api with keys
-- cloudformation notification arns
-- eventbridge as lambda destination
-- s3 eventbridge notifications
-- eventbridge urls (?)
-- step functions
-- appsync + graphql
+- artifacts no timestamp option
 
 ### medium
 
-- implement, validate metadata schema
+- sync errors [destinations, dlqs]
+- metadata schema
 - scaffold cli
+
+### gists
+
+- api keys
+- cloudformation notification arns
+- eventbridge lambda destination
+- s3 eventbridge notifications
+- eventbridge urls (?)
 
 ### long
 
 - burningmonk apigw stuff
 - lambda alarms, timeouts
-- aws chat
+- appsync + graphql
+- step functions
 - iam role lockdown
+- aws chat
 
 ### thoughts
 
@@ -70,6 +71,8 @@
 
 ### done
 
+- populate pyyaml arn
+- deploy and check layer works
 - codebuild notifications
 - check will pass thru layerppyaml values in defaults
 - check layer refs in pareto2-demo
