@@ -2,16 +2,22 @@
 
 . config/app.props
 
-if [ $# -eq 0 ]
+if [ -z $1 ]
+then
+    echo "Please enter action"
+    exit 1
+fi
+
+if [ -z $2 ]
+then
+    echo "Please enter template file"
+    exit 1
+fi
+
+if [ -z $3 ]
 then
     echo "Please enter stage"
-    exit
+    exit 1
 fi
 
-if [ $# -eq 1 ]
-then
-    echo "Please enter template"
-    exit
-fi
-
-aws cloudformation create-stack --stack-name $AppName-$1 --template-url http://s3.eu-west-1.amazonaws.com/$ArtifactsBucket/$2 --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation $1-stack --stack-name $AppName-$3 --template-url https://s3.$AWS_REGION.amazonaws.com/$ArtifactsBucket/$2 --parameters ParameterKey=StageName,ParameterValue=$3 --capabilities CAPABILITY_NAMED_IAM
