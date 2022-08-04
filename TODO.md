@@ -1,6 +1,13 @@
 ### short
 
-- artifacts no timestamp option
+- add template as default template mame
+- remove template naming option
+- copy template to latest.json 
+- deploy stack to use latest template 
+- new python deploy stack script which checks
+
+- include builder
+- add sns topic
 
 ### medium
 
