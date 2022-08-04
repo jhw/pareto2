@@ -215,18 +215,20 @@ class Template:
                           indent=2)
 
     def dump_local(self):
-        filename="tmp/%s-%s.json" % (self.name,
-                                     self.timestamp)    
-        with open(self.filename, "w") as f:
-            f.write(self.to_json())
+        for filename in ["tmp/%s-%s.json" % (self.name,
+                                             self.timestamp),
+                         "tmp/%s-latest.json" % self.name]:            
+            with open(filename, "w") as f:
+                f.write(self.to_json())
 
     def dump_s3(self, s3, bucketname):
-        s3key="%s-%s.json" % (self.name,
-                              self.timestamp)            
-        s3.put_object(Bucket=bucketname,
-                      Key=s3key,
-                      Body=self.to_json(),
-                      ContentType="application/json")
+        for s3key in ["%s-%s.json" % (self.name,
+                                      self.timestamp),
+                      "%s-latest.json" % self.name]:
+            s3.put_object(Bucket=bucketname,
+                          Key=s3key,
+                          Body=self.to_json(),
+                          ContentType="application/json")
 
             
 if __name__=="__main__":

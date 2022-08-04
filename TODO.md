@@ -1,6 +1,5 @@
 ### short
 
-- copy template to latest.json 
 - deploy stack to use latest template 
 - new python deploy stack script which checks
 
@@ -76,6 +75,8 @@
 
 ### done
 
+- copy template to latest.json 
+- copy template to latest.json 
 - add template as default template mame
 - remove template naming option
 - populate pyyaml arn
