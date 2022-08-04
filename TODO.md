@@ -1,10 +1,9 @@
 ### short
 
-- new python deploy stack script which checks
-
-- abstract latest template url
+- re- raise exception if tests fail and is_codebuild
 
 - include builder
+
 - add sns topic
 
 ### medium
@@ -76,6 +75,8 @@
 
 ### done
 
+- abstract latest template url
+- new python deploy stack script which checks
 - deploy stack to use latest template 
 - copy template to latest.json 
 - copy template to latest.json 

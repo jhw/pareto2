@@ -2,8 +2,6 @@ import json, os, re, yaml
 
 from datetime import datetime
 
-TemplateUrl="https://s3.%s.amazonaws.com/%s/%s-%s.json"
-
 DefaultParameters=yaml.safe_load("""
 AppName:
   Type: String
@@ -202,14 +200,6 @@ class Template:
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
 
-    def url(self, bucketname):
-        if not "AWS_REGION" in os.environ:
-            raise RuntimeError("please set AWS_REGION")
-        return TemplateUrl % (os.environ["AWS_REGION"],
-                              bucketname,
-                              self.name,
-                              self.timestamp)
-    
     def to_json(self):
         return json.dumps(self.render(),
                           indent=2)
