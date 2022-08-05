@@ -31,40 +31,29 @@ version: '0.2'
 - not clear if FINALIZING is always generated ?
 """
 
-EventPatterns=yaml.safe_load("""
-update:
-  source:
-    - "aws.codebuild"
-  detail-type:
-    - "CodeBuild Build Phase Change"
-  detail:
-    completed-phase:
-      - SUBMITTED
-      - PROVISIONING
-      - DOWNLOAD_SOURCE
-      - INSTALL
-      - PRE_BUILD
-      - BUILD
-      - POST_BUILD
-      - UPLOAD_ARTIFACTS
-      - FINALIZING
-    completed-phase-status:
-      - TIMED_OUT
-      - STOPPED
-      - FAILED
-      - SUCCEEDED
-      - FAULT
-      - CLIENT_ERROR
-complete:
-  source:
-    - "aws.codebuild"
-  detail-type:
-    - "CodeBuild Build Phase Change"
-  detail:
-    completed-phase:
-      - UPLOAD_ARTIFACTS
-    completed-phase-status:
-      - SUCCEEDED
+RulePattern=yaml.safe_load("""
+source:
+  - "aws.codebuild"
+detail-type:
+  - "CodeBuild Build Phase Change"
+detail:
+  completed-phase:
+    - SUBMITTED
+    - PROVISIONING
+    - DOWNLOAD_SOURCE
+    - INSTALL
+    - PRE_BUILD
+    - BUILD
+    - POST_BUILD
+    - UPLOAD_ARTIFACTS
+    - FINALIZING
+  completed-phase-status:
+    - TIMED_OUT
+    - STOPPED
+    - FAILED
+    - SUCCEEDED
+    - FAULT
+    - CLIENT_ERROR
 """)
 
 @resource
@@ -116,18 +105,13 @@ def init_service_role(builder, permissions=Permissions):
             props)
 
 @resource
-def init_rule(builder, rule, patterns=EventPatterns):
-    def init_target(builder, rule):
-        id={"Fn::Sub": "%s-builder-%s-rule-${AWS::StackName}" % (builder["name"],
-                                                                 rule["name"])}
-        arn={"Fn::GetAtt": [H("%s-function" % rule["action"]), "Arn"]}
-        return {"Id": id,
-                "Arn": arn}
-    resourcename=H("%s-builder-%s-rule" % (builder["name"],
-                                           rule["name"]))
-    pattern=patterns[rule["name"]]
+def init_rule(builder, pattern=RulePattern):
+    resourcename=H("%s-builder-rule" % builder["name"])
     pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % builder["name"])}] # *** NB project-name part of detail! ***
-    target=init_target(builder, rule)
+    targetid={"Fn::Sub": "%s-builder-rule-${AWS::StackName}" % builder["name"]}
+    targetarn={"Fn::GetAtt": [H("%s-function" % builder["action"]), "Arn"]}
+    target=[{"Id": targetid,
+            "Arn": targetarn}]
     props={"EventPattern": pattern,
            "Targets": [target],
            "State": "ENABLED"}
@@ -136,12 +120,10 @@ def init_rule(builder, rule, patterns=EventPatterns):
             props)
 
 @resource
-def init_rule_permission(builder, rule):
-    resourcename=H("%s-builder-%s-rule-permission" % (builder["name"],
-                                                      rule["name"]))
-    sourcearn={"Fn::GetAtt": [H("%s-builder-%s-rule" % (builder["name"],
-                                                        rule["name"])), "Arn"]}
-    funcname={"Ref": H("%s-function" % rule["action"])}
+def init_rule_permission(builder):
+    resourcename=H("%s-builder-rule-permission" % builder["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-builder-rule" % builder["name"]), "Arn"]}
+    funcname={"Ref": H("%s-function" % builder["action"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",
            "FunctionName": funcname,
@@ -154,14 +136,11 @@ def init_resources(md):
     resources=[]
     for builder in md.builders:
         for fn in [init_project,
-                   init_service_role]:
+                   init_service_role,
+                   init_rule,
+                   init_rule_permission]:
             resource=fn(builder)
             resources.append(resource)
-        for rule in builder["rules"]:
-            for fn in [init_rule,
-                       init_rule_permission]:
-                resource=fn(builder, rule)
-                resources.append(resource)                
     return dict(resources)
 
 def init_outputs(md):
@@ -182,8 +161,7 @@ if __name__=="__main__":
         from pareto2.core.template import Template
         template=Template("builder")
         from pareto2.core.metadata import Metadata
-        from scripts.artifacts import Builder, Builders
-        md=Metadata.initialise({"Builders": Builders})        
+        md=Metadata.initialise()        
         md.validate().expand()
         update_template(template, md)
         template.dump_local()

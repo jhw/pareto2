@@ -143,9 +143,8 @@ class Builders(ComponentsBase):
     def validate_actions(self, md, errors):
         actionnames=md.actions.names
         for builder in self:
-            for rule in builder["rules"]:
-                if rule["action"] not in actionnames:
-                    errors.append("%s is not a valid action name (builder %s/rule %s)" % (rule["action"], builder["name"], rule["name"]))
+            if builder["action"] not in actionnames:
+                errors.append("%s is not a valid action name (builder %s)" % (builder["action"], builder["name"]))
 
     def validate_buckets(self, md, errors):
         bucketnames=md.buckets.names

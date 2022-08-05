@@ -1,6 +1,5 @@
 ### short
 
-- remove builder completed
 - add codebuild s3 logs
 
 ### medium
@@ -73,6 +72,7 @@
 
 ### done
 
+- remove builder completed
 - include builder
 - re- raise exception if tests fail and is_codebuild
 - abstract latest template url
