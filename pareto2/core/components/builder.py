@@ -62,6 +62,7 @@ def init_project(builder,
                  buildcomputetype=BuildComputeType,
                  buildimage=BuildImage,
                  buildspec=BuildSpec,
+                 buildprefix="build",
                  logsprefix="logs"):
     resourcename=H("%s-builder-project" % builder["name"])
     env={"ComputeType": buildcomputetype,
@@ -74,7 +75,8 @@ def init_project(builder,
     artifacts={"Type": "S3",
                "Location": {"Ref": H("%s-bucket" % builder["bucket"])},
                "Packaging": "ZIP",
-               "OverrideArtifactName": True}
+               "OverrideArtifactName": True,
+               "Path": buildprefix}
     s3logspath={"Fn::Sub": "${%s}/%s" % (H("%s-bucket" % builder["bucket"]),
                                          logsprefix)}
     logsconfig={"S3Logs": {"Status": "ENABLED",
