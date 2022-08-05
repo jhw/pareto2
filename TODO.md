@@ -1,9 +1,10 @@
 ### short
 
-
 ### medium
 
+- root/child timer as higher- level construct
 - sns topic
+
 - sync errors [destinations, dlqs]
 - metadata schema
 - scaffold cli
