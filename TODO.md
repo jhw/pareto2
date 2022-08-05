@@ -1,9 +1,11 @@
 ### short
 
-- add sns topic
+- remove builder completed
+- add codebuild s3 logs
 
 ### medium
 
+- sns topic
 - sync errors [destinations, dlqs]
 - metadata schema
 - scaffold cli
