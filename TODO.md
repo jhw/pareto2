@@ -1,6 +1,5 @@
 ### short
 
-- add codebuild s3 logs
 
 ### medium
 
@@ -72,6 +71,7 @@
 
 ### done
 
+- add codebuild s3 logs
 - remove builder completed
 - include builder
 - re- raise exception if tests fail and is_codebuild

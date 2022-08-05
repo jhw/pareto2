@@ -61,7 +61,8 @@ def init_project(builder,
                  buildtype=BuildType,
                  buildcomputetype=BuildComputeType,
                  buildimage=BuildImage,
-                 buildspec=BuildSpec):
+                 buildspec=BuildSpec,
+                 logsprefix="logs"):
     resourcename=H("%s-builder-project" % builder["name"])
     env={"ComputeType": buildcomputetype,
          "Image": buildimage,
@@ -74,11 +75,15 @@ def init_project(builder,
                "Location": {"Ref": H("%s-bucket" % builder["bucket"])},
                "Packaging": "ZIP",
                "OverrideArtifactName": True}
+    s3logspath="%s/%s" % (builder["bucket"], logsprefix)
+    logsconfig={"S3Logs": {"Status": "ENABLED",
+                           "Location": s3logspath}}
     props={"Environment": env,
            "Name": name,
            "Source": source,
            "ServiceRole": {"Fn::GetAtt": [rolename, "Arn"]},
-           "Artifacts": artifacts}
+           "Artifacts": artifacts,
+           "LogsConfig": logsconfig}
     return (resourcename, 
             "AWS::CodeBuild::Project",
             props)
