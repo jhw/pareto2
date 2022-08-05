@@ -75,7 +75,8 @@ def init_project(builder,
                "Location": {"Ref": H("%s-bucket" % builder["bucket"])},
                "Packaging": "ZIP",
                "OverrideArtifactName": True}
-    s3logspath="%s/%s" % (builder["bucket"], logsprefix)
+    s3logspath={"Fn::Sub": "${%s}/%s" % (H("%s-bucket" % builder["bucket"]),
+                                         logsprefix)}
     logsconfig={"S3Logs": {"Status": "ENABLED",
                            "Location": s3logspath}}
     props={"Environment": env,
@@ -115,8 +116,8 @@ def init_rule(builder, pattern=RulePattern):
     pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % builder["name"])}] # *** NB project-name part of detail! ***
     targetid={"Fn::Sub": "%s-builder-rule-${AWS::StackName}" % builder["name"]}
     targetarn={"Fn::GetAtt": [H("%s-function" % builder["action"]), "Arn"]}
-    target=[{"Id": targetid,
-            "Arn": targetarn}]
+    target={"Id": targetid,
+            "Arn": targetarn}
     props={"EventPattern": pattern,
            "Targets": [target],
            "State": "ENABLED"}
