@@ -122,13 +122,6 @@ class Buckets(ComponentsBase):
         ComponentsBase.__init__(self, [Bucket(item)
                                        for item in items])
 
-    def validate(self, md, errors):
-        actionnames=md.actions.names
-        for bucket in self:
-            if ("action" in bucket and
-                bucket["action"] not in actionnames):
-                errors.append("%s is not a valid action name (bucket %s)" % (bucket["action"], bucket["name"]))
-
 class Builder(ComponentBase):
 
     def __init__(self, item={}):
