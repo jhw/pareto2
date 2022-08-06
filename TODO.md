@@ -1,10 +1,11 @@
 ### short
 
-- router should be an option for event
-
 - sns topic
 
 ### medium
+
+- stop artifacts dumping to tmp
+- move artifacts into cli/deploy
 
 - root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
@@ -72,6 +73,7 @@
 
 ### done
 
+- router should be an option for event
 - s3 eventbridge notifications
 - add codebuild s3 logs
 - remove builder completed

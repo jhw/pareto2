@@ -15,11 +15,12 @@ def init_rule(event):
     if "source" in event:
         pattern["source"]=[{"Ref": H("%s-function" % event["source"])}]
     target=init_target(event)
-    eventbusname={"Ref": H("%s-router-event-bus" % event["router"])}
-    props={"EventBusName": eventbusname,
-           "EventPattern": pattern,
+    props={"EventPattern": pattern,
            "Targets": [target],
            "State": "ENABLED"}
+    if "router" in event:
+        eventbusname={"Ref": H("%s-router-event-bus" % event["router"])}
+        props["EventBusName"]=eventbusname
     return (resourcename,
             "AWS::Events::Rule",
             props)

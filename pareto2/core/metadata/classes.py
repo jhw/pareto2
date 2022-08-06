@@ -206,10 +206,15 @@ class Events(ComponentsBase):
         ComponentsBase.__init__(self, [Event(item)
                                        for item in items])
 
+    """
+    - NB event.router is optional
+    """
+        
     def validate(self, md, errors):
         actionnames, routernames = md.actions.names, md.routers.names
         for event in self:
-            if event["router"] not in routernames:
+            if ("router" in event and
+                event["router"] not in routernames):
                 errors.append("%s is not a valid router name (event %s)" % (event["router"], event["name"]))                
             if ("source" in event and
                 event["source"] not in actionnames):
