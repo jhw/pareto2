@@ -1,5 +1,7 @@
 ### short
 
+- router should be an option for event
+
 - sns topic
 
 ### medium
