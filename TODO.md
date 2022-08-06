@@ -1,21 +1,21 @@
 ### short
 
+- s3 eventbridge notifications
+
+- sns topic
+
 ### medium
 
 - root/child timer as higher- level construct
-- sns topic
-
-- sync errors [destinations, dlqs]
+- explicit action destination, dsl (boolean) fields
 - metadata schema
 - scaffold cli
 
 ### gists
 
+- eventbridge destination urls
 - api keys
-- cloudformation notification arns
-- eventbridge lambda destination
-- s3 eventbridge notifications
-- eventbridge urls (?)
+- eventbridge as lambda destination
 
 ### long
 
