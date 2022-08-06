@@ -1,7 +1,5 @@
 ### short
 
-- s3 eventbridge notifications
-
 - sns topic
 
 ### medium
@@ -72,6 +70,7 @@
 
 ### done
 
+- s3 eventbridge notifications
 - add codebuild s3 logs
 - remove builder completed
 - include builder
