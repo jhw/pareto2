@@ -3,6 +3,11 @@ from pareto2.core.components import resource
 
 import json
 
+"""
+- event.router is optional because absence of router implies use of default router
+- and many services use default router and can't be changed eg (1) s3 notifications, eg (2) codebuild notifications
+"""
+
 @resource
 def init_rule(event):
     def init_target(event):
