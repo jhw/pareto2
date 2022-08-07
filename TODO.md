@@ -1,8 +1,8 @@
 ### short
 
-### medium
-
 - event `bucket` attribute to pattern- match s3 eventbridge notifications
+
+### medium
 
 - replace dump_local for core/components main scripts
 
