@@ -9,7 +9,9 @@ def list_contents(s3, bucketname, prefix):
     for struct in pages:
         if "Contents" in struct:
             for obj in struct["Contents"]:
-                print (obj["Key"])
+                print ("%s\t%s\t%s" % (obj["LastModified"],
+                                       obj["Size"],
+                                       obj["Key"]))
     
 if __name__=="__main__":
     try:

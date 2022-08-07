@@ -1,7 +1,7 @@
 ### short
 
-- test push_artifacts.py
-- test list_contents.py
+- script to download artifacts
+- cli/artifacts dir which is pre- populated with bucket
 
 ### medium
 
@@ -76,6 +76,8 @@
 
 ### done
 
+- test push_artifacts.py
+- test list_contents.py
 - convert s3 push to use in- memory zip
 - remove local dumping
 - in- memory zip test
