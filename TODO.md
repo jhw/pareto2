@@ -1,6 +1,5 @@
 ### short
 
-- upgrade user scripts
 - stop artifacts dumping to tmp
 - move artifacts into cli/deploy
 
@@ -73,6 +72,7 @@
 
 ### done
 
+- upgrade user scripts
 - router should be an option for event
 - s3 eventbridge notifications
 - add codebuild s3 logs
