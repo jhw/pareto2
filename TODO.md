@@ -1,7 +1,6 @@
 ### short
 
 - script to download artifacts
-- cli/artifacts dir which is pre- populated with bucket
 
 ### medium
 
@@ -76,6 +75,7 @@
 
 ### done
 
+- cli/artifacts dir which is pre- populated with bucket
 - test push_artifacts.py
 - test list_contents.py
 - convert s3 push to use in- memory zip

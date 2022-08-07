@@ -1,3 +1,5 @@
+from pareto2.cli import *
+
 import boto3
 
 def empty_bucket(fn):
@@ -20,10 +22,8 @@ def delete_bucket(s3, bucketname):
     
 if __name__=="__main__":
     try:
-        import sys
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter bucket name")
-        bucketname=sys.argv[1]
+        config=load_config()
+        bucketname=config["ArtifactsBucket"]
         s3=boto3.client("s3")
         delete_bucket(s3, bucketname)
     except RuntimeError as error:

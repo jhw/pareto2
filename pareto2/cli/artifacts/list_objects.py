@@ -1,3 +1,5 @@
+from pareto2.cli import *
+
 import boto3
 
 def list_contents(s3, bucketname, prefix):
@@ -16,10 +18,9 @@ def list_contents(s3, bucketname, prefix):
 if __name__=="__main__":
     try:
         import sys
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter bucket name, prefix?")
-        bucketname=sys.argv[1]
-        prefix=sys.argv[2] if len(sys.argv) > 2 else None            
+        prefix=sys.argv[1] if len(sys.argv) > 1 else None            
+        config=load_config()
+        bucketname=config["ArtifactsBucket"]
         s3=boto3.client("s3")
         list_contents(s3, bucketname, prefix)
     except RuntimeError as error:
