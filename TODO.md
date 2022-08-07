@@ -1,6 +1,8 @@
 ### short
 
-- stop artifacts dumping to tmp
+- convert lambda dump to use in- memory zip
+- remove local lambda/template dump
+- add extra utils to inspect s3 artifacts
 
 ### medium
 
