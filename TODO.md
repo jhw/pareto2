@@ -1,12 +1,13 @@
 ### short
 
-- convert s3 push to use in- memory zip
-- remove local dumping
-- list artifacts script taling prefix
+- test push_artifacts.py
+- test list_contents.py
 
 ### medium
 
 - event `bucket` attribute to pattern- match s3 eventbridge notifications
+
+- replace dump_local for core/components main scripts
 
 - sns topic
 - root/child timer as higher- level construct
@@ -75,6 +76,8 @@
 
 ### done
 
+- convert s3 push to use in- memory zip
+- remove local dumping
 - in- memory zip test
 - move artifacts into cli/deploy
 - upgrade user scripts

@@ -204,13 +204,6 @@ class Template:
         return json.dumps(self.render(),
                           indent=2)
 
-    def dump_local(self):
-        for filename in ["tmp/%s-%s.json" % (self.name,
-                                             self.timestamp),
-                         "tmp/%s-latest.json" % self.name]:            
-            with open(filename, "w") as f:
-                f.write(self.to_json())
-
     def dump_s3(self, s3, bucketname):
         for s3key in ["%s-%s.json" % (self.name,
                                       self.timestamp),

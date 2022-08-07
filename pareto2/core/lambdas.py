@@ -1,4 +1,4 @@
-import importlib, inspect, os, unittest, zipfile
+import importlib, inspect, io, os, unittest, zipfile
 
 class Lambdas:
 
@@ -73,24 +73,23 @@ class Lambdas:
             raise RuntimeError("unit tests failed")
 
     @property
-    def local_filename(self):
-        return "tmp/%s" % self.s3_key
-        
-    def dump_local(self):
-        zf=zipfile.ZipFile(self.local_filename, 'w', zipfile.ZIP_DEFLATED)
+    def zipped_data(self):
+        buf=io.BytesIO()
+        zf=zipfile.ZipFile(buf, 'a', zipfile.ZIP_DEFLATED, False)
         for path in self.paths:
             zf.write(path)
         zf.close()
-        
+        return buf.getvalue()
+            
     @property
     def s3_key(self):
         return "lambdas-%s.zip" % self.timestamp
             
     def dump_s3(self, s3, bucketname):
-        s3.upload_file(Filename=self.local_filename,
-                       Bucket=bucketname,
-                       Key=self.s3_key,
-                       ExtraArgs={'ContentType': 'application/zip'})
+        s3.put_object(Bucket=bucketname,
+                      Key=self.s3_key,
+                      Body=self.zipped_data,
+                      ContentType="application/zip")
 
 if __name__=="__main__":
     pass
