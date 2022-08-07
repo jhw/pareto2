@@ -1,12 +1,12 @@
 ### short
 
-- sns topic
-
-### medium
-
+- upgrade user scripts
 - stop artifacts dumping to tmp
 - move artifacts into cli/deploy
 
+### medium
+
+- sns topic
 - root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
 - metadata schema
@@ -14,9 +14,9 @@
 
 ### gists
 
-- eventbridge destination urls
 - api keys
-- eventbridge as lambda destination
+- eventbridge destination urls
+- eventbridge lambda destination
 
 ### long
 
