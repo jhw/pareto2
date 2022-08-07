@@ -1,6 +1,5 @@
 ### short
 
-- in- memory zip test
 - convert s3 push to use in- memory zip
 - remove local dumping
 - list artifacts script taling prefix
@@ -76,6 +75,7 @@
 
 ### done
 
+- in- memory zip test
 - move artifacts into cli/deploy
 - upgrade user scripts
 - router should be an option for event
