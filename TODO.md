@@ -1,10 +1,11 @@
 ### short
 
-- event `bucket` attribute to pattern- match s3 eventbridge notifications
+- rename event source/action as action/target
+
+- replace dump_local for core/components main scripts
 
 ### medium
 
-- replace dump_local for core/components main scripts
 
 - sns topic
 - root/child timer as higher- level construct
@@ -73,6 +74,7 @@
 
 ### done
 
+- event `bucket` attribute to pattern- match s3 eventbridge notifications
 - script to download artifacts
 - cli/artifacts dir which is pre- populated with bucket
 - test push_artifacts.py

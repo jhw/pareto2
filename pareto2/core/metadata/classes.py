@@ -211,11 +211,14 @@ class Events(ComponentsBase):
     """
         
     def validate(self, md, errors):
-        actionnames, routernames = md.actions.names, md.routers.names
+        actionnames, bucketnames, routernames = md.actions.names, md.buckets.names, md.routers.names
         for event in self:
             if ("router" in event and
                 event["router"] not in routernames):
-                errors.append("%s is not a valid router name (event %s)" % (event["router"], event["name"]))                
+                errors.append("%s is not a valid router name (event %s)" % (event["router"], event["name"]))
+            if ("bucket" in event and
+                event["bucket"] not in bucketnames):
+                errors.append("%s is not a valid bucket name (event %s)" % (event["bucket"], event["name"]))
             if ("source" in event and
                 event["source"] not in actionnames):
                 errors.append("%s is not a valid action name (event %s)" % (event["source"], event["name"]))
