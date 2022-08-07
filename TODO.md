@@ -1,5 +1,7 @@
 ### short
 
+- event `bucket` attribute to pattern- match s3 eventbridge notifications
+
 - convert lambda dump to use in- memory zip
 - remove local lambda/template dump
 - add extra utils to inspect s3 artifacts
