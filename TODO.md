@@ -1,7 +1,6 @@
 ### short
 
 - stop artifacts dumping to tmp
-- move artifacts into cli/deploy
 
 ### medium
 
@@ -72,6 +71,7 @@
 
 ### done
 
+- move artifacts into cli/deploy
 - upgrade user scripts
 - router should be an option for event
 - s3 eventbridge notifications
