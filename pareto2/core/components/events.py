@@ -20,7 +20,7 @@ def init_rule(event):
     if "source" in event:
         pattern["source"]=[{"Ref": H("%s-function" % event["source"])}]
     if "bucket" in event:
-        pattern["detail"].setdefault("bucket")
+        pattern["detail"].setdefault("bucket", {})
         pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["bucket"])}]
     target=init_target(event)
     props={"EventPattern": pattern,
