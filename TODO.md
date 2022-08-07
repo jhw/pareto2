@@ -1,12 +1,13 @@
 ### short
 
-- event `bucket` attribute to pattern- match s3 eventbridge notifications
-
-- convert lambda dump to use in- memory zip
-- remove local lambda/template dump
-- add extra utils to inspect s3 artifacts
+- in- memory zip test
+- convert s3 push to use in- memory zip
+- remove local dumping
+- list artifacts script taling prefix
 
 ### medium
+
+- event `bucket` attribute to pattern- match s3 eventbridge notifications
 
 - sns topic
 - root/child timer as higher- level construct
