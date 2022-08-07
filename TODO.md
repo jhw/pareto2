@@ -1,7 +1,5 @@
 ### short
 
-- script to download artifacts
-
 ### medium
 
 - event `bucket` attribute to pattern- match s3 eventbridge notifications
@@ -75,6 +73,7 @@
 
 ### done
 
+- script to download artifacts
 - cli/artifacts dir which is pre- populated with bucket
 - test push_artifacts.py
 - test list_contents.py
