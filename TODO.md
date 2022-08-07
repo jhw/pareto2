@@ -1,13 +1,11 @@
 ### short
 
 - rename event source/action as action/target
-
 - replace dump_local for core/components main scripts
+- sns topic
 
 ### medium
 
-
-- sns topic
 - root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
 - metadata schema
