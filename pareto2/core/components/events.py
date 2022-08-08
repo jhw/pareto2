@@ -18,9 +18,9 @@ def init_rule(event):
     resourcename=H("%s-event-rule" % event["name"])
     pattern={"detail": event["pattern"]}
     if "source" in event:
-        if "action" in source:
+        if "action" in event["source"]:
             pattern["source"]=[{"Ref": H("%s-function" % event["source"]["action"])}]
-        elif "bucket" in source:
+        elif "bucket" in event["source"]:
             pattern["detail"].setdefault("bucket", {})
             pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["bucket"])}]
     target=init_target(event)
