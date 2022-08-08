@@ -12,16 +12,17 @@ import json
 def init_rule(event):
     def init_target(event):
         id={"Fn::Sub": "%s-event-rule-${AWS::StackName}" % event["name"]}
-        arn={"Fn::GetAtt": [H("%s-function" % event["action"]), "Arn"]}
+        arn={"Fn::GetAtt": [H("%s-function" % event["target"]), "Arn"]}
         return {"Id": id,
                 "Arn": arn}
     resourcename=H("%s-event-rule" % event["name"])
     pattern={"detail": event["pattern"]}
     if "source" in event:
-        pattern["source"]=[{"Ref": H("%s-function" % event["source"])}]
-    if "bucket" in event:
-        pattern["detail"].setdefault("bucket", {})
-        pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["bucket"])}]
+        if "action" in source:
+            pattern["source"]=[{"Ref": H("%s-function" % event["source"]["action"])}]
+        elif "bucket" in source:
+            pattern["detail"].setdefault("bucket", {})
+            pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["bucket"])}]
     target=init_target(event)
     props={"EventPattern": pattern,
            "Targets": [target],
@@ -37,7 +38,7 @@ def init_rule(event):
 def init_permission(event):
     resourcename=H("%s-event-permission" % event["name"])
     sourcearn={"Fn::GetAtt": [H("%s-event-rule" % event["name"]), "Arn"]}
-    funcname={"Ref": H("%s-function" % event["action"])}
+    funcname={"Ref": H("%s-function" % event["target"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",
            "FunctionName": funcname,

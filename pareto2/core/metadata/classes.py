@@ -216,17 +216,16 @@ class Events(ComponentsBase):
             if ("router" in event and
                 event["router"] not in routernames):
                 errors.append("%s is not a valid router name (event %s)" % (event["router"], event["name"]))
-            if ("bucket" in event and
-                event["bucket"] not in bucketnames):
-                errors.append("%s is not a valid bucket name (event %s)" % (event["bucket"], event["name"]))
+            if event["target"] not in actionnames:
+                errors.append("%s is not a valid target name (event %s)" % (event["target"], event["name"]))
             if ("source" in event and
-                event["source"] not in actionnames):
-                errors.append("%s is not a valid action name (event %s)" % (event["source"], event["name"]))
-            if event["action"] not in actionnames:
-                errors.append("%s is not a valid action name (event %s)" % (event["action"], event["name"]))
+                "action" in event["source"] and
+                event["source"]["action"] not in actionnames):
+                errors.append("%s is not a valid action name (event %s)" % (event["source"]["action"], event["name"]))
             if ("source" in event and
-                event["source"]==event["action"]):
-                errors.append("%s circular dependency (event %s)" % (event["action"], event["name"]))
+                "bucket" in event["source"] and
+                event["source"]["bucket"] not in bucketnames):
+                errors.append("%s is not a valid bucket name (event %s)" % (event["source"]["bucket"], event["name"]))
 
 class Queue(ComponentBase):
 

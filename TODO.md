@@ -1,6 +1,5 @@
 ### short
 
-- rename event source/action as action/target
 - sns topic
 
 ### medium
@@ -71,6 +70,7 @@
 
 ### done
 
+- rename event source/action as action/target
 - replace dump_local for core/components main scripts
 - event `bucket` attribute to pattern- match s3 eventbridge notifications
 - script to download artifacts
