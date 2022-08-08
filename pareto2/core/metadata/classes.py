@@ -317,7 +317,13 @@ class Topics(ComponentsBase):
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Topic(item)
                                        for item in items])
-                
+
+    def validate(self, md, errors):
+        actionnames=md.actions.names
+        for timer in self:
+            if timer["action"] not in actionnames:
+                errors.append("%s is not a valid action name (timer %s)" % (timer["action"], timer["name"]))
+               
 class Userpool(ComponentBase):
 
     def __init__(self, item={}):

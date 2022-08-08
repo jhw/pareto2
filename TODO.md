@@ -1,7 +1,7 @@
 ### short [sns-topic]
 
 - complete topic skeleton
-- classes to validate action
+- abstract validate_actions
 - topic test skeleton
 
 ### medium
@@ -73,6 +73,7 @@
 
 ### done
 
+- classes to validate action
 - parallelise dashboard classes
 - parallelise template names
 - new component
