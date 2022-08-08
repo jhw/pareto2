@@ -26,7 +26,7 @@ def update_template(template, md):
 if __name__=="__main__":
     try:
         from pareto2.core.template import Template
-        template=Template("topic")
+        template=Template("topics")
         from pareto2.core.metadata import Metadata
         md=Metadata.initialise()
         md.validate().expand()

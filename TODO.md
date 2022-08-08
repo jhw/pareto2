@@ -1,6 +1,5 @@
 ### short [sns-topic]
 
-- parallelise template names
 - parallelise dashboard classes
 - topic policy, permission etc
 - classes to validate action
@@ -75,6 +74,7 @@
 
 ### done
 
+- parallelise template names
 - new component
 - new classes
 - rename event source/action as action/target
