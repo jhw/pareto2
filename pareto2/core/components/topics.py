@@ -47,25 +47,19 @@ def init_policy(topic):
             "AWS::SNS::TopicPolicy",
             props)
 
-"""
-  MyPermission:
-    Properties:
-      Action: "lambda:InvokeFunction"
-      FunctionName:
-        Ref: MyFunction
-      Principal: "sns.amazonaws.com"
-      SourceArn:
-        Ref: MyTopic
-    Type: AWS::Lambda::Permission
-"""
-
 @resource
 def init_permission(topic):
     resourcename=H("%s-topic-permission" % topic["name"])
-    props={}
+    sourcearn={"Fn::GetAtt": [H("%s-topic" % topic["name"]), "Arn"]}
+    funcname={"Ref": H("%s-function" % topic["action"])}
+    props={"Action": "lambda:InvokeFunction",
+           "Principal": "sns.amazonaws.com",
+           "FunctionName": funcname,
+           "SourceArn": sourcearn}
     return (resourcename,
             "AWS::Lambda::Permission",
             props)
+
 
 def init_resources(md):
     resources=[]
