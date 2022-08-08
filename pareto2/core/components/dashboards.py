@@ -96,6 +96,26 @@ def init_actions(md):
     return (resourcename, "actions", Components(components))
 
 @render_dash
+def init_apis(md):
+    resourcename=H("%s-dash-api" % md.dashboard["name"])
+    components=[Component.initialise("api",
+                                     {"Title": api["name"],
+                                      "ResourceName": "${%s}" % H("%s-api-rest-api" % api["name"])})
+                for api in sorted(md.apis,
+                                  key=lambda x: x["name"])]
+    return (resourcename, "api", Components(components))
+
+@render_dash
+def init_buckets(md):
+    resourcename=H("%s-dash-bucket" % md.dashboard["name"])
+    components=[Component.initialise("bucket",
+                                     {"Title": bucket["name"],
+                                      "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
+                for bucket in sorted(md.buckets,
+                                     key=lambda x: x["name"])]
+    return (resourcename, "bucket", Components(components))
+
+@render_dash
 def init_events(md):
     resourcename=H("%s-dash-events" % md.dashboard["name"])
     components=[Component.initialise("event-rule",
@@ -116,7 +136,7 @@ def init_timers(md):
     return (resourcename, "timers", Components(components))
 
 @render_dash
-def init_table(md):
+def init_tables(md):
     resourcename=H("%s-dash-table" % md.dashboard["name"])
     components=[Component.initialise("table",
                                      {"Title": table["name"],
@@ -125,34 +145,14 @@ def init_table(md):
                                     key=lambda x: x["name"])]
     return (resourcename, "table", Components(components))
 
-@render_dash
-def init_bucket(md):
-    resourcename=H("%s-dash-bucket" % md.dashboard["name"])
-    components=[Component.initialise("bucket",
-                                     {"Title": bucket["name"],
-                                      "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
-                for bucket in sorted(md.buckets,
-                                     key=lambda x: x["name"])]
-    return (resourcename, "bucket", Components(components))
-
-@render_dash
-def init_api(md):
-    resourcename=H("%s-dash-api" % md.dashboard["name"])
-    components=[Component.initialise("api",
-                                     {"Title": api["name"],
-                                      "ResourceName": "${%s}" % H("%s-api-rest-api" % api["name"])})
-                for api in sorted(md.apis,
-                                  key=lambda x: x["name"])]
-    return (resourcename, "api", Components(components))
-
 def init_resources(md):
     return dict([fn(md)
                  for fn in [init_actions,
+                            init_apis,
+                            init_buckets,
                             init_events,
                             init_timers,
-                            init_table,
-                            init_bucket,
-                            init_api]])
+                            init_tables]])
 
 def update_template(template, md):
     template.resources.update(init_resources(md))

@@ -1,6 +1,5 @@
 ### short [sns-topic]
 
-- parallelise dashboard classes
 - topic policy, permission etc
 - classes to validate action
 - test skeleton
@@ -74,6 +73,7 @@
 
 ### done
 
+- parallelise dashboard classes
 - parallelise template names
 - new component
 - new classes
