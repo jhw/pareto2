@@ -1,14 +1,13 @@
 ### short [sns-topic]
 
-- complete topic policy
-- topic policy specifies events as principal
-- sns template currently displays both demo- and layman2- names
 - abstract validate_actions
 - complete topic test skeleton
 
 ### medium
 
+- topic policy specifies events as principal ?
 - builder, topic, router? dashboards
+
 - root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
 - metadata schema
@@ -75,6 +74,8 @@
 
 ### done
 
+- sns template currently displays both demo- and layman2- names
+- complete topic policy
 - classes to validate action
 - parallelise dashboard classes
 - parallelise template names

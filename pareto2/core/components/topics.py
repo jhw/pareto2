@@ -12,28 +12,17 @@ def init_topic(topic):
             "AWS::S3::Topic",
             props)
 
-"""
-  MyTopicPolicy:
-    Properties:
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: "events.amazonaws.com"
-            Action:
-              - "sns:Publish"
-            Resource:
-              Ref: MyTopic
-      Topics:
-        - Ref: MyTopic
-    Type: AWS::SNS::TopicPolicy
-"""
-
 @resource
 def init_policy(topic):
     resourcename=H("%s-topic-policy" % topic["name"])
-    props={}
+    statement={"Effect": "Allow",
+               "Principal": {"Service": "events.amazonaws.com"}, # ???
+               "Action": ["sns:Publish"],
+               "Resource": {"Ref": H("%s-topic" % topic["name"])}}
+    policydoc={"Version": "2012-10-17",
+               "Statement": [statement]}               
+    props={"PolicyDocument": policydoc,
+           "Topics": [{"Ref": H("%s-topic" % topic["name"])}]}
     return (resourcename,
             "AWS::SNS::TopicPolicy",
             props)
