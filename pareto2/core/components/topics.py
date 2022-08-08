@@ -1,6 +1,18 @@
 from pareto2.core.components import hungarorise as H
 from pareto2.core.components import resource
 
+"""
+  MyTopic:
+    Properties:
+      Subscription:
+        - Protocol: lambda
+          Endpoint:
+            Fn::GetAtt:
+              - MyFunction
+              - Arn
+    Type: AWS::SNS::Topic
+"""
+
 @resource
 def init_topic(topic):
     resourcename=H("%s-topic" % topic["name"])
@@ -9,10 +21,59 @@ def init_topic(topic):
             "AWS::S3::Topic",
             props)
 
+"""
+  MyTopicPolicy:
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "events.amazonaws.com"
+            Action:
+              - "sns:Publish"
+            Resource:
+              Ref: MyTopic
+      Topics:
+        - Ref: MyTopic
+    Type: AWS::SNS::TopicPolicy
+"""
+
+@resource
+def init_policy(topic):
+    resourcename=H("%s-topic-policy" % topic["name"])
+    props={}
+    return (resourcename,
+            "AWS::SNS::TopicPolicy",
+            props)
+
+"""
+  MyPermission:
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName:
+        Ref: MyFunction
+      Principal: "sns.amazonaws.com"
+      SourceArn:
+        Ref: MyTopic
+    Type: AWS::Lambda::Permission
+"""
+
+@resource
+def init_permission(topic):
+    resourcename=H("%s-topic-permission" % topic["name"])
+    props={}
+    return (resourcename,
+            "AWS::Lambda::Permission",
+            props)
+
 def init_resources(md):
     resources=[]
     for topic in md.topics:
-        resources.append(init_topic(topic))
+        for fn in [init_topic,
+                   init_policy,
+                   init_permission]:
+            resources.append(fn(topic))
     return dict(resources)
 
 def init_outputs(md):

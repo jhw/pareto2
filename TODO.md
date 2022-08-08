@@ -1,12 +1,12 @@
 ### short [sns-topic]
 
-- topic policy, permission etc
+- complete topic skeleton
 - classes to validate action
-- test skeleton
+- topic test skeleton
 
 ### medium
 
-- builder, topic dashboards
+- builder, topic, router? dashboards
 - root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
 - metadata schema
