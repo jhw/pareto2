@@ -1,6 +1,9 @@
-### short
+### short [sns-topic]
 
-- sns topic
+- new component
+- new classes
+- classes to validate action
+- test skeleton
 
 ### medium
 
