@@ -1,10 +1,8 @@
-### short [sns-topic]
-
-- abstract validate_actions
-- complete topic test skeleton
+### short
 
 ### medium
 
+- topic test harness
 - topic policy specifies events as principal ?
 - builder, topic, router? dashboards
 
@@ -74,6 +72,7 @@
 
 ### done
 
+- abstract validate_actions
 - sns template currently displays both demo- and layman2- names
 - complete topic policy
 - classes to validate action

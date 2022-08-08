@@ -24,7 +24,19 @@ class ComponentsBase(list):
     def names(self):
         return [item["name"]
                 for item in self]
-        
+
+    def validate_actions(self, md, errors):
+        actionnames=md.actions.names
+        for builder in self:
+            if builder["action"] not in actionnames:
+                errors.append("%s is not a valid action name (builder %s)" % (builder["action"], builder["name"]))
+
+    def validate_buckets(self, md, errors):
+        bucketnames=md.buckets.names
+        for builder in self:
+            if builder["bucket"] not in bucketnames:
+                errors.append("%s is not a valid bucket name (builder %s)" % (builder["bucket"], builder["name"]))
+    
     def validate(self, md, errors):
         pass
 
@@ -132,18 +144,6 @@ class Builders(ComponentsBase):
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Builder(item)
                                        for item in items])
-
-    def validate_actions(self, md, errors):
-        actionnames=md.actions.names
-        for builder in self:
-            if builder["action"] not in actionnames:
-                errors.append("%s is not a valid action name (builder %s)" % (builder["action"], builder["name"]))
-
-    def validate_buckets(self, md, errors):
-        bucketnames=md.buckets.names
-        for builder in self:
-            if builder["bucket"] not in bucketnames:
-                errors.append("%s is not a valid bucket name (builder %s)" % (builder["bucket"], builder["name"]))
                     
     def validate(self, md, errors):
         self.validate_actions(md, errors)
@@ -237,12 +237,6 @@ class Queues(ComponentsBase):
     def __init__(self, items=[]):
         ComponentsBase.__init__(self, [Queue(item)
                                        for item in items])
-
-    def validate_actions(self, md, errors):
-        actionnames=md.actions.names
-        for queue in self:
-            if queue["action"] not in actionnames:
-                errors.append("%s is not a valid action name (queue %s)" % (queue["action"], queue["name"]))
 
     def validate(self, md, errors):
         self.validate_actions(md, errors)
