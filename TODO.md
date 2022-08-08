@@ -1,9 +1,9 @@
 ### short [sns-topic]
 
 - new component
-- new classes
 - classes to validate action
 - test skeleton
+- dashboard support
 
 ### medium
 
@@ -73,6 +73,7 @@
 
 ### done
 
+- new classes
 - rename event source/action as action/target
 - replace dump_local for core/components main scripts
 - event `bucket` attribute to pattern- match s3 eventbridge notifications

@@ -307,6 +307,17 @@ class Timers(ComponentsBase):
             if timer["action"] not in actionnames:
                 errors.append("%s is not a valid action name (timer %s)" % (timer["action"], timer["name"]))
 
+class Topic(ComponentBase):
+
+    def __init__(self, item={}):
+        ComponentBase.__init__(self, item)
+
+class Topics(ComponentsBase):
+
+    def __init__(self, items=[]):
+        ComponentsBase.__init__(self, [Topic(item)
+                                       for item in items])
+                
 class Userpool(ComponentBase):
 
     def __init__(self, item={}):
