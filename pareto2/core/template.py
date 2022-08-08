@@ -204,15 +204,26 @@ class Template:
         return json.dumps(self.render(),
                           indent=2)
 
+    @property
+    def s3_timestamped_key(self):
+        return "%s-%s.json" % (self.name,
+                               self.timestamp)
+
+    @property
+    def s3_latest_key(self):
+        return "%s.json" % self.name
+    
     def dump_s3(self, s3, bucketname):
-        for s3key in ["%s-%s.json" % (self.name,
-                                      self.timestamp),
-                      "%s-latest.json" % self.name]:
+        for s3key in [self.s3_timestamped_key,
+                      self.s3_latest_key]:
             s3.put_object(Bucket=bucketname,
                           Key=s3key,
                           Body=self.to_json(),
                           ContentType="application/json")
 
-            
+    def dump_local(self):
+        with open("tmp/%s" % self.s3_timestamped_key, 'w') as f:
+            f.write(self.to_json())
+        
 if __name__=="__main__":
     pass
