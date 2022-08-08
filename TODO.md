@@ -1,8 +1,10 @@
 ### short [sns-topic]
 
-- complete topic skeleton
+- complete topic policy
+- topic policy specifies events as principal
+- sns template currently displays both demo- and layman2- names
 - abstract validate_actions
-- topic test skeleton
+- complete topic test skeleton
 
 ### medium
 

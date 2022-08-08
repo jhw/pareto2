@@ -1,22 +1,13 @@
 from pareto2.core.components import hungarorise as H
 from pareto2.core.components import resource
 
-"""
-  MyTopic:
-    Properties:
-      Subscription:
-        - Protocol: lambda
-          Endpoint:
-            Fn::GetAtt:
-              - MyFunction
-              - Arn
-    Type: AWS::SNS::Topic
-"""
-
 @resource
 def init_topic(topic):
     resourcename=H("%s-topic" % topic["name"])
-    props={}
+    endpoint={"Fn::GetAtt": [H("%s-function" % topic["action"]), "Arn"]}
+    subscription={"Protocol": "lambda",
+                  "Endpoint": endpoint}
+    props={"Subscription": [subscription]}
     return (resourcename,
             "AWS::S3::Topic",
             props)
