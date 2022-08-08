@@ -1,12 +1,14 @@
 ### short [sns-topic]
 
-- new component
+- parallelise template names
+- parallelise dashboard classes
+- topic policy, permission etc
 - classes to validate action
 - test skeleton
-- dashboard support
 
 ### medium
 
+- builder, topic dashboards
 - root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
 - metadata schema
@@ -73,6 +75,7 @@
 
 ### done
 
+- new component
 - new classes
 - rename event source/action as action/target
 - replace dump_local for core/components main scripts
