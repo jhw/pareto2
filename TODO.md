@@ -2,7 +2,6 @@
 
 - pass queue name and interval as lambda args
 - lambda code
-- lambda default args
 - simplify permissions
 
 ### medium
@@ -77,6 +76,7 @@
 
 ### done
 
+- lambda default args
 - move timer into timer/__init__.py
 - rename root timer
 - add function and permission

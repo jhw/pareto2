@@ -3,6 +3,12 @@ from pareto2.core.components import resource
 
 import json
 
+PythonRuntime="python3.8"
+
+DefaultPermissions=[]
+
+PatternPermissions=[]
+
 @resource
 def init_rule(timer):
     def init_target(timer):
@@ -22,20 +28,14 @@ def init_rule(timer):
             props)
 
 @resource            
-def init_function(timer):
+def init_function(timer, runtime=PythonRuntime):
     resourcename=H("%s-timer-function" % timer["name"])
     rolename=H("%s-timer-function-role" % timer["name"])
-    memory=H("memory-size-%s" % timer["size"])
-    timeout=H("timeout-%s" % timer["timeout"])
     code={"S3Bucket": {"Ref": H("artifacts-bucket")},
           "S3Key": {"Ref": H("artifacts-key")}}
-    handler={"Fn::Sub": "%s/index.handler" % timer["name"].replace("-", "/")}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
-           "MemorySize": {"Ref": memory},
-           "Timeout": {"Ref": timeout},
            "Code": code,
-           "Handler": handler,
            "Runtime": runtime}
     return (resourcename, 
             "AWS::Lambda::Function",
@@ -75,7 +75,7 @@ def init_role(timer, **kwargs):
             props)
 
 @resource
-def init_queue(queue):
+def init_queue(timer):
     resourcename=H("%s-timer-queue" % timer["name"])
     props={}
     return (resourcename,
@@ -83,7 +83,7 @@ def init_queue(queue):
             props)
 
 @resource
-def init_binding(queue):
+def init_binding(timer):
     resourcename=H("%s-timer-queue-binding" % timer["name"])
     funcname={"Ref": H("%s-timer-function" % timer["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-timer-queue" % timer["name"]),
