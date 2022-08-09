@@ -1,11 +1,10 @@
 ### short [timer2]
 
-- move timer into timer/__init__.py
-- rename root timer
-- add function and permission
-- add inline code
-- add queue
-- add queue binding
+- lambda code
+- pass queue name and interval as args
+- lambda default args
+- simplify permissions
+- checks for exceeding queue length ?
 
 ### medium
 
@@ -77,6 +76,13 @@
 - remove eventbus discoverer ?
 
 ### done
+
+- move timer into timer/__init__.py
+- rename root timer
+- add function and permission
+- add inline code
+- add queue
+- add queue binding
 
 - abstract validate_actions
 - sns template currently displays both demo- and layman2- names
