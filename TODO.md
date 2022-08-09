@@ -1,4 +1,11 @@
-### short
+### short [timer2]
+
+- move timer into timer/__init__.py
+- rename root timer
+- add function and permission
+- add inline code
+- add queue
+- add queue binding
 
 ### medium
 
@@ -6,7 +13,6 @@
 - topic policy specifies events as principal ?
 - builder, topic, router? dashboards
 
-- root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
 - metadata schema
 - scaffold cli
