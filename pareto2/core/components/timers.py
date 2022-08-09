@@ -36,13 +36,6 @@ def init_rule(timer):
             "AWS::Events::Rule",
             props)
 
-"""
-    if "env" in action:
-        variables={U(k): {"Ref": H(k)}
-                   for k in action["env"]["variables"]}
-        props["Environment"]={"Variables": variables}
-"""
-
 @resource            
 def init_function(timer,
                   code=FunctionCode):

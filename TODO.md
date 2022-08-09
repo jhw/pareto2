@@ -1,6 +1,9 @@
 ### short [timer2]
 
-- check reference wiring
+- check ref wiring
+- is interval specified in milliseconds ?
+- permission arn and source
+- refactor pareto2-demo timer example
 
 ### medium
 
