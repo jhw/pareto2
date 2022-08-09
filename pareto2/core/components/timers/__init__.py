@@ -5,10 +5,6 @@ import json
 
 PythonRuntime="python3.8"
 
-DefaultPermissions=[]
-
-PatternPermissions=[]
-
 @resource
 def init_rule(timer):
     def init_target(timer):
@@ -28,11 +24,12 @@ def init_rule(timer):
             props)
 
 @resource            
-def init_function(timer, runtime=PythonRuntime):
+def init_function(timer,
+                  code=open("pareto2/core/components/timers/inline/root.py").read(),
+                  runtime=PythonRuntime):
     resourcename=H("%s-timer-function" % timer["name"])
     rolename=H("%s-timer-function-role" % timer["name"])
-    code={"S3Bucket": {"Ref": H("artifacts-bucket")},
-          "S3Key": {"Ref": H("artifacts-key")}}
+    code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
@@ -41,30 +38,19 @@ def init_function(timer, runtime=PythonRuntime):
             "AWS::Lambda::Function",
             props)
 
-"""
-- custom permissions layer provided so you can access polly, translate etc
-"""
-
 @resource
-def init_role(timer, **kwargs):
-    def init_permissions(timer,
-                         defaultpermissions=DefaultPermissions,
-                         patternpermissions=PatternPermissions):
-        permissions=set(defaultpermissions)
-        if "permissions" in timer:
-            permissions.update(set(timer["permissions"]))
-        return permissions        
+def init_role(timer,
+              permissions=["sqs:*", "logs:*"]):
     resourcename=H("%s-timer-function-role" % timer["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    permissions=init_permissions(timer)
     policydoc={"Version": "2012-10-17",
                "Statement": [{"Action" : "%s:*" % permission,
                               "Effect": "Allow",
                               "Resource": "*"}
-                             for permission in sorted(list(permissions))]}
+                             for permission in sorted(permissions)]}
     policyname={"Fn::Sub": "%s-timer-function-role-policy-${AWS::StackName}" % timer["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
