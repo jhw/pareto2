@@ -1,4 +1,5 @@
 from pareto2.core.components import hungarorise as H
+from pareto2.core.components import uppercase as U
 from pareto2.core.components import resource
 
 import json
@@ -35,6 +36,13 @@ def init_rule(timer):
             "AWS::Events::Rule",
             props)
 
+"""
+    if "env" in action:
+        variables={U(k): {"Ref": H(k)}
+                   for k in action["env"]["variables"]}
+        props["Environment"]={"Variables": variables}
+"""
+
 @resource            
 def init_function(timer,
                   code=FunctionCode):
@@ -42,9 +50,13 @@ def init_function(timer,
     rolename=H("%s-timer-function-role" % timer["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
+    variables={}
+    variables[U(H("queue-url"))]={"Ref": H("%s-timer-queue" % timer["name"])}
+    variables[U("interval")]=timer["interval"]
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
-           "Runtime": runtime}
+           "Runtime": runtime,
+           "Environment": {"Variables": variables}}
     return (resourcename, 
             "AWS::Lambda::Function",
             props)

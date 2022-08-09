@@ -1,6 +1,5 @@
 ### short [timer2]
 
-- pass queue name and interval as lambda args
 - check reference wiring
 
 ### medium
@@ -75,6 +74,7 @@
 
 ### done
 
+- pass queue name and interval as lambda args
 - harmonise runtime handling with action
 - notes regarding lack of args being passwed to function
 - runtime still being passed as an argument
@@ -88,7 +88,6 @@
 - add inline code
 - add queue
 - add queue binding
-
 - abstract validate_actions
 - sns template currently displays both demo- and layman2- names
 - complete topic policy
