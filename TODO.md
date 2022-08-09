@@ -1,10 +1,9 @@
 ### short [timer2]
 
+- pass queue name and interval as lambda args
 - lambda code
-- pass queue name and interval as args
 - lambda default args
 - simplify permissions
-- checks for exceeding queue length ?
 
 ### medium
 
@@ -33,6 +32,7 @@
 
 ### thoughts
 
+- timer checks for exceeding queue length ?
 - python deployment script ?
   - is probably fine to have just a shell option, even if slightly more inconvenient; you're not supposed to be investing in the cli really
 - codebuild output option
