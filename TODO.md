@@ -1,7 +1,6 @@
 ### short [timer2]
 
 - check ref wiring
-- is interval specified in milliseconds ?
 - permission arn and source
 - refactor pareto2-demo timer example
 
@@ -77,6 +76,8 @@
 
 ### done
 
+- remove interval from timer
+- is interval specified in milliseconds ?
 - pass queue name and interval as lambda args
 - harmonise runtime handling with action
 - notes regarding lack of args being passwed to function

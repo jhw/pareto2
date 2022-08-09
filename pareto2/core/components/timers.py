@@ -29,7 +29,7 @@ def init_rule(timer):
                 "Arn": arn}        
     resourcename=H("%s-timer-rule" % timer["name"])
     target=init_target(timer)
-    scheduleexpr="rate(%s)" % timer["rate"]
+    scheduleexpr={"Fn::Sub": "rate(${%s})" % H("%s-timer-rate" % timer["name"])} # defaults
     props={"Targets": [target],
            "ScheduleExpression": scheduleexpr}
     return (resourcename,
@@ -45,7 +45,7 @@ def init_function(timer,
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     variables={}
     variables[U(H("queue-url"))]={"Ref": H("%s-timer-queue" % timer["name"])}
-    variables[U("interval")]=timer["interval"]
+    variables[U("interval")]={"Ref": H("%s-timer-interval" % timer["name"])} # defaults
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
            "Runtime": runtime,
