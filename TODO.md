@@ -1,7 +1,7 @@
 ### short [timer2]
 
-- check ref wiring
-- permission arn and source
+- check use of binding and permission in queue+lambda
+
 - refactor pareto2-demo timer example
 
 ### medium
@@ -9,6 +9,10 @@
 - topic test harness
 - topic policy specifies events as principal ?
 - builder, topic, router? dashboards
+
+- embedded streaming table lambda
+- combined endpoint+lambda, queue+lambda, event+lambda
+- rename event as pattern
 
 - explicit action destination, dsl (boolean) fields
 - metadata schema
@@ -76,6 +80,8 @@
 
 ### done
 
+- check ref wiring
+- permission arn and source
 - remove interval from timer
 - is interval specified in milliseconds ?
 - pass queue name and interval as lambda args

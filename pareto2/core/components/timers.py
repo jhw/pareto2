@@ -23,7 +23,7 @@ def init_rule(timer):
     def init_target(timer):
         id={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
         input=json.dumps(timer["body"])
-        arn={"Fn::GetAtt": [H("%s-timer-function" % timer["action"]), "Arn"]}
+        arn={"Fn::GetAtt": [H("%s-timer-function" % timer["name"]), "Arn"]}
         return {"Id": id,
                 "Input": input,
                 "Arn": arn}        
@@ -87,7 +87,7 @@ def init_queue(timer):
 @resource
 def init_binding(timer):
     resourcename=H("%s-timer-queue-binding" % timer["name"])
-    funcname={"Ref": H("%s-timer-function" % timer["action"])}
+    funcname={"Ref": H("%s-function" % timer["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-timer-queue" % timer["name"]),
                               "Arn"]}
     props={"FunctionName": funcname,
@@ -99,10 +99,10 @@ def init_binding(timer):
 @resource
 def init_permission(timer):
     resourcename=H("%s-timer-permission" % timer["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-timer-rule" % timer["name"]), "Arn"]} # CHANGE
-    funcname={"Ref": H("%s-timer-function" % timer["action"])}
+    sourcearn={"Fn::GetAtt": [H("%s-timer-queue" % timer["name"]), "Arn"]}
+    funcname={"Ref": H("%s-function" % timer["action"])}
     props={"Action": "lambda:InvokeFunction",
-           "Principal": "events.amazonaws.com", # CHANGE
+           "Principal": "sqs.amazonaws.com",
            "FunctionName": funcname,
            "SourceArn": sourcearn}
     return (resourcename,
