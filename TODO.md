@@ -1,6 +1,6 @@
 ### short [timer2]
 
-- include lambda code
+- revert back to single timers module
 - pass queue name and interval as lambda args
 - check reference wiring
 
@@ -76,6 +76,7 @@
 
 ### done
 
+- include lambda code
 - simplify permissions
 - lambda default args
 - move timer into timer/__init__.py
