@@ -1,6 +1,6 @@
 ### short [timer2]
 
-- check use of binding and permission in queue+lambda
+- permission to apply to (root) rule rather than (child) queue ?
 
 - refactor pareto2-demo timer example
 
