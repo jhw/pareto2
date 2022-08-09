@@ -1,6 +1,7 @@
 ### short [timer2]
 
-- revert back to single timers module
+- harmonise runtime handling with action
+- notes regarding lack of args being passwed to function
 - pass queue name and interval as lambda args
 - check reference wiring
 
@@ -76,6 +77,8 @@
 
 ### done
 
+- runtime still being passed as an argument
+- revert back to single timers module
 - include lambda code
 - simplify permissions
 - lambda default args

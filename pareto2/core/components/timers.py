@@ -44,7 +44,6 @@ def init_function(timer,
     resourcename=H("%s-timer-function" % timer["name"])
     rolename=H("%s-timer-function-role" % timer["name"])
     code={"ZipFile": code}
-    runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
            "Runtime": runtime}
