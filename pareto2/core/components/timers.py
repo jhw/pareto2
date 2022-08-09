@@ -3,8 +3,6 @@ from pareto2.core.components import resource
 
 import json
 
-PythonRuntime="python3.8"
-
 FunctionCode="""import boto3, json, os
 
 def handler(event, context,
@@ -39,11 +37,11 @@ def init_rule(timer):
 
 @resource            
 def init_function(timer,
-                  code=FunctionCode,
-                  runtime=PythonRuntime):
+                  code=FunctionCode):
     resourcename=H("%s-timer-function" % timer["name"])
     rolename=H("%s-timer-function-role" % timer["name"])
     code={"ZipFile": code}
+    runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
            "Runtime": runtime}
