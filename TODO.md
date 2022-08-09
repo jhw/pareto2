@@ -1,7 +1,5 @@
 ### short [timer2]
 
-- permission to apply to (root) rule rather than (child) queue ?
-
 - refactor pareto2-demo timer example
 
 ### medium
@@ -80,6 +78,7 @@
 
 ### done
 
+- permission to apply to (root) rule rather than (child) queue ?
 - check ref wiring
 - permission arn and source
 - remove interval from timer

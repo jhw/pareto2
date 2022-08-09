@@ -36,6 +36,19 @@ def init_rule(timer):
             "AWS::Events::Rule",
             props)
 
+@resource
+def init_permission(timer):
+    resourcename=H("%s-timer-permission" % timer["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-timer-rule" % timer["name"]), "Arn"]}
+    funcname={"Ref": H("%s-timer-function" % timer["name"])}
+    props={"Action": "lambda:InvokeFunction",
+           "Principal": "events.amazonaws.com",
+           "FunctionName": funcname,
+           "SourceArn": sourcearn}
+    return (resourcename,
+            "AWS::Lambda::Permission",
+            props)
+
 @resource            
 def init_function(timer,
                   code=FunctionCode):
@@ -96,27 +109,14 @@ def init_binding(timer):
             "AWS::Lambda::EventSourceMapping",
             props)
 
-@resource
-def init_permission(timer):
-    resourcename=H("%s-timer-permission" % timer["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-timer-queue" % timer["name"]), "Arn"]}
-    funcname={"Ref": H("%s-function" % timer["action"])}
-    props={"Action": "lambda:InvokeFunction",
-           "Principal": "sqs.amazonaws.com",
-           "FunctionName": funcname,
-           "SourceArn": sourcearn}
-    return (resourcename,
-            "AWS::Lambda::Permission",
-            props)
-
 def init_component(timer):
     resources=[]
     for fn in [init_rule,
+               init_permission,
                init_function,
                init_role,
                init_queue,
-               init_binding,
-               init_permission]:
+               init_binding]:
         resource=fn(timer)
         resources.append(resource)
     return resources
