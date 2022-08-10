@@ -1,12 +1,18 @@
 ### short
 
+- resource names of timer functions should be checked against actions
+
 ### medium
+
+- per- stage config
+
+- embedded streaming table lambda
+- combined endpoint+lambda, queue+lambda, event+lambda
 
 - topic test harness
 - topic policy specifies events as principal ?
 - builder, topic, router? dashboards
 
-- root/child timer as higher- level construct
 - explicit action destination, dsl (boolean) fields
 - metadata schema
 - scaffold cli
@@ -28,6 +34,9 @@
 
 ### thoughts
 
+- add check for function name conflict  ?
+  - it's implicit because -function suffix != -timer-function suffix
+- timer checks for exceeding queue length ?
 - python deployment script ?
   - is probably fine to have just a shell option, even if slightly more inconvenient; you're not supposed to be investing in the cli really
 - codebuild output option
@@ -72,6 +81,49 @@
 
 ### done
 
+```
+KeyError: 'QUEUE_URL'T
+```
+
+- modify handling of event type
+- inspect event type
+
+
+DemoTimerTimerFunction => Resource handler returned message: "Runtime and Handler are mandatory parameters for functions created with deployment packages. (Service: Lambda, Status Code: 400, Request ID: 2eb472e5-1619-4c83-ab34-22fb58025205)" (RequestToken: 30d281e0-31a0-8bd6-e43c-c41d87fe75b9, HandlerErrorCode: InvalidRequest)
+```
+
+- bad permission wildcard specification
+
+"""
+Error: An error occurred (ValidationError) when calling the CreateStack operation: Template error: resource DemoTopic does not support attribute type Arn in Fn::GetAtt
+"""
+
+-  DemoTopicPermission -> SourceArn doesn't need to specify GetAtt, can just specify the topic directly
+
+- template-latest.json not getting created
+- move demo timer defaults into metadata
+- added timer input variable
+- add temporary root config which dumps body
+- refactor pareto2-demo timer example
+- permission to apply to (root) rule rather than (child) queue ?
+- check ref wiring
+- permission arn and source
+- remove interval from timer
+- is interval specified in milliseconds ?
+- pass queue name and interval as lambda args
+- harmonise runtime handling with action
+- notes regarding lack of args being passwed to function
+- runtime still being passed as an argument
+- revert back to single timers module
+- include lambda code
+- simplify permissions
+- lambda default args
+- move timer into timer/__init__.py
+- rename root timer
+- add function and permission
+- add inline code
+- add queue
+- add queue binding
 - abstract validate_actions
 - sns template currently displays both demo- and layman2- names
 - complete topic policy

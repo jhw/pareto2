@@ -9,7 +9,7 @@ def init_topic(topic):
                   "Endpoint": endpoint}
     props={"Subscription": [subscription]}
     return (resourcename,
-            "AWS::S3::Topic",
+            "AWS::SNS::Topic",
             props)
 
 @resource
@@ -30,7 +30,7 @@ def init_policy(topic):
 @resource
 def init_permission(topic):
     resourcename=H("%s-topic-permission" % topic["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-topic" % topic["name"]), "Arn"]}
+    sourcearn={"Ref": H("%s-topic" % topic["name"])}
     funcname={"Ref": H("%s-function" % topic["action"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "sns.amazonaws.com",
