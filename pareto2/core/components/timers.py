@@ -21,6 +21,7 @@ def handler(event, context,
 ### START TEMP CODE
 
 FunctionCode="""def handler(event, context):
+    print (type(event))
     print (event)
 """
 

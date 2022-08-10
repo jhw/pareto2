@@ -1,7 +1,7 @@
 ### short
 
-- rename demo-timer as demo
-- add root- prefix to root function
+- modify handling of event type
+- add check for function name conflict 
 
 ### medium
 
@@ -79,6 +79,8 @@
 - remove eventbus discoverer ?
 
 ### done
+
+- inspect event type
 
 
 DemoTimerTimerFunction => Resource handler returned message: "Runtime and Handler are mandatory parameters for functions created with deployment packages. (Service: Lambda, Status Code: 400, Request ID: 2eb472e5-1619-4c83-ab34-22fb58025205)" (RequestToken: 30d281e0-31a0-8bd6-e43c-c41d87fe75b9, HandlerErrorCode: InvalidRequest)
