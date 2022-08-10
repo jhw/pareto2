@@ -1,6 +1,6 @@
 ### short
 
-- modify handling of event type
+- check root, child works
 - add check for function name conflict 
 
 ### medium
@@ -80,6 +80,7 @@
 
 ### done
 
+- modify handling of event type
 - inspect event type
 
 
