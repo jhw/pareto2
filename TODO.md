@@ -1,6 +1,8 @@
 ### short
 
-```
+- rename demo-timer as demo
+- add root- prefix to root function
+
 ### medium
 
 - per- stage config
