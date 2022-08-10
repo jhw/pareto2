@@ -18,11 +18,19 @@ def handler(event, context,
                          MessageBody=json.dumps(item))
 """
 
+### START TEMP CODE
+
+FunctionCode="""def handler(event, context):
+    print (event)
+"""
+
+### END TEMP CODE
+
 @resource
 def init_rule(timer):
     def init_target(timer):
         id={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
-        input=json.dumps(timer["body"])
+        input={"Ref": H("%s-timer-input" % timer["name"])}
         arn={"Fn::GetAtt": [H("%s-timer-function" % timer["name"]), "Arn"]}
         return {"Id": id,
                 "Input": input,

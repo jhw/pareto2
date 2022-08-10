@@ -1,7 +1,6 @@
 ### short [timer2]
 
-- refactor timer body handling
-- add temporary root config which dumps body
+- add timer input variable
 
 ### medium
 
@@ -79,6 +78,7 @@
 
 ### done
 
+- add temporary root config which dumps body
 - refactor pareto2-demo timer example
 - permission to apply to (root) rule rather than (child) queue ?
 - check ref wiring
