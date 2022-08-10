@@ -4,6 +4,8 @@
 Error: An error occurred (ValidationError) when calling the CreateStack operation: Template error: resource DemoTopic does not support attribute type Arn in Fn::GetAtt
 """
 
+- SourceArn doesn't need to specify GetAtt, can just specify the topic directly
+
 ### medium
 
 - per- stage config
