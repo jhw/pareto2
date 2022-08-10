@@ -1,5 +1,7 @@
 ### short
 
+- template-latest.json not getting created
+
 ### medium
 
 - per- stage config

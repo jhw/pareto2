@@ -211,7 +211,7 @@ class Template:
 
     @property
     def s3_latest_key(self):
-        return "%s.json" % self.name
+        return "%s-latest.json" % self.name
     
     def dump_s3(self, s3, bucketname):
         for s3key in [self.s3_timestamped_key,
