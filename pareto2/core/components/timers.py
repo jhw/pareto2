@@ -77,7 +77,7 @@ def init_function(timer,
 
 @resource
 def init_role(timer,
-              permissions=["sqs:*", "logs:*"]):
+              permissions=["sqs", "logs"]):
     resourcename=H("%s-timer-function-role" % timer["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
