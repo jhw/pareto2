@@ -1,8 +1,8 @@
-### short [timer2]
-
-- add timer input variable
+### short
 
 ### medium
+
+- per- stage config
 
 - embedded streaming table lambda
 - combined endpoint+lambda, queue+lambda, event+lambda
@@ -78,6 +78,7 @@
 
 ### done
 
+- added timer input variable
 - add temporary root config which dumps body
 - refactor pareto2-demo timer example
 - permission to apply to (root) rule rather than (child) queue ?
