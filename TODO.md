@@ -1,8 +1,5 @@
 ### short
 
-
-- add check for function name conflict 
-
 ### medium
 
 - per- stage config
@@ -35,6 +32,8 @@
 
 ### thoughts
 
+- add check for function name conflict  ?
+  - it's implicit because -function suffix != -timer-function suffix
 - timer checks for exceeding queue length ?
 - python deployment script ?
   - is probably fine to have just a shell option, even if slightly more inconvenient; you're not supposed to be investing in the cli really
