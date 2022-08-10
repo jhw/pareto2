@@ -29,15 +29,15 @@ FunctionCode="""def handler(event, context):
 @resource
 def init_rule(timer):
     def init_target(timer):
-        id={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
-        input={"Ref": H("%s-timer-input" % timer["name"])}
+        targetid={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
+        body=json.dumps(timer["body"])
         arn={"Fn::GetAtt": [H("%s-timer-function" % timer["name"]), "Arn"]}
-        return {"Id": id,
-                "Input": input,
+        return {"Id": targetid,
+                "Input": body,
                 "Arn": arn}        
     resourcename=H("%s-timer-rule" % timer["name"])
     target=init_target(timer)
-    scheduleexpr={"Fn::Sub": "rate(${%s})" % H("%s-timer-rate" % timer["name"])} # defaults
+    scheduleexpr="rate(%s)" % timer["rate"]
     props={"Targets": [target],
            "ScheduleExpression": scheduleexpr}
     return (resourcename,
@@ -66,7 +66,7 @@ def init_function(timer,
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     variables={}
     variables[U(H("queue-url"))]={"Ref": H("%s-timer-queue" % timer["name"])}
-    variables[U("interval")]={"Ref": H("%s-timer-interval" % timer["name"])} # defaults
+    variables[U("interval")]=str(timer["interval"])
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
            "Runtime": runtime,

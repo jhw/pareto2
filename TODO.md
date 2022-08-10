@@ -1,14 +1,11 @@
 ### short
 
-- move demo timer defaults into metadata
-
 ### medium
 
 - per- stage config
 
 - embedded streaming table lambda
 - combined endpoint+lambda, queue+lambda, event+lambda
-- rename event as pattern ?
 
 - topic test harness
 - topic policy specifies events as principal ?
@@ -80,6 +77,7 @@
 
 ### done
 
+- move demo timer defaults into metadata
 - added timer input variable
 - add temporary root config which dumps body
 - refactor pareto2-demo timer example
