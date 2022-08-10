@@ -1,6 +1,6 @@
 ### short
 
-- check root, child works
+
 - add check for function name conflict 
 
 ### medium
@@ -79,6 +79,10 @@
 - remove eventbus discoverer ?
 
 ### done
+
+```
+KeyError: 'QUEUE_URL'T
+```
 
 - modify handling of event type
 - inspect event type

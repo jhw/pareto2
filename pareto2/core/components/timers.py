@@ -55,7 +55,7 @@ def init_function(timer,
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     variables={}
-    variables[U(H("queue-url"))]={"Ref": H("%s-timer-queue" % timer["name"])}
+    variables[U("queue-url")]={"Ref": H("%s-timer-queue" % timer["name"])}
     variables[U("interval")]=str(timer["interval"])
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
