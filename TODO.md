@@ -1,6 +1,8 @@
 ### short
 
-- template-latest.json not getting created
+"""
+Error: An error occurred (ValidationError) when calling the CreateStack operation: Template error: resource DemoTopic does not support attribute type Arn in Fn::GetAtt
+"""
 
 ### medium
 
@@ -79,6 +81,7 @@
 
 ### done
 
+- template-latest.json not getting created
 - move demo timer defaults into metadata
 - added timer input variable
 - add temporary root config which dumps body

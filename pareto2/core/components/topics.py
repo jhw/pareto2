@@ -9,7 +9,7 @@ def init_topic(topic):
                   "Endpoint": endpoint}
     props={"Subscription": [subscription]}
     return (resourcename,
-            "AWS::S3::Topic",
+            "AWS::SNS::Topic",
             props)
 
 @resource
