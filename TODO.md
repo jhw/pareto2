@@ -1,5 +1,7 @@
 ### short
 
+- move demo timer defaults into metadata
+
 ### medium
 
 - per- stage config
