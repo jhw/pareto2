@@ -1,16 +1,17 @@
 ### short [timer2]
 
+- check timer event body with reference to wol trading
 - refactor pareto2-demo timer example
 
 ### medium
 
+- embedded streaming table lambda
+- combined endpoint+lambda, queue+lambda, event+lambda
+- rename event as pattern ?
+
 - topic test harness
 - topic policy specifies events as principal ?
 - builder, topic, router? dashboards
-
-- embedded streaming table lambda
-- combined endpoint+lambda, queue+lambda, event+lambda
-- rename event as pattern
 
 - explicit action destination, dsl (boolean) fields
 - metadata schema
