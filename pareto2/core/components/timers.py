@@ -69,7 +69,7 @@ def init_function(timer,
     variables[U("interval")]=str(timer["interval"])
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
-           "Handler": "index.handler", # TEMP
+           "Handler": "index.handler",
            "Runtime": runtime,
            "Environment": {"Variables": variables}}
     return (resourcename, 

@@ -1,9 +1,6 @@
 ### short
 
 ```
-DemoTimerTimerFunction => Resource handler returned message: "Runtime and Handler are mandatory parameters for functions created with deployment packages. (Service: Lambda, Status Code: 400, Request ID: 2eb472e5-1619-4c83-ab34-22fb58025205)" (RequestToken: 30d281e0-31a0-8bd6-e43c-c41d87fe75b9, HandlerErrorCode: InvalidRequest)
-```
-
 ### medium
 
 - per- stage config
@@ -80,6 +77,10 @@ DemoTimerTimerFunction => Resource handler returned message: "Runtime and Handle
 - remove eventbus discoverer ?
 
 ### done
+
+
+DemoTimerTimerFunction => Resource handler returned message: "Runtime and Handler are mandatory parameters for functions created with deployment packages. (Service: Lambda, Status Code: 400, Request ID: 2eb472e5-1619-4c83-ab34-22fb58025205)" (RequestToken: 30d281e0-31a0-8bd6-e43c-c41d87fe75b9, HandlerErrorCode: InvalidRequest)
+```
 
 - bad permission wildcard specification
 
