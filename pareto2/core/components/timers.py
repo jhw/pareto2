@@ -9,6 +9,7 @@ FunctionCode="""import boto3, json, os
 def handler(items, context,
             interval=os.environ["INTERVAL"],
             queueurl=os.environ["QUEUE_URL"]):
+    sqs=boto3.client("sqs")
     for i, item in enumerate(items):
         delay=i*int(interval)
         sqs.send_message(QueueUrl=queueurl,
