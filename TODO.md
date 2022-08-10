@@ -1,5 +1,7 @@
 ### short
 
+- resource names of timer functions should be checked against actions
+
 ### medium
 
 - per- stage config
