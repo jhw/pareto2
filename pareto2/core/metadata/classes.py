@@ -275,8 +275,11 @@ class Tables(ComponentsBase):
                                        for item in items])
 
     def validate(self, md, errors):
-        actionnames=md.actions.names
+        actionnames, routernames = md.actions.names, md.routers.names
         for table in self:
+            if ("router" in table and
+                table["router"] not in routernames):
+                errors.append("%s is not a valid router name (table %s)" % (table["router"], table["name"]))
             if ("errors" in table and
                 table["errors"] not in actionnames):
                 errors.append("%s is not a valid (errors) action name (table %s)" % (table["errors"], table["name"]))

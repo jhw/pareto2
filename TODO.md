@@ -1,7 +1,5 @@
 ### short [streaming-table]
 
-- add md.routers 
-- add table router validation
 - move stream config inline 
   - replace with streaming boolean
 
@@ -85,6 +83,8 @@
 
 ### done
 
+- add md.routers 
+- add table router validation
 - ensure binding references inline function
 - refactor role default permissions
 - add (optional) table router 
