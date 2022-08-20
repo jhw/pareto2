@@ -71,7 +71,7 @@ def init_table(table, **kwargs):
            "KeySchema": key,
            "GlobalSecondaryIndexes": gsi,
            "TableName": name}
-    if "action" in table:
+    if "stream" in table:
         stream={"StreamViewType": table["stream"]["type"]}
         props["StreamSpecification"]=stream
     return (resourcename,
@@ -81,7 +81,7 @@ def init_table(table, **kwargs):
 @resource
 def init_binding(table):
     resourcename=H("%s-table-mapping" % table["name"])
-    funcname={"Ref": H("%s-function" % table["action"])}
+    funcname={"Ref": H("%s-table-function" % table["name"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
     window=table["stream"]["batch"]["window"]
