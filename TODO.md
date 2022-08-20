@@ -1,6 +1,5 @@
 ### short [streaming-table]
 
-- remove table action validation
 - add (optional) table router 
 - ensure function passes environment variables
 - ensure binding references inline function
@@ -37,6 +36,8 @@
 
 ### thoughts
 
+- consider removing table error handling ?
+  - no seems valuable tbh
 - add check for function name conflict  ?
   - it's implicit because -function suffix != -timer-function suffix
 - timer checks for exceeding queue length ?
@@ -84,6 +85,7 @@
 
 ### done
 
+- remove table action validation
 - replace router name in inline code
 - replace eventbridge batch size in inline code
 - add inline code

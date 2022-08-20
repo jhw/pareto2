@@ -277,9 +277,6 @@ class Tables(ComponentsBase):
     def validate(self, md, errors):
         actionnames=md.actions.names
         for table in self:
-            if ("action" in table and
-                table["action"] not in actionnames):
-                errors.append("%s is not a valid action name (table %s)" % (table["action"], table["name"]))
             if ("errors" in table and
                 table["errors"] not in actionnames):
                 errors.append("%s is not a valid (errors) action name (table %s)" % (table["errors"], table["name"]))
