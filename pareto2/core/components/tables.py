@@ -1,18 +1,12 @@
 from pareto2.core.components import hungarorise as H
 from pareto2.core.components import resource
 
-"""
-- Table is named, like Bucket, for consistency of treatment of storage sources
-- unlike Bucket, no need to name table because of SourceArn considerations
-- however if you want to specify resources in Function Roles, will need a defined name so that Arn can be constructed as a string
-"""
-
 FunctionCode="""import boto3, json, math, os
 
 class Entry:
 
     def __init__(self, key, records, context,
-                 eventbusname=os.environ["DEMO_ROUTER_EVENT_BUS"]):
+                 eventbusname=os.environ["ROUTER_EVENT_BUS"]):
         self.pk, self.sk = key
         self.records=records
         self.context=context
@@ -33,8 +27,6 @@ class Entry:
 def batch_records(records):
     groups={}
     for record in records:
-        if "NewImage" not in record["dynamodb"]: # NB
-            continue
         pk=record["dynamodb"]["Keys"]["pk"]["S"]
         sk=record["dynamodb"]["Keys"]["sk"]["S"].split("#")[0]
         key=(pk, sk)
@@ -43,7 +35,8 @@ def batch_records(records):
     return groups
 
 def handler(event, context,
-            batchsize=10):
+            batchsize=os.environ["BATCH_SIZE"]):
+    batchsize=int(batchsize)
     events=boto3.client("events")
     groups=batch_records(event["Records"])
     entries=[Entry(k, v, context).entry

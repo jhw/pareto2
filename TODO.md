@@ -1,9 +1,10 @@
 ### short [streaming-table]
 
+- remove table action validation
+- add (optional) table router 
+- ensure function passes environment variables
+- ensure binding references inline function
 - refactor role default permissions
-- replace hardcoded script values with env variables
-- ensure function passes correct variables
-- change binding to use new inline function
 
 ### medium
 
@@ -83,6 +84,8 @@
 
 ### done
 
+- replace router name in inline code
+- replace eventbridge batch size in inline code
 - add inline code
 - ensure streaming is an option at the dsl level
 - add function, role
