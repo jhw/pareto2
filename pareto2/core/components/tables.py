@@ -101,12 +101,15 @@ def init_role(table,
 
 def init_component(table):
     resources=[]
-    for fn in [init_table,
-               init_binding,
-               init_function,
-               init_role]:
+    for fn in [init_table]:
         resource=fn(table)
         resources.append(resource)
+    if "stream" in table:
+        for fn in [init_binding,
+                   init_function,
+                   init_role]:
+            resource=fn(table)
+            resources.append(resource)
     return resources
 
 def init_resources(md):

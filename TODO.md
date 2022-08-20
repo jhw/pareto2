@@ -1,6 +1,5 @@
 ### short [streaming-table]
 
-- ensure streaming is an option at the dsl level
 - add inline code
 - refactor role default permissions
 - replace hardcoded script values with env variables
@@ -85,6 +84,7 @@
 
 ### done
 
+- ensure streaming is an option at the dsl level
 - add function, role
 
 ```
