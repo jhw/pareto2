@@ -1,7 +1,5 @@
 ### short [streaming-table]
 
-- unpack streamconfig
-
 ### medium
 
 - queue+function
@@ -82,6 +80,7 @@
 
 ### done
 
+- unpack streamconfig
 - move stream config inline 
   - replace with streaming boolean
 - add md.routers 

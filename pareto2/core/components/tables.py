@@ -48,14 +48,13 @@ def handler(event, context,
             events.put_events(Entries=batch)
 """
 
-StreamConfig={"retries": 3,
-              "batch": {"window": 1},
-              "type": "NEW_AND_OLD_IMAGES"}
-
+StreamType="NEW_AND_OLD_IMAGES"
+StreamWindow=1
+StreamRetries=3
 StreamBatchSize=10
 
 @resource
-def init_table(table, streamconfig=StreamConfig, **kwargs):
+def init_table(table, streamtype=StreamType, **kwargs):
     resourcename=H("%s-table" % table["name"])
     attrs=[{"AttributeName": name,
             "AttributeType": type_}
@@ -78,25 +77,24 @@ def init_table(table, streamconfig=StreamConfig, **kwargs):
            "GlobalSecondaryIndexes": gsi,
            "TableName": name}
     if "router" in table:
-        stream={"StreamViewType": streamconfig["type"]}
-        props["StreamSpecification"]=stream
+        props["StreamSpecification"]={"StreamViewType": streamtype}
     return (resourcename,
             "AWS::DynamoDB::Table",
             props)
 
 @resource
-def init_binding(table, streamconfig=StreamConfig):
+def init_binding(table,
+                 streamwindow=StreamWindow,
+                 streamretries=StreamRetries):
     resourcename=H("%s-table-mapping" % table["name"])
     funcname={"Ref": H("%s-table-function" % table["name"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
-    window=streamconfig["batch"]["window"]
-    retries=streamconfig["retries"]
     props={"FunctionName": funcname,
            "StartingPosition": "LATEST",
-           "MaximumBatchingWindowInSeconds": window,
+           "MaximumBatchingWindowInSeconds": streamwindow,
            "EventSourceArn": sourcearn,
-           "MaximumRetryAttempts": retries}
+           "MaximumRetryAttempts": streamretries}
     if "errors" in table:
         destarn={"Fn::GetAtt": [H("%s-queue" % table["errors"]), "Arn"]}
         destconfig={"OnFailure": {"Destination": destarn}}
