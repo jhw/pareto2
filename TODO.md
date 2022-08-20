@@ -1,18 +1,22 @@
-### short
+### short [streaming-table]
 
-- resource names of timer functions should be checked against actions
+- add function, role
+- add inline code
+- replace hardcoded script values with env variables
+- ensure function passes correct variables
+- change binding to use new inline function
+- ensure streaming is an option at the dsl level
 
 ### medium
 
+- queue+function
+- add memory and timeout to existing timer inline function 
+- abstract inline function, role generation
 - per- stage config
-
-- embedded streaming table lambda
-- combined endpoint+lambda, queue+lambda, event+lambda
-
+- resource names of timer functions should be checked against actions
 - topic test harness
 - topic policy specifies events as principal ?
 - builder, topic, router? dashboards
-
 - explicit action destination, dsl (boolean) fields
 - metadata schema
 - scaffold cli
