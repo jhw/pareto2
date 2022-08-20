@@ -2,7 +2,6 @@
 
 - add table router validation
 - ensure binding references inline function
-- refactor role default permissions
 
 ### medium
 
@@ -84,6 +83,7 @@
 
 ### done
 
+- refactor role default permissions
 - add (optional) table router 
 - ensure function passes environment variables
 - remove table action validation

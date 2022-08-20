@@ -121,7 +121,7 @@ def init_function(table,
 
 @resource
 def init_role(table,
-              permissions=["sqs", "logs"]):
+              permissions=["dynamodb", "events", "logs"]):
     resourcename=H("%s-table-function-role" % table["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
