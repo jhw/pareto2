@@ -7,6 +7,54 @@ from pareto2.core.components import resource
 - however if you want to specify resources in Function Roles, will need a defined name so that Arn can be constructed as a string
 """
 
+FunctionCode="""import boto3, json, math, os
+
+class Entry:
+
+    def __init__(self, key, records, context,
+                 eventbusname=os.environ["DEMO_ROUTER_EVENT_BUS"]):
+        self.pk, self.sk = key
+        self.records=records
+        self.context=context
+        self.eventbusname=eventbusname
+
+    @property
+    def entry(self):
+        detail={"ddb": {"pk": self.pk,
+                        "sk": self.sk,
+                        "records": self.records}}
+        detailtype=self.records[0]["eventName"]
+        source=self.context.function_name
+        return {"Source": source,
+                "DetailType": detailtype,
+                "Detail": json.dumps(detail),
+                "EventBusName": self.eventbusname}
+
+def batch_records(records):
+    groups={}
+    for record in records:
+        if "NewImage" not in record["dynamodb"]: # NB
+            continue
+        pk=record["dynamodb"]["Keys"]["pk"]["S"]
+        sk=record["dynamodb"]["Keys"]["sk"]["S"].split("#")[0]
+        key=(pk, sk)
+        groups.setdefault(key, [])
+        groups[key].append(record)
+    return groups
+
+def handler(event, context,
+            batchsize=10):
+    events=boto3.client("events")
+    groups=batch_records(event["Records"])
+    entries=[Entry(k, v, context).entry
+             for k, v in groups.items()]
+    if entries!=[]:
+        nbatches=math.ceil(len(entries)/batchsize)
+        for i in range(nbatches):
+            batch=entries[i*batchsize:(i+1)*batchsize]
+            events.put_events(Entries=batch)
+"""
+
 @resource
 def init_table(table, **kwargs):
     resourcename=H("%s-table" % table["name"])
