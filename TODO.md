@@ -1,6 +1,6 @@
 ### short [streaming-table]
 
-- add (optional) table router 
+- add table router validation
 - ensure binding references inline function
 - refactor role default permissions
 
@@ -84,6 +84,7 @@
 
 ### done
 
+- add (optional) table router 
 - ensure function passes environment variables
 - remove table action validation
 - replace router name in inline code
