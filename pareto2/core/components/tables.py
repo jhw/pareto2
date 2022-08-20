@@ -101,14 +101,15 @@ def init_binding(table):
 
 @resource            
 def init_function(table,
+                  batchsize=StreamingBatchSize,
                   code=FunctionCode):
     resourcename=H("%s-table-function" % table["name"])
     rolename=H("%s-table-function-role" % table["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     variables={}
-    variables[U("queue-url")]={"Ref": H("%s-table-queue" % table["name"])}
-    variables[U("interval")]=str(table["interval"])
+    variables[U("router-event-bus")]={"Ref": H("%s-router-event-bus" % table["router"])}
+    variables[U("batch-size")]=str(batchsize)
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "Code": code,
            "Handler": "index.handler",
