@@ -1,11 +1,11 @@
 ### short [streaming-table]
 
-- add function, role
+- ensure streaming is an option at the dsl level
 - add inline code
+- refactor role default permissions
 - replace hardcoded script values with env variables
 - ensure function passes correct variables
 - change binding to use new inline function
-- ensure streaming is an option at the dsl level
 
 ### medium
 
@@ -84,6 +84,8 @@
 - remove eventbus discoverer ?
 
 ### done
+
+- add function, role
 
 ```
 KeyError: 'QUEUE_URL'T

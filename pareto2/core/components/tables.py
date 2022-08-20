@@ -58,12 +58,62 @@ def init_binding(table):
             "AWS::Lambda::EventSourceMapping",
             props)
 
+@resource            
+def init_function(table,
+                  code=FunctionCode):
+    resourcename=H("%s-table-function" % table["name"])
+    rolename=H("%s-table-function-role" % table["name"])
+    code={"ZipFile": code}
+    runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
+    variables={}
+    variables[U("queue-url")]={"Ref": H("%s-table-queue" % table["name"])}
+    variables[U("interval")]=str(table["interval"])
+    props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
+           "Code": code,
+           "Handler": "index.handler",
+           "Runtime": runtime,
+           "Environment": {"Variables": variables}}
+    return (resourcename, 
+            "AWS::Lambda::Function",
+            props)
+
+@resource
+def init_role(table,
+              permissions=["sqs", "logs"]):
+    resourcename=H("%s-table-function-role" % table["name"])
+    assumerolepolicydoc={"Version": "2012-10-17",
+                         "Statement": [{"Action": "sts:AssumeRole",
+                                        "Effect": "Allow",
+                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
+    policydoc={"Version": "2012-10-17",
+               "Statement": [{"Action" : "%s:*" % permission,
+                              "Effect": "Allow",
+                              "Resource": "*"}
+                             for permission in sorted(permissions)]}
+    policyname={"Fn::Sub": "%s-table-function-role-policy-${AWS::StackName}" % table["name"]}
+    policies=[{"PolicyDocument": policydoc,
+               "PolicyName": policyname}]
+    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+           "Policies": policies}
+    return (resourcename,
+            "AWS::IAM::Role",
+            props)
+
+def init_component(table):
+    resources=[]
+    for fn in [init_table,
+               init_binding,
+               init_function,
+               init_role]:
+        resource=fn(table)
+        resources.append(resource)
+    return resources
+
 def init_resources(md):
     resources=[]
     for table in md.tables:
-        resources.append(init_table(table))
-        if "action" in table:
-            resources.append(init_binding(table))
+        component=init_component(table)
+        resources+=component
     return dict(resources)
 
 def init_outputs(md):
