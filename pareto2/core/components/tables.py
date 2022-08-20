@@ -48,8 +48,14 @@ def handler(event, context,
             events.put_events(Entries=batch)
 """
 
+StreamConfig={"retries": 3,
+              "batch": {"window": 1},
+              "type": "NEW_AND_OLD_IMAGES"}
+
+StreamBatchSize=10
+
 @resource
-def init_table(table, **kwargs):
+def init_table(table, streamconfig=StreamConfig, **kwargs):
     resourcename=H("%s-table" % table["name"])
     attrs=[{"AttributeName": name,
             "AttributeType": type_}
@@ -71,21 +77,21 @@ def init_table(table, **kwargs):
            "KeySchema": key,
            "GlobalSecondaryIndexes": gsi,
            "TableName": name}
-    if "stream" in table:
-        stream={"StreamViewType": table["stream"]["type"]}
+    if "router" in table:
+        stream={"StreamViewType": streamconfig["type"]}
         props["StreamSpecification"]=stream
     return (resourcename,
             "AWS::DynamoDB::Table",
             props)
 
 @resource
-def init_binding(table):
+def init_binding(table, streamconfig=StreamConfig):
     resourcename=H("%s-table-mapping" % table["name"])
     funcname={"Ref": H("%s-table-function" % table["name"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
-    window=table["stream"]["batch"]["window"]
-    retries=table["stream"]["retries"]
+    window=streamconfig["batch"]["window"]
+    retries=streamconfig["retries"]
     props={"FunctionName": funcname,
            "StartingPosition": "LATEST",
            "MaximumBatchingWindowInSeconds": window,
@@ -101,7 +107,7 @@ def init_binding(table):
 
 @resource            
 def init_function(table,
-                  batchsize=StreamingBatchSize,
+                  batchsize=StreamBatchSize,
                   code=FunctionCode):
     resourcename=H("%s-table-function" % table["name"])
     rolename=H("%s-table-function-role" % table["name"])
@@ -146,7 +152,7 @@ def init_component(table):
     for fn in [init_table]:
         resource=fn(table)
         resources.append(resource)
-    if "stream" in table:
+    if "router" in table:
         for fn in [init_binding,
                    init_function,
                    init_role]:

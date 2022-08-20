@@ -1,7 +1,6 @@
 ### short [streaming-table]
 
-- move stream config inline 
-  - replace with streaming boolean
+- unpack streamconfig
 
 ### medium
 
@@ -83,6 +82,8 @@
 
 ### done
 
+- move stream config inline 
+  - replace with streaming boolean
 - add md.routers 
 - add table router validation
 - ensure binding references inline function
