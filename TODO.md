@@ -15,17 +15,18 @@ DemoTableMapping => Resource handler returned message: "Invalid request provided
 ### gists
 
 - api keys
+- step function mapreduce
 - eventbridge lambda destination
 - eventbridge destination urls
 
 ### long
 
-- burningmonk apigw stuff
 - lambda alarms, timeouts
+- burningmonk apigw stuff
 - appsync + graphql
-- step functions
 - iam role lockdown
-- aws chat
+- sst live lambda development
+- sync'ing deployment of multiple apps
 
 ### thoughts
 
