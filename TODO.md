@@ -1,24 +1,24 @@
 ### short [streaming-table]
 
+- add back new image check 
+- check demo has a table pinging script
+- deploy and test master ping
+- check dev branch compiles
+- redeploy and test dev branch
+
 ### medium
 
-- queue+function
-- add memory and timeout to existing timer inline function 
-- abstract inline function, role generation
-- per- stage config
-- resource names of timer functions should be checked against actions
-- topic test harness
-- topic policy specifies events as principal ?
-- builder, topic, router? dashboards
-- explicit action destination, dsl (boolean) fields
-- metadata schema
-- scaffold cli
+- add memory, timeout to inline functions
+- table inline code to calculate diffs
+
+- abstract iam roles, inline functions
+- topic policy specifies events as principal
 
 ### gists
 
 - api keys
-- eventbridge destination urls
 - eventbridge lambda destination
+- eventbridge destination urls
 
 ### long
 
@@ -31,6 +31,13 @@
 
 ### thoughts
 
+- combine cli push and deploy ?
+  - it's a minor pain but I think they should be separate
+- queue+function?
+  - don't think this is going to work because, unlike table, a queue must always be bound to a user- specified function
+- per- stage config ?
+  - don't feel like this will work
+  - still to be handled on per- branch basis?
 - consider removing table error handling ?
   - no seems valuable tbh
 - add check for function name conflict  ?
