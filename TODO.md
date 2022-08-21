@@ -1,6 +1,5 @@
 ### short [streaming-table]
 
-- add back new image check 
 - check demo has a table pinging script
 - deploy and test master ping
 - check dev branch compiles
@@ -87,6 +86,7 @@
 
 ### done
 
+- add back new image check 
 - unpack streamconfig
 - move stream config inline 
   - replace with streaming boolean

@@ -27,6 +27,8 @@ class Entry:
 def batch_records(records):
     groups={}
     for record in records:
+        if "NewImage" not in record["dynamodb"]:
+            continue
         pk=record["dynamodb"]["Keys"]["pk"]["S"]
         sk=record["dynamodb"]["Keys"]["sk"]["S"].split("#")[0]
         key=(pk, sk)
