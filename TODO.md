@@ -1,13 +1,12 @@
 ### short
 
+- remove pattern permissions
 - add memory, timeout to inline functions
-- table inline code to calculate diffs
-- abstract iam role generation [tables, timers]
-- consider abstracting inline functions
+- fix topic policy specifying events as principal
 
 ### medium
 
-- fix topic policy specifying events as principal
+- table inline code to calculate diffs
 
 ### gists
 
@@ -18,6 +17,7 @@
 
 ### long
 
+- lambda powertools
 - lambda alarms, timeouts
 - burningmonk apigw stuff
 - appsync + graphql
@@ -27,6 +27,8 @@
 
 ### thoughts
 
+- abstract iam role, inline function code ?
+  - no because every component has to be named using hardcoded suffixes and may require custom extension
 - combine cli push and deploy ?
   - it's a minor pain but I think they should be separate
 - queue+function?
