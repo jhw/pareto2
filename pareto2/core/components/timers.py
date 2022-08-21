@@ -17,6 +17,8 @@ def handler(items, context,
                          MessageBody=json.dumps(item))
 """
 
+MemorySize, Timeout = "small", "short"
+
 @resource
 def init_rule(timer):
     def init_target(timer):
@@ -50,15 +52,21 @@ def init_permission(timer):
 
 @resource            
 def init_function(timer,
-                  code=FunctionCode):
+                  code=FunctionCode,
+                  memorysize=MemorySize,
+                  timeout=Timeout):
     resourcename=H("%s-timer-function" % timer["name"])
     rolename=H("%s-timer-function-role" % timer["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
+    memorysize=H("memory-size-%s" % memorysize)
+    timeout=H("timeout-%s" % timeout)
     variables={}
     variables[U("queue-url")]={"Ref": H("%s-timer-queue" % timer["name"])}
     variables[U("interval")]=str(timer["interval"])
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
+           "MemorySize": {"Ref": memorysize},
+           "Timeout": {"Ref": timeout},
            "Code": code,
            "Handler": "index.handler",
            "Runtime": runtime,

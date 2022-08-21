@@ -18,14 +18,14 @@ DefaultPermissions={"events", "logs", "sqs"}
 def init_function(action):
     resourcename=H("%s-function" % action["name"])
     rolename=H("%s-function-role" % action["name"])
-    memory=H("memory-size-%s" % action["size"])
+    memorysize=H("memory-size-%s" % action["size"])
     timeout=H("timeout-%s" % action["timeout"])
     code={"S3Bucket": {"Ref": H("artifacts-bucket")},
           "S3Key": {"Ref": H("artifacts-key")}}
     handler={"Fn::Sub": "%s/index.handler" % action["name"].replace("-", "/")}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
-           "MemorySize": {"Ref": memory},
+           "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},
            "Code": code,
            "Handler": handler,
