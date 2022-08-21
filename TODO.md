@@ -1,7 +1,5 @@
 ### short
 
-- check you can search for inline functions logs
-
 ### medium
 
 ### gists
@@ -84,6 +82,7 @@
 ### done
 
 - include eventName in table key
+- check you can search for inline functions logs
 - fix topic policy specifying events as principal
 - remove pattern permissions
 - add memory, timeout to inline functions

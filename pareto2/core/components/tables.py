@@ -8,7 +8,7 @@ class Entry:
 
     def __init__(self, key, records, context,
                  eventbusname=os.environ["ROUTER_EVENT_BUS"]):
-        self.pk, self.sk = key
+        self.pk, self.sk, self.eventname = key
         self.records=records
         self.context=context
         self.eventbusname=eventbusname
@@ -18,7 +18,7 @@ class Entry:
         detail={"ddb": {"pk": self.pk,
                         "sk": self.sk,
                         "records": self.records}}
-        detailtype=self.records[0]["eventName"]
+        detailtype=self.eventname
         source=self.context.function_name
         return {"Source": source,
                 "DetailType": detailtype,
