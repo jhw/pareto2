@@ -1,16 +1,13 @@
-### short [streaming-table]
-
-```
-DemoTableMapping => Resource handler returned message: "Invalid request provided: The provided execution role does not have permissions to call SendMessage on SQS (Service: Lambda, Status Code: 400, Request ID: 8fc12441-fb29-4e70-8c6b-1d83b6025157)" (RequestToken: 89363dfa-472f-60f0-4f77-5e4a865cf5a3, HandlerErrorCode: InvalidRequest)
-```
-
-### medium
+### short
 
 - add memory, timeout to inline functions
 - table inline code to calculate diffs
+- abstract iam role generation [tables, timers]
+- consider abstracting inline functions
 
-- abstract iam roles, inline functions
-- topic policy specifies events as principal
+### medium
+
+- fix topic policy specifying events as principal
 
 ### gists
 
@@ -85,6 +82,10 @@ DemoTableMapping => Resource handler returned message: "Invalid request provided
 - remove eventbus discoverer ?
 
 ### done
+
+```
+DemoTableMapping => Resource handler returned message: "Invalid request provided: The provided execution role does not have permissions to call SendMessage on SQS (Service: Lambda, Status Code: 400, Request ID: 8fc12441-fb29-4e70-8c6b-1d83b6025157)" (RequestToken: 89363dfa-472f-60f0-4f77-5e4a865cf5a3, HandlerErrorCode: InvalidRequest)
+```
 
 - check dev branch compiles
 - check demo has a table pinging script
