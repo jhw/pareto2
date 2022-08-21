@@ -1,4 +1,5 @@
 from pareto2.core.components import hungarorise as H
+from pareto2.core.components import uppercase as U
 from pareto2.core.components import resource
 
 FunctionCode="""import boto3, json, math, os
