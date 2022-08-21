@@ -14,9 +14,6 @@ import re
 
 DefaultPermissions={"events", "logs", "sqs"}
 
-PatternPermissions=[("\\-table", "dynamodb"),
-                    ("\\-bucket", "s3")]
-
 @resource            
 def init_function(action):
     resourcename=H("%s-function" % action["name"])
@@ -51,14 +48,8 @@ def init_function(action):
 @resource
 def init_role(action, **kwargs):
     def init_permissions(action,
-                         defaultpermissions=DefaultPermissions,
-                         patternpermissions=PatternPermissions):
+                         defaultpermissions=DefaultPermissions):
         permissions=set(defaultpermissions)
-        if "env" in action:
-            for var in action["env"]["variables"]:
-                for pat, permission in patternpermissions:
-                    if re.search(pat, var):
-                        permissions.add(permission)
         if "permissions" in action:
             permissions.update(set(action["permissions"]))
         return permissions        
