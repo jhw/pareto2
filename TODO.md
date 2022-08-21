@@ -1,21 +1,21 @@
 ### short
 
-### medium
+- check you can search for inline functions logs
 
-- table inline code to calculate diffs
+### medium
 
 ### gists
 
-- api keys
+- eventbridge lambda destinations
+- apigw api keys
 - step function mapreduce
-- eventbridge lambda destination
 - eventbridge destination urls
+- lambda alarms, timeouts
+- burningmonk apigw stuff
 
 ### long
 
 - lambda powertools
-- lambda alarms, timeouts
-- burningmonk apigw stuff
 - appsync + graphql
 - iam role lockdown
 - sst live lambda development
@@ -23,6 +23,8 @@
 
 ### thoughts
 
+- table inline code to calculate diffs ?
+  - no; think you don't need it; it's enough to provide old and new images
 - abstract iam role, inline function code ?
   - no because every component has to be named using hardcoded suffixes and may require custom extension
 - combine cli push and deploy ?
@@ -81,6 +83,7 @@
 
 ### done
 
+- include eventName in table key
 - fix topic policy specifying events as principal
 - remove pattern permissions
 - add memory, timeout to inline functions

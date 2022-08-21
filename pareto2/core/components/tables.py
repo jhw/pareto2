@@ -32,7 +32,7 @@ def batch_records(records):
             continue
         pk=record["dynamodb"]["Keys"]["pk"]["S"]
         sk=record["dynamodb"]["Keys"]["sk"]["S"].split("#")[0]
-        key=(pk, sk)
+        key=(pk, sk, record["eventName"])
         groups.setdefault(key, [])
         groups[key].append(record)
     return groups
