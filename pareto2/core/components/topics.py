@@ -16,7 +16,7 @@ def init_topic(topic):
 def init_policy(topic):
     resourcename=H("%s-topic-policy" % topic["name"])
     statement={"Effect": "Allow",
-               "Principal": {"Service": "events.amazonaws.com"}, # ???
+               "Principal": {"Service": "sns.amazonaws.com"},
                "Action": ["sns:Publish"],
                "Resource": {"Ref": H("%s-topic" % topic["name"])}}
     policydoc={"Version": "2012-10-17",

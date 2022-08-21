@@ -1,7 +1,5 @@
 ### short
 
-- fix topic policy specifying events as principal
-
 ### medium
 
 - table inline code to calculate diffs
@@ -83,6 +81,7 @@
 
 ### done
 
+- fix topic policy specifying events as principal
 - remove pattern permissions
 - add memory, timeout to inline functions
 
