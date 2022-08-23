@@ -1,11 +1,12 @@
 ### short
 
+- apigw api keys
+- eventbridge lambda destinations
+
 ### medium
 
 ### gists
 
-- eventbridge lambda destinations
-- apigw api keys
 - step function mapreduce
 - eventbridge destination urls
 - lambda alarms, timeouts
