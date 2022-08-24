@@ -1,8 +1,5 @@
 ### short
 
-- destroy and redeploy pareto2-demo
-- ping table test
-- confirm works and diffKeys present in tail events
 - create new tag
 
 ### medium
@@ -90,6 +87,9 @@
 
 ### done
 
+- destroy and redeploy pareto2-demo
+- ping table test
+- confirm works and diffKeys present in tail events
 - integrate new diffkeys code
 - calc diffs and include
 - eventName should be part of top level ddb struct
