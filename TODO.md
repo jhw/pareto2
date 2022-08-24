@@ -1,6 +1,14 @@
 ### short
 
+- find dynamodb event example
+- abstract inline code into dev and test with event
+- new Key class with __str__
+- eventName should be part of ddb struct
+- calc diffs and include
+
 ### medium
+
+- inline event-to-sns code
 
 ### gists
 
