@@ -1,9 +1,7 @@
 ### short
 
-- find dynamodb event example
-- abstract inline code into dev and test with event
 - new Key class with __str__
-- eventName should be part of ddb struct
+- eventName should be part of top level ddb struct
 - calc diffs and include
 
 ### medium
@@ -89,6 +87,8 @@
 
 ### done
 
+- find dynamodb event example
+- abstract inline code into dev and test with event
 - include eventName in table key
 - check you can search for inline functions logs
 - fix topic policy specifying events as principal
