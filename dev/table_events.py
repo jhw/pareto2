@@ -7,15 +7,17 @@ os.environ.update({"ROUTER_EVENT_BUS": "my-router",
 
 class Key:
 
-    def __init__(self, pk, sk, eventname):
+    def __init__(self, pk, sk, eventname, diffkeys):
         self.pk=pk
         self.sk=sk
         self.eventname=eventname
+        self.diffkeys=diffkeys
 
     def __str__(self):
-        return "%s/%s/%s" % (self.pk,
-                             self.sk,
-                             self.eventname)
+        return "%s/%s/%s/%s" % (self.pk,
+                                self.sk,
+                                self.eventname,
+                                "|".join(self.diffkeys))
 
 class Entry:
 
@@ -31,6 +33,7 @@ class Entry:
         detail={"ddb": {"pk": self.key.pk,
                         "sk": self.key.sk,
                         "eventName": self.key.eventname,
+                        "diffKeys": self.key.diffkeys,
                         "records": self.records}}
         source=self.context.function_name
         detailtype=self.key.eventname
@@ -40,6 +43,19 @@ class Entry:
                 "EventBusName": self.eventbusname}
 
 def batch_records(records):
+    def diff_keys(record):
+        if "OldImage" not in record["dynamodb"]:
+            return []        
+        newimage={k: list(v.values())[0]
+                  for k, v in record["dynamodb"]["NewImage"].items()}
+        oldimage={k: list(v.values())[0]
+                  for k, v in record["dynamodb"]["OldImage"].items()}
+        diffkeys=[]
+        for k in newimage:
+            if (k not in oldimage or
+                newimage[k]!=oldimage[k]):
+                diffkeys.append(k)
+        return sorted(diffkeys) # NB sort
     keys, groups = {}, {}
     for record in records:
         if "NewImage" not in record["dynamodb"]:
@@ -47,9 +63,11 @@ def batch_records(records):
         pk=record["dynamodb"]["Keys"]["pk"]["S"]
         sk=record["dynamodb"]["Keys"]["sk"]["S"].split("#")[0]
         eventname=record["eventName"]
+        diffkeys=diff_keys(record)
         key=Key(pk=pk,
                 sk=sk,
-                eventname=eventname)
+                eventname=eventname,
+                diffkeys=diffkeys)
         strkey=str(key)
         if strkey not in keys:
             keys[strkey]=key
@@ -70,16 +88,20 @@ def handler(event, context,
         for i in range(nbatches):
             batch=entries[i*batchsize:(i+1)*batchsize]
             # START TEMP CODE
-            # events.put_events(Entries=batch)
-            # END TEMP CODE
-            # START TEMP CODE
             for item in batch:
                 detail=json.loads(item["Detail"])
-                print ("%s records" % len(detail["ddb"]["records"]))
+                print ("%s/%s/%s/%s [%i]" % (detail["ddb"]["pk"],
+                                             detail["ddb"]["sk"],
+                                             detail["ddb"]["eventName"],
+                                             "|".join(detail["ddb"]["diffKeys"]),
+                                             len(detail["ddb"]["records"])))
+            # END TEMP CODE
+            # START TEMP CODE
+            # events.put_events(Entries=batch)
             # END TEMP CODE
 
 if __name__=="__main__":
-    from pareto2.test import Context
     event=json.loads(open("dev/ddb-event.json").read())
+    from pareto2.test import Context
     context=Context("my-function")
     handler(event, context)

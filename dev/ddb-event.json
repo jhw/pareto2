@@ -16,6 +16,17 @@
                         "S": "LEAGUE#ENG1"
                     }
                 },
+		"OldImage": {
+                    "sk": {
+                        "S": "EVENT#Chelsea vs Crystal Palace/2021-08-14"
+                    },
+                    "pk": {
+                        "S": "LEAGUE#ENG1"
+                    },
+                    "timestamp_bbc": {
+                        "S": "2021-09-30 09:34:54"
+                    }
+                },
                 "NewImage": {
                     "score_bbc": {
                         "S": "3-0"

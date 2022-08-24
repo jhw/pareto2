@@ -1,6 +1,6 @@
 ### short
 
-- calc diffs and include
+- test new diffkeys code
 
 ### medium
 
@@ -85,6 +85,7 @@
 
 ### done
 
+- calc diffs and include
 - eventName should be part of top level ddb struct
 - new Key class with __str__
 - find dynamodb event example
