@@ -1,7 +1,5 @@
 ### short
 
-- create new tag
-
 ### medium
 
 - inline event-to-sns code
@@ -87,6 +85,7 @@
 
 ### done
 
+- create new tag
 - destroy and redeploy pareto2-demo
 - ping table test
 - confirm works and diffKeys present in tail events
