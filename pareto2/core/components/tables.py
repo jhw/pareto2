@@ -4,38 +4,76 @@ from pareto2.core.components import resource
 
 FunctionCode="""import boto3, json, math, os
 
+class Key:
+
+    def __init__(self, pk, sk, eventname, diffkeys):
+        self.pk=pk
+        self.sk=sk
+        self.eventname=eventname
+        self.diffkeys=diffkeys
+
+    def __str__(self):
+        return "%s/%s/%s/%s" % (self.pk,
+                                self.sk,
+                                self.eventname,
+                                "|".join(self.diffkeys))
+
 class Entry:
 
     def __init__(self, key, records, context,
                  eventbusname=os.environ["ROUTER_EVENT_BUS"]):
-        self.pk, self.sk, self.eventname = key
+        self.key=key
         self.records=records
         self.context=context
         self.eventbusname=eventbusname
 
     @property
-    def entry(self):
-        detail={"ddb": {"pk": self.pk,
-                        "sk": self.sk,
+    def entry(self):        
+        detail={"ddb": {"pk": self.key.pk,
+                        "sk": self.key.sk,
+                        "eventName": self.key.eventname,
+                        "diffKeys": self.key.diffkeys,
                         "records": self.records}}
-        detailtype=self.eventname
         source=self.context.function_name
+        detailtype=self.key.eventname
         return {"Source": source,
                 "DetailType": detailtype,
                 "Detail": json.dumps(detail),
                 "EventBusName": self.eventbusname}
 
 def batch_records(records):
-    groups={}
+    def diff_keys(record):
+        if "OldImage" not in record["dynamodb"]:
+            return []        
+        newimage={k: list(v.values())[0]
+                  for k, v in record["dynamodb"]["NewImage"].items()}
+        oldimage={k: list(v.values())[0]
+                  for k, v in record["dynamodb"]["OldImage"].items()}
+        diffkeys=[]
+        for k in newimage:
+            if (k not in oldimage or
+                newimage[k]!=oldimage[k]):
+                diffkeys.append(k)
+        return sorted(diffkeys) # NB sort
+    keys, groups = {}, {}
     for record in records:
         if "NewImage" not in record["dynamodb"]:
             continue
         pk=record["dynamodb"]["Keys"]["pk"]["S"]
         sk=record["dynamodb"]["Keys"]["sk"]["S"].split("#")[0]
-        key=(pk, sk, record["eventName"])
-        groups.setdefault(key, [])
-        groups[key].append(record)
-    return groups
+        eventname=record["eventName"]
+        diffkeys=diff_keys(record)
+        key=Key(pk=pk,
+                sk=sk,
+                eventname=eventname,
+                diffkeys=diffkeys)
+        strkey=str(key)
+        if strkey not in keys:
+            keys[strkey]=key
+        groups.setdefault(strkey, [])
+        groups[strkey].append(record)
+    return [(key, groups[strkey])
+            for strkey, key in keys.items()]
 
 def handler(event, context,
             batchsize=os.environ["BATCH_SIZE"]):
@@ -43,7 +81,7 @@ def handler(event, context,
     events=boto3.client("events")
     groups=batch_records(event["Records"])
     entries=[Entry(k, v, context).entry
-             for k, v in groups.items()]
+             for k, v in groups]
     if entries!=[]:
         nbatches=math.ceil(len(entries)/batchsize)
         for i in range(nbatches):

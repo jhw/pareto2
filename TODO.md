@@ -1,6 +1,5 @@
 ### short
 
-- integrate new diffkeys code
 - destroy and redeploy pareto2-demo
 - ping table test
 - confirm works and diffKeys present in tail events
@@ -91,6 +90,7 @@
 
 ### done
 
+- integrate new diffkeys code
 - calc diffs and include
 - eventName should be part of top level ddb struct
 - new Key class with __str__
