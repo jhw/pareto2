@@ -1,7 +1,5 @@
 ### short
 
-- new Key class with __str__
-- eventName should be part of top level ddb struct
 - calc diffs and include
 
 ### medium
@@ -87,6 +85,8 @@
 
 ### done
 
+- eventName should be part of top level ddb struct
+- new Key class with __str__
 - find dynamodb event example
 - abstract inline code into dev and test with event
 - include eventName in table key
