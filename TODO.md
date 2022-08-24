@@ -1,6 +1,10 @@
 ### short
 
-- test new diffkeys code
+- integrate new diffkeys code
+- destroy and redeploy pareto2-demo
+- ping table test
+- confirm works and diffKeys present in tail events
+- create new tag
 
 ### medium
 
@@ -9,9 +13,7 @@
 ### gists
 
 - apigw api keys
-- eventbridge lambda destinations
 - step function mapreduce
-- eventbridge destination urls
 - lambda alarms, timeouts
 - burningmonk apigw stuff
 
@@ -25,6 +27,10 @@
 
 ### thoughts
 
+- eventbridge lambda destinations ?
+  - probably not relevent if you're going to pipe errors to sns
+- eventbridge destination urls ?
+  - probably not relevent if you're going to pipe errors to sns
 - table inline code to calculate diffs ?
   - no; think you don't need it; it's enough to provide old and new images
 - abstract iam role, inline function code ?
