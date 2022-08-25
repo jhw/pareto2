@@ -1,15 +1,22 @@
 ### short
 
-- uncomment specification of bucket as event source
-- option to pass memory, timeout to ddb table code
+- re- test table example
+- add source to table event
+- add back s3 event
+- test bucket example
+- add bucket as event source
+- re- test bucket
 
-- check components in a particular group can't be defined with the same name
-  - this would be fixed by a move to a single component resources dict, like CF
-  
 ### medium
 
-- convert metadata to cf- like list of components
-- inline event-to-sns code
+- refactor push artifacts so doesn't assume stuff is in root
+- ensure unit tests results are captureable
+- lock down iam roles passed to inline functions
+- add inline functions to charts generation
+- pass memory, timeout to ddb table code
+- metadata unique component name check
+- convert destinations to use eventbridge and push to sns
+- make dsl lenient and don't require empty list specifications
 
 ### gists
 
