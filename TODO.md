@@ -1,7 +1,5 @@
 ### short
 
-- ensure permissions uses a set to avoid being defined twice
-
 ### medium
 
 - check components in a particular group can't be defined with the same name
@@ -93,6 +91,7 @@
 
 ### done
 
+- ensure permissions uses a set to avoid being defined twice
 - add top- level debug option to function
 - re- integrate table function code
 - add debug option to table
