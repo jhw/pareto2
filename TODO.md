@@ -1,6 +1,5 @@
 ### short
 
-- add top- level debug option to function
 - check actions can't be defined with the same name
 - ensure permissions uses a set to avoid being defined twice
 
@@ -92,6 +91,7 @@
 
 ### done
 
+- add top- level debug option to function
 - re- integrate table function code
 - add debug option to table
 - undo NewImage check 

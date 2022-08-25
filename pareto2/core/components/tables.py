@@ -168,6 +168,7 @@ def init_function(table,
     variables={}
     variables[U("router-event-bus")]={"Ref": H("%s-router-event-bus" % table["router"])}
     variables[U("batch-size")]=str(batchsize)
+    variables[U("debug")]=str(table["debug"]) if "debug" in table else "false"
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},
