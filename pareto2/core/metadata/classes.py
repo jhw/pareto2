@@ -27,15 +27,15 @@ class ComponentsBase(list):
 
     def validate_actions(self, md, errors):
         actionnames=md.actions.names
-        for builder in self:
-            if builder["action"] not in actionnames:
-                errors.append("%s is not a valid action name (builder %s)" % (builder["action"], builder["name"]))
+        for component in self:
+            if component["action"] not in actionnames:
+                errors.append("%s is not a valid action name (component %s)" % (component["action"], component["name"]))
 
     def validate_buckets(self, md, errors):
         bucketnames=md.buckets.names
-        for builder in self:
-            if builder["bucket"] not in bucketnames:
-                errors.append("%s is not a valid bucket name (builder %s)" % (builder["bucket"], builder["name"]))
+        for component in self:
+            if component["bucket"] not in bucketnames:
+                errors.append("%s is not a valid bucket name (component %s)" % (component["bucket"], component["name"]))
     
     def validate(self, md, errors):
         pass

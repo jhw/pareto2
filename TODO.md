@@ -1,10 +1,12 @@
 ### short
 
-- check actions can't be defined with the same name
 - ensure permissions uses a set to avoid being defined twice
 
 ### medium
 
+- check components in a particular group can't be defined with the same name
+  - this would be fixed by a move to a single component resources dict, like CF
+  
 - uncomment specification of bucket as event source
 - convert metadata to cf- like list of components
 - option to pass memory, timeout to ddb table code
