@@ -1,7 +1,14 @@
 ### short
 
+- check actions can't be defined with the same name
+- ensure permissions uses a set to avoid being defined twice
+- allow specification of table function as event source 
+- undo NewImage check 
+
 ### medium
 
+- convert metadata to cf- like list of components
+- option to pass memory, timeout to ddb table code
 - inline event-to-sns code
 
 ### gists
