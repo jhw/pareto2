@@ -1,5 +1,6 @@
 ### short
 
+- add debug option to table
 - check actions can't be defined with the same name
 - ensure permissions uses a set to avoid being defined twice
 - allow specification of table function as event source 
