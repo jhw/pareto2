@@ -3,11 +3,11 @@
 - add debug option to table
 - check actions can't be defined with the same name
 - ensure permissions uses a set to avoid being defined twice
-- allow specification of table function as event source 
 - undo NewImage check 
 
 ### medium
 
+- uncomment specification of bucket as event source
 - convert metadata to cf- like list of components
 - option to pass memory, timeout to ddb table code
 - inline event-to-sns code
@@ -93,6 +93,7 @@
 
 ### done
 
+- allow specification of table function as event source 
 - create new tag
 - destroy and redeploy pareto2-demo
 - ping table test

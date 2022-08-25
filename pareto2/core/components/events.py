@@ -21,8 +21,11 @@ def init_rule(event):
         if "action" in event["source"]:
             pattern["source"]=[{"Ref": H("%s-function" % event["source"]["action"])}]
         elif "bucket" in event["source"]:
+            # pattern["source"]=[{"Ref": H("%s-bucket" % event["source"]["bucket"])}]
             pattern["detail"].setdefault("bucket", {})
             pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["bucket"])}]
+        elif "table" in event["source"]:
+            pattern["source"]=[{"Ref": H("%s-table-function" % event["source"]["table"])}]
     target=init_target(event)
     props={"EventPattern": pattern,
            "Targets": [target],
