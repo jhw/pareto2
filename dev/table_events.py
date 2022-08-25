@@ -2,7 +2,8 @@ import boto3, json, math, os
 
 ### START TEMP CODE
 os.environ.update({"ROUTER_EVENT_BUS": "my-router",
-                   "BATCH_SIZE": "10"})
+                   "BATCH_SIZE": "10",
+                   "DEBUG": "true"})
 ### END TEMP CODE
 
 class Key:
@@ -44,7 +45,8 @@ class Entry:
 
 def batch_records(records):
     def diff_keys(record):
-        if "OldImage" not in record["dynamodb"]:
+        if not ("NewImage" in record["dynamodb"] and
+                "OldImage" in record["dynamodb"]):
             return []        
         newimage={k: list(v.values())[0]
                   for k, v in record["dynamodb"]["NewImage"].items()}
@@ -58,8 +60,6 @@ def batch_records(records):
         return sorted(diffkeys) # NB sort
     keys, groups = {}, {}
     for record in records:
-        if "NewImage" not in record["dynamodb"]:
-            continue
         pk=record["dynamodb"]["Keys"]["pk"]["S"]
         sk=record["dynamodb"]["Keys"]["sk"]["S"].split("#")[0]
         eventname=record["eventName"]
@@ -77,12 +77,20 @@ def batch_records(records):
             for strkey, key in keys.items()]
 
 def handler(event, context,
-            batchsize=os.environ["BATCH_SIZE"]):
+            batchsize=os.environ["BATCH_SIZE"],
+            debug=os.environ["DEBUG"]):
     batchsize=int(batchsize)
+    debug=eval(debug.lower().capitalize())
     events=boto3.client("events")
+    if debug:
+        print ("--- records ---")
+        print (json.dumps(event["Records"]))
     groups=batch_records(event["Records"])
     entries=[Entry(k, v, context).entry
              for k, v in groups]
+    if debug:
+        print ("--- entries ---")
+        print (json.dumps(entries))
     if entries!=[]:
         nbatches=math.ceil(len(entries)/batchsize)
         for i in range(nbatches):

@@ -1,9 +1,9 @@
 ### short
 
-- add debug option to table
+- re- integrate table function code
+- add top- level debug option to function
 - check actions can't be defined with the same name
 - ensure permissions uses a set to avoid being defined twice
-- undo NewImage check 
 
 ### medium
 
@@ -93,6 +93,8 @@
 
 ### done
 
+- add debug option to table
+- undo NewImage check 
 - allow specification of table function as event source 
 - create new tag
 - destroy and redeploy pareto2-demo
