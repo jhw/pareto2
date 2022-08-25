@@ -1,13 +1,14 @@
 ### short
 
-### medium
+- uncomment specification of bucket as event source
+- option to pass memory, timeout to ddb table code
 
 - check components in a particular group can't be defined with the same name
   - this would be fixed by a move to a single component resources dict, like CF
   
-- uncomment specification of bucket as event source
+### medium
+
 - convert metadata to cf- like list of components
-- option to pass memory, timeout to ddb table code
 - inline event-to-sns code
 
 ### gists
