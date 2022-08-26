@@ -35,10 +35,6 @@ def init_function(action):
             "AWS::Lambda::Function",
             props)
 
-"""
-- custom permissions layer provided so you can access polly, translate etc
-"""
-
 @resource
 def init_role(action, **kwargs):
     def init_permissions(action,
@@ -65,6 +61,61 @@ def init_role(action, **kwargs):
            "Policies": policies}
     return (resourcename,
             "AWS::IAM::Role",
+            props)
+
+@resource
+def _init_event_rule(action, event, detail):
+    def init_target(action, event):
+        id={"Fn::Sub": "%s-function-%s-event-rule-${AWS::StackName}" % (action["name"],
+                                                                        event["name"])}
+        arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
+        return {"Id": id,
+                "Arn": arn}
+    resourcename=H("%s-function-%s-event-rule" % (action["name"],
+                                                  event["name"]))
+    pattern={"detail": detail}
+    target=init_target(action, event)
+    props={"EventPattern": pattern,
+           "Targets": [target],
+           "State": "ENABLED"}
+    """
+    if "router" in event:
+        eventbusname={"Ref": H("%s-router-event-bus" % event["router"])}
+        props["EventBusName"]=eventbusname
+    """
+    return (resourcename,
+            "AWS::Events::Rule",
+            props)
+
+def init_dynamodb_event_rule(action, event):
+    pattern={"detail": event["pattern"]}
+    pattern["source"]=[{"Ref": H("%s-table-function" % event["table"])}]
+    return pattern
+
+def init_s3_event_rule(action, event):
+    pattern={"detail": event["pattern"]}
+    pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["bucket"])}]
+    return pattern
+
+def init_codebuild_event_rule(action, event):
+    pattern={"detail": event["pattern"]}
+    return pattern
+
+def init_event_rule(action, event):
+    fn=eval("init_%s_event_rule" % event["type"])
+    return fn(action, event)
+
+@resource
+def init_event_rule_permission(action, event):
+    resourcename=H("%s-event-rule-permission" % event["name"])
+    sourcearn={"Fn::GetAtt": [H("%s-event-rule" % event["name"]), "Arn"]}
+    funcname={"Ref": H("%s-function" % action["name"])}
+    props={"Action": "lambda:InvokeFunction",
+           "Principal": "events.amazonaws.com",
+           "FunctionName": funcname,
+           "SourceArn": sourcearn}
+    return (resourcename,
+            "AWS::Lambda::Permission",
             props)
 
 def init_component(action):

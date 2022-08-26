@@ -1,21 +1,29 @@
-### short
+### short [actions, types, bindings]
 
-- deploy_stack.py to check s3 artifacts
-- skeleton action event code > ddb, s3, codebuild
-- complete action event code
-- action types -> async, queue, api [notes]
+- iterate through events and add rules
+- define router if dynamodb
+- complete codebuild event rule
+- add notes regarding makeup of each rule
+- initialisers for each action type
+- queue and binding for queue actions
+- additional permissions for queue action
+- remove queue as component type
+- add types and nested event config to pareto-demo metadata
+- remove custom sqs permissions
 
 ### breaking
 
-- builder, events no longer supported
+- builder, events no longer supported as components
 - table router, debug now nested under streaming
 - table streaming requires size, timeout
 - errors attr no longer supported
-- actions bound to queues require explicit sqs permissions
 - iam permissions must now be specified in full (not prefix only)
+- actions require type definitions
+- events now nested inside actions
 
 ### medium
 
+- deploy_stack.py to check s3 artifacts
 - action error handling via destinations
 - table streaming error handler
 - queue action error handler
