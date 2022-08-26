@@ -116,16 +116,6 @@ def init_buckets(md):
     return (resourcename, "bucket", Components(components))
 
 @render_dash
-def init_events(md):
-    resourcename=H("%s-dash-events" % md.dashboard["name"])
-    components=[Component.initialise("event-rule",
-                                     {"Title": event["name"],
-                                      "ResourceName": "${%s}" % H("%s-event-rule" % event["name"])})
-                for event in sorted(md.events,
-                                    key=lambda x: x["name"])]
-    return (resourcename, "events", Components(components))
-
-@render_dash
 def init_timers(md):
     resourcename=H("%s-dash-timers" % md.dashboard["name"])
     components=[Component.initialise("timer-rule",
@@ -150,7 +140,6 @@ def init_resources(md):
                  for fn in [init_actions,
                             init_apis,
                             init_buckets,
-                            init_events,
                             init_timers,
                             init_tables]])
 

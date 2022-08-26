@@ -3,23 +3,23 @@
 - deploy_stack.py to check artifacts
 - nest table router, debug under streaming
 - pass memory, timeout to ddb table code
-- remove builder as first class component
-- remove event as first class component
 - remove event, sqs code in tests
-- remove events as default action permission
 - add dedicated table error function
 - check and replace other non- action, non- table errors with dedicated inline functions
 - specify granular table permissions
 - specify granular sqs timer permissions
 - add s3, ddb event bindings to actions
+- add codebuild notification event bindings to actions
 
 ### breaking
 
 - builder removed
 - events and sqs removed from default permissions
+- events removed as first class component
 
 ### medium
 
+- add back events dashboard
 - ensure unit tests results are captureable
 - add inline functions to chart generation
 - metadata unique component name check
@@ -105,6 +105,9 @@
 
 ### done
 
+- remove event as first class component
+- remove builder as first class component
+- remove events as default action permission
 - refactor push artifacts so doesn't assume stuff is in root
 - remove deploy_stack.py code checking tmp/
 - add bucket as event source

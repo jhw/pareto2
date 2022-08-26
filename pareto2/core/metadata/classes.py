@@ -180,38 +180,6 @@ class Endpoints(ComponentsBase):
             if endpoint["method"]=="POST":
                 endpoint.expand_schema(errors)
 
-class Event(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
-class Events(ComponentsBase):
-
-    def __init__(self, items=[]):
-        ComponentsBase.__init__(self, [Event(item)
-                                       for item in items])
-
-    """
-    - NB event.router is optional
-    """
-        
-    def validate(self, md, errors):
-        actionnames, bucketnames, routernames = md.actions.names, md.buckets.names, md.routers.names
-        for event in self:
-            if ("router" in event and
-                event["router"] not in routernames):
-                errors.append("%s is not a valid router name (event %s)" % (event["router"], event["name"]))
-            if event["target"] not in actionnames:
-                errors.append("%s is not a valid target name (event %s)" % (event["target"], event["name"]))
-            if ("source" in event and
-                "action" in event["source"] and
-                event["source"]["action"] not in actionnames):
-                errors.append("%s is not a valid action name (event %s)" % (event["source"]["action"], event["name"]))
-            if ("source" in event and
-                "bucket" in event["source"] and
-                event["source"]["bucket"] not in bucketnames):
-                errors.append("%s is not a valid bucket name (event %s)" % (event["source"]["bucket"], event["name"]))
-
 class Queue(ComponentBase):
 
     def __init__(self, item={}):
