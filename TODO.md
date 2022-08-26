@@ -3,6 +3,7 @@
 - remove deploy_stack.py code checking tmp/
 - nest table router, debug under streaming
 - pass memory, timeout to ddb table code
+- remove builder as first class component
 - remove event as first class component
 - remove event, sqs code in tests
 - remove events as default action permission
