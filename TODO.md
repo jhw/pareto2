@@ -1,7 +1,7 @@
 ### short
 
+- make paths explicit in deploy_stack.py
 - deploy_stack.py to check artifacts
-- add ability to specify roots to load_config and md.initialise()
 - add skeleton action event code
   - ddb, s3, eventbridge
 - complete action event code
