@@ -1,12 +1,11 @@
 ### short
 
-- add back s3 event
-- test bucket example
 - add bucket as event source
 - re- test bucket
 
 ### medium
 
+- event to assert router existence (or not) based on pattern detail
 - refactor push artifacts so doesn't assume stuff is in root
 - ensure unit tests results are captureable
 - lock down iam roles passed to inline functions
@@ -97,6 +96,8 @@
 
 ### done
 
+- add back s3 event
+- test bucket example
 - re- test table example
 - add source to table event
 - ensure permissions uses a set to avoid being defined twice
