@@ -172,21 +172,23 @@ def init_function(table,
             "AWS::Lambda::Function",
             props)
 
-"""
-- events permissions for event streaming
-- sqs permissions for error messaging
-"""
-
 @resource
 def init_role(table,
-              permissions=["dynamodb", "events", "logs", "sqs"]):
+              permissions=["dynamodb:GetRecords",
+                           "dynamodb:GetShardIterator",
+                           "dynamodb:DescribeStream",
+                           "dynamodb:ListStreams",
+                           "events:PutEvents",
+                           "logs:CreateLogGroup",
+                           "logs:CreateLogStream",
+                           "logs:PutLogEvents"]):
     resourcename=H("%s-table-function-role" % table["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
     policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : "%s:*" % permission,
+               "Statement": [{"Action" : permission,
                               "Effect": "Allow",
                               "Resource": "*"}
                              for permission in sorted(permissions)]}

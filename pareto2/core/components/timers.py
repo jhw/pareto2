@@ -77,14 +77,18 @@ def init_function(timer,
 
 @resource
 def init_role(timer,
-              permissions=["sqs", "logs"]):
+              permissions=["sqs:ReceiveMessage",
+                           "sqs:SendMessage",                           
+                           "logs:CreateLogGroup",
+                           "logs:CreateLogStream",
+                           "logs:PutLogEvents"]):
     resourcename=H("%s-timer-function-role" % timer["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
     policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : "%s:*" % permission,
+               "Statement": [{"Action" : permission,
                               "Effect": "Allow",
                               "Resource": "*"}
                              for permission in sorted(permissions)]}

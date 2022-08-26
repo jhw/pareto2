@@ -4,7 +4,9 @@ from pareto2.core.components import resource
 
 import re
 
-DefaultPermissions={"logs"}
+DefaultPermissions={"logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"}
 
 @resource            
 def init_function(action):
@@ -52,7 +54,7 @@ def init_role(action, **kwargs):
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
     permissions=init_permissions(action)
     policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : "%s:*" % permission,
+               "Statement": [{"Action" : permission,
                               "Effect": "Allow",
                               "Resource": "*"}
                              for permission in sorted(list(permissions))]}

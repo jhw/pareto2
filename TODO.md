@@ -1,10 +1,15 @@
 ### short
 
-- specify granular table permissions
-- specify granular sqs timer permissions
-- deploy_stack.py to check artifacts
+- test re- addition of sqs:* to hello multiply
+- try and remove sqs wildcards at metadata level
+- see if timer really needs sqs:ReceiveMessage
+
 - ensure unit tests results are captureable
-- add s3, ddb, codebuild event bindings to actions
+- deploy_stack.py to check artifacts
+
+- add skeleton action event code
+  - ddb, s3, eventbridge
+- complete action event code
 
 ### breaking
 
@@ -12,17 +17,18 @@
 - events removed as first class component
 - table router, debug now nested under streaming
 - definition of errors action, bound to (eg) table via errors attr, no longer valid
+- actions bound to queues now need explicit sqs permissions
+- metadata permissions must now be specified in full ("foo:*")
 
 ### medium
 
-- table binding errors handling
-  - but how to view such an error ?
-- queue errors handling
+- action error handling via destinations
+- error handling for actions bound to queue
+- table streaming error handling
 - replace metadata classes with proper data- binding solution
 - add back events dashboard
 - add inline functions to chart generation
 - metadata unique component name check
-- convert destinations to use eventbridge and push to sns
 - make dsl lenient and don't require empty list specifications
 
 ### long
@@ -103,6 +109,13 @@
 - remove eventbus discoverer ?
 
 ### done
+
+- specify granular table, timer permissions
+- specific logs permissions
+
+```
+DemoHelloPostFunctionRole => Actions/Conditions must be prefaced by a vendor, e.g., iam, sdb, ec2, etc. (Service: AmazonIdentityManagement; Status Code: 400; Error Code: MalformedPolicyDocument; Request ID: 7e1114b9-c805-493c-be65-f8ff59158bbc; Proxy: null)
+```
 
 - check and replace other non- action, non- table errors with dedicated inline functions
 - pass memory, timeout to ddb table code
