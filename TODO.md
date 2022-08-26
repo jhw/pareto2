@@ -1,6 +1,5 @@
 ### short
 
-- try and remove sqs wildcards at metadata level
 - see if timer really needs sqs:ReceiveMessage
 
 - ensure unit tests results are captureable
@@ -109,6 +108,7 @@
 
 ### done
 
+- try and remove sqs wildcards at metadata level
 - test re- addition of sqs:* to hello multiply
 - specify granular table, timer permissions
 - specific logs permissions
