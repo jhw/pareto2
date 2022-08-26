@@ -1,6 +1,5 @@
 ### short
 
-- does timer need delete message
 - deploy_stack.py to check artifacts
 - add ability to specify roots to load_config and md.initialise()
 - add skeleton action event code
@@ -105,6 +104,8 @@
 - remove eventbus discoverer ?
 
 ### done
+
+- does timer need delete message
 
 ```
 DemoTimerQueueBinding => Resource handler returned message: "Invalid request provided: The provided execution role does not have permissions to call DeleteMessage on SQS (Service: Lambda, Status Code: 400, Request ID: 79a59acd-3030-46a0-925c-c2bfc6668c26)" (RequestToken: 017e94c9-497c-bac4-b22b-89928233c7f5, HandlerErrorCode: InvalidRequest)

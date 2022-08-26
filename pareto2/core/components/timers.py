@@ -78,7 +78,6 @@ def init_function(timer,
 @resource
 def init_role(timer,
               permissions=["sqs:SendMessage",
-                           "sqs:DeleteMessage",
                            "logs:CreateLogGroup",
                            "logs:CreateLogStream",
                            "logs:PutLogEvents"]):
