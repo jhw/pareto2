@@ -1,19 +1,21 @@
 ### short
 
-- deploy_stack.py to check artifacts
 - pass memory, timeout to ddb table code
-- add dedicated table error function
-- check and replace other non- action, non- table errors with dedicated inline functions
 - specify granular table permissions
 - specify granular sqs timer permissions
-- add s3, ddb event bindings to actions
-- add codebuild notification event bindings to actions
+
+- deploy_stack.py to check artifacts
+- add dedicated table error function
+- check and replace other non- action, non- table errors with dedicated inline functions
+
+- add s3, ddb, codebuild event bindings to actions
 
 ### breaking
 
 - builder removed
 - events and sqs removed from default permissions
 - events removed as first class component
+- table router, debug now nested under streaming
 
 ### medium
 
