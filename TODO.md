@@ -1,6 +1,5 @@
 ### short
 
-- pass memory, timeout to ddb table code
 - specify granular table permissions
 - specify granular sqs timer permissions
 
@@ -105,6 +104,7 @@
 
 ### done
 
+- pass memory, timeout to ddb table code
 - nest table router, debug under streaming
 - remove event, sqs code in tests
 - remove event as first class component

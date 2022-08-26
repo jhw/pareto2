@@ -96,8 +96,6 @@ def handler(event, context,
             events.put_events(Entries=batch)
 """
 
-MemorySize, Timeout = "small", "short"
-
 StreamType="NEW_AND_OLD_IMAGES"
 StreamWindow=1
 StreamRetries=3
@@ -156,15 +154,13 @@ def init_binding(table,
 @resource            
 def init_function(table,
                   batchsize=StreamBatchSize,
-                  code=FunctionCode,
-                  memorysize=MemorySize,
-                  timeout=Timeout):
+                  code=FunctionCode):
     resourcename=H("%s-table-function" % table["name"])
     rolename=H("%s-table-function-role" % table["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
-    memorysize=H("memory-size-%s" % memorysize)
-    timeout=H("timeout-%s" % timeout)
+    memorysize=H("memory-size-%s" % table["streaming"]["size"])
+    timeout=H("timeout-%s" % table["streaming"]["timeout"])
     variables={}
     variables[U("router-event-bus")]={"Ref": H("%s-router-event-bus" % table["streaming"]["router"])}
     variables[U("batch-size")]=str(batchsize)
