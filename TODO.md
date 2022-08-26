@@ -15,7 +15,6 @@
 
 ### medium
 
-- refactor push artifacts so doesn't assume stuff is in root
 - ensure unit tests results are captureable
 - add inline functions to chart generation
 - metadata unique component name check
@@ -101,6 +100,7 @@
 
 ### done
 
+- refactor push artifacts so doesn't assume stuff is in root
 - remove deploy_stack.py code checking tmp/
 - add bucket as event source
 - re- test bucket

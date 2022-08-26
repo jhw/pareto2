@@ -11,14 +11,15 @@ from datetime import datetime
 
 class Artifacts:
 
-    def __init__(self, config, md, timestamp, s3):
+    def __init__(self, config, md, root, timestamp, s3):
         self.config=config
         self.md=md
+        self.root=root
         self.timestamp=timestamp
         self.s3=s3
 
     def build_lambdas(self, run_tests):
-        lambdas=Lambdas(self.timestamp)
+        lambdas=Lambdas(self.root, self.timestamp)
         if run_tests:
             lambdas.run_tests() # raises RuntimeError on failure
         lambdas.validate(self.md)
@@ -57,10 +58,12 @@ if __name__=="__main__":
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()
-        s3=boto3.client("s3")
+        root=os.environ["APP_ROOT"]
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+        s3=boto3.client("s3")
         artifacts=Artifacts(config=config,
                             md=md,
+                            root=root,
                             timestamp=timestamp,
                             s3=s3)
         artifacts.build()

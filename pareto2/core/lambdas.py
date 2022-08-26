@@ -2,7 +2,7 @@ import importlib, inspect, io, os, unittest, zipfile
 
 class Lambdas:
 
-    def __init__(self, timestamp, root=os.environ["APP_ROOT"]):
+    def __init__(self, root, timestamp):
         self.timestamp=timestamp
         self.root=root
         paths, errors = self.filter_paths()
