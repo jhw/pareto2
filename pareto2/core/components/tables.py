@@ -143,10 +143,6 @@ def init_binding(table,
            "MaximumBatchingWindowInSeconds": streamwindow,
            "EventSourceArn": sourcearn,
            "MaximumRetryAttempts": streamretries}
-    if "errors" in table:
-        destarn={"Fn::GetAtt": [H("%s-queue" % table["errors"]), "Arn"]}
-        destconfig={"OnFailure": {"Destination": destarn}}
-        props["DestinationConfig"]=destconfig
     return (resourcename,
             "AWS::Lambda::EventSourceMapping",
             props)

@@ -1,12 +1,10 @@
 ### short
 
+- check and replace other non- action, non- table errors with dedicated inline functions
 - specify granular table permissions
 - specify granular sqs timer permissions
-
 - deploy_stack.py to check artifacts
-- add dedicated table error function
-- check and replace other non- action, non- table errors with dedicated inline functions
-
+- ensure unit tests results are captureable
 - add s3, ddb, codebuild event bindings to actions
 
 ### breaking
@@ -14,12 +12,15 @@
 - builder removed
 - events removed as first class component
 - table router, debug now nested under streaming
+- definition of errors action, bound to (eg) table via errors attr, no longer valid
 
 ### medium
 
+- table binding errors handling
+  - but how to view such an error ?
+- queue errors handling
 - replace metadata classes with proper data- binding solution
 - add back events dashboard
-- ensure unit tests results are captureable
 - add inline functions to chart generation
 - metadata unique component name check
 - convert destinations to use eventbridge and push to sns
