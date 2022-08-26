@@ -1,37 +1,35 @@
 ### short
 
+- remove deploy_stack.py code checking tmp/
+- pass memory, timeout to ddb table code
+- nest table router, debug under streaming key
+- lock down iam roles passed to inline functions
+- refactor push artifacts so doesn't assume stuff is in root
+- ensure unit tests results are captureable
+
 ### medium
 
 - add s3, ddb event bindings to action
-- do you need ddb key as part of table event ?
-- nest table router, debug under streaming key
-- event to assert router existence (or not) based on pattern detail
-- refactor push artifacts so doesn't assume stuff is in root
-- ensure unit tests results are captureable
-- lock down iam roles passed to inline functions
 - add inline functions to charts generation
-- pass memory, timeout to ddb table code
 - metadata unique component name check
 - convert destinations to use eventbridge and push to sns
 - make dsl lenient and don't require empty list specifications
 
-### gists
+### long
 
 - apigw api keys
 - step function mapreduce
 - lambda alarms, timeouts
 - burningmonk apigw stuff
-
-### long
-
 - lambda powertools
 - appsync + graphql
-- iam role lockdown
 - sst live lambda development
 - sync'ing deployment of multiple apps
 
 ### thoughts
 
+- do you need ddb key as part of table event ? 
+  - is probably fine
 - eventbridge lambda destinations ?
   - probably not relevent if you're going to pipe errors to sns
 - eventbridge destination urls ?
