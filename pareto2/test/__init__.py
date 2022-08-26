@@ -121,7 +121,6 @@ class Pareto2TestBase(unittest.TestCase):
             delete_bucket(self.s3, bucket)
                 
     ### sqs
-
     
     def setup_sqs(self, queuenames):
         self.sqs=boto3.client("sqs")
@@ -179,62 +178,5 @@ class Pareto2TestBase(unittest.TestCase):
         for queue in queues:
             self.sqs.delete_queue(QueueUrl=queue["QueueUrl"])
 
-    ### events
-
-    def setup_events(self, routers=[TestRouter]):
-        def init_events(events, sqs, router):
-            eventbusname="%s-event-bus" % router["name"]
-            queuename="%s-target-queue" % router["name"]
-            ruleprefix="%s-rule-prefix" % router["name"]        
-            events.create_event_bus(Name=eventbusname)
-            statement=[{"Effect": "Allow",
-                        "Principal": {"Service": "events.amazonaws.com"},
-                        "Action": "sqs:SendMessage",
-                        "Resource": "*"}]
-            policy=json.dumps({"Version": "2012-10-17",
-                               "Statement": [statement]})
-            queue=sqs.create_queue(QueueName=queuename,
-                                   Attributes={"Policy": policy})
-            queuearn=self.queue_url_to_arn(queue["QueueUrl"])
-            for i, pattern in enumerate(router["patterns"]):
-                """
-                - because accidental list pattern detail seems to match everything, regardless of list contents
-            """
-                if not isinstance(pattern["detail"], dict):
-                    raise RuntimeError("pattern detail must be a dict")
-                rulename="%s-%i" % (ruleprefix, i+1)
-                ruletargetid="%s-target-%i" % (ruleprefix, i+1)
-                events.put_rule(EventBusName=eventbusname,
-                                Name=rulename,
-                                State="ENABLED",
-                                EventPattern=json.dumps(pattern))
-                events.put_targets(EventBusName=eventbusname,
-                                   Rule=rulename,
-                                   Targets=[{"Id": ruletargetid,
-                                             "Arn": queuearn}])
-        self.events, self.sqs = (boto3.client("events"),
-                                 boto3.client("sqs"))
-        for router in routers:
-            init_events(self.events, self.sqs, router)
-                        
-    def teardown_events(self,
-                        routers=[TestRouter]):
-        def delete_events(events, sqs, router, queues):
-            eventbusname="%s-event-bus" % router["name"]
-            queuename="%s-target-queue" % router["name"]
-            for rule in events.list_rules(EventBusName=eventbusname)["Rules"]:
-                targets=events.list_targets_by_rule(Rule=rule["Name"])["Targets"]
-                for target in targets:
-                    events.remove_targets(Rule=rule["Name"],
-                                          Ids=[target["Id"]])
-                events.delete_rule(Name=rule["Name"])
-            queue=queues[queuename]
-            self.sqs.delete_queue(QueueUrl=queue["QueueName"])
-            events.delete_event_bus(Name=eventbusname)
-        queues={queue["QueueName"]: queue
-                for queue in self.list_queues()}
-        for router in routers:
-            delete_events(self.events, self.sqs, router, queues)
-            
 if __name__=="___main__":
     pass

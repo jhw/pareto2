@@ -3,7 +3,6 @@
 - deploy_stack.py to check artifacts
 - nest table router, debug under streaming
 - pass memory, timeout to ddb table code
-- remove event, sqs code in tests
 - add dedicated table error function
 - check and replace other non- action, non- table errors with dedicated inline functions
 - specify granular table permissions
@@ -105,6 +104,7 @@
 
 ### done
 
+- remove event, sqs code in tests
 - remove event as first class component
 - remove builder as first class component
 - remove events as default action permission
