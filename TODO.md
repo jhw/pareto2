@@ -1,28 +1,27 @@
 ### short
 
-- make paths explicit in deploy_stack.py
 - deploy_stack.py to check artifacts
-- add skeleton action event code
-  - ddb, s3, eventbridge
+- skeleton action event code > ddb, s3, codebuild
 - complete action event code
 - action types -> async, queue, api [notes]
 
 ### breaking
 
-- builder, events no longer supports
+- builder, events no longer supported
 - table router, debug now nested under streaming
+- table streaming requires size, timeout
 - errors attr no longer supported
 - actions bound to queues require explicit sqs permissions
-- permissions must now be specified in full and not prefix only
+- iam permissions must now be specified in full (not prefix only)
 
 ### medium
 
 - action error handling via destinations
-- error handling for actions bound to queue
 - table streaming error handling
-- replace metadata classes with proper data- binding solution
+- queue action error handling
 - add back events dashboard
 - add inline functions to chart generation
+- replace metadata classes with proper data- binding solution
 - metadata unique component name check
 - make dsl lenient and don't require empty list specifications
 
@@ -105,6 +104,7 @@
 
 ### done
 
+- make paths explicit in push_artifacts.py
 - does timer need delete message
 
 ```
