@@ -1,16 +1,22 @@
 ### short
 
 - remove deploy_stack.py code checking tmp/
+- nest table router, debug under streaming
 - pass memory, timeout to ddb table code
-- nest table router, debug under streaming key
-- lock down iam roles passed to inline functions
-- refactor push artifacts so doesn't assume stuff is in root
-- ensure unit tests results are captureable
+- remove event as first class component
+- remove event, sqs code in tests
+- remove events as default action permission
+- add dedicated table error function
+- check and replace other non- action, non- table errors with dedicated inline functions
+- specify granular table permissions
+- specify granular sqs timer permissions
+- add s3, ddb event bindings to actions
 
 ### medium
 
-- add s3, ddb event bindings to action
-- add inline functions to charts generation
+- refactor push artifacts so doesn't assume stuff is in root
+- ensure unit tests results are captureable
+- add inline functions to chart generation
 - metadata unique component name check
 - convert destinations to use eventbridge and push to sns
 - make dsl lenient and don't require empty list specifications
