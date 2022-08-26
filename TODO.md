@@ -1,6 +1,5 @@
 ### short
 
-- check and replace other non- action, non- table errors with dedicated inline functions
 - specify granular table permissions
 - specify granular sqs timer permissions
 - deploy_stack.py to check artifacts
@@ -105,6 +104,7 @@
 
 ### done
 
+- check and replace other non- action, non- table errors with dedicated inline functions
 - pass memory, timeout to ddb table code
 - nest table router, debug under streaming
 - remove event, sqs code in tests
