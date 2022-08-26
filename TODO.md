@@ -1,7 +1,17 @@
 ### short
 
-- ensure unit tests results are captureable
+```
+DemoTimerQueueBinding => Resource handler returned message: "Invalid request provided: The provided execution role does not have permissions to call DeleteMessage on SQS (Service: Lambda, Status Code: 400, Request ID: 79a59acd-3030-46a0-925c-c2bfc6668c26)" (RequestToken: 017e94c9-497c-bac4-b22b-89928233c7f5, HandlerErrorCode: InvalidRequest)
+```
+
+```
+DemoHelloMultiplyQueueBinding => Resource handler returned message: "Invalid request provided: The provided execution role does not have permissions to call ReceiveMessage on SQS (Service: Lambda, Status Code: 400, Request ID: 673e516b-3adf-4375-9bf2-1710f3ca3a5e)" (RequestToken: 942dfae3-5ed9-5465-9230-1f07fae4aadb, HandlerErrorCode: InvalidRequest)
+```
+
 - deploy_stack.py to check artifacts
+
+- load_config and metadata need to take roots
+  - refactor push_artifacts.py __main__
 
 - add skeleton action event code
   - ddb, s3, eventbridge
@@ -105,6 +115,7 @@
 
 ### done
 
+- ensure unit tests results are captureable
 - see if timer really needs sqs:ReceiveMessage
 - try and remove sqs wildcards at metadata level
 - test re- addition of sqs:* to hello multiply
