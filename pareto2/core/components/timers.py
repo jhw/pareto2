@@ -77,8 +77,7 @@ def init_function(timer,
 
 @resource
 def init_role(timer,
-              permissions=["sqs:ReceiveMessage",
-                           "sqs:SendMessage",                           
+              permissions=["sqs:SendMessage",                           
                            "logs:CreateLogGroup",
                            "logs:CreateLogStream",
                            "logs:PutLogEvents"]):

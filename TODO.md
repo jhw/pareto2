@@ -1,7 +1,5 @@
 ### short
 
-- see if timer really needs sqs:ReceiveMessage
-
 - ensure unit tests results are captureable
 - deploy_stack.py to check artifacts
 
@@ -11,12 +9,11 @@
 
 ### breaking
 
-- builder removed
-- events removed as first class component
+- builder, events no longer supports
 - table router, debug now nested under streaming
-- definition of errors action, bound to (eg) table via errors attr, no longer valid
-- actions bound to queues now need explicit sqs permissions
-- metadata permissions must now be specified in full ("foo:*")
+- errors attr no longer supported
+- actions bound to queues require explicit sqs permissions
+- permissions must now be specified in full and not prefix only
 
 ### medium
 
@@ -108,6 +105,7 @@
 
 ### done
 
+- see if timer really needs sqs:ReceiveMessage
 - try and remove sqs wildcards at metadata level
 - test re- addition of sqs:* to hello multiply
 - specify granular table, timer permissions
