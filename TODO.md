@@ -2,6 +2,8 @@
 
 ### medium
 
+- add s3, ddb event bindings to action
+- do you need ddb key as part of table event ?
 - nest table router, debug under streaming key
 - event to assert router existence (or not) based on pattern detail
 - refactor push artifacts so doesn't assume stuff is in root
