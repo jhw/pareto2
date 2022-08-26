@@ -13,6 +13,10 @@
 - specify granular sqs timer permissions
 - add s3, ddb event bindings to actions
 
+### breaking
+
+- builder removed
+
 ### medium
 
 - ensure unit tests results are captureable

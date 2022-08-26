@@ -134,21 +134,6 @@ class Buckets(ComponentsBase):
         ComponentsBase.__init__(self, [Bucket(item)
                                        for item in items])
 
-class Builder(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
-class Builders(ComponentsBase):
-
-    def __init__(self, items=[]):
-        ComponentsBase.__init__(self, [Builder(item)
-                                       for item in items])
-                    
-    def validate(self, md, errors):
-        self.validate_actions(md, errors)
-        self.validate_buckets(md, errors)
-                
 class Dashboard(ComponentBase):
 
     def __init__(self, item={}):
