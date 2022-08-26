@@ -21,7 +21,7 @@ def init_rule(event):
         if "action" in event["source"]:
             pattern["source"]=[{"Ref": H("%s-function" % event["source"]["action"])}]
         elif "bucket" in event["source"]:
-            # pattern["source"]=[{"Ref": H("%s-bucket" % event["source"]["bucket"])}]
+            # pattern["source"]=[{"Ref": H("%s-bucket" % event["source"]["bucket"])}] # s3 eventbridge notifications configure source as "aws.s3"
             pattern["detail"].setdefault("bucket", {})
             pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["bucket"])}]
         elif "table" in event["source"]:

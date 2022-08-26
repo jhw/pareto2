@@ -1,10 +1,8 @@
 ### short
 
-- add bucket as event source
-- re- test bucket
-
 ### medium
 
+- nest table router, debug under streaming key
 - event to assert router existence (or not) based on pattern detail
 - refactor push artifacts so doesn't assume stuff is in root
 - ensure unit tests results are captureable
@@ -96,6 +94,8 @@
 
 ### done
 
+- add bucket as event source
+- re- test bucket
 - add back s3 event
 - test bucket example
 - re- test table example
