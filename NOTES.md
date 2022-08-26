@@ -1,3 +1,12 @@
+### action types 26/08/22
+
+- merge queue component into queue type
+- queue component to embed sqs iam permissions currently specified in metadata.yaml
+- rule binding for async
+- async to push errors to sqs, possibly via eventbridge [notes]
+- no error handling for apigw
+- possible error handling for queue if u can find a model that works
+  
 ### deployment 14/07/22
 
 ```
