@@ -19,6 +19,7 @@
 
 ### medium
 
+- replace metadata classes with proper data- binding solution
 - add back events dashboard
 - ensure unit tests results are captureable
 - add inline functions to chart generation
