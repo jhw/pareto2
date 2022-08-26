@@ -1,7 +1,5 @@
 ### short
 
-- re- test table example
-- add source to table event
 - add back s3 event
 - test bucket example
 - add bucket as event source
@@ -99,6 +97,8 @@
 
 ### done
 
+- re- test table example
+- add source to table event
 - ensure permissions uses a set to avoid being defined twice
 - add top- level debug option to function
 - re- integrate table function code
