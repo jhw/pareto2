@@ -13,7 +13,6 @@
 ### breaking
 
 - builder removed
-- events and sqs removed from default permissions
 - events removed as first class component
 - table router, debug now nested under streaming
 
