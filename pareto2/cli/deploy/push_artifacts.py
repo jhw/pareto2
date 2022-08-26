@@ -3,9 +3,9 @@ from pareto2.core.lambdas import Lambdas
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
-from pareto2.cli import hungarorise, load_config
+from pareto2.cli import load_config
 
-import boto3, logging, os
+import boto3, os
 
 from datetime import datetime
 
