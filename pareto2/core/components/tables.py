@@ -126,7 +126,7 @@ def init_table(table, streamtype=StreamType, **kwargs):
            "KeySchema": key,
            "GlobalSecondaryIndexes": gsi,
            "TableName": name}
-    if "router" in table:
+    if "streaming" in table:
         props["StreamSpecification"]={"StreamViewType": streamtype}
     return (resourcename,
             "AWS::DynamoDB::Table",
@@ -166,9 +166,9 @@ def init_function(table,
     memorysize=H("memory-size-%s" % memorysize)
     timeout=H("timeout-%s" % timeout)
     variables={}
-    variables[U("router-event-bus")]={"Ref": H("%s-router-event-bus" % table["router"])}
+    variables[U("router-event-bus")]={"Ref": H("%s-router-event-bus" % table["streaming"]["router"])}
     variables[U("batch-size")]=str(batchsize)
-    variables[U("debug")]=str(table["debug"]) if "debug" in table else "false"
+    variables[U("debug")]=str(table["streaming"]["debug"]) if "debug" in table["streaming"] else "false"
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},
@@ -212,7 +212,7 @@ def init_component(table):
     for fn in [init_table]:
         resource=fn(table)
         resources.append(resource)
-    if "router" in table:
+    if "streaming" in table:
         for fn in [init_binding,
                    init_function,
                    init_role]:
