@@ -1,31 +1,28 @@
 from pareto2.core.metadata import Metadata
 
-from pareto2.cli import load_config
-
 from botocore.exceptions import ClientError, WaiterError
 
-import boto3, yaml
+from pareto2.cli import load_config
+
+import boto3
 
 TemplatePath="https://s3.%s.amazonaws.com/%s/%s"
+
+def stack_exists(cf, stackname):
+    stacknames=[stack["StackName"]
+                for stack in cf.describe_stacks()["Stacks"]]
+    return stackname in stacknames
 
 if __name__=="__main__":
     try:
         import os, sys
-        if not os.path.exists("tmp"):
-            os.mkdir("tmp")
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stage, filename?")
         stagename=sys.argv[1]
         filename="template-latest.json" if len(sys.argv) < 3 else sys.argv[2].split("/")[-1]
-        if not os.path.exists("tmp/%s" % filename):
-            raise RuntimeError("%s does not exist" % filename)
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()
-        def stack_exists(cf, stackname):
-            stacknames=[stack["StackName"]
-                        for stack in cf.describe_stacks()["Stacks"]]
-            return stackname in stacknames
         stackname="%s-%s" % (config["AppName"],
                              stagename)
         cf=boto3.client("cloudformation")

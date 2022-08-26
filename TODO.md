@@ -1,6 +1,6 @@
 ### short
 
-- remove deploy_stack.py code checking tmp/
+- deploy_stack.py to check artifacts
 - nest table router, debug under streaming
 - pass memory, timeout to ddb table code
 - remove builder as first class component
@@ -101,6 +101,7 @@
 
 ### done
 
+- remove deploy_stack.py code checking tmp/
 - add bucket as event source
 - re- test bucket
 - add back s3 event
