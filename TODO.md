@@ -1,6 +1,6 @@
 ### short
 
-- deploy_stack.py to check artifacts
+- deploy_stack.py to check s3 artifacts
 - skeleton action event code > ddb, s3, codebuild
 - complete action event code
 - action types -> async, queue, api [notes]
@@ -17,8 +17,8 @@
 ### medium
 
 - action error handling via destinations
-- table streaming error handling
-- queue action error handling
+- table streaming error handler
+- queue action error handler
 - add back events dashboard
 - add inline functions to chart generation
 - replace metadata classes with proper data- binding solution
