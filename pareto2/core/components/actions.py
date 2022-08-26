@@ -4,15 +4,7 @@ from pareto2.core.components import resource
 
 import re
 
-"""
-- events because it's an event driven system
-- logs because everything always needs logs
-- sqs because it's used in a variety of situations
-  - dlqs/destinations
-  - event mappings, which require "lookbacks"
-"""
-
-DefaultPermissions={"events", "logs", "sqs"}
+DefaultPermissions={"logs"}
 
 @resource            
 def init_function(action):

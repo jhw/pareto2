@@ -16,6 +16,7 @@
 ### breaking
 
 - builder removed
+- events and sqs removed from default permissions
 
 ### medium
 
