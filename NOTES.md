@@ -1,3 +1,13 @@
+### codebuild and action rules 27/08/22
+
+- builder component has its own built- in rule generator, ie it's not a custom thing
+- webhook lambda was designed to be used in conjunction with errors lambda
+- errors lambda is a destination; pushes messages to eventbridge where they are picked up by webhook lambda
+- so is an example of lambda chaining, brokered by eventbridge
+- an event bound to the webhook lambda would then want to specify the errors lambda as its source
+- but you're not going to get that pattern any more in the new world
+- errors lambda will push to sns ie there is no eventbridge event in the middle
+
 ### timers and sqs permissions 27/08/22
 
 - some complexity with timers and sqs permissions

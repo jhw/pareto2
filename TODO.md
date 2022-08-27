@@ -1,10 +1,16 @@
 ### short
 
-- test add, multiply
-- how does layman2 codebuild pattern work?
-- codebuild, webhook [action?] event rule support
-- review and refactor metadata validation
+- consider removing custom routers
+- review/refactor metadata validation
+- extend metadata validation to validate events
+- consider nesting endpoints, timers in actions
+  - may need some kind of preprocessor
 - action error handling via destinations
+  - test hello_add with bad data
+
+### pareto-demo
+
+- scripts/demo/test_sync|async_errors.py probably need refactoring
 
 ### breaking
 
@@ -18,7 +24,6 @@
 
 ### medium
 
-- nest endpoints in [api] actions
 - deploy_stack.py to check s3 artifacts
 - table streaming, queue action error handlers
 - add back events dashboard
@@ -107,6 +112,8 @@
 
 ### done
 
+- codebuild, webhook [action?] event rule support
+- how does layman2 codebuild pattern work?
 - drop table event ddb root prefix 
 - add sqs permissions to all actions
 - test timer bound to demo-target?
