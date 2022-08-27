@@ -128,7 +128,7 @@ def init_event_rule_permission(action, event):
             "AWS::Lambda::Permission",
             props)
 
-def init_component(action):
+def init_async_component(action):
     resources=[]
     for fn in [init_function,
                init_role]:
@@ -141,6 +141,26 @@ def init_component(action):
                 resource=fn(action, event)
                 resources.append(resource)
     return resources
+
+def init_queue_component(action):
+    resources=[]
+    for fn in [init_function,
+               init_role]:
+        resource=fn(action)
+        resources.append(resource)
+    return resources
+
+def init_api_component(action):
+    resources=[]
+    for fn in [init_function,
+               init_role]:
+        resource=fn(action)
+        resources.append(resource)
+    return resources
+
+def init_component(action):
+    fn=eval("init_%s_component" % action["type"])
+    return fn(action)
 
 def init_resources(md):
     resources=[]
