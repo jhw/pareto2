@@ -7,23 +7,21 @@
 - action error handling via destinations
   - test hello_add with bad data
 
-### layman2
-
-- ensure codebuild event pattern matches on buildproject source
-
 ### pareto-demo
 
 - scripts/demo/test_sync|async_errors.py probably need refactoring
 
 ### breaking
 
-- builder, events, queue no longer supported as components
-- errors attr no longer supported
+- [ensure codebuild event pattern matches on buildproject source]
+
+- builders, events, routers, queues no longer supported as components
+- errors, router attrs no longer supported
 - actions require type definitions
 - events now nested inside actions
-- table router, debug now nested under streaming
+- table streaming now uses explicit streaming attr
 - table streaming requires size, timeout
-- iam permissions must now be specified in full (not prefix only)
+- iam permissions must now be specified in full
 
 ### medium
 
