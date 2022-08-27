@@ -68,16 +68,6 @@ class Actions(ComponentsBase):
         ComponentsBase.__init__(self, [Action(item)
                                        for item in items])
 
-    def validate_errors(self, md, errors):
-        actionnames=md.actions.names
-        for action in self:            
-            if "errors" in action:
-                if action["errors"] not in actionnames:
-                    errors.append("%s is not a valid (errors) action name (action %s)" % (action["errors"], action["name"]))
-
-    def validate(self, md, errors):
-        self.validate_errors(md, errors)
-                    
     @property
     def packages(self):
         packages=set()
@@ -216,12 +206,10 @@ class Tables(ComponentsBase):
     def validate(self, md, errors):
         actionnames, routernames = md.actions.names, md.routers.names
         for table in self:
-            if ("router" in table and
-                table["router"] not in routernames):
-                errors.append("%s is not a valid router name (table %s)" % (table["router"], table["name"]))
-            if ("errors" in table and
-                table["errors"] not in actionnames):
-                errors.append("%s is not a valid (errors) action name (table %s)" % (table["errors"], table["name"]))
+            if ("streaming" in table and
+                table["streaming"]["router"] not in routernames):
+                errors.append("%s is not a valid router name (table %s)" % (table["streaming"]["router"],
+                                                                            table["name"]))
 
 class Timer(ComponentBase):
 
