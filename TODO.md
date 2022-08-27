@@ -1,5 +1,6 @@
-### short [actions, types, bindings]
+### short
 
+- action error handling via destinations
 - extend action validation
 
 ### pareto2-demo
@@ -28,7 +29,6 @@
 ### medium
 
 - deploy_stack.py to check s3 artifacts
-- action error handling via destinations
 - table streaming error handler
 - queue action error handler
 - add back events dashboard
