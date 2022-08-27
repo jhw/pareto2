@@ -66,13 +66,13 @@ def init_role(action, **kwargs):
 @resource
 def _init_event_rule(action, event, detail):
     def init_target(action, event):
-        id={"Fn::Sub": "%s-function-%s-event-rule-${AWS::StackName}" % (action["name"],
-                                                                        event["name"])}
+        id={"Fn::Sub": "%s-%s-event-rule-${AWS::StackName}" % (action["name"],
+                                                               event["name"])}
         arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
         return {"Id": id,
                 "Arn": arn}
-    resourcename=H("%s-function-%s-event-rule" % (action["name"],
-                                                  event["name"]))
+    resourcename=H("%s-%s-event-rule" % (action["name"],
+                                         event["name"]))
     pattern={"detail": detail}
     target=init_target(action, event)
     props={"EventPattern": pattern,
@@ -109,8 +109,10 @@ def init_event_rule(action, event):
 
 @resource
 def init_event_rule_permission(action, event):
-    resourcename=H("%s-event-rule-permission" % event["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-event-rule" % event["name"]), "Arn"]}
+    resourcename=H("%s-%s-event-rule-permission" % (action["name"],
+                                                    event["name"]))
+    sourcearn={"Fn::GetAtt": [H("%s-%s-event-rule" % (action["name"],
+                                                      event["name"])), "Arn"]}
     funcname={"Ref": H("%s-function" % action["name"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",

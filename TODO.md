@@ -1,6 +1,5 @@
 ### short [actions, types, bindings]
 
-- simplify event naming
 - complete codebuild event rule
 - add notes regarding makeup of each rule
 - initialisers for each action type
@@ -111,6 +110,7 @@
 
 ### done
 
+- refactor event naming
 - iterate through events and add rules
 - define router if dynamodb
 - make paths explicit in push_artifacts.py
