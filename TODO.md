@@ -1,6 +1,5 @@
 ### short
 
-- consider removing custom routers
 - review/refactor metadata validation
 - extend metadata validation to validate events
 - consider nesting endpoints, timers in actions
@@ -116,6 +115,7 @@
 
 ### done
 
+- consider removing custom routers
 - codebuild, webhook [action?] event rule support
 - how does layman2 codebuild pattern work?
 - drop table event ddb root prefix 

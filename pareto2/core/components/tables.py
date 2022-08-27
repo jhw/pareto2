@@ -20,12 +20,10 @@ class Key:
 
 class Entry:
 
-    def __init__(self, key, records, context,
-                 eventbusname=os.environ["ROUTER_EVENT_BUS"]):
+    def __init__(self, key, records, context):
         self.key=key
         self.records=records
         self.context=context
-        self.eventbusname=eventbusname
 
     @property
     def entry(self):        
@@ -38,8 +36,7 @@ class Entry:
         detailtype=self.key.eventname
         return {"Source": source,
                 "DetailType": detailtype,
-                "Detail": json.dumps(detail),
-                "EventBusName": self.eventbusname}
+                "Detail": json.dumps(detail)}
 
 def batch_records(records):
     def diff_keys(record):
@@ -158,7 +155,6 @@ def init_function(table,
     memorysize=H("memory-size-%s" % table["streaming"]["size"])
     timeout=H("timeout-%s" % table["streaming"]["timeout"])
     variables={}
-    variables[U("router-event-bus")]={"Ref": H("%s-router-event-bus" % table["streaming"]["router"])}
     variables[U("batch-size")]=str(batchsize)
     variables[U("debug")]=str(table["streaming"]["debug"]) if "debug" in table["streaming"] else "false"
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},

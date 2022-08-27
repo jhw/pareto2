@@ -83,13 +83,6 @@ def _init_event_rule(action, event, pattern):
     props={"EventPattern": pattern,
            "Targets": [target],
            "State": "ENABLED"}
-    """
-    - dynamodb requires custom router specification
-    - s3, codebuild use default event bus (router)
-    """
-    if event["type"]=="dynamodb":
-        eventbusname={"Ref": H("%s-router-event-bus" % event["router"])}
-        props["EventBusName"]=eventbusname
     return (resourcename,
             "AWS::Events::Rule",
             props)
