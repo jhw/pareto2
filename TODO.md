@@ -1,5 +1,9 @@
 ### short
 
+```
+Error: Invalid mandatory parameters - StageName, DemoTargetDemoBucketEventRule, DemoTargetDemoTableEventRule
+```
+
 - action type validation
 - codebuild event rule support
 - action error handling via destinations

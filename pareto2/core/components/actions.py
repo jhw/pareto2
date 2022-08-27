@@ -115,6 +115,7 @@ def init_dynamodb_event_rule(action, event):
 
 def init_s3_event_rule(action, event):
     pattern={"detail": event["pattern"]}
+    pattern["detail"].setdefault("bucket", {})
     pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["bucket"])}]
     pattern["source"]=["aws.s3"]
     return pattern
