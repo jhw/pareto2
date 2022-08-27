@@ -1,15 +1,21 @@
 ### short
 
+- refactor queue action as sync action with optional queue
+- add notes to sync action explaining that it is a hack ahead of stack timer
+- add separate target2 sync lambda
+- add action source support to action events [required for stack timer]
 - review/refactor metadata validation
 - extend metadata validation to validate events
-- consider nesting endpoints, timers in actions
-  - may need some kind of preprocessor
-- action error handling via destinations
-  - test hello_add with bad data
+- nest endpoints in actions
+- add async action error handler
+- extend async action error handler to push to sns
+- singularise component types
+- allow underscores in component types
 
 ### pareto-demo
 
-- scripts/demo/test_sync|async_errors.py probably need refactoring
+- run async test
+- delete sync test
 
 ### breaking
 
@@ -25,16 +31,12 @@
 
 ### medium
 
+- refactor metadata as dict [notes]
+- simplify passing of env vars by using explicit actions
 - deploy_stack.py to check s3 artifacts
-- table streaming, queue action error handlers
+- table streaming error handlers
 - add back events dashboard
 - add inline functions to chart generation
-
-- metadata refactoring
-  - proper data- binding solution
-  - single list/dict root
-    - unique names
-    - don't require empty list specification
 
 ### long
 

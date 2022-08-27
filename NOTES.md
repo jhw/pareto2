@@ -1,3 +1,10 @@
+### metadata 27/08/22
+
+- refactor as cloudformation- like structure with (unique) keys for names and types contained inside
+- or could be a list
+- key is to try and get rid of metadata classes
+- can internally contain iterative functions which harvest action refs and check they are consistent etc
+
 ### codebuild and action rules 27/08/22
 
 - builder component has its own built- in rule generator, ie it's not a custom thing
