@@ -1,8 +1,8 @@
 ### short
 
-- timer apparently no longer working :(
-
-- can timer be bound to demo-target rather than demo-target2? [notes]
+- test timer bound to demo-target?
+  - replace demo-target2 with sqs permissions for demo-target?
+  - new action type which adds sqs permissions but no queue?
 
 - review and refactor metadata validation
 - codebuild, webhook event rule support
@@ -112,6 +112,8 @@
 - remove eventbus discoverer ?
 
 ### done
+
+- timer apparently no longer working :(
 
 - eyeball template
   - timer event/child looks well specified
