@@ -1,10 +1,6 @@
 ### short
 
-```
-Error: Invalid mandatory parameters - StageName, DemoTargetDemoBucketEventRule, DemoTargetDemoTableEventRule
-```
-
-- no way to see template if validation error occurs
+- event rules are not getting defined / details are getting messed up
 
 - action type validation
 - codebuild event rule support
@@ -113,6 +109,12 @@ Error: Invalid mandatory parameters - StageName, DemoTargetDemoBucketEventRule, 
 - remove eventbus discoverer ?
 
 ### done
+
+- no way to see template if validation error occurs
+
+```
+Error: Invalid mandatory parameters - StageName, DemoTargetDemoBucketEventRule, DemoTargetDemoTableEventRule
+```
 
 - remove queue as component type
 - additional permissions for queue action

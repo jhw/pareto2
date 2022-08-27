@@ -26,6 +26,10 @@ class Artifacts:
         bucketname=self.config["ArtifactsBucket"]
         lambdas.dump_s3(self.s3, bucketname)
         return lambdas
+
+    """
+    - NB validation occurs after s3 push so any errors are visible
+    """
         
     def build_template(self,
                        name,
@@ -38,9 +42,9 @@ class Artifacts:
         defaults=dict(self.config)
         defaults.update({"ArtifactsKey": lambdas.s3_key})
         template.parameters.update_defaults(defaults)
+        template.dump_s3(self.s3, self.config["ArtifactsBucket"])
         template.parameters.validate()
         template.validate_root()
-        template.dump_s3(self.s3, self.config["ArtifactsBucket"])
 
     def build(self,
               component_paths=["pareto2/core/components"],
