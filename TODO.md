@@ -1,6 +1,5 @@
 ### short [actions, types, bindings]
 
-- queue and binding for queue actions
 - additional permissions for queue action
 - remove queue as component type
 - validators for each action type
@@ -119,6 +118,7 @@
 
 ### done
 
+- queue and binding for queue actions
 - initialisers for each action type
 - add s3 source
 - refactor event naming
