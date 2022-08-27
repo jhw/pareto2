@@ -180,20 +180,6 @@ class Endpoints(ComponentsBase):
             if endpoint["method"]=="POST":
                 endpoint.expand_schema(errors)
 
-class Queue(ComponentBase):
-
-    def __init__(self, item={}):
-        ComponentBase.__init__(self, item)
-
-class Queues(ComponentsBase):
-
-    def __init__(self, items=[]):
-        ComponentsBase.__init__(self, [Queue(item)
-                                       for item in items])
-
-    def validate(self, md, errors):
-        self.validate_actions(md, errors)
-                
 class Router(ComponentBase):
 
     def __init__(self, item={}):

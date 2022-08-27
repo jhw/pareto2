@@ -1,8 +1,6 @@
 ### short [actions, types, bindings]
 
-- additional permissions for queue action
-- remove queue as component type
-- validators for each action type
+- extend action validation
 
 ### pareto2-demo
 
@@ -19,13 +17,13 @@
 
 ### breaking
 
-- builder, events no longer supported as components
-- table router, debug now nested under streaming
-- table streaming requires size, timeout
+- builder, events, queue no longer supported as components
 - errors attr no longer supported
-- iam permissions must now be specified in full (not prefix only)
 - actions require type definitions
 - events now nested inside actions
+- table router, debug now nested under streaming
+- table streaming requires size, timeout
+- iam permissions must now be specified in full (not prefix only)
 
 ### medium
 
@@ -118,6 +116,8 @@
 
 ### done
 
+- remove queue as component type
+- additional permissions for queue action
 - queue and binding for queue actions
 - initialisers for each action type
 - add s3 source

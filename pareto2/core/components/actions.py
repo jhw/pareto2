@@ -8,6 +8,13 @@ DefaultPermissions={"logs:CreateLogGroup",
                     "logs:CreateLogStream",
                     "logs:PutLogEvents"}
 
+DefaultQueuePermissions={"logs:CreateLogGroup",
+                         "logs:CreateLogStream",
+                         "logs:PutLogEvents",
+                         "sqs:ReceiveMessage",
+                         "sqs:DeleteMessage",
+                         "sqs:GetQueueAttributes"}
+
 @resource            
 def init_function(action):
     resourcename=H("%s-function" % action["name"])
@@ -36,9 +43,8 @@ def init_function(action):
             props)
 
 @resource
-def init_role(action, **kwargs):
-    def init_permissions(action,
-                         defaultpermissions=DefaultPermissions):
+def init_role(action, defaultpermissions=DefaultPermissions):
+    def init_permissions(action, defaultpermissions):
         permissions=set(defaultpermissions)
         if "permissions" in action:
             permissions.update(set(action["permissions"]))
@@ -48,7 +54,7 @@ def init_role(action, **kwargs):
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    permissions=init_permissions(action)
+    permissions=init_permissions(action, defaultpermissions)
     policydoc={"Version": "2012-10-17",
                "Statement": [{"Action" : permission,
                               "Effect": "Allow",
@@ -62,6 +68,10 @@ def init_role(action, **kwargs):
     return (resourcename,
             "AWS::IAM::Role",
             props)
+
+def init_queue_role(action):
+    return init_role(action,
+                     defaultpermissions=DefaultQueuePermissions)
 
 @resource
 def _init_event_rule(action, event, detail):
@@ -165,7 +175,7 @@ def init_async_component(action):
 def init_queue_component(action):
     resources=[]
     for fn in [init_function,
-               init_role,
+               init_queue_role,
                init_queue,
                init_queue_binding]:
         resource=fn(action)
