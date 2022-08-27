@@ -1,7 +1,6 @@
 ### short [actions, types, bindings]
 
 - iterate through events and add rules
-- define router if dynamodb
 - complete codebuild event rule
 - add notes regarding makeup of each rule
 - initialisers for each action type
@@ -112,6 +111,7 @@
 
 ### done
 
+- define router if dynamodb
 - make paths explicit in push_artifacts.py
 - does timer need delete message
 
