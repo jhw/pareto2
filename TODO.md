@@ -1,20 +1,12 @@
 ### short
 
+- action type validation
+- codebuild event rule support
 - action error handling via destinations
-- extend action validation
-
-### pareto2-demo
-
-- add types and nested event config to pareto-demo metadata
-- remove custom sqs permissions
-
-### layman2 
-
-- layman2 appears to be missing codebuild (update) pattern
 
 ### pending
 
-- codebuild event rule
+- how is layman2 codebuild pattern working ?
 
 ### breaking
 
@@ -29,13 +21,15 @@
 ### medium
 
 - deploy_stack.py to check s3 artifacts
-- table streaming error handler
-- queue action error handler
+- table streaming, queue action error handlers
 - add back events dashboard
 - add inline functions to chart generation
-- replace metadata classes with proper data- binding solution
-- metadata unique component name check
-- make dsl lenient and don't require empty list specifications
+
+- metadata refactoring
+  - proper data- binding solution
+  - single list/dict root
+    - unique names
+    - don't require empty list specification
 
 ### long
 
@@ -43,10 +37,8 @@
 - step function mapreduce
 - lambda alarms, timeouts
 - burningmonk apigw stuff
-- lambda powertools
 - appsync + graphql
-- sst live lambda development
-- sync'ing deployment of multiple apps
+- lambda powertools
 
 ### thoughts
 
