@@ -1,6 +1,9 @@
 ### short
 
-- event rules are not getting defined / details are getting messed up
+- eyeball template
+  - table streaming included
+  - event rules look well specified
+  - timer event/child looks well specified
 
 - action type validation
 - codebuild event rule support
@@ -110,6 +113,8 @@
 
 ### done
 
+- detail is getting double nested
+- event rules are not getting defined / details are getting messed up
 - no way to see template if validation error occurs
 
 ```

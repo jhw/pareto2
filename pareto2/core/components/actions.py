@@ -74,7 +74,7 @@ def init_queue_role(action):
                      defaultpermissions=DefaultQueuePermissions)
 
 @resource
-def _init_event_rule(action, event, detail):
+def _init_event_rule(action, event, pattern):
     def init_target(action, event):
         id={"Fn::Sub": "%s-%s-event-rule-${AWS::StackName}" % (action["name"],
                                                                event["name"])}
@@ -83,7 +83,6 @@ def _init_event_rule(action, event, detail):
                 "Arn": arn}
     resourcename=H("%s-%s-event-rule" % (action["name"],
                                          event["name"]))
-    pattern={"detail": detail}
     target=init_target(action, event)
     props={"EventPattern": pattern,
            "Targets": [target],
@@ -107,7 +106,7 @@ def _init_event_rule(action, event, detail):
 def init_dynamodb_event_rule(action, event):
     pattern={"detail": event["pattern"]}
     pattern["source"]=[{"Ref": H("%s-table-function" % event["table"])}]
-    return pattern
+    return _init_event_rule(action, event, pattern)
 
 """
 - event is created by s3 eventbridge notification config
@@ -118,7 +117,7 @@ def init_s3_event_rule(action, event):
     pattern["detail"].setdefault("bucket", {})
     pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["bucket"])}]
     pattern["source"]=["aws.s3"]
-    return pattern
+    return _init_event_rule(action, event, pattern)
 
 def init_event_rule(action, event):
     fn=eval("init_%s_event_rule" % event["type"])
