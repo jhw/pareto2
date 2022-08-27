@@ -89,18 +89,24 @@ def _init_event_rule(action, event, detail):
             "AWS::Events::Rule",
             props)
 
+"""
+- event is custom event created by table-function
+- assumes has `ddb` root attribute
+"""
+
 def init_dynamodb_event_rule(action, event):
     pattern={"detail": event["pattern"]}
     pattern["source"]=[{"Ref": H("%s-table-function" % event["table"])}]
     return pattern
 
+"""
+- event is created by s3 eventbridge notification config
+"""
+
 def init_s3_event_rule(action, event):
     pattern={"detail": event["pattern"]}
     pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["bucket"])}]
-    return pattern
-
-def init_codebuild_event_rule(action, event):
-    pattern={"detail": event["pattern"]}
+    pattern["source"]=["aws.s3"]
     return pattern
 
 def init_event_rule(action, event):

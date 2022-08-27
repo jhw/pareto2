@@ -1,13 +1,19 @@
 ### short [actions, types, bindings]
 
-- complete codebuild event rule
-- add notes regarding makeup of each rule
 - initialisers for each action type
 - queue and binding for queue actions
 - additional permissions for queue action
 - remove queue as component type
 - add types and nested event config to pareto-demo metadata
 - remove custom sqs permissions
+
+### layman2 
+
+- layman2 appears to be missing codebuild (update) pattern
+
+### pending
+
+- codebuild event rule
 
 ### breaking
 
@@ -110,6 +116,7 @@
 
 ### done
 
+- add s3 source
 - refactor event naming
 - iterate through events and add rules
 - define router if dynamodb
