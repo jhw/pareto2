@@ -126,6 +126,12 @@ def init_component(action):
                init_role]:
         resource=fn(action)
         resources.append(resource)
+    if "events" in action:
+        for event in action["events"]:
+            for fn in [init_event_rule,
+                       init_event_rule_permission]:
+                resource=fn(action, event)
+                resources.append(resource)
     return resources
 
 def init_resources(md):
