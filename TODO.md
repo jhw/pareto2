@@ -1,10 +1,13 @@
 ### short
 
-- eyeball template
-  - timer event/child looks well specified
+- test table streaming
+- test bucket streaming
+- check timer is working
 
-- action type validation
-- codebuild event rule support
+- can timer be bound to demo-target rather than demo-target2? [notes]
+
+- review and refactor metadata validation
+- codebuild, webhook event rule support
 - action error handling via destinations
 
 ### pending
@@ -23,6 +26,7 @@
 
 ### medium
 
+- nest endpoints in [api] actions
 - deploy_stack.py to check s3 artifacts
 - table streaming, queue action error handlers
 - add back events dashboard
@@ -111,6 +115,9 @@
 
 ### done
 
+- eyeball template
+  - timer event/child looks well specified
+  
 - sqs permissions enabled
 - event rules look well specified
 - table streaming included

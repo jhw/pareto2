@@ -1,3 +1,10 @@
+### timers and sqs permissions 27/08/22
+
+- some complexity with timers and sqs permissions
+- not clear whether timer can invoke demo-target as won't have sqs permissions (as is async)
+- should be able to invoke demo-target2 as has sqs permissions, but also has a redundant queue
+- which is the better solution?
+
 ### action types 26/08/22
 
 - merge queue component into queue type
