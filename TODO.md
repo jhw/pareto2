@@ -8,6 +8,10 @@
 - action error handling via destinations
   - test hello_add with bad data
 
+### layman2
+
+- ensure codebuild event pattern matches on buildproject source
+
 ### pareto-demo
 
 - scripts/demo/test_sync|async_errors.py probably need refactoring
