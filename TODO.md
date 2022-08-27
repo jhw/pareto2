@@ -1,16 +1,11 @@
 ### short
 
-- test timer bound to demo-target?
-  - replace demo-target2 with sqs permissions for demo-target?
-  - new action type which adds sqs permissions but no queue?
-
+- test add, multiply
+- drop table event ddb root prefix 
+- how does layman2 codebuild pattern work?
+- codebuild, webhook [action?] event rule support
 - review and refactor metadata validation
-- codebuild, webhook event rule support
 - action error handling via destinations
-
-### pending
-
-- how is layman2 codebuild pattern working ?
 
 ### breaking
 
@@ -113,8 +108,11 @@
 
 ### done
 
+- add sqs permissions to all actions
+- test timer bound to demo-target?
+  - replace demo-target2 with sqs permissions for demo-target?
+  - new action type which adds sqs permissions but no queue?
 - timer apparently no longer working :(
-
 - eyeball template
   - timer event/child looks well specified
   

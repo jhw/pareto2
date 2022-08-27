@@ -4,16 +4,16 @@ from pareto2.core.components import resource
 
 import re
 
+"""
+- all actions can receive sqs messages because they may be the target of a queue defined in something like a timer, even if that action doesn't have its own explicit queue
+"""
+
 DefaultPermissions={"logs:CreateLogGroup",
                     "logs:CreateLogStream",
-                    "logs:PutLogEvents"}
-
-DefaultQueuePermissions={"logs:CreateLogGroup",
-                         "logs:CreateLogStream",
-                         "logs:PutLogEvents",
-                         "sqs:ReceiveMessage",
-                         "sqs:DeleteMessage",
-                         "sqs:GetQueueAttributes"}
+                    "logs:PutLogEvents",
+                    "sqs:ReceiveMessage",
+                    "sqs:DeleteMessage",
+                    "sqs:GetQueueAttributes"}
 
 @resource            
 def init_function(action):
@@ -68,10 +68,6 @@ def init_role(action, defaultpermissions=DefaultPermissions):
     return (resourcename,
             "AWS::IAM::Role",
             props)
-
-def init_queue_role(action):
-    return init_role(action,
-                     defaultpermissions=DefaultQueuePermissions)
 
 @resource
 def _init_event_rule(action, event, pattern):
@@ -175,7 +171,7 @@ def init_async_component(action):
 def init_queue_component(action):
     resources=[]
     for fn in [init_function,
-               init_queue_role,
+               init_role,
                init_queue,
                init_queue_binding]:
         resource=fn(action)
