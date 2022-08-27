@@ -1,8 +1,6 @@
 ### short
 
-- test table streaming
-- test bucket streaming
-- check timer is working
+- timer apparently no longer working :(
 
 - can timer be bound to demo-target rather than demo-target2? [notes]
 
