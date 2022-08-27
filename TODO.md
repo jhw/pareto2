@@ -1,8 +1,6 @@
 ### short
 
 - eyeball template
-  - table streaming included
-  - event rules look well specified
   - timer event/child looks well specified
 
 - action type validation
@@ -113,6 +111,9 @@
 
 ### done
 
+- sqs permissions enabled
+- event rules look well specified
+- table streaming included
 - detail is getting double nested
 - event rules are not getting defined / details are getting messed up
 - no way to see template if validation error occurs
