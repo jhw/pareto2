@@ -96,7 +96,6 @@ def _init_event_rule(action, event, pattern):
 
 """
 - event is custom event created by table-function
-- assumes has `ddb` root attribute
 """
 
 def init_dynamodb_event_rule(action, event):

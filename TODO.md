@@ -1,7 +1,6 @@
 ### short
 
 - test add, multiply
-- drop table event ddb root prefix 
 - how does layman2 codebuild pattern work?
 - codebuild, webhook [action?] event rule support
 - review and refactor metadata validation
@@ -108,6 +107,7 @@
 
 ### done
 
+- drop table event ddb root prefix 
 - add sqs permissions to all actions
 - test timer bound to demo-target?
   - replace demo-target2 with sqs permissions for demo-target?

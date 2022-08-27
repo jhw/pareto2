@@ -29,11 +29,11 @@ class Entry:
 
     @property
     def entry(self):        
-        detail={"ddb": {"pk": self.key.pk,
-                        "sk": self.key.sk,
-                        "eventName": self.key.eventname,
-                        "diffKeys": self.key.diffkeys,
-                        "records": self.records}}
+        detail={"pk": self.key.pk,
+                "sk": self.key.sk,
+                "eventName": self.key.eventname,
+                "diffKeys": self.key.diffkeys,
+                "records": self.records}
         source=self.context.function_name
         detailtype=self.key.eventname
         return {"Source": source,
