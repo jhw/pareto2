@@ -1,21 +1,15 @@
 ### short
 
-- refactor queue action as sync action with optional queue
-- add notes to sync action explaining that it is a hack ahead of stack timer
-- add separate target2 sync lambda
-- add action source support to action events [required for stack timer]
-- review/refactor metadata validation
+- get rid of queue action
+- rename actions as sync / async
+- add back queue as first class component with optional function
+- add custom sqs permissions to demo target to allow it to be executed by timer
+- nest endpoints under actions 
+- refactor and simplify metadata validation
 - extend metadata validation to validate events
-- nest endpoints in actions
-- add async action error handler
-- extend async action error handler to push to sns
-- singularise component types
-- allow underscores in component types
-
-### pareto-demo
-
-- run async test
-- delete sync test
+- add async action error function and test
+- get rid of demo sync errors test
+- convert error function to push errors to sns
 
 ### breaking
 
@@ -30,6 +24,9 @@
 - iam permissions must now be specified in full
 
 ### medium
+
+- singularise component types
+- allow underscores in component types
 
 - refactor metadata as dict [notes]
 - simplify passing of env vars by using explicit actions
