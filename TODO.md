@@ -1,6 +1,7 @@
 ### short
 
-- interative functions to validate action/table/bucket refs 
+- add async action error destinations
+- add back (macro, micro) timer w/ tests
 
 ### layman
 
@@ -8,10 +9,8 @@
 
 ### medium
 
-- add async action error destinations
-- add back (macro, micro) timer
+- schema validation
 - convert async action error to push to sns 
-- deploy_stack.py to check s3 artifacts
 - table streaming error handlers
 - add back events dashboard
 - add inline functions to chart generation
@@ -27,6 +26,8 @@
 
 ### thoughts
 
+- deploy_stack.py to check s3 artifacts ?
+  - almost certainly overkill; aim is not to provide a high level of command line comfort
 - test underscores in component names?
   - don't think is required
 - md.expand() to infer iam roles?
@@ -102,6 +103,7 @@
 
 ### done
 
+- interative functions to validate action/table/bucket refs 
 - all arguments in push artifacts to be triggered off os.environ app root
 - add schema to post data schema
 - add back setting of action environment values

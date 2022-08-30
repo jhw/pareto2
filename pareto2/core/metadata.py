@@ -13,7 +13,33 @@ class Metadata(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
+    def validate_refs(self, attr, errors):
+        def filter_refs(element, refs, attr):
+            if isinstance(element, list):
+                for subelement in element:
+                    filter_refs(subelement, refs, attr)
+            elif isinstance(element, dict):
+                for key, subelement in element.items():
+                    if key==attr:
+                        refs.add(subelement)
+                    else:
+                        filter_refs(subelement, refs, attr)
+        names=[item["name"]
+               for item in self[attr]]
+        refs=set()
+        filter_refs(self, refs, attr[:-1])
+        for ref in refs:
+            if ref not in names:
+                errors.append("invalid %s reference [%s]" % (attr[:-1], ref))
+        
     def validate(self):
+        errors=[]
+        for attr in ["actions",
+                     "tables",
+                     "buckets"]:
+            self.validate_refs(attr, errors)
+        if errors!=[]:
+            raise RuntimeError(", ".join(errors))
         return self
 
     def expand_action_env_vars(self):
