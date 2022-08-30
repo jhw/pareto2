@@ -4,16 +4,9 @@ from pareto2.core.components import resource
 
 import re
 
-"""
-- all actions can receive sqs messages because they may be the target of a queue defined in something like a timer, even if that action doesn't have its own explicit queue
-"""
-
 DefaultPermissions={"logs:CreateLogGroup",
                     "logs:CreateLogStream",
-                    "logs:PutLogEvents",
-                    "sqs:ReceiveMessage",
-                    "sqs:DeleteMessage",
-                    "sqs:GetQueueAttributes"}
+                    "logs:PutLogEvents"}
 
 @resource            
 def init_function(action):
@@ -126,26 +119,6 @@ def init_event_rule_permission(action, event):
             "AWS::Lambda::Permission",
             props)
 
-@resource
-def init_queue(action):
-    resourcename=H("%s-queue" % action["name"])
-    props={}
-    return (resourcename,
-            "AWS::SQS::Queue",
-            props)
-
-@resource
-def init_queue_binding(action):
-    resourcename=H("%s-queue-binding" % action["name"])
-    funcname={"Ref": H("%s-function" % action["name"])}
-    sourcearn={"Fn::GetAtt": [H("%s-queue" % action["name"]),
-                              "Arn"]}
-    props={"FunctionName": funcname,
-           "EventSourceArn": sourcearn}
-    return (resourcename,
-            "AWS::Lambda::EventSourceMapping",
-            props)
-
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
@@ -160,17 +133,7 @@ def init_async_component(action):
                 resources.append(resource)
     return resources
 
-def init_queue_component(action):
-    resources=[]
-    for fn in [init_function,
-               init_role,
-               init_queue,
-               init_queue_binding]:
-        resource=fn(action)
-        resources.append(resource)
-    return resources
-
-def init_api_component(action):
+def init_sync_component(action):
     resources=[]
     for fn in [init_function,
                init_role]:
