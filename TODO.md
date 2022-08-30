@@ -1,6 +1,5 @@
 ### short
 
-- add schema to post data schema
 - all arguments in push artifacts to be triggered off os.environ app root
 - interative functions to validate action/table/bucket refs 
 - shouldn't need event type
@@ -98,6 +97,7 @@
 
 ### done
 
+- add schema to post data schema
 - add back setting of action environment values
 - add metadata.expand method
 - investigate why singularising component names "just worked"

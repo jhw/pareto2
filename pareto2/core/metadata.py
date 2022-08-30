@@ -1,5 +1,7 @@
 import os, re, yaml
 
+EndpointJSONSchema="http://json-schema.org/draft-07/schema#"
+
 class Metadata(dict):
 
     @classmethod
@@ -32,8 +34,15 @@ class Metadata(dict):
                                      ", ".join(variables)))
             action["env"]={"variables": variables}
 
+    def expand_endpoint_schema(self):
+        for endpoint in self["endpoints"]:
+            if (endpoint["method"]=="POST" and
+                "schema" in endpoint):
+                endpoint["schema"]["$schema"]=EndpointJSONSchema
+            
     def expand(self):
         self.expand_action_env_vars()
+        self.expand_endpoint_schema()
         return self
 
 if __name__=="__main__":
