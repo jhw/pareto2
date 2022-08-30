@@ -1,15 +1,11 @@
 ### short
 
-- get rid of queue action
-- rename actions as sync / async
-- add back queue as first class component with optional function
-- add custom sqs permissions to demo target to allow it to be executed by timer
-- nest endpoints under actions 
-- refactor and simplify metadata validation
-- extend metadata validation to validate events
-- add async action error function and test
-- get rid of demo sync errors test
-- convert error function to push errors to sns
+- remove timers and queue actions (replaced with sync/async)
+- get rid of metadata classes
+
+- refactor metadata as dict or single list
+- add back async error handlers
+- test nesting endpoints under actions
 
 ### breaking
 
@@ -25,10 +21,6 @@
 
 ### medium
 
-- singularise component types
-- allow underscores in component types
-
-- refactor metadata as dict [notes]
 - simplify passing of env vars by using explicit actions
 - deploy_stack.py to check s3 artifacts
 - table streaming error handlers
