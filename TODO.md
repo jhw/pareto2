@@ -1,12 +1,8 @@
 ### short
 
-- all arguments in push artifacts to be triggered off os.environ app root
+- test underscores in component names 
 - interative functions to validate action/table/bucket refs 
-- shouldn't need event type
-- add async action error destinations
-- add back timer (macro, micro)
-- allow underscores in component names 
-- rename app root as Pareto app root
+- all arguments in push artifacts to be triggered off os.environ app root
 
 ### layman
 
@@ -14,6 +10,8 @@
 
 ### medium
 
+- add async action error destinations
+- add back (macro, micro) timer
 - convert async action error to push to sns 
 - deploy_stack.py to check s3 artifacts
 - table streaming error handlers
@@ -31,6 +29,13 @@
 
 ### thoughts
 
+- md.expand() to infer iam roles?
+  - problem is it's hard if boto calls are contained in subroutines defined outside index.py
+- rename app root as Pareto app root ?
+  - think is fine as just APP_ROOT for now
+- shouldn't need event type ?
+  - I think you probably do
+    - relying on just 'bucket' or 'table' isn't explicit enough
 - do you need ddb key as part of table event ? 
   - is probably fine
 - eventbridge lambda destinations ?
