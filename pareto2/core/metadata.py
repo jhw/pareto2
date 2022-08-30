@@ -14,9 +14,12 @@ class Metadata(dict):
     def validate(self):
         return self
 
+    def expand(self):
+        return self
+
 if __name__=="__main__":
     try:
         md=Metadata.initialise()
-        md.validate()
+        md.validate().expand()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

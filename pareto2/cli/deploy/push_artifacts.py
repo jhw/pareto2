@@ -61,7 +61,7 @@ if __name__=="__main__":
     try:
         config=load_config(filename="config/app.props")
         md=Metadata.initialise(filename="config/metadata.yaml")
-        md.validate()
+        md.validate().expand()
         root=os.environ["APP_ROOT"]
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         s3=boto3.client("s3")

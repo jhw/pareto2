@@ -50,7 +50,7 @@ if __name__=="__main__":
     try:
         from pareto2.core.metadata import Metadata
         md=Metadata.initialise()
-        md.validate()
+        md.validate().expand()
         template=init_template(md)
         template.dump_local()
     except RuntimeError as error:

@@ -1,9 +1,7 @@
 ### short
 
-- add metadata.expand method
 - add back setting of action environment values
 
-- investigate why singularising component names "just worked"
 - all arguments in push artifacts to be triggered off os.environ app root
 - interative functions to validate action/table/bucket refs 
 - shouldn't need event type
@@ -12,6 +10,10 @@
 - add back timer (macro, micro)
 - allow underscores in component names 
 - rename app root as Pareto app root
+
+### layman
+
+- singularise builder
 
 ### medium
 
@@ -97,6 +99,8 @@
 
 ### done
 
+- add metadata.expand method
+- investigate why singularising component names "just worked"
 - convert metadata to simple dict
 - singularise component names
 - bad ref to user pool in scripts users admin create 

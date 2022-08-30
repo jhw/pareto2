@@ -64,7 +64,7 @@ if __name__=="__main__":
         template=Template("topics")
         from pareto2.core.metadata import Metadata
         md=Metadata.initialise()
-        md.validate()
+        md.validate().expand()
         update_template(template, md)
         template.dump_local()
     except RuntimeError as error:
