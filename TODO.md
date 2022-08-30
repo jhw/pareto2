@@ -1,26 +1,25 @@
 ### short
 
-- refactor metadata as dict or single list
-- iterative metadata validation for actions/buckets/tables
-- add back async error handlers
-- test nesting endpoints under actions
-- add back simple timers
+- convert metadata to simple dict
+- interative functions to validate action/table/bucket refs 
 
-### breaking
+- environment variables are not getting set from lambdas
+- shouldn't need event type
+- artifacts paths should be part of os.environ
 
-- [ensure codebuild event pattern matches on buildproject source]
-
-- builders, events, routers, queues no longer supported as components
-- errors, router attrs no longer supported
-- actions require type definitions
-- events now nested inside actions
-- table streaming now uses explicit streaming attr
-- table streaming requires size, timeout
-- iam permissions must now be specified in full
+- add async action error destinations
+- convert async action error to push to sns 
+- add back timer (macro, micro)
+- singularise component names
+- allow underscores in component names 
+- remove sqs testing code 
+- push artifacts to read component paths from os.env 
+- all arguments in push artifacts to be triggered off app root 
+- rename app root as Pareto app root
+- bad ref to user pool in scripts users admin create 
 
 ### medium
 
-- simplify passing of env vars by using explicit actions
 - deploy_stack.py to check s3 artifacts
 - table streaming error handlers
 - add back events dashboard
