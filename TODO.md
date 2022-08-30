@@ -103,6 +103,7 @@
 
 ### done
 
+- redeploy and test
 - clean up pareto demo scripts
 - get rid of metadata expansion
 - remove timers and queue actions (replaced with sync/async)
