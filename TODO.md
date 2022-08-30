@@ -1,8 +1,6 @@
 ### short
 
-- test underscores in component names 
 - interative functions to validate action/table/bucket refs 
-- all arguments in push artifacts to be triggered off os.environ app root
 
 ### layman
 
@@ -29,6 +27,8 @@
 
 ### thoughts
 
+- test underscores in component names?
+  - don't think is required
 - md.expand() to infer iam roles?
   - problem is it's hard if boto calls are contained in subroutines defined outside index.py
 - rename app root as Pareto app root ?
@@ -102,6 +102,7 @@
 
 ### done
 
+- all arguments in push artifacts to be triggered off os.environ app root
 - add schema to post data schema
 - add back setting of action environment values
 - add metadata.expand method

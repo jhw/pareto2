@@ -1,13 +1,10 @@
-from pareto2.core import init_template
 from pareto2.core.lambdas import Lambdas
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
-from pareto2.cli import load_config
+from pareto2.core import init_template
 
-import boto3, os
-
-from datetime import datetime
+import boto3
 
 class Artifacts:
 
@@ -50,24 +47,30 @@ class Artifacts:
               component_paths=["pareto2/core/components"],
               template_name="template",
               run_tests=True):
-        if not os.path.exists("tmp"):
-            os.mkdir("tmp")                
         lambdas=self.build_lambdas(run_tests)
         self.build_template(name=template_name,
                             paths=component_paths,
                             lambdas=lambdas)
+
+"""
+- ensure PYTHONPATH contains PARETO2_APP_PATH so can load module whose root is PARETO2_APP_NAME
+"""
         
 if __name__=="__main__":
     try:
-        config=load_config(filename="config/app.props")
-        md=Metadata.initialise(filename="config/metadata.yaml")
+        import os
+        apppath=os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else "."
+        from pareto2.cli import load_config
+        config=load_config(filename="%s/config/app.props" % apppath)
+        md=Metadata.initialise(filename="%s/config/metadata.yaml" % apppath)
         md.validate().expand()
-        root=os.environ["APP_ROOT"]
+        appname=os.environ["PARETO2_APP_NAME"]
+        from datetime import datetime
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         s3=boto3.client("s3")
         artifacts=Artifacts(config=config,
                             md=md,
-                            root=root,
+                            root=appname,
                             timestamp=timestamp,
                             s3=s3)
         artifacts.build()

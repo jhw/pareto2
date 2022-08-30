@@ -4,7 +4,8 @@ export AWS_PROFILE=woldeploy
 export AWS_REGION=eu-west-1
 export PYTHONPATH=.
 
-export APP_ROOT=demo # always override
+export PARETO2_APP_PATH=.
+export PARETO2_APP_NAME=demo
 
 if [ ! -L demo ]; then
     ln -s ../pareto2-demo/demo demo
