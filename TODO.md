@@ -1,22 +1,20 @@
 ### short
 
+- remove sqs testing code 
+- bad ref to user pool in scripts users admin create 
+- all arguments in push artifacts to be triggered off os.environ app root
+
 - convert metadata to simple dict
 - interative functions to validate action/table/bucket refs 
-
 - environment variables are not getting set from lambdas
-- shouldn't need event type
-- artifacts paths should be part of os.environ
 
+- shouldn't need event type
 - add async action error destinations
 - convert async action error to push to sns 
 - add back timer (macro, micro)
 - singularise component names
 - allow underscores in component names 
-- remove sqs testing code 
-- push artifacts to read component paths from os.env 
-- all arguments in push artifacts to be triggered off app root 
 - rename app root as Pareto app root
-- bad ref to user pool in scripts users admin create 
 
 ### medium
 
