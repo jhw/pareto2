@@ -1,9 +1,8 @@
 ### short
 
-- remove timers and queue actions (replaced with sync/async)
-- get rid of metadata classes
-
+- add back simple timers
 - refactor metadata as dict or single list
+- iterative metadata validation for actions/buckets/tables
 - add back async error handlers
 - test nesting endpoints under actions
 
@@ -104,6 +103,9 @@
 
 ### done
 
+- get rid of metadata expansion
+- remove timers and queue actions (replaced with sync/async)
+- get rid of metadata classes
 - consider removing custom routers
 - codebuild, webhook [action?] event rule support
 - how does layman2 codebuild pattern work?

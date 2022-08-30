@@ -22,7 +22,7 @@ if __name__=="__main__":
         filename="template-latest.json" if len(sys.argv) < 3 else sys.argv[2].split("/")[-1]
         config=load_config()
         md=Metadata.initialise()
-        md.validate().expand()
+        md.validate()
         stackname="%s-%s" % (config["AppName"],
                              stagename)
         cf=boto3.client("cloudformation")

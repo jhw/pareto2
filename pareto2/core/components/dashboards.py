@@ -116,16 +116,6 @@ def init_buckets(md):
     return (resourcename, "bucket", Components(components))
 
 @render_dash
-def init_timers(md):
-    resourcename=H("%s-dash-timers" % md.dashboard["name"])
-    components=[Component.initialise("timer-rule",
-                                     {"Title": timer["name"],
-                                      "ResourceName": "${%s}" % H("%s-timer-rule" % timer["name"])})
-                for timer in sorted(md.timers,
-                                    key=lambda x: x["name"])]
-    return (resourcename, "timers", Components(components))
-
-@render_dash
 def init_tables(md):
     resourcename=H("%s-dash-table" % md.dashboard["name"])
     components=[Component.initialise("table",
@@ -140,7 +130,6 @@ def init_resources(md):
                  for fn in [init_actions,
                             init_apis,
                             init_buckets,
-                            init_timers,
                             init_tables]])
 
 def update_template(template, md):
@@ -152,7 +141,7 @@ if __name__=="__main__":
         template=Template("dashboards")
         from pareto2.core.metadata import Metadata
         md=Metadata.initialise()
-        md.validate().expand()
+        md.validate()
         update_template(template, md)
         template.dump_local()
     except RuntimeError as error:

@@ -32,7 +32,7 @@ if __name__=="__main__":
         template=Template("buckets")
         from pareto2.core.metadata import Metadata
         md=Metadata.initialise()
-        md.validate().expand()
+        md.validate()
         update_template(template, md)
         template.dump_local()
     except RuntimeError as error:

@@ -1,0 +1,24 @@
+import os, yaml
+
+class Metadata:
+
+    @classmethod
+    def initialise(self, filename="config/metadata.yaml"):
+        if not os.path.exists(filename):
+            raise RuntimeError("metadata.yaml does not exist")
+        return Metadata(yaml.safe_load(open(filename).read()))
+
+    def __init__(self, struct):
+        self.keys=list(struct.keys())
+        for k, v in struct.items():
+            setattr(self, k, v)
+
+    def validate(self):
+        return self
+
+if __name__=="__main__":
+    try:
+        md=Metadata.initialise()
+        md.validate()
+    except RuntimeError as error:
+        print ("Error: %s" % str(error))
