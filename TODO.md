@@ -1,7 +1,5 @@
 ### short
 
-- remove sqs testing code 
-- bad ref to user pool in scripts users admin create 
 - all arguments in push artifacts to be triggered off os.environ app root
 
 - convert metadata to simple dict
@@ -100,6 +98,8 @@
 
 ### done
 
+- bad ref to user pool in scripts users admin create 
+- remove sqs testing code 
 - redeploy and test
 - clean up pareto demo scripts
 - get rid of metadata expansion
