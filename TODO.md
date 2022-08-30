@@ -1,5 +1,7 @@
 ### short
 
+- investigate why singularising component names "just worked"
+
 - all arguments in push artifacts to be triggered off os.environ app root
 
 - convert metadata to simple dict
@@ -10,7 +12,6 @@
 - add async action error destinations
 - convert async action error to push to sns 
 - add back timer (macro, micro)
-- singularise component names
 - allow underscores in component names 
 - rename app root as Pareto app root
 
@@ -98,6 +99,7 @@
 
 ### done
 
+- singularise component names
 - bad ref to user pool in scripts users admin create 
 - remove sqs testing code 
 - redeploy and test
