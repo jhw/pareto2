@@ -264,9 +264,9 @@ def init_cognito_resources(api, endpoints, resources):
 
 def init_resources(md):
     endpoints={endpoint["name"]: endpoint
-               for endpoint in md.endpoints}
+               for endpoint in md["endpoints"]}
     resources=[]
-    for api in md.apis:
+    for api in md["apis"]:
         apiendpoints=[endpoints[name]
                       for name in api["endpoints"]]
         if api["type"]=="simple":
@@ -291,7 +291,7 @@ def init_outputs(md):
                         H("%s-api-rest-api" % api["name"]): {"Value": restapi},
                         H("%s-api-stage" % api["name"]): {"Value": stage}})
     outputs={}
-    for api in md.apis:
+    for api in md["apis"]:
         init_outputs(api, outputs)
     return outputs
 

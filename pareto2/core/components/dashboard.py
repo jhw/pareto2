@@ -87,41 +87,41 @@ def render_dash(fn):
 
 @render_dash
 def init_actions(md):
-    resourcename=H("%s-dash-actions" % md.dashboard["name"])
+    resourcename=H("%s-dash-actions" % md["dashboard"]["name"])
     components=[Component.initialise("function",
                                      {"Title": action["name"],
                                       "ResourceName": "${%s}" % H("%s-function" % action["name"])})
-                for action in sorted(md.actions,
+                for action in sorted(md["actions"],
                                      key=lambda x: x["name"])]
     return (resourcename, "actions", Components(components))
 
 @render_dash
 def init_apis(md):
-    resourcename=H("%s-dash-api" % md.dashboard["name"])
+    resourcename=H("%s-dash-api" % md["dashboard"]["name"])
     components=[Component.initialise("api",
                                      {"Title": api["name"],
                                       "ResourceName": "${%s}" % H("%s-api-rest-api" % api["name"])})
-                for api in sorted(md.apis,
+                for api in sorted(md["apis"],
                                   key=lambda x: x["name"])]
     return (resourcename, "api", Components(components))
 
 @render_dash
 def init_buckets(md):
-    resourcename=H("%s-dash-bucket" % md.dashboard["name"])
+    resourcename=H("%s-dash-bucket" % md["dashboard"]["name"])
     components=[Component.initialise("bucket",
                                      {"Title": bucket["name"],
                                       "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
-                for bucket in sorted(md.buckets,
+                for bucket in sorted(md["buckets"],
                                      key=lambda x: x["name"])]
     return (resourcename, "bucket", Components(components))
 
 @render_dash
 def init_tables(md):
-    resourcename=H("%s-dash-table" % md.dashboard["name"])
+    resourcename=H("%s-dash-table" % md["dashboard"]["name"])
     components=[Component.initialise("table",
                                      {"Title": table["name"],
                                       "ResourceName": "${%s}" % H("%s-table" % table["name"])})
-                for table in sorted(md.tables,
+                for table in sorted(md["tables"],
                                     key=lambda x: x["name"])]
     return (resourcename, "table", Components(components))
 

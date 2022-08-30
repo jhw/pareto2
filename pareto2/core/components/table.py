@@ -212,14 +212,14 @@ def init_component(table):
 
 def init_resources(md):
     resources=[]
-    for table in md.tables:
+    for table in md["tables"]:
         component=init_component(table)
         resources+=component
     return dict(resources)
 
 def init_outputs(md):
     return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}
-            for table in md.tables}
+            for table in md["tables"]}
                                
 def update_template(template, md):
     template.resources.update(init_resources(md))

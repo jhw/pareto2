@@ -14,7 +14,7 @@ def init_secret(secret):
 
 def init_resources(md):
     return dict([init_secret(secret)
-                 for secret in md.secrets])
+                 for secret in md["secrets"]])
 
 def update_template(template, md):
     template.resources.update(init_resources(md))

@@ -43,7 +43,7 @@ def init_permission(topic):
 
 def init_resources(md):
     resources=[]
-    for topic in md.topics:
+    for topic in md["topics"]:
         for fn in [init_topic,
                    init_policy,
                    init_permission]:
@@ -52,7 +52,7 @@ def init_resources(md):
 
 def init_outputs(md):
     return {H("%s-topic" % topic["name"]): {"Value": {"Ref": H("%s-topic" % topic["name"])}}
-            for topic in md.topics}
+            for topic in md["topics"]}
 
 def update_template(template, md):
     template.resources.update(init_resources(md))

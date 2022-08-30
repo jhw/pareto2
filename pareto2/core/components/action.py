@@ -147,7 +147,7 @@ def init_component(action):
 
 def init_resources(md):
     resources=[]
-    for action in md.actions:
+    for action in md["actions"]:
         component=init_component(action)
         resources+=component
     return dict(resources)

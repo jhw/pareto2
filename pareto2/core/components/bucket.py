@@ -14,13 +14,13 @@ def init_bucket(bucket):
 
 def init_resources(md):
     resources=[]
-    for bucket in md.buckets:
+    for bucket in md["buckets"]:
         resources.append(init_bucket(bucket))
     return dict(resources)
 
 def init_outputs(md):
     return {H("%s-bucket" % bucket["name"]): {"Value": {"Ref": H("%s-bucket" % bucket["name"])}}
-            for bucket in md.buckets}
+            for bucket in md["buckets"]}
 
 def update_template(template, md):
     template.resources.update(init_resources(md))

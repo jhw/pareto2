@@ -1,13 +1,11 @@
 ### short
 
+- add metadata.expand method
+- add back setting of action environment values
+
 - investigate why singularising component names "just worked"
-
 - all arguments in push artifacts to be triggered off os.environ app root
-
-- convert metadata to simple dict
 - interative functions to validate action/table/bucket refs 
-- environment variables are not getting set from lambdas
-
 - shouldn't need event type
 - add async action error destinations
 - convert async action error to push to sns 
@@ -99,6 +97,7 @@
 
 ### done
 
+- convert metadata to simple dict
 - singularise component names
 - bad ref to user pool in scripts users admin create 
 - remove sqs testing code 

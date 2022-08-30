@@ -46,7 +46,7 @@ def init_web_client(userpool):
 
 def init_resources(md):
     resources=[]
-    for userpool in md.userpools:
+    for userpool in md["userpools"]:
         for fn in [init_userpool,
                    init_admin_client,
                    init_web_client]:
@@ -63,7 +63,7 @@ def init_outputs(md):
                         H("%s-userpool-admin-client" % userpool["name"]): {"Value": adminclient},
                         H("%s-userpool-web-client" % userpool["name"]): {"Value": webclient}})
     outputs={}
-    for userpool in md.userpools:
+    for userpool in md["userpools"]:
         init_outputs(userpool, outputs)
     return outputs
             

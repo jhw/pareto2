@@ -1,6 +1,6 @@
 import os, yaml
 
-class Metadata:
+class Metadata(dict):
 
     @classmethod
     def initialise(self, filename="config/metadata.yaml"):
@@ -9,9 +9,7 @@ class Metadata:
         return Metadata(yaml.safe_load(open(filename).read()))
 
     def __init__(self, struct):
-        self.keys=list(struct.keys())
-        for k, v in struct.items():
-            setattr(self, k, v)
+        dict.__init__(self, struct)
 
     def validate(self):
         return self
