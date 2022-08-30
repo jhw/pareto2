@@ -1,10 +1,10 @@
 ### short
 
-- add back simple timers
 - refactor metadata as dict or single list
 - iterative metadata validation for actions/buckets/tables
 - add back async error handlers
 - test nesting endpoints under actions
+- add back simple timers
 
 ### breaking
 
@@ -103,6 +103,7 @@
 
 ### done
 
+- clean up pareto demo scripts
 - get rid of metadata expansion
 - remove timers and queue actions (replaced with sync/async)
 - get rid of metadata classes
