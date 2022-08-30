@@ -1,12 +1,10 @@
 ### short
 
-- add back setting of action environment values
-
+- add schema to post data schema
 - all arguments in push artifacts to be triggered off os.environ app root
 - interative functions to validate action/table/bucket refs 
 - shouldn't need event type
 - add async action error destinations
-- convert async action error to push to sns 
 - add back timer (macro, micro)
 - allow underscores in component names 
 - rename app root as Pareto app root
@@ -17,6 +15,7 @@
 
 ### medium
 
+- convert async action error to push to sns 
 - deploy_stack.py to check s3 artifacts
 - table streaming error handlers
 - add back events dashboard
@@ -99,6 +98,7 @@
 
 ### done
 
+- add back setting of action environment values
 - add metadata.expand method
 - investigate why singularising component names "just worked"
 - convert metadata to simple dict

@@ -1,4 +1,4 @@
-import os, yaml
+import os, re, yaml
 
 class Metadata(dict):
 
@@ -14,7 +14,26 @@ class Metadata(dict):
     def validate(self):
         return self
 
+    def expand_action_env_vars(self):
+        def expand(action):
+            path="%s/index.py" % action["name"].replace("-", "/")
+            if not os.path.isfile(path):
+                raise RuntimeError("%s handler not found" % action["name"])
+            text=open(path).read()
+            return [tok[1:-1].lower().replace("_", "-")
+                    for tok in re.findall(r"\[(.*?)\]",
+                                          re.sub("\\s", "", text))
+                    if (tok.upper()==tok and
+                        len(tok) > 3)]
+        for action in self["actions"]:
+            variables=expand(action)
+            if variables!=[]:
+                print ("%s -> %s" % (action["name"],
+                                     ", ".join(variables)))
+            action["env"]={"variables": variables}
+
     def expand(self):
+        self.expand_action_env_vars()
         return self
 
 if __name__=="__main__":
