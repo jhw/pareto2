@@ -1,11 +1,9 @@
 ### short
 
+- allow additional components paths to be specified in os.environ
+
 - add async action error destinations
 - add back (macro, micro) timer w/ tests
-
-### layman
-
-- singularise builder
 
 ### medium
 
@@ -18,7 +16,6 @@
 ### long
 
 - apigw api keys
-- step function mapreduce
 - lambda alarms, timeouts
 - burningmonk apigw stuff
 - appsync + graphql
