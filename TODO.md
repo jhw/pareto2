@@ -1,5 +1,6 @@
 ### short
 
+- rename APP_PATH as APP_ROOT
 - allow additional components paths to be specified in os.environ
 
 - add async action error destinations
