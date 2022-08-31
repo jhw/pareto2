@@ -54,6 +54,7 @@ class Artifacts:
 
 """
 - ensure PYTHONPATH contains PARETO2_APP_PATH so can load module whose root is PARETO2_APP_NAME
+- filepath- based module imports are unlikely to work within a layer :(
 """
         
 if __name__=="__main__":
@@ -72,9 +73,9 @@ if __name__=="__main__":
                             md=md,
                             root=appname,
                             timestamp=timestamp,
-                            s3=s3)
+                            s3=s3)        
         comppaths=["pareto2/core/components",
-                   "%s/components" % apppath]
+                   "components"]
         artifacts.build(component_paths=comppaths)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
