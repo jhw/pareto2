@@ -18,9 +18,16 @@ class Defaults(dict):
     def __init__(self, items={}):
         dict.__init__(self, items)
 
+"""
+- this is probably not going to work inside a layer as file paths there look different
+"""
+        
 def init_components(paths):
     components={}
     for path in paths:
+        if not (os.path.exists(path) and
+                os.path.isdir(path)):
+            continue
         for filename in os.listdir(path):
             if ("__init__" in filename or
                 "__pycache__" in filename):

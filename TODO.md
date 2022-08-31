@@ -1,12 +1,11 @@
 ### short
 
-- rename APP_PATH as APP_ROOT
-- allow additional components paths to be specified in os.environ
-
 - add async action error destinations
 - add back (macro, micro) timer w/ tests
 
 ### medium
+
+- ** dynamic loading of modules from inside layer **
 
 - schema validation
 - convert async action error to push to sns 
@@ -101,6 +100,7 @@
 
 ### done
 
+- allow additional components paths to be specified in os.environ
 - interative functions to validate action/table/bucket refs 
 - all arguments in push artifacts to be triggered off os.environ app root
 - add schema to post data schema

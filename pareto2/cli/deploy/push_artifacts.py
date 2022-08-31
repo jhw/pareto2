@@ -73,7 +73,9 @@ if __name__=="__main__":
                             root=appname,
                             timestamp=timestamp,
                             s3=s3)
-        artifacts.build()
+        comppaths=["pareto2/core/components",
+                   "%s/components" % apppath]
+        artifacts.build(component_paths=comppaths)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
 
