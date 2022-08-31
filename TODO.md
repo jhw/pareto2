@@ -100,6 +100,7 @@
 
 ### done
 
+- remove env var printing
 - allow additional components paths to be specified in os.environ
 - interative functions to validate action/table/bucket refs 
 - all arguments in push artifacts to be triggered off os.environ app root

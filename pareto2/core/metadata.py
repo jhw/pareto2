@@ -55,9 +55,11 @@ class Metadata(dict):
                         len(tok) > 3)]
         for action in self["actions"]:
             variables=expand(action)
+            """
             if variables!=[]:
                 print ("%s -> %s" % (action["name"],
                                      ", ".join(variables)))
+            """
             action["env"]={"variables": variables}
 
     def expand_endpoint_schema(self):
