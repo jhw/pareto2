@@ -31,13 +31,28 @@ class Metadata(dict):
         for ref in refs:
             if ref not in names:
                 errors.append("invalid %s reference [%s]" % (attr[:-1], ref))
-        
+
+    def validate_action_type(self, attr, type, errors):
+        actions={action["name"]:action
+                 for action in self["actions"]}
+        if attr in self:
+            for component in self[attr]:
+                action=actions[component["action"]]
+                if action["type"]!=type:
+                    errors.append("%s component %s must be bound to %s action" % (attr,
+                                                                                  component["action"],
+                                                                                  type))
+                
     def validate(self):
         errors=[]
         for attr in ["actions",
                      "tables",
                      "buckets"]:
             self.validate_refs(attr, errors)
+        for attr, type in [("endpoints", "sync"),
+                           ("timers", "sync"),
+                           ("topics", "async")]:
+            self.validate_action_type(attr, type, errors)
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
         return self
