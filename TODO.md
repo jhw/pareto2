@@ -1,6 +1,5 @@
 ### short
 
-- add old timer code plus timer config
 - convert rate to fixed rate of 5 minutes
 - calculate n = int(math.floor(60/interval))
 - pass full payload to lambda function each time
@@ -121,6 +120,7 @@
 
 ### done
 
+- add old timer code plus timer config
 - test_add.py producing strange responses
 
 ```
