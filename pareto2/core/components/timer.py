@@ -10,9 +10,10 @@ def handler(event, context,
             n=os.environ["N"],
             interval=os.environ["INTERVAL"],
             queueurl=os.environ["QUEUE_URL"]):
+    interval, n = int(interval), int(n)
     sqs=boto3.client("sqs")
-    for i in range(int(n)):
-        delay=i*int(interval)
+    for i in range(n):
+        delay=i*interval
         sqs.send_message(QueueUrl=queueurl,
                          DelaySeconds=delay,
                          MessageBody=json.dumps(event))

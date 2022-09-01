@@ -1,6 +1,6 @@
 ### short
 
-- check micro timer looks correct, especially environment variables
+- teardown, redeploy, test
 
 ### medium
 
