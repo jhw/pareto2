@@ -163,12 +163,12 @@ def _init_event_rule(action, event, pattern):
             props)
 
 """
-- event is custom event created by table-function
+- event is custom event created by table-streaming-function
 """
 
 def init_dynamodb_event_rule(action, event):
     pattern={"detail": event["pattern"]}
-    pattern["source"]=[{"Ref": H("%s-table-function" % event["table"])}]
+    pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["table"])}]
     return _init_event_rule(action, event, pattern)
 
 """
