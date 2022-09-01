@@ -4,7 +4,6 @@
 - calculate n = int(math.floor(60/interval))
 - pass full payload to lambda function each time
 
-- metadata to validate topic actions
 - metadata to ensure that API and timer are bound to sync functions
 - metadata to ensure that topic is bound to async function
 - metadata to validate event type against bucket/table attrs
@@ -120,6 +119,7 @@
 
 ### done
 
+- metadata to validate topic actions
 - add old timer code plus timer config
 - test_add.py producing strange responses
 
