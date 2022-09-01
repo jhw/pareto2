@@ -1,7 +1,5 @@
 ### short
 
-- table inline/custom functions are getting mixed up
-
 ### pareto2-demo
 
 - target functions really need target suffix so (eg) inline table can be distinguised from target table
@@ -13,6 +11,7 @@
 - convert action errors to singleton
 - metadata to validate event type against bucket/table attrs
 - replace file- based loading of core pareto components
+- avoid confusion between custom and inline function names
 - schema validation
 - convert async action error to push to sns 
 - table, queue error handlers
@@ -108,6 +107,7 @@
 
 ### done
 
+- table inline/custom functions are getting mixed up
 - demo-table action appears to be missing lambda:InvokeFunction permission
 
 ```
