@@ -7,7 +7,7 @@ import json, math
 MicroFunctionCode="""import boto3, datetime, json, os
 
 def handler(event, context,
-            n=os.environ["N"],
+            n=os.environ["NUMBER"],
             interval=os.environ["INTERVAL"],
             queueurl=os.environ["QUEUE_URL"]):
     print ("%s -> %s" % (datetime.datetime.now(), event))
@@ -78,7 +78,7 @@ def init_micro_function(timer,
     variables={}
     variables[U("queue-url")]={"Ref": H("%s-timer-queue" % timer["name"])}
     variables[U("interval")]=str(timer["interval"])
-    variables[U("n")]=str(n)
+    variables[U("number")]=str(n)
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},

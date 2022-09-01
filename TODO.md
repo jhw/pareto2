@@ -1,8 +1,8 @@
 ### short
 
-### pareto2-demo
-
-- target functions really need target suffix so (eg) inline table can be distinguised from target table
+- rename inline timer function as scheduler function
+- use default rate of 60
+- add notes that could use higher, but will mean longer period until called
 
 ### medium
 
@@ -106,6 +106,11 @@
 - remove eventbus discoverer ?
 
 ### done
+
+```
+DemoTimerFunction => Properties validation failed for resource DemoTimerFunction with message:
+#/Environment/Variables: extraneous key [N] is not permitted
+```
 
 - table inline/custom functions are getting mixed up
 - demo-table action appears to be missing lambda:InvokeFunction permission
