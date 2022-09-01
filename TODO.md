@@ -1,17 +1,20 @@
 ### short
 
-- rename inline timer function as scheduler function
-- use default rate of 60
-- add notes that could use higher, but will mean longer period until called
+- metadata to validate event type against bucket/table attrs
+
+- macro timer
+
+### pareto2-demo
+
+- refactor target/#{xxx} nomenclature so target is a suffix
 
 ### medium
 
-- macro timer
 - unified config [notes]
 - convert action errors to singleton
-- metadata to validate event type against bucket/table attrs
+- search_lambda_logs.py cli facility to allow you to select log group
 - replace file- based loading of core pareto components
-- avoid confusion between custom and inline function names
+- checks for custom vs inline function names
 - schema validation
 - convert async action error to push to sns 
 - table, queue error handlers
@@ -106,6 +109,10 @@
 - remove eventbus discoverer ?
 
 ### done
+
+- rename inline timer function as scheduler function
+- use default rate of 60
+- add notes that could use higher, but will mean longer period until called
 
 ```
 DemoTimerFunction => Properties validation failed for resource DemoTimerFunction with message:

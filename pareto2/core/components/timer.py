@@ -20,7 +20,12 @@ def handler(event, context,
                          MessageBody=json.dumps(event))
 """
 
-MicroRate=300
+"""
+- MicroRate could be longer but it will be #{MicroRate} seconds before the first timer is called
+- possible tradeoff between cost of events rule execution vs cost of sqs message execution
+"""
+
+MicroRate=60
 
 MemorySize, Timeout = "small", "short"
 
@@ -33,7 +38,7 @@ def init_rule(timer, rate):
     def init_target(timer):
         targetid={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
         body=json.dumps(timer["body"])
-        arn={"Fn::GetAtt": [H("%s-timer-function" % timer["name"]), "Arn"]}
+        arn={"Fn::GetAtt": [H("%s-timer-scheduler-function" % timer["name"]), "Arn"]}
         return {"Id": targetid,
                 "Input": body,
                 "Arn": arn}        
@@ -53,7 +58,7 @@ def init_micro_rule(timer, rate=MicroRate):
 def init_permission(timer):
     resourcename=H("%s-timer-permission" % timer["name"])
     sourcearn={"Fn::GetAtt": [H("%s-timer-rule" % timer["name"]), "Arn"]}
-    funcname={"Ref": H("%s-timer-function" % timer["name"])}
+    funcname={"Ref": H("%s-timer-scheduler-function" % timer["name"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",
            "FunctionName": funcname,
@@ -68,8 +73,8 @@ def init_micro_function(timer,
                         code=MicroFunctionCode,
                         memorysize=MemorySize,
                         timeout=Timeout):
-    resourcename=H("%s-timer-function" % timer["name"])
-    rolename=H("%s-timer-function-role" % timer["name"])
+    resourcename=H("%s-timer-scheduler-function" % timer["name"])
+    rolename=H("%s-timer-scheduler-function-role" % timer["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % memorysize)
@@ -93,7 +98,7 @@ def init_micro_function(timer,
 @resource
 def init_role(timer,
               permissions=["sqs", "logs"]):
-    resourcename=H("%s-timer-function-role" % timer["name"])
+    resourcename=H("%s-timer-scheduler-function-role" % timer["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
@@ -103,7 +108,7 @@ def init_role(timer,
                               "Effect": "Allow",
                               "Resource": "*"}
                              for permission in sorted(permissions)]}
-    policyname={"Fn::Sub": "%s-timer-function-role-policy-${AWS::StackName}" % timer["name"]}
+    policyname={"Fn::Sub": "%s-timer-scheduler-function-role-policy-${AWS::StackName}" % timer["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,
