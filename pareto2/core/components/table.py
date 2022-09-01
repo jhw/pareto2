@@ -128,11 +128,11 @@ def init_table(table, streamtype=StreamType, **kwargs):
             props)
 
 @resource
-def init_binding(table,
-                 streamwindow=StreamWindow,
-                 streamretries=StreamRetries):
+def init_streaming_binding(table,
+                           streamwindow=StreamWindow,
+                           streamretries=StreamRetries):
     resourcename=H("%s-table-mapping" % table["name"])
-    funcname={"Ref": H("%s-table-function" % table["name"])}
+    funcname={"Ref": H("%s-table-streaming-function" % table["name"])}
     sourcearn={"Fn::GetAtt": [H("%s-table" % table["name"]),
                               "StreamArn"]}
     props={"FunctionName": funcname,
@@ -145,11 +145,11 @@ def init_binding(table,
             props)
 
 @resource            
-def init_function(table,
-                  batchsize=StreamBatchSize,
-                  code=FunctionCode):
-    resourcename=H("%s-table-function" % table["name"])
-    rolename=H("%s-table-function-role" % table["name"])
+def init_streaming_function(table,
+                            batchsize=StreamBatchSize,
+                            code=FunctionCode):
+    resourcename=H("%s-table-streaming-function" % table["name"])
+    rolename=H("%s-table-streaming-function-role" % table["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % table["streaming"]["size"])
@@ -169,16 +169,16 @@ def init_function(table,
             props)
 
 @resource
-def init_role(table,
-              permissions=["dynamodb:GetRecords",
-                           "dynamodb:GetShardIterator",
-                           "dynamodb:DescribeStream",
-                           "dynamodb:ListStreams",
-                           "events:PutEvents",
-                           "logs:CreateLogGroup",
-                           "logs:CreateLogStream",
-                           "logs:PutLogEvents"]):
-    resourcename=H("%s-table-function-role" % table["name"])
+def init_streaming_role(table,
+                        permissions=["dynamodb:GetRecords",
+                                     "dynamodb:GetShardIterator",
+                                     "dynamodb:DescribeStream",
+                                     "dynamodb:ListStreams",
+                                     "events:PutEvents",
+                                     "logs:CreateLogGroup",
+                                     "logs:CreateLogStream",
+                                     "logs:PutLogEvents"]):
+    resourcename=H("%s-table-streaming-function-role" % table["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
@@ -188,7 +188,7 @@ def init_role(table,
                               "Effect": "Allow",
                               "Resource": "*"}
                              for permission in sorted(permissions)]}
-    policyname={"Fn::Sub": "%s-table-function-role-policy-${AWS::StackName}" % table["name"]}
+    policyname={"Fn::Sub": "%s-table-streaming-function-role-policy-${AWS::StackName}" % table["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,
@@ -203,9 +203,9 @@ def init_component(table):
         resource=fn(table)
         resources.append(resource)
     if "streaming" in table:
-        for fn in [init_binding,
-                   init_function,
-                   init_role]:
+        for fn in [init_streaming_binding,
+                   init_streaming_function,
+                   init_streaming_role]:
             resource=fn(table)
             resources.append(resource)
     return resources

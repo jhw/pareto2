@@ -1,12 +1,10 @@
 ### short
 
-- demo-table action appears to be missing lambda:InvokeFunction permission
+- table inline/custom functions are getting mixed up
 
-```
-DemoTableFunctionEventConfig => The function's execution role does not have permissions to call InvokeFunction on arn:aws:lambda:eu-west-1:119552584133:function:pareto2-demo-dev-DemoTableErrorFunction-Vwsj569GOEw6 (Service: AWSLambdaInternal; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 002c04e9-8fa5-4a7e-b29d-7af59d581d98; Proxy: null)
-```
+### pareto2-demo
 
-- teardown, redeploy, test
+- target functions really need target suffix so (eg) inline table can be distinguised from target table
 
 ### medium
 
@@ -109,6 +107,12 @@ DemoTableFunctionEventConfig => The function's execution role does not have perm
 - remove eventbus discoverer ?
 
 ### done
+
+- demo-table action appears to be missing lambda:InvokeFunction permission
+
+```
+DemoTableFunctionEventConfig => The function's execution role does not have permissions to call InvokeFunction on arn:aws:lambda:eu-west-1:119552584133:function:pareto2-demo-dev-DemoTableErrorFunction-Vwsj569GOEw6 (Service: AWSLambdaInternal; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 002c04e9-8fa5-4a7e-b29d-7af59d581d98; Proxy: null)
+```
 
 - calculate N and pass as environment variable
 - pass full payload to lambda function each time
