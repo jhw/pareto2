@@ -6,7 +6,6 @@
 
 - metadata to validate event type against bucket/table attrs
 
-- redefine as micro timer
 - macro timer which is directly bound to action
 - macro timer interval rounds down to 60 seconds
 - select macro vs micro based on 1 minute limit
@@ -117,6 +116,7 @@
 
 ### done
 
+- redefine as micro timer
 - convert rate to fixed rate of 5 minutes
 - metadata to ensure that API and timer are bound to sync functions
 - metadata to ensure that topic is bound to async function

@@ -22,7 +22,7 @@ TimerRate="5 minutes"
 MemorySize, Timeout = "small", "short"
 
 @resource
-def init_rule(timer, rate=TimerRate):
+def init_rule(timer, rate):
     def init_target(timer):
         targetid={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
         body=json.dumps(timer["body"])
@@ -38,6 +38,9 @@ def init_rule(timer, rate=TimerRate):
     return (resourcename,
             "AWS::Events::Rule",
             props)
+
+def init_micro_rule(timer, rate=TimerRate):
+    return init_rule(timer, rate)
 
 @resource
 def init_permission(timer):
@@ -119,9 +122,9 @@ def init_binding(timer):
             "AWS::Lambda::EventSourceMapping",
             props)
 
-def init_component(timer):
+def init_micro_component(timer):
     resources=[]
-    for fn in [init_rule,
+    for fn in [init_micro_rule,
                init_permission,
                init_function,
                init_role,
@@ -134,7 +137,7 @@ def init_component(timer):
 def init_resources(md):
     resources=[]
     for timer in md["timers"]:
-        component=init_component(timer)
+        component=init_micro_component(timer)
         resources+=component
     return dict(resources)
 
