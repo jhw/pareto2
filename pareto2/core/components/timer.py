@@ -17,12 +17,16 @@ def handler(items, context,
                          MessageBody=json.dumps(item))
 """
 
-TimerRate="5 minutes"
+TimerRate=300
 
 MemorySize, Timeout = "small", "short"
 
 @resource
 def init_rule(timer, rate):
+    def format_schedule(rate):
+        minutes=int(rate/60)
+        suffix="minute" if minutes==1 else "minutes"
+        return "rate(%i %s)" % (minutes, suffix)
     def init_target(timer):
         targetid={"Fn::Sub": "%s-timer-rule-${AWS::StackName}" % timer["name"]}
         body=json.dumps(timer["body"])
@@ -32,7 +36,7 @@ def init_rule(timer, rate):
                 "Arn": arn}        
     resourcename=H("%s-timer-rule" % timer["name"])
     target=init_target(timer)
-    scheduleexpr="rate(%s)" % rate
+    scheduleexpr=format_schedule(rate)
     props={"Targets": [target],
            "ScheduleExpression": scheduleexpr}
     return (resourcename,

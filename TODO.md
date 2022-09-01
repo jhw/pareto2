@@ -1,6 +1,5 @@
 ### short
 
-- rate formatter
 - calculate n = int(math.floor(60/interval))
 - pass full payload to lambda function each time
 
@@ -116,6 +115,7 @@
 
 ### done
 
+- rate formatter
 - redefine as micro timer
 - convert rate to fixed rate of 5 minutes
 - metadata to ensure that API and timer are bound to sync functions
