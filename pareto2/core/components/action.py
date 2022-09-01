@@ -63,6 +63,21 @@ def init_role(action, defaultpermissions=DefaultPermissions):
             props)
 
 @resource
+def init_event_config(action):
+    resourcename=H("%s-function-event-config" % action["name"])
+    retries=action["retries"] if "retries" in action else 0
+    funcname=H("%s-function" % action["name"])
+    destarn={"Fn::GetAtt": [H("%s-error-function" % action["name"]), "Arn"]}
+    destconfig={"OnFailure": {"Destination": destarn}}
+    props={"MaximumRetryAttempts": retries,
+           "FunctionName": {"Ref": funcname},
+           "Qualifier": "$LATEST",
+           "DestinationConfig": destconfig}
+    return (resourcename,
+            "AWS::Lambda::EventInvokeConfig",
+            props)
+
+@resource
 def _init_event_rule(action, event, pattern):
     def init_target(action, event):
         id={"Fn::Sub": "%s-%s-event-rule-${AWS::StackName}" % (action["name"],
@@ -122,7 +137,8 @@ def init_event_rule_permission(action, event):
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
-               init_role]:
+               init_role,
+               init_event_config]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
