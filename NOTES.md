@@ -1,3 +1,13 @@
+### unified config 01/09/22
+
+- feels like there is value in merging app.props, defaults.yaml, metadata.yaml
+- would simplify / clarify things to have stuff in a single place 
+- would certainly simplify push artifacts script 
+- would probably make it much easier to have stage specific config 
+- need to convert all cli scripts fo python from bash 
+- could have separate entries for layers for example
+- and maybe sns alerts also 
+
 ### metadata 27/08/22
 
 - refactor as cloudformation- like structure with (unique) keys for names and types contained inside

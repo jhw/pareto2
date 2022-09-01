@@ -1,14 +1,32 @@
 ### short
 
-- add back (macro, micro) timer w/ tests
+- add old timer code plus timer config
+- convert rate to fixed rate of 5 minutes
+- calculate n = int(math.floor(60/interval))
+- pass full payload to lambda function each time
+
+- metadata to ensure that API and timer are bound to sync functions
+- metadata to validate event type against bucket/table attrs
+
+- redefine as micro timer
+- macro timer which is directly bound to action
+- macro timer interval rounds down to 60 seconds
+- select macro vs micro based on 1 minute limit
+
+### pareto2-demo
+
+- replace target with bucket, table lambdas
+- bind bucket, table to their respective lambdas
+- add new timer lambda
 
 ### medium
 
-- ** dynamic loading of modules from inside layer **
-
+- unified config [notes]
+- convert action errors to singleton
+- replace file- based loading of core pareto components
 - schema validation
 - convert async action error to push to sns 
-- table streaming error handlers
+- table, queue error handlers
 - add back events dashboard
 - add inline functions to chart generation
 
