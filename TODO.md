@@ -1,8 +1,8 @@
 ### short
 
-- metadata to validate event type against bucket/table attrs
-
 - macro timer
+- metadata to validate event type against bucket/table attrs
+- convert action errors to singleton
 
 ### pareto2-demo
 
@@ -11,14 +11,12 @@
 ### medium
 
 - unified config [notes]
-- convert action errors to singleton
 - search_lambda_logs.py cli facility to allow you to select log group
 - replace file- based loading of core pareto components
 - checks for custom vs inline function names
 - schema validation
 - convert async action error to push to sns 
 - table, queue error handlers
-- add back events dashboard
 - add inline functions to chart generation
 
 ### long
@@ -31,6 +29,8 @@
 
 ### thoughts
 
+- add back events dashboard ?
+  - not sure is that useful; more interesting to see async lambda invocations
 - convert action error handler and table streaming function to singletons ?
   - feels like an over- optimisation; you're not constrained by resources yet
 - deploy_stack.py to check s3 artifacts ?
@@ -110,6 +110,7 @@
 
 ### done
 
+- rename variables going into micro timer function initialisation
 - rename inline timer function as scheduler function
 - use default rate of 60
 - add notes that could use higher, but will mean longer period until called

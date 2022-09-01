@@ -4,7 +4,7 @@ from pareto2.core.components import resource
 
 import json, math
 
-MicroFunctionCode="""import boto3, datetime, json, os
+MicroSchedulerFunctionCode="""import boto3, datetime, json, os
 
 def handler(event, context,
             n=os.environ["NUMBER"],
@@ -25,9 +25,7 @@ def handler(event, context,
 - possible tradeoff between cost of events rule execution vs cost of sqs message execution
 """
 
-MicroRate=60
-
-MemorySize, Timeout = "small", "short"
+MicroSchedulerMemorySize, MicroSchedulerTimeout, MicroSchedulerRate = "small", "short", 60
 
 @resource
 def init_rule(timer, rate):
@@ -51,7 +49,7 @@ def init_rule(timer, rate):
             "AWS::Events::Rule",
             props)
 
-def init_micro_rule(timer, rate=MicroRate):
+def init_micro_rule(timer, rate=MicroSchedulerRate):
     return init_rule(timer, rate)
 
 @resource
@@ -69,10 +67,10 @@ def init_permission(timer):
 
 @resource            
 def init_micro_function(timer,
-                        rate=MicroRate,
-                        code=MicroFunctionCode,
-                        memorysize=MemorySize,
-                        timeout=Timeout):
+                        rate=MicroSchedulerRate,
+                        code=MicroSchedulerFunctionCode,
+                        memorysize=MicroSchedulerMemorySize,
+                        timeout=MicroSchedulerTimeout):
     resourcename=H("%s-timer-scheduler-function" % timer["name"])
     rolename=H("%s-timer-scheduler-function-role" % timer["name"])
     code={"ZipFile": code}
