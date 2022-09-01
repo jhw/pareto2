@@ -1,13 +1,11 @@
 ### short
 
-- inline error function
-- error role
-
 ### pareto2-demo
 
 - rename hello as http
 - add|multiply
 - script to ping add|multiply
+- teardown, deploy, test error
 
 ### medium
 
@@ -108,6 +106,8 @@
 
 ### done
 
+- error role
+- inline error function
 - event config
 - remove env var printing
 - allow additional components paths to be specified in os.environ

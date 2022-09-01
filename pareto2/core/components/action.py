@@ -8,6 +8,11 @@ DefaultPermissions={"logs:CreateLogGroup",
                     "logs:CreateLogStream",
                     "logs:PutLogEvents"}
 
+ErrorsCode="""def handler(event, context=None):
+    print (handler)"""
+
+ErrorsMemorySize, ErrorsTimeout = "small", "short"
+
 @resource            
 def init_function(action):
     resourcename=H("%s-function" % action["name"])
@@ -36,7 +41,7 @@ def init_function(action):
             props)
 
 @resource
-def init_role(action, defaultpermissions=DefaultPermissions):
+def init_function_role(action, defaultpermissions=DefaultPermissions):
     def init_permissions(action, defaultpermissions):
         permissions=set(defaultpermissions)
         if "permissions" in action:
@@ -75,6 +80,48 @@ def init_event_config(action):
            "DestinationConfig": destconfig}
     return (resourcename,
             "AWS::Lambda::EventInvokeConfig",
+            props)
+
+@resource            
+def init_error_function(action,
+                        memorysize=ErrorsMemorySize,
+                        timeout=ErrorsTimeout,
+                        code=ErrorsCode):
+    resourcename=H("%s-error-function" % action["name"])
+    rolename=H("%s-error-function-role" % action["name"])
+    code={"ZipFile": code}
+    runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
+    memorysize=H("memory-size-%s" % memorysize)
+    timeout=H("timeout-%s" % timeout)
+    props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
+           "MemorySize": {"Ref": memorysize},
+           "Timeout": {"Ref": timeout},
+           "Code": code,
+           "Handler": "index.handler",
+           "Runtime": runtime}
+    return (resourcename, 
+            "AWS::Lambda::Function",
+            props)
+
+@resource
+def init_error_function_role(action, permissions=DefaultPermissions):
+    resourcename=H("%s-error-function-role" % action["name"])
+    assumerolepolicydoc={"Version": "2012-10-17",
+                         "Statement": [{"Action": "sts:AssumeRole",
+                                        "Effect": "Allow",
+                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
+    policydoc={"Version": "2012-10-17",
+               "Statement": [{"Action" : permission,
+                              "Effect": "Allow",
+                              "Resource": "*"}
+                             for permission in sorted(list(permissions))]}
+    policyname={"Fn::Sub": "%s-error-function-role-policy-${AWS::StackName}" % action["name"]}
+    policies=[{"PolicyDocument": policydoc,
+               "PolicyName": policyname}]
+    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+           "Policies": policies}
+    return (resourcename,
+            "AWS::IAM::Role",
             props)
 
 @resource
@@ -137,8 +184,10 @@ def init_event_rule_permission(action, event):
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
-               init_role,
-               init_event_config]:
+               init_function_role,
+               init_event_config,
+               init_error_function,
+               init_error_function_role]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
@@ -152,7 +201,7 @@ def init_async_component(action):
 def init_sync_component(action):
     resources=[]
     for fn in [init_function,
-               init_role]:
+               init_function_role]:
         resource=fn(action)
         resources.append(resource)
     return resources
