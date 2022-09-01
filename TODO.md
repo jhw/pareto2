@@ -1,6 +1,6 @@
 ### short
 
-- convert rate to fixed rate of 5 minutes
+- rate formatter
 - calculate n = int(math.floor(60/interval))
 - pass full payload to lambda function each time
 
@@ -117,6 +117,7 @@
 
 ### done
 
+- convert rate to fixed rate of 5 minutes
 - metadata to ensure that API and timer are bound to sync functions
 - metadata to ensure that topic is bound to async function
 - metadata to validate topic actions
