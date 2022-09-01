@@ -2,16 +2,18 @@ from pareto2.core.components import hungarorise as H
 from pareto2.core.components import uppercase as U
 from pareto2.core.components import resource
 
-import re
+AsyncPermissions={"lambda:InvokeFunction", # to allow sync invocation of error function
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"}
 
-"""
-- lambda:InvokeFunction added to (potentially) allow async functions to call their respective error functions
-"""
+SyncPermissions={"logs:CreateLogGroup",
+                 "logs:CreateLogStream",
+                 "logs:PutLogEvents"}
 
-DefaultPermissions={"lambda:InvokeFunction",
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"}
+ErrorPermissions={"logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"}
 
 ErrorsCode="""def handler(event, context=None):
     print (event)"""
@@ -46,9 +48,9 @@ def init_function(action):
             props)
 
 @resource
-def init_function_role(action, defaultpermissions=DefaultPermissions):
-    def init_permissions(action, defaultpermissions):
-        permissions=set(defaultpermissions)
+def init_function_role(action, basepermissions=set()):
+    def init_permissions(action, basepermissions):
+        permissions=set(basepermissions)
         if "permissions" in action:
             permissions.update(set(action["permissions"]))
         return permissions        
@@ -57,7 +59,7 @@ def init_function_role(action, defaultpermissions=DefaultPermissions):
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    permissions=init_permissions(action, defaultpermissions)
+    permissions=init_permissions(action, basepermissions)
     policydoc={"Version": "2012-10-17",
                "Statement": [{"Action" : permission,
                               "Effect": "Allow",
@@ -71,6 +73,12 @@ def init_function_role(action, defaultpermissions=DefaultPermissions):
     return (resourcename,
             "AWS::IAM::Role",
             props)
+
+def init_async_function_role(action, permissions=AsyncPermissions):
+    return init_function_role(action, permissions)
+
+def init_sync_function_role(action, permissions=SyncPermissions):
+    return init_function_role(action, permissions)
 
 @resource
 def init_event_config(action):
@@ -109,7 +117,7 @@ def init_error_function(action,
             props)
 
 @resource
-def init_error_function_role(action, permissions=DefaultPermissions):
+def init_error_function_role(action, permissions=ErrorPermissions):
     resourcename=H("%s-error-function-role" % action["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",

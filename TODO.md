@@ -1,6 +1,6 @@
 ### short
 
-- refactor addition of lambda:InvokeFunction permission to async functions only
+- add sqs permissions to sync function
 
 ### medium
 
@@ -103,6 +103,7 @@
 
 ### done
 
+- refactor addition of lambda:InvokeFunction permission to async functions only
 - error role
 - inline error function
 - event config
