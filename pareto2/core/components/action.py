@@ -4,12 +4,17 @@ from pareto2.core.components import resource
 
 import re
 
-DefaultPermissions={"logs:CreateLogGroup",
+"""
+- lambda:InvokeFunction added to (potentially) allow async functions to call their respective error functions
+"""
+
+DefaultPermissions={"lambda:InvokeFunction",
+                    "logs:CreateLogGroup",
                     "logs:CreateLogStream",
                     "logs:PutLogEvents"}
 
 ErrorsCode="""def handler(event, context=None):
-    print (handler)"""
+    print (event)"""
 
 ErrorsMemorySize, ErrorsTimeout = "small", "short"
 

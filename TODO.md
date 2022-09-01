@@ -1,6 +1,6 @@
 ### short
 
-- teardown, redeploy, test
+- refactor addition of lambda:InvokeFunction permission to async functions only
 
 ### medium
 
@@ -24,6 +24,8 @@
 
 ### thoughts
 
+- convert action error handler and table streaming function to singletons ?
+  - feels like an over- optimisation; you're not constrained by resources yet
 - deploy_stack.py to check s3 artifacts ?
   - almost certainly overkill; aim is not to provide a high level of command line comfort
 - test underscores in component names?
