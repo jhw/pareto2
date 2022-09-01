@@ -1,11 +1,6 @@
 ### short
 
-### pareto2-demo
-
-- rename hello as http
-- add|multiply
-- script to ping add|multiply
-- teardown, deploy, test error
+- teardown, redeploy, test
 
 ### medium
 
