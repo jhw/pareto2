@@ -1,8 +1,8 @@
 ### short
 
-### medium
-
 - add back (macro, micro) timer w/ tests
+
+### medium
 
 - ** dynamic loading of modules from inside layer **
 
