@@ -1,5 +1,11 @@
 ### short
 
+- demo-table action appears to be missing lambda:InvokeFunction permission
+
+```
+DemoTableFunctionEventConfig => The function's execution role does not have permissions to call InvokeFunction on arn:aws:lambda:eu-west-1:119552584133:function:pareto2-demo-dev-DemoTableErrorFunction-Vwsj569GOEw6 (Service: AWSLambdaInternal; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 002c04e9-8fa5-4a7e-b29d-7af59d581d98; Proxy: null)
+```
+
 - teardown, redeploy, test
 
 ### medium
