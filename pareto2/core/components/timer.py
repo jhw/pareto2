@@ -4,12 +4,13 @@ from pareto2.core.components import resource
 
 import json, math
 
-MicroFunctionCode="""import boto3, json, os
+MicroFunctionCode="""import boto3, datetime, json, os
 
 def handler(event, context,
             n=os.environ["N"],
             interval=os.environ["INTERVAL"],
             queueurl=os.environ["QUEUE_URL"]):
+    print ("%s -> %s" % (datetime.datetime.now(), event))
     interval, n = int(interval), int(n)
     sqs=boto3.client("sqs")
     for i in range(n):
