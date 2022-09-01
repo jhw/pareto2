@@ -1,6 +1,20 @@
 ### short
 
-- add sqs permissions to sync function
+- test_add.py producing strange responses
+
+```
+env) jhw@Justins-MacBook-Air pareto2 % python scripts/demo/test_add.py dev 1 a 
+{'ResponseMetadata': {'RequestId': '5aef5eef-1497-4b8b-86e9-e3493cb0fbe9', 'HTTPStatusCode': 202, 'HTTPHeaders': {'date': 'Thu, 01 Sep 2022 08:26:52 GMT', 'content-length': '0', 'connection': 'keep-alive', 'x-amzn-requestid': '5aef5eef-1497-4b8b-86e9-e3493cb0fbe9', 'x-amzn-remapped-content-length': '0', 'x-amzn-trace-id': 'root=1-63106ccc-49b973a920eaeaed2f14d85d;sampled=0'}, 'RetryAttempts': 0}, 'StatusCode': 202, 'Payload': <botocore.response.StreamingBody object at 0x106b000a0>}
+(env) jhw@Justins-MacBook-Air pareto2 % 
+(env) jhw@Justins-MacBook-Air pareto2 % 
+(env) jhw@Justins-MacBook-Air pareto2 % 
+(env) jhw@Justins-MacBook-Air pareto2 % python pareto2/cli/deploy/search_lambda_logs.py dev add 600 "*"    
+{'x': '1', 'y': '1'}
+{'x': '1', 'y': 'a'}
+(env) jhw@Justins-MacBook-Air pareto2 % python pareto2/cli/deploy/search_lambda_logs.py dev add-error 600 "*"
+{'x': '1', 'y': '1'}
+{'x': '1', 'y': 'a'}
+```
 
 ### medium
 
@@ -103,6 +117,7 @@
 
 ### done
 
+- add sqs permissions to sync function
 - refactor addition of lambda:InvokeFunction permission to async functions only
 - error role
 - inline error function

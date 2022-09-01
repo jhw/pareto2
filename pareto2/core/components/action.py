@@ -7,9 +7,16 @@ AsyncPermissions={"lambda:InvokeFunction", # to allow sync invocation of error f
                   "logs:CreateLogStream",
                   "logs:PutLogEvents"}
 
+"""
+- sync action is most commonly bound to sqs
+"""
+
 SyncPermissions={"logs:CreateLogGroup",
                  "logs:CreateLogStream",
-                 "logs:PutLogEvents"}
+                 "logs:PutLogEvents",                 
+                 "sqs:DeleteMessage",
+                 "sqs:GetQueueAttributes",
+                 "sqs:ReceiveMessage"}
 
 ErrorPermissions={"logs:CreateLogGroup",
                   "logs:CreateLogStream",
@@ -48,7 +55,7 @@ def init_function(action):
             props)
 
 @resource
-def init_function_role(action, basepermissions=set()):
+def init_function_role(action, basepermissions):
     def init_permissions(action, basepermissions):
         permissions=set(basepermissions)
         if "permissions" in action:
@@ -75,10 +82,10 @@ def init_function_role(action, basepermissions=set()):
             props)
 
 def init_async_function_role(action, permissions=AsyncPermissions):
-    return init_function_role(action, permissions)
+    return init_function_role(action, basepermissions=permissions)
 
 def init_sync_function_role(action, permissions=SyncPermissions):
-    return init_function_role(action, permissions)
+    return init_function_role(action, basepermissions=permissions)
 
 @resource
 def init_event_config(action):
@@ -197,7 +204,7 @@ def init_event_rule_permission(action, event):
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
-               init_function_role,
+               init_async_function_role,
                init_event_config,
                init_error_function,
                init_error_function_role]:
@@ -214,7 +221,7 @@ def init_async_component(action):
 def init_sync_component(action):
     resources=[]
     for fn in [init_function,
-               init_function_role]:
+               init_sync_function_role]:
         resource=fn(action)
         resources.append(resource)
     return resources
