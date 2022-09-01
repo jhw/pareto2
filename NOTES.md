@@ -1,3 +1,9 @@
+### macro timer 01/09/22
+
+- macro timer which is directly bound to action
+- macro timer interval rounds down to 60 seconds
+- select macro vs micro based on 1 minute limit
+
 ### unified config 01/09/22
 
 - feels like there is value in merging app.props, defaults.yaml, metadata.yaml

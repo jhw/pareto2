@@ -1,22 +1,12 @@
 ### short
 
-- calculate n = int(math.floor(60/interval))
-- pass full payload to lambda function each time
+- check micro timer looks correct, especially environment variables
 
 - metadata to validate event type against bucket/table attrs
 
-- macro timer which is directly bound to action
-- macro timer interval rounds down to 60 seconds
-- select macro vs micro based on 1 minute limit
-
-### pareto2-demo
-
-- replace target with bucket, table lambdas
-- bind bucket, table to their respective lambdas
-- add new timer lambda
-
 ### medium
 
+- macro timer
 - unified config [notes]
 - convert action errors to singleton
 - replace file- based loading of core pareto components
@@ -115,6 +105,8 @@
 
 ### done
 
+- calculate N and pass as environment variable
+- pass full payload to lambda function each time
 - rate formatter
 - redefine as micro timer
 - convert rate to fixed rate of 5 minutes

@@ -2,22 +2,23 @@ from pareto2.core.components import hungarorise as H
 from pareto2.core.components import uppercase as U
 from pareto2.core.components import resource
 
-import json
+import json, math
 
-FunctionCode="""import boto3, json, os
+MicroFunctionCode="""import boto3, json, os
 
-def handler(items, context,
+def handler(event, context,
+            n=os.environ["N"],
             interval=os.environ["INTERVAL"],
             queueurl=os.environ["QUEUE_URL"]):
     sqs=boto3.client("sqs")
-    for i, item in enumerate(items):
+    for i in range(int(n)):
         delay=i*int(interval)
         sqs.send_message(QueueUrl=queueurl,
                          DelaySeconds=delay,
-                         MessageBody=json.dumps(item))
+                         MessageBody=json.dumps(event))
 """
 
-TimerRate=300
+MicroRate=300
 
 MemorySize, Timeout = "small", "short"
 
@@ -43,7 +44,7 @@ def init_rule(timer, rate):
             "AWS::Events::Rule",
             props)
 
-def init_micro_rule(timer, rate=TimerRate):
+def init_micro_rule(timer, rate=MicroRate):
     return init_rule(timer, rate)
 
 @resource
@@ -60,19 +61,22 @@ def init_permission(timer):
             props)
 
 @resource            
-def init_function(timer,
-                  code=FunctionCode,
-                  memorysize=MemorySize,
-                  timeout=Timeout):
+def init_micro_function(timer,
+                        rate=MicroRate,
+                        code=MicroFunctionCode,
+                        memorysize=MemorySize,
+                        timeout=Timeout):
     resourcename=H("%s-timer-function" % timer["name"])
     rolename=H("%s-timer-function-role" % timer["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % memorysize)
     timeout=H("timeout-%s" % timeout)
+    n=int(math.floor(rate/timer["interval"]))
     variables={}
     variables[U("queue-url")]={"Ref": H("%s-timer-queue" % timer["name"])}
     variables[U("interval")]=str(timer["interval"])
+    variables[U("n")]=str(n)
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},
@@ -130,7 +134,7 @@ def init_micro_component(timer):
     resources=[]
     for fn in [init_micro_rule,
                init_permission,
-               init_function,
+               init_micro_function,
                init_role,
                init_queue,
                init_binding]:
