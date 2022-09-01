@@ -2,13 +2,12 @@
 
 - check micro timer looks correct, especially environment variables
 
-- metadata to validate event type against bucket/table attrs
-
 ### medium
 
 - macro timer
 - unified config [notes]
 - convert action errors to singleton
+- metadata to validate event type against bucket/table attrs
 - replace file- based loading of core pareto components
 - schema validation
 - convert async action error to push to sns 
