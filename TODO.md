@@ -1,9 +1,18 @@
 ### short
 
-- add async action error destinations
-- add back (macro, micro) timer w/ tests
+- event config
+- inline error function
+- error role
+
+### pareto2-demo
+
+- rename hello as http
+- add|multiply
+- script to ping add|multiply
 
 ### medium
+
+- add back (macro, micro) timer w/ tests
 
 - ** dynamic loading of modules from inside layer **
 
