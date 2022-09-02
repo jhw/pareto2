@@ -1,15 +1,11 @@
 ### short
 
 - metadata to validate event type against bucket/table attrs
-
-### pareto2-demo
-
-- refactor target/#{xxx} nomenclature so target is a suffix
+- checks for custom vs inline function names
+- replace shell scripts with python scripts
+- convert action errors to singleton
 
 ### medium
-
-- checks for custom vs inline function names
-- convert action errors to singleton
 
 - unified config [notes]
 - search_lambda_logs.py cli facility to allow you to select log group
