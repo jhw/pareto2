@@ -1,8 +1,6 @@
-import yaml
+from pareto2.core.components import hungarorise
 
-def hungarorise(text):
-    return "".join([tok.capitalize()
-                    for tok in text.split("-")])
+import yaml
 
 def load_config(filename="config.yaml"):
     return yaml.safe_load(open(filename).read())

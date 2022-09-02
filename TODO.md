@@ -1,14 +1,13 @@
 ### short [unified-config]
 
+- cross- import fetch_outputs into user code
+- check for confusion between globals and defaults in Artifacts build_template
 - move event matching into list_events.py
 - allow underscores in globals
 - allow underscores in defaults
-- check for confusion between globals and defaults in Artifacts build_template
 - init_config should initialise metadata
 - add separate layers block
 - use per- stage config
-
-### pending 
 
 ### pareto2-demo, layman2
 
