@@ -36,24 +36,26 @@ class Metadata(dict):
         for attr in ["actions",
                      "tables",
                      "buckets"]:
-            validate_refs(self, attr, errors)
+            if attr in self:
+                validate_refs(self, attr, errors)
 
     def validate_action_types(self, errors):
         def validate_type(self, attr, type, errors):
             actions={action["name"]:action
                      for action in self["actions"]}
-            if attr in self:
-                for component in self[attr]:
-                    action=actions[component["action"]]
-                    if action["type"]!=type:
-                        errors.append("%s component %s must be bound to %s action" % (attr,
-                                                                                      component["action"],
-                                                                                      type))
+            for component in self[attr]:
+                action=actions[component["action"]]
+                if action["type"]!=type:
+                    errors.append("%s component %s must be bound to %s action" % (attr,
+                                                                                  component["action"],
+                                                                                  type))
         for attr, type in [("endpoints", "sync"),
                            ("timers", "sync"),
                            ("topics", "async")]:
-            validate_type(self, attr, type, errors)
-                
+            if attr in self:
+                validate_type(self, attr, type, errors)
+
+            
     def validate(self):
         errors=[]
         self.validate_component_refs(errors)
