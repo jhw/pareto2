@@ -1,10 +1,18 @@
 ### short [unified-config]
 
-- check for confusion between globals and defaults in Artifacts build_template
+- test metadata main
+- test components main
+- test push_artifacts
+
+- init_config should initialise metadata
 
 - allow underscores in globals and defaults
 - add separate layers block
 - use per- stage config
+
+### pending 
+
+- check for confusion between globals and defaults in Artifacts build_template
 
 ### pareto2-demo, layman2
 
