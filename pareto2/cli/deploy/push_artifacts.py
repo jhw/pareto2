@@ -50,6 +50,9 @@ class Artifacts:
                                           for k, v in self.config["defaults"].items()})
         values=dict(self.config["globals"])
         values.update({"ArtifactsKey": lambdas.s3_key})
+        if "layers" in config:            
+            values.update({"%sLayerArn" % k.capitalize(): v
+                           for k, v in config["layers"].items()})
         template.parameters.update_defaults(values)
         template.dump_s3(self.s3, self.config["globals"]["ArtifactsBucket"])
         template.parameters.validate()

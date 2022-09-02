@@ -2,7 +2,6 @@
 
 - init_config should initialise metadata
 - allow underscores in globals
-- add separate layers block
 
 ### pareto2-demo, layman2
 
@@ -111,6 +110,7 @@
 
 ### done
 
+- add separate layers block
 - hungarorise should handle underscores
 - allow underscores in defaults
 - check for confusion between globals and defaults in Artifacts build_template
