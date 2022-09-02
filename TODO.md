@@ -1,14 +1,11 @@
 ### short
 
-- dev script to unify config
-
-- list_stacks.py
 - list_outputs.py
+- list_stacks.py
 
 - convert action errors to singleton
 
 ### medium
-
 
 - unified config [notes]
 - search_lambda_logs.py cli facility to allow you to select log group
@@ -109,6 +106,7 @@
 
 ### done
 
+- dev script to unify config
 - checks for custom vs inline function names
   - requires overriding of template.update
 - metadata to validate event type against bucket/table attrs
