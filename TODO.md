@@ -1,9 +1,5 @@
 ### short
 
-- calculate minutes as math.ceil(interval/60)
-- rate is formatted minutes
-- number is math.floor(60/interval) if minutes == 1 else 1
-
 - metadata to validate event type against bucket/table attrs
 
 ### pareto2-demo
@@ -114,6 +110,9 @@
 
 ### done
 
+- calculate minutes as math.ceil(interval/60)
+- rate is formatted minutes
+- number is math.floor(60/interval) if minutes == 1 else 1
 - remove micro nomenclature
 - rename variables going into micro timer function initialisation
 - rename inline timer function as scheduler function

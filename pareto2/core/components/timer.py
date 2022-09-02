@@ -25,12 +25,11 @@ def handler(event, context,
 - possible tradeoff between cost of events rule execution vs cost of sqs message execution
 """
 
-SchedulerMemorySize, SchedulerTimeout, SchedulerRate = "small", "short", 60
+SchedulerMemorySize, SchedulerTimeout = "small", "short"
 
 @resource
-def init_rule(timer, rate=SchedulerRate):
-    def format_schedule(rate):
-        minutes=int(rate/60)
+def init_rule(timer):
+    def format_schedule(minutes):
         suffix="minute" if minutes==1 else "minutes"
         return "rate(%i %s)" % (minutes, suffix)
     def init_target(timer):
@@ -42,7 +41,8 @@ def init_rule(timer, rate=SchedulerRate):
                 "Arn": arn}        
     resourcename=H("%s-timer-rule" % timer["name"])
     target=init_target(timer)
-    scheduleexpr=format_schedule(rate)
+    minutes=int(math.ceil(timer["interval"]/60))
+    scheduleexpr=format_schedule(minutes)
     props={"Targets": [target],
            "ScheduleExpression": scheduleexpr}
     return (resourcename,
@@ -64,7 +64,6 @@ def init_permission(timer):
 
 @resource            
 def init_function(timer,
-                  rate=SchedulerRate,
                   code=SchedulerFunctionCode,
                   memorysize=SchedulerMemorySize,
                   timeout=SchedulerTimeout):
@@ -74,7 +73,8 @@ def init_function(timer,
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % memorysize)
     timeout=H("timeout-%s" % timeout)
-    n=int(math.floor(rate/timer["interval"]))
+    minutes=int(math.ceil(timer["interval"]/60))
+    n=int(math.floor(60/timer["interval"])) if minutes==1 else 1
     variables={}
     variables[U("queue-url")]={"Ref": H("%s-timer-queue" % timer["name"])}
     variables[U("interval")]=str(timer["interval"])
