@@ -1,29 +1,8 @@
-import boto3, re
+from pareto2.cli.deploy import *
 
-def fetch_resources(cf, stackname):
-    resources, token = [], None
-    while True:
-        kwargs={"StackName": stackname}
-        if token:
-            kwargs["NextToken"]=token
-        resp=cf.list_stack_resources(**kwargs)
-        resources+=resp["StackResourceSummaries"]
-        if "NextToken" in resp:
-            token=resp["NextToken"]
-        else:
-            break
-    return sorted(resources,
-                  key=lambda x: x["LastUpdatedTimestamp"])
-                  
-def matches(values, pat):
-    for value in values:
-        if re.search(pat, str(value)):
-            return True
-    return False
+from botocore.exceptions import ClientError
 
-def format_value(value, n=32):
-    text=str(value)
-    return text[:n] if len(text) > n else text+"".join([" " for i in range(n-len(text))])
+import boto3
 
 if __name__=="__main__":
     try:
@@ -55,4 +34,6 @@ if __name__=="__main__":
         print ("%i resources" % count)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
-        
+    except ClientError as error:
+        print ("Error: %s" % str(error))
+

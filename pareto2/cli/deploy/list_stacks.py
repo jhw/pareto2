@@ -1,8 +1,8 @@
-import boto3
+from pareto2.cli.deploy import *
 
-def format_value(value, n=32):
-    text=str(value)
-    return text[:n] if len(text) > n else text+"".join([" " for i in range(n-len(text))])
+from botocore.exceptions import ClientError
+
+import boto3
 
 if __name__=="__main__":
     try:
@@ -13,5 +13,7 @@ if __name__=="__main__":
                                  format_value(stack["StackStatus"]),
                                  format_value(stack["CreationTime"])))
     except RuntimeError as error:
+        print ("Error: %s" % str(error))
+    except ClientError as error:
         print ("Error: %s" % str(error))
         

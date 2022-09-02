@@ -1,5 +1,9 @@
 from pareto2.cli import hungarorise
 
+from pareto2.cli.deploy import *
+
+from botocore.exceptions import ClientError
+
 import boto3, re, sys, time
 
 """
@@ -95,4 +99,6 @@ if __name__=="__main__":
                 continue
             print (msg)
     except RuntimeError as error:
+        print ("Error: %s" % str(error))
+    except ClientError as error:
         print ("Error: %s" % str(error))

@@ -1,6 +1,8 @@
-import boto3
+from pareto2.cli.deploy import *
 
 from botocore.exceptions import ClientError
+
+import boto3
 
 def fetch_resources(cf, stackname, filterfn=lambda x: True):
     resources, token = [], None
@@ -18,7 +20,7 @@ def fetch_resources(cf, stackname, filterfn=lambda x: True):
             break
     return sorted(resources,
                   key=lambda x: x["LastUpdatedTimestamp"])
-                  
+
 def empty_bucket(s3, bucketname):
     try:
         print ("emptying %s" % bucketname)

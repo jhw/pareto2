@@ -1,8 +1,12 @@
+from pareto2.cli.deploy import *
+
 from pareto2.core.lambdas import Lambdas
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
 from pareto2.core import init_template
+
+from botocore.exceptions import ClientError
 
 import boto3
 
@@ -78,6 +82,8 @@ if __name__=="__main__":
                    "components"]
         artifacts.build(component_paths=comppaths)
     except RuntimeError as error:
+        print ("Error: %s" % str(error))
+    except ClientError as error:
         print ("Error: %s" % str(error))
 
 

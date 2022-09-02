@@ -3,24 +3,11 @@
 - but when they fail, they tend to do so
 """
 
-import boto3, re
+from pareto2.cli.deploy import *
 
-def fetch_events(cf, stackname, n):
-    events, token = [], None
-    while True:
-        if len(events) > n:
-            break
-        kwargs={"StackName": stackname}
-        if token:
-            kwargs["NextToken"]=token
-        resp=cf.describe_stack_events(**kwargs)
-        events+=resp["StackEvents"]
-        if "NextToken" in resp:
-            token=resp["NextToken"]
-        else:
-            break
-    return sorted(events,
-                  key=lambda x: x["Timestamp"])[-n:]
+from botocore.exceptions import ClientError
+
+import boto3, re
 
 if __name__=="__main__":
     try:
@@ -46,5 +33,7 @@ if __name__=="__main__":
         print ()
         print ("%i events" % count)
     except RuntimeError as error:
+        print ("Error: %s" % str(error))
+    except ClientError as error:
         print ("Error: %s" % str(error))
         

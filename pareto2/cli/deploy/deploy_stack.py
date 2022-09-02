@@ -1,8 +1,10 @@
+from pareto2.cli import load_config
+
+from pareto2.cli.deploy import *
+
 from pareto2.core.metadata import Metadata
 
 from botocore.exceptions import ClientError, WaiterError
-
-from pareto2.cli import load_config
 
 import boto3
 

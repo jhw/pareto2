@@ -1,31 +1,8 @@
+from pareto2.cli.deploy import *
+
+from botocore.exceptions import ClientError
+
 import boto3, re
-
-def fetch_events(cf, stackname, n):
-    events, token = [], None
-    while True:
-        if len(events) > n:
-            break
-        kwargs={"StackName": stackname}
-        if token:
-            kwargs["NextToken"]=token
-        resp=cf.describe_stack_events(**kwargs)
-        events+=resp["StackEvents"]
-        if "NextToken" in resp:
-            token=resp["NextToken"]
-        else:
-            break
-    return sorted(events,
-                  key=lambda x: x["Timestamp"])[-n:]
-
-def matches(values, pat):
-    for value in values:
-        if re.search(pat, str(value)):
-            return True
-    return False
-
-def format_value(value, n=32):
-    text=str(value)
-    return text[:n] if len(text) > n else text+"".join([" " for i in range(n-len(text))])
 
 if __name__=="__main__":
     try:
@@ -60,4 +37,7 @@ if __name__=="__main__":
         print ("%i events" % count)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
+    except ClientError as error:
+        print ("Error: %s" % str(error))
+
         

@@ -4,9 +4,11 @@
 
 from pareto2.cli import *
 
-import boto3, yaml
+from pareto2.cli.deploy import fetch_outputs
 
 from botocore.exceptions import ClientError
+
+import boto3, yaml
 
 if __name__=="__main__":
     try:

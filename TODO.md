@@ -1,13 +1,16 @@
 ### short
 
+- move event matching into list_events.py
+
 - convert action errors to singleton
 
-### pareto2-demo, layman
+### pareto2-demo, layman2
 
 - replace load_xxx, get_resources nomenclature with fetch_xxx
 
 ### medium
 
+- add queue type w/ metadata validation
 - replace file- based loading of core pareto components
 - unified config [notes]
 - search_lambda_logs.py cli facility to allow you to select log group
@@ -107,6 +110,8 @@
 
 ### done
 
+- delete_stack.py shouldn't need custom fetch_resources
+- fix refs to fetch_outputs in cli/users
 - replace cli load_xxx nomenclature with fetch_xxx
 - list_stacks.py
 - list_outputs.py

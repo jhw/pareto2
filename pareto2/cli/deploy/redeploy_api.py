@@ -1,5 +1,7 @@
 from pareto2.cli import hungarorise, fetch_outputs
 
+from pareto2.cli.deploy import *
+
 from botocore.exceptions import ClientError
 
 import boto3
@@ -25,7 +27,7 @@ if __name__=="__main__":
         apigw=boto3.client("apigateway")
         print (apigw.create_deployment(restApiId=outputs[restapiname],
                                        stageName=outputs[stagename]))
-    except ClientError as error:
-        print (error)
     except RuntimeError as error:
+        print ("Error: %s" % str(error))
+    except ClientError as error:
         print ("Error: %s" % str(error))
