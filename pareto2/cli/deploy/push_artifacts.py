@@ -36,17 +36,14 @@ class Artifacts:
                        name,
                        paths,
                        lambdas):
-        template=init_template(self.config,
-                               self.md,
+        template=init_template(self.md,
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)
-        """
-        - some confusion here between globals and defaults?
-        """
-        defaults=dict(self.config["globals"])
-        defaults.update({"ArtifactsKey": lambdas.s3_key})
-        template.parameters.update_defaults(defaults)
+        template.autofill_parameters(self.config["defaults"])
+        globalz=dict(self.config["globals"])
+        globalz.update({"ArtifactsKey": lambdas.s3_key})
+        template.parameters.update_defaults(globalz)
         template.dump_s3(self.s3, self.config["globals"]["ArtifactsBucket"])
         template.parameters.validate()
         template.validate_root()

@@ -1,8 +1,11 @@
 ### short [unified-config]
 
+- remove hungarorise abbrevs
+- move event matching into list_events.py
+- allow underscores in globals
+- allow underscores in defaults
 - check for confusion between globals and defaults in Artifacts build_template
 - init_config should initialise metadata
-- allow underscores in globals and defaults
 - add separate layers block
 - use per- stage config
 
@@ -14,8 +17,6 @@
 
 ### medium
 
-- remove hungarorise abbrevs
-- move event matching into list_events.py
 - add queue type w/ metadata validation
 - replace file- based loading of core pareto components
 - search_lambda_logs.py cli facility to allow you to select log group
