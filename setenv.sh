@@ -8,8 +8,8 @@ export PARETO2_APP_PATH=.
 export PARETO2_APP_NAME=demo
 
 if [ ! -L demo ]; then
+    ln -s ../pareto2-demo/config.yaml config.yaml
     ln -s ../pareto2-demo/demo demo
-    ln -s ../pareto2-demo/config config
     ln -s ../pareto2-demo/fixtures fixtures
     ln -s ../pareto2-demo/scripts scripts
 fi

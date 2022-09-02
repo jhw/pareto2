@@ -1,6 +1,5 @@
 ### short [unified-config]
 
-- replace existing /config with config.yaml
 - refactor load_config to load from yaml
 - remove webhook in defaults
 - search for config refs and search/replace them
@@ -117,6 +116,7 @@
 
 ### done
 
+- replace existing /config with config.yaml
 - delete_stack.py shouldn't need custom fetch_resources
 - fix refs to fetch_outputs in cli/users
 - replace cli load_xxx nomenclature with fetch_xxx

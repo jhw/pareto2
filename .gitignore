@@ -3,7 +3,7 @@ env
 __pycache__
 tmp
 
-config
+config.yaml
 demo
 fixtures
 scripts
