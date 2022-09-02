@@ -1,11 +1,9 @@
 ### short [unified-config]
 
+- hungarorise should handle underscores
 - init_config should initialise metadata
-- move event matching into list_events.py
 - allow underscores in globals
-- allow underscores in defaults
 - add separate layers block
-- use per- stage config
 
 ### pareto2-demo, layman2
 
@@ -13,6 +11,8 @@
 
 ### medium
 
+- use per- stage config
+- move event matching into list_events.py
 - add queue type w/ metadata validation
 - replace file- based loading of core pareto components
 - search_lambda_logs.py cli facility to allow you to select log group
@@ -112,6 +112,7 @@
 
 ### done
 
+- allow underscores in defaults
 - check for confusion between globals and defaults in Artifacts build_template
 - remove hungarorise abbrevs
 - test push_artifacts

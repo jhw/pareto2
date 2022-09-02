@@ -1,3 +1,5 @@
+from pareto2.cli import *
+
 from pareto2.cli.deploy import *
 
 from pareto2.core.lambdas import Lambdas
@@ -44,7 +46,8 @@ class Artifacts:
         - init_implied_parameters initialises parameter variables
         - parameters.update_defaults adds default values
         """
-        template.init_implied_parameters(self.config["defaults"])
+        template.init_implied_parameters({hungarorise(k):v
+                                          for k, v in self.config["defaults"].items()})
         values=dict(self.config["globals"])
         values.update({"ArtifactsKey": lambdas.s3_key})
         template.parameters.update_defaults(values)
@@ -71,7 +74,6 @@ if __name__=="__main__":
         import os
         apppath=os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else "."
         appname=os.environ["PARETO2_APP_NAME"]
-        from pareto2.cli import load_config
         config=load_config("%s/config.yaml" % apppath)
         md=Metadata(config["components"])
         md.validate().expand()
