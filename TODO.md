@@ -1,14 +1,16 @@
 ### short
 
-- replace cli load_xxx nomenclature with fetch_xxx
-
 - convert action errors to singleton
+
+### pareto2-demo, layman
+
+- replace load_xxx, get_resources nomenclature with fetch_xxx
 
 ### medium
 
+- replace file- based loading of core pareto components
 - unified config [notes]
 - search_lambda_logs.py cli facility to allow you to select log group
-- replace file- based loading of core pareto components
 - schema validation
 - convert async action error to push to sns 
 - table, queue error handlers
@@ -105,6 +107,7 @@
 
 ### done
 
+- replace cli load_xxx nomenclature with fetch_xxx
 - list_stacks.py
 - list_outputs.py
 - dev script to unify config

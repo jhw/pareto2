@@ -1,6 +1,6 @@
 import boto3, re
 
-def load_resources(cf, stackname):
+def fetch_resources(cf, stackname):
     resources, token = [], None
     while True:
         kwargs={"StackName": stackname}
@@ -36,7 +36,7 @@ if __name__=="__main__":
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["AppName"],
                              stagename)
-        resources, count = load_resources(cf, stackname), 0
+        resources, count = fetch_resources(cf, stackname), 0
         for resource in resources:
             values=[resource[attr] if attr in resource else ""
                     for attr in ["LastUpdatedTimestamp",

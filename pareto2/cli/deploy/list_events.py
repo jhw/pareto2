@@ -1,6 +1,6 @@
 import boto3, re
 
-def load_events(cf, stackname, n):
+def fetch_events(cf, stackname, n):
     events, token = [], None
     while True:
         if len(events) > n:
@@ -41,7 +41,7 @@ if __name__=="__main__":
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["AppName"],
                              stagename)
-        events, count = load_events(cf, stackname, n), 0
+        events, count = fetch_events(cf, stackname, n), 0
         for event in events:
             values=[event[attr] if attr in event else ""
                     for attr in ["Timestamp",

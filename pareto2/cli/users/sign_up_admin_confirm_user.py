@@ -19,7 +19,7 @@ if __name__=="__main__":
         config=load_config()
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["AppName"], stage)
-        outputs=load_outputs(cf, stackname)
+        outputs=fetch_outputs(cf, stackname)
         userpool=hungarorise("%s-userpool" % userpoolprefix)
         if userpool not in outputs:
             raise RuntimeError("userpool not found")

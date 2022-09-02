@@ -1,17 +1,8 @@
-from pareto2.cli import hungarorise
+from pareto2.cli import hungarorise, fetch_outputs
 
 from botocore.exceptions import ClientError
 
 import boto3
-
-def load_outputs(cf, stackname):
-    outputs={}
-    for stack in cf.describe_stacks()["Stacks"]:
-        if (stack["StackName"].startswith(stackname) and
-            "Outputs" in stack):
-            for output in stack["Outputs"]:
-                outputs[output["OutputKey"]]=output["OutputValue"]
-    return outputs
 
 if __name__=="__main__":
     try:
@@ -24,7 +15,7 @@ if __name__=="__main__":
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["AppName"],
                              stagename)
-        outputs=load_outputs(cf, stackname)
+        outputs=fetch_outputs(cf, stackname)
         restapiname=hungarorise("%s-api-rest-api" % apiname)
         if restapiname not in outputs:
             raise RuntimeError("%s not found" % restapiname)
