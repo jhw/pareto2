@@ -1,8 +1,15 @@
-### short
+### short [unified-config]
 
-- move event matching into list_events.py
+- replace existing /config with config.yaml
+- refactor load_config to load from yaml
+- remove webhook in defaults
+- search for config refs and search/replace them
+- search for defaults refs and replace them
+- update metadata refs
 
-- convert action errors to singleton
+- allow underscores in globals and defaults
+- add separate layers block
+- use per- stage config
 
 ### pareto2-demo, layman2
 
@@ -10,9 +17,9 @@
 
 ### medium
 
+- move event matching into list_events.py
 - add queue type w/ metadata validation
 - replace file- based loading of core pareto components
-- unified config [notes]
 - search_lambda_logs.py cli facility to allow you to select log group
 - schema validation
 - convert async action error to push to sns 
