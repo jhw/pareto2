@@ -1,9 +1,10 @@
 ### short
 
-- test duplicate inline function
-
-- replace shell scripts with python scripts
 - dev script to unify config
+
+- list_stacks.py
+- list_outputs.py
+
 - convert action errors to singleton
 
 ### medium
