@@ -1,7 +1,5 @@
 def hungarorise(text):
-    def format_token(text, abbrevs=[]):
-        return text.upper() if text in abbrevs else text.capitalize()
-    return "".join([format_token(tok)
+    return "".join([tok.capitalize()
                     for tok in text.split("-")])
 
 def uppercase(text):

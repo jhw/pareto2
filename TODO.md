@@ -1,6 +1,5 @@
 ### short [unified-config]
 
-- remove hungarorise abbrevs
 - move event matching into list_events.py
 - allow underscores in globals
 - allow underscores in defaults
@@ -116,6 +115,7 @@
 
 ### done
 
+- remove hungarorise abbrevs
 - test push_artifacts
 - test metadata main
 - test components main
