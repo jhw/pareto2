@@ -1,4 +1,4 @@
-import re
+import yaml
 
 def hungarorise(text):
     def format_token(text, abbrevs=[]):
@@ -6,9 +6,9 @@ def hungarorise(text):
     return "".join([format_token(tok)
                     for tok in text.split("-")])
 
-def load_config(filename="config/app.props"):
-    return dict([tok.split("=")
-                for tok in open(filename).read().split("\n")
-                 if re.sub("\\s", "", tok)!=''])
+def load_config(filename="config.yaml"):
+    return yaml.safe_load(open(filename).read())
 
+if __name__=="__main__":
+    pass
 

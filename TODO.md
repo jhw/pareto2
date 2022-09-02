@@ -1,6 +1,5 @@
 ### short [unified-config]
 
-- refactor load_config to load from yaml
 - remove webhook in defaults
 - search for config refs and search/replace them
 - search for defaults refs and replace them
@@ -16,6 +15,7 @@
 
 ### medium
 
+- remove hungarorise abbrevs
 - move event matching into list_events.py
 - add queue type w/ metadata validation
 - replace file- based loading of core pareto components
@@ -116,6 +116,7 @@
 
 ### done
 
+- refactor load_config to load from yaml
 - replace existing /config with config.yaml
 - delete_stack.py shouldn't need custom fetch_resources
 - fix refs to fetch_outputs in cli/users
