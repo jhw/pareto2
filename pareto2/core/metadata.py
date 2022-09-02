@@ -55,11 +55,26 @@ class Metadata(dict):
             if attr in self:
                 validate_type(self, attr, type, errors)
 
-            
+
+    def validate_action_event_config(self, errors):
+        if "actions" in self:
+            for action in self["actions"]:
+                if "events" in action:
+                    for event in action["events"]:
+                        if (event["type"]=="s3" and
+                            "bucket" not in event):
+                            errors.append("%s/%s event is missing bucket attr" % (action["name"],
+                                                                                  event["name"]))
+                        elif (event["type"]=="dynamodb" and
+                              "table" not in event):
+                            errors.append("%s/%s event is missing table attr" % (action["name"],
+                                                                                 event["name"]))
+                
     def validate(self):
         errors=[]
         self.validate_component_refs(errors)
-        self.validate_action_types(errors)        
+        self.validate_action_types(errors)
+        self.validate_action_event_config(errors)
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
         return self
