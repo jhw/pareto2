@@ -1,7 +1,8 @@
 ### short
 
-- list_outputs.py
 - list_stacks.py
+
+- replace cli load_xxx nomenclature with fetch_xxx
 
 - convert action errors to singleton
 
@@ -106,6 +107,7 @@
 
 ### done
 
+- list_outputs.py
 - dev script to unify config
 - checks for custom vs inline function names
   - requires overriding of template.update
