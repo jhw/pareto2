@@ -1,6 +1,7 @@
 ### short [unified-config]
 
 - init_config should initialise metadata
+
 - allow underscores in globals
 
 ### pareto2-demo, layman2
