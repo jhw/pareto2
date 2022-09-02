@@ -36,7 +36,8 @@ class Artifacts:
                        name,
                        paths,
                        lambdas):
-        template=init_template(self.md,
+        template=init_template(self.config,
+                               self.md,
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)
@@ -68,11 +69,11 @@ if __name__=="__main__":
     try:
         import os
         apppath=os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else "."
+        appname=os.environ["PARETO2_APP_NAME"]
         from pareto2.cli import load_config
         config=load_config("%s/config.yaml" % apppath)
         md=Metadata(config["components"])
         md.validate().expand()
-        appname=os.environ["PARETO2_APP_NAME"]
         from datetime import datetime
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         s3=boto3.client("s3")

@@ -48,7 +48,7 @@ if __name__=="__main__":
         from pareto2.core.metadata import Metadata
         md=Metadata(config["components"])
         md.validate().expand()
-        template=init_template(md)
+        template=init_template(config, md)
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

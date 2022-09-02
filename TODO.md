@@ -1,7 +1,5 @@
 ### short [unified-config]
 
-- init_template now takes config arg
-
 - check for confusion between globals and defaults in Artifacts build_template
 
 - allow underscores in globals and defaults
@@ -115,6 +113,7 @@
 
 ### done
 
+- init_template now takes config arg
 - update metadata initialisation
 - replace metadata initialise with pass to constructor
 - replace yaml load defaults with config refs
