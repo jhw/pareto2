@@ -110,5 +110,6 @@ if __name__=="__main__":
         config=load_config()
         md=Metadata(config["components"])
         md.validate().expand()
+        print (md)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
