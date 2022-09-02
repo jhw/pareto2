@@ -1,6 +1,5 @@
 ### short [unified-config]
 
-- hungarorise should handle underscores
 - init_config should initialise metadata
 - allow underscores in globals
 - add separate layers block
@@ -112,6 +111,7 @@
 
 ### done
 
+- hungarorise should handle underscores
 - allow underscores in defaults
 - check for confusion between globals and defaults in Artifacts build_template
 - remove hungarorise abbrevs

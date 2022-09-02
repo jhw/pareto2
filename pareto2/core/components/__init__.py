@@ -1,6 +1,8 @@
+import re
+
 def hungarorise(text):
     return "".join([tok.capitalize()
-                    for tok in text.split("-")])
+                    for tok in re.split("\\-|\\_", text)])
 
 def uppercase(text):
     return "_".join([tok.upper()
