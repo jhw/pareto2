@@ -1,11 +1,13 @@
 ### short
 
-- checks for custom vs inline function names
+- test duplicate inline function
+
 - replace shell scripts with python scripts
 - dev script to unify config
 - convert action errors to singleton
 
 ### medium
+
 
 - unified config [notes]
 - search_lambda_logs.py cli facility to allow you to select log group
@@ -106,6 +108,8 @@
 
 ### done
 
+- checks for custom vs inline function names
+  - requires overriding of template.update
 - metadata to validate event type against bucket/table attrs
 - calculate minutes as math.ceil(interval/60)
 - rate is formatted minutes

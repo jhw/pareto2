@@ -13,7 +13,7 @@ class Component(dict):
 
     def __init__(self, item={}):
         dict.__init__(self, item)
-
+        
     """
     - /\\$\\{\\w+\\}/ will exclude double- colon expressions such as `AWS::Region`
     - lowercase check is to remove any local expressions used in Fn::Sub
@@ -147,6 +147,18 @@ class Resources(Component):
     def __init__(self, item={}):
         Component.__init__(self, item)
 
+    """
+    - resources should only be written to template once
+    - possible conflict between names of inline and custom functions, for example
+    - hence worth raising an error here
+    """
+        
+    def update(self, item):
+        for k in item:
+            if k in self:
+                raise RuntimeError("duplicate resource key %s" % k)
+        Component.update(self, item)
+        
 class Outputs(Component):
 
     def __init__(self, item={}):
@@ -186,17 +198,18 @@ class Template:
                 "Parameters": self.parameters,
                 "Resources": self.resources,
                 "Outputs": self.outputs}
-    
-    def validate(self, tempkey, errors):
+
+    def cross_validate_refs(self, errors):
         ids=self.parameters.ids+self.resources.ids
         refs=self.resources.refs+self.outputs.refs
         for ref in refs:
             if ref not in ids:
-                errors.append("%s %s not defined" % (tempkey, ref))
+                errors.append("%s %s not defined" % (self.name, ref))
 
+                
     def validate_root(self):
         errors=[]
-        self.validate(self.name, errors)
+        self.cross_validate_refs(errors)
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
 
