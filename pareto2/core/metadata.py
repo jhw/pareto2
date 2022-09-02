@@ -13,7 +13,7 @@ class Metadata(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
-    def validate_refs(self, attr, errors):
+    def validate_component_refs(self, errors):
         def filter_refs(element, refs, attr):
             if isinstance(element, list):
                 for subelement in element:
@@ -24,35 +24,40 @@ class Metadata(dict):
                         refs.add(subelement)
                     else:
                         filter_refs(subelement, refs, attr)
-        names=[item["name"]
-               for item in self[attr]]
-        refs=set()
-        filter_refs(self, refs, attr[:-1])
-        for ref in refs:
-            if ref not in names:
-                errors.append("invalid %s reference [%s]" % (attr[:-1], ref))
-
-    def validate_action_type(self, attr, type, errors):
-        actions={action["name"]:action
-                 for action in self["actions"]}
-        if attr in self:
-            for component in self[attr]:
-                action=actions[component["action"]]
-                if action["type"]!=type:
-                    errors.append("%s component %s must be bound to %s action" % (attr,
-                                                                                  component["action"],
-                                                                                  type))
-                
-    def validate(self):
-        errors=[]
+        def validate_refs(self, attr, errors):
+            names=[item["name"]
+                   for item in self[attr]]
+            refs=set()
+            filter_refs(self, refs, attr[:-1])
+            for ref in refs:
+                # print (attr[:-1], ref)
+                if ref not in names:
+                    errors.append("invalid %s reference [%s]" % (attr[:-1], ref))
         for attr in ["actions",
                      "tables",
                      "buckets"]:
-            self.validate_refs(attr, errors)
+            validate_refs(self, attr, errors)
+
+    def validate_action_types(self, errors):
+        def validate_type(self, attr, type, errors):
+            actions={action["name"]:action
+                     for action in self["actions"]}
+            if attr in self:
+                for component in self[attr]:
+                    action=actions[component["action"]]
+                    if action["type"]!=type:
+                        errors.append("%s component %s must be bound to %s action" % (attr,
+                                                                                      component["action"],
+                                                                                      type))
         for attr, type in [("endpoints", "sync"),
                            ("timers", "sync"),
                            ("topics", "async")]:
-            self.validate_action_type(attr, type, errors)
+            validate_type(self, attr, type, errors)
+                
+    def validate(self):
+        errors=[]
+        self.validate_component_refs(errors)
+        self.validate_action_types(errors)        
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
         return self
