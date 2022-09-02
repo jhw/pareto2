@@ -1,14 +1,8 @@
-import os, re, yaml
+import os, re
 
 EndpointJSONSchema="http://json-schema.org/draft-07/schema#"
 
 class Metadata(dict):
-
-    @classmethod
-    def initialise(self, filename="config/metadata.yaml"):
-        if not os.path.exists(filename):
-            raise RuntimeError("metadata.yaml does not exist")
-        return Metadata(yaml.safe_load(open(filename).read()))
 
     def __init__(self, struct):
         dict.__init__(self, struct)

@@ -1,7 +1,6 @@
 ### short [unified-config]
 
-- replace metadata initialise with pass to constructor
-- update metadata refs
+- update metadata initialisation
 
 - init_template now takes config arg
 - check for confusion between globals and defaults in Artifacts build_template
@@ -117,6 +116,7 @@
 
 ### done
 
+- replace metadata initialise with pass to constructor
 - replace yaml load defaults with config refs
 - remove webhook in defaults
 - search for config refs and search/replace them
