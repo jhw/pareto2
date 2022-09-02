@@ -40,7 +40,10 @@ class Artifacts:
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)
-        defaults=dict(self.config)
+        """
+        - some confusion here between globals and defaults?
+        """
+        defaults=dict(self.config["globals"])
         defaults.update({"ArtifactsKey": lambdas.s3_key})
         template.parameters.update_defaults(defaults)
         template.dump_s3(self.s3, self.config["globals"]["ArtifactsBucket"])
@@ -66,7 +69,7 @@ if __name__=="__main__":
         import os
         apppath=os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else "."
         from pareto2.cli import load_config
-        config=load_config(filename="%s/config/app.props" % apppath)
+        config=load_config("%s/config.yaml" % apppath)
         md=Metadata.initialise(filename="%s/config/metadata.yaml" % apppath)
         md.validate().expand()
         appname=os.environ["PARETO2_APP_NAME"]

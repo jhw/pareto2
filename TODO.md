@@ -1,9 +1,10 @@
 ### short [unified-config]
 
-- remove webhook in defaults
-- replace yaml load defaults with config refs
 - replace metadata initialise with pass to constructor
 - update metadata refs
+
+- init_template now takes config arg
+- check for confusion between globals and defaults in Artifacts build_template
 
 - allow underscores in globals and defaults
 - add separate layers block
@@ -116,6 +117,8 @@
 
 ### done
 
+- replace yaml load defaults with config refs
+- remove webhook in defaults
 - search for config refs and search/replace them
 - refactor load_config to load from yaml
 - replace existing /config with config.yaml

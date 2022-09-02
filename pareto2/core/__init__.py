@@ -4,19 +4,7 @@ from importlib import import_module
 
 from datetime import datetime
 
-import os, yaml
-
-class Defaults(dict):
-
-    @classmethod
-    def initialise(self,
-                   filename="config/defaults.yaml"):
-        if not os.path.exists(filename):
-            raise RuntimeError("defaults.yaml does not exist")
-        return Defaults(yaml.safe_load(open(filename).read()))
-
-    def __init__(self, items={}):
-        dict.__init__(self, items)
+import os
 
 """
 - this is probably not going to work inside a layer as file paths there look different
@@ -39,7 +27,8 @@ def init_components(paths):
             components[key]=fn
     return components
         
-def init_template(md,                  
+def init_template(config,
+                  md,                  
                   name="main",
                   paths=["pareto2/core/components"],
                   timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
@@ -49,8 +38,7 @@ def init_template(md,
     for key, fn in components.items():
         fn(template=template,
            md=md)
-    defaults=Defaults.initialise()
-    template.autofill_parameters(defaults)
+    template.autofill_parameters(config["defaults"])
     return template
 
 if __name__=="__main__":
