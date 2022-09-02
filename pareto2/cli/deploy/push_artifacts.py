@@ -70,7 +70,7 @@ if __name__=="__main__":
         apppath=os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else "."
         from pareto2.cli import load_config
         config=load_config("%s/config.yaml" % apppath)
-        md=Metadata.initialise(filename="%s/config/metadata.yaml" % apppath)
+        md=Metadata(config["components"])
         md.validate().expand()
         appname=os.environ["PARETO2_APP_NAME"]
         from datetime import datetime

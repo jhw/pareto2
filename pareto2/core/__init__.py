@@ -43,8 +43,10 @@ def init_template(config,
 
 if __name__=="__main__":
     try:
+        from pareto2.cli import load_config
+        config=load_config()
         from pareto2.core.metadata import Metadata
-        md=Metadata.initialise()
+        md=Metadata(config["components"])
         md.validate().expand()
         template=init_template(md)
         template.dump_local()

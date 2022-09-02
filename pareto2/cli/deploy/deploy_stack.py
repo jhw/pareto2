@@ -23,7 +23,7 @@ if __name__=="__main__":
         stagename=sys.argv[1]
         filename="template-latest.json" if len(sys.argv) < 3 else sys.argv[2].split("/")[-1]
         config=load_config()
-        md=Metadata.initialise()
+        md=Metadata(config["components"])
         md.validate().expand()
         stackname="%s-%s" % (config["globals"]["AppName"],
                              stagename)

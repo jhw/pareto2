@@ -106,7 +106,9 @@ class Metadata(dict):
 
 if __name__=="__main__":
     try:
-        md=Metadata.initialise()
+        from pareto2.cli import load_config
+        config=load_config()
+        md=Metadata(config["components"])
         md.validate().expand()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

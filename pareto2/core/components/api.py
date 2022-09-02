@@ -301,10 +301,12 @@ def update_template(template, md):
 
 if __name__=="__main__":
     try:
+        from pareto2.cli import load_config
+        config=load_config()
         from pareto2.core.template import Template
         template=Template("apis")
         from pareto2.core.metadata import Metadata
-        md=Metadata.initialise()        
+        md=Metadata(config["components"])        
         md.validate().expand()
         update_template(template, md)
         template.dump_local()
