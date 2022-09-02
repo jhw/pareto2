@@ -1,6 +1,5 @@
 ### short
 
-- remove micro nomenclature
 - calculate minutes as math.ceil(interval/60)
 - rate is formatted minutes
 - number is math.floor(60/interval) if minutes == 1 else 1
@@ -115,6 +114,7 @@
 
 ### done
 
+- remove micro nomenclature
 - rename variables going into micro timer function initialisation
 - rename inline timer function as scheduler function
 - use default rate of 60

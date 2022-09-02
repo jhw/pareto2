@@ -4,7 +4,7 @@ from pareto2.core.components import resource
 
 import json, math
 
-MicroSchedulerFunctionCode="""import boto3, datetime, json, os
+SchedulerFunctionCode="""import boto3, datetime, json, os
 
 def handler(event, context,
             n=os.environ["NUMBER"],
@@ -21,14 +21,14 @@ def handler(event, context,
 """
 
 """
-- MicroRate could be longer but it will be #{MicroRate} seconds before the first timer is called
+- SchedulerRate could be longer but it will be #{SchedulerRate} seconds before the first timer is called
 - possible tradeoff between cost of events rule execution vs cost of sqs message execution
 """
 
-MicroSchedulerMemorySize, MicroSchedulerTimeout, MicroSchedulerRate = "small", "short", 60
+SchedulerMemorySize, SchedulerTimeout, SchedulerRate = "small", "short", 60
 
 @resource
-def init_rule(timer, rate):
+def init_rule(timer, rate=SchedulerRate):
     def format_schedule(rate):
         minutes=int(rate/60)
         suffix="minute" if minutes==1 else "minutes"
@@ -49,9 +49,6 @@ def init_rule(timer, rate):
             "AWS::Events::Rule",
             props)
 
-def init_micro_rule(timer, rate=MicroSchedulerRate):
-    return init_rule(timer, rate)
-
 @resource
 def init_permission(timer):
     resourcename=H("%s-timer-permission" % timer["name"])
@@ -66,11 +63,11 @@ def init_permission(timer):
             props)
 
 @resource            
-def init_micro_function(timer,
-                        rate=MicroSchedulerRate,
-                        code=MicroSchedulerFunctionCode,
-                        memorysize=MicroSchedulerMemorySize,
-                        timeout=MicroSchedulerTimeout):
+def init_function(timer,
+                  rate=SchedulerRate,
+                  code=SchedulerFunctionCode,
+                  memorysize=SchedulerMemorySize,
+                  timeout=SchedulerTimeout):
     resourcename=H("%s-timer-scheduler-function" % timer["name"])
     rolename=H("%s-timer-scheduler-function-role" % timer["name"])
     code={"ZipFile": code}
@@ -135,11 +132,11 @@ def init_binding(timer):
             "AWS::Lambda::EventSourceMapping",
             props)
 
-def init_micro_component(timer):
+def init_component(timer):
     resources=[]
-    for fn in [init_micro_rule,
+    for fn in [init_rule,
                init_permission,
-               init_micro_function,
+               init_function,
                init_role,
                init_queue,
                init_binding]:
@@ -150,7 +147,7 @@ def init_micro_component(timer):
 def init_resources(md):
     resources=[]
     for timer in md["timers"]:
-        component=init_micro_component(timer)
+        component=init_component(timer)
         resources+=component
     return dict(resources)
 
