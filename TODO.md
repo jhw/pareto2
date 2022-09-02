@@ -1,8 +1,8 @@
 ### short
 
 - macro timer
+
 - metadata to validate event type against bucket/table attrs
-- convert action errors to singleton
 
 ### pareto2-demo
 
@@ -10,10 +10,12 @@
 
 ### medium
 
+- checks for custom vs inline function names
+- convert action errors to singleton
+
 - unified config [notes]
 - search_lambda_logs.py cli facility to allow you to select log group
 - replace file- based loading of core pareto components
-- checks for custom vs inline function names
 - schema validation
 - convert async action error to push to sns 
 - table, queue error handlers
