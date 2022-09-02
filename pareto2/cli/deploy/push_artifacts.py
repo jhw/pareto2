@@ -40,10 +40,14 @@ class Artifacts:
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)
-        template.autofill_parameters(self.config["defaults"])
-        globalz=dict(self.config["globals"])
-        globalz.update({"ArtifactsKey": lambdas.s3_key})
-        template.parameters.update_defaults(globalz)
+        """
+        - init_implied_parameters initialises parameter variables
+        - parameters.update_defaults adds default values
+        """
+        template.init_implied_parameters(self.config["defaults"])
+        values=dict(self.config["globals"])
+        values.update({"ArtifactsKey": lambdas.s3_key})
+        template.parameters.update_defaults(values)
         template.dump_s3(self.s3, self.config["globals"]["ArtifactsBucket"])
         template.parameters.validate()
         template.validate_root()

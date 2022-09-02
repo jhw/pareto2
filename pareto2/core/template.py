@@ -183,8 +183,8 @@ class Template:
     - what parameters does a template need, because a resource is referenced within the resources block, but that same resource isn't declared locally; ie needs to be imported ?
     """
                 
-    def autofill_parameters(self,
-                            defaults={}):
+    def init_implied_parameters(self,
+                                  defaults={}):
         refs, ids = self.resources.refs, self.resources.ids
         keys=sorted([ref for ref in refs
                      if ref not in ids])

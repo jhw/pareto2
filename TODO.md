@@ -1,11 +1,9 @@
 ### short [unified-config]
 
-- cross- import fetch_outputs into user code
-- check for confusion between globals and defaults in Artifacts build_template
+- init_config should initialise metadata
 - move event matching into list_events.py
 - allow underscores in globals
 - allow underscores in defaults
-- init_config should initialise metadata
 - add separate layers block
 - use per- stage config
 
@@ -114,6 +112,7 @@
 
 ### done
 
+- check for confusion between globals and defaults in Artifacts build_template
 - remove hungarorise abbrevs
 - test push_artifacts
 - test metadata main
