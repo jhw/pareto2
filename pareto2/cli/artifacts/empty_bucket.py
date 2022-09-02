@@ -23,7 +23,7 @@ def delete_bucket(s3, bucketname):
 if __name__=="__main__":
     try:
         config=load_config()
-        bucketname=config["ArtifactsBucket"]
+        bucketname=config["globals"]["ArtifactsBucket"]
         s3=boto3.client("s3")
         delete_bucket(s3, bucketname)
     except RuntimeError as error:

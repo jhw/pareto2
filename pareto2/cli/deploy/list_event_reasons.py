@@ -21,7 +21,7 @@ if __name__=="__main__":
         from pareto2.cli import load_config
         config=load_config()
         cf=boto3.client("cloudformation")
-        stackname="%s-%s" % (config["AppName"],
+        stackname="%s-%s" % (config["globals"]["AppName"],
                              stagename)
         events, count = fetch_events(cf, stackname, n), 0
         for event in events:

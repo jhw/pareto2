@@ -54,7 +54,7 @@ if __name__=="__main__":
         stage=sys.argv[1]
         from pareto2.cli import load_config
         config=load_config()
-        stackname="%s-%s" % (config["AppName"], stage)
+        stackname="%s-%s" % (config["globals"]["AppName"], stage)
         cf, s3 = boto3.client("cloudformation"), boto3.client("s3")
         delete_stack(cf, s3, stackname)
     except RuntimeError as error:

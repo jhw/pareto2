@@ -1,8 +1,8 @@
 ### short [unified-config]
 
 - remove webhook in defaults
-- search for config refs and search/replace them
-- search for defaults refs and replace them
+- replace yaml load defaults with config refs
+- replace metadata initialise with pass to constructor
 - update metadata refs
 
 - allow underscores in globals and defaults
@@ -116,6 +116,7 @@
 
 ### done
 
+- search for config refs and search/replace them
 - refactor load_config to load from yaml
 - replace existing /config with config.yaml
 - delete_stack.py shouldn't need custom fetch_resources

@@ -79,7 +79,7 @@ if __name__=="__main__":
             raise RuntimeError("window is invalid")
         window=int(window)
         logs, _lambda = boto3.client("logs"), boto3.client("lambda")
-        stackname="%s-%s" % (config["AppName"], stage)
+        stackname="%s-%s" % (config["globals"]["AppName"], stage)
         groupname=filter_loggroup(logs, _lambda,
                                   stackname=stackname,
                                   lambdaname=lambdaname)

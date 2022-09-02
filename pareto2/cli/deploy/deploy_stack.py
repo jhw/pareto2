@@ -25,13 +25,13 @@ if __name__=="__main__":
         config=load_config()
         md=Metadata.initialise()
         md.validate().expand()
-        stackname="%s-%s" % (config["AppName"],
+        stackname="%s-%s" % (config["globals"]["AppName"],
                              stagename)
         cf=boto3.client("cloudformation")
         action="update" if stack_exists(cf, stackname) else "create"
         fn=getattr(cf, "%s_stack" % action)
         templateurl=TemplatePath % (os.environ["AWS_REGION"],
-                                    config["ArtifactsBucket"],
+                                    config["globals"]["ArtifactsBucket"],
                                     filename)
         params=[{"ParameterKey": "StageName",
                  "ParameterValue": stagename}]

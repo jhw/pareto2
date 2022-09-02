@@ -20,7 +20,7 @@ if __name__=="__main__":
         import sys
         prefix=sys.argv[1] if len(sys.argv) > 1 else None            
         config=load_config()
-        bucketname=config["ArtifactsBucket"]
+        bucketname=config["globals"]["ArtifactsBucket"]
         s3=boto3.client("s3")
         list_contents(s3, bucketname, prefix)
     except RuntimeError as error:

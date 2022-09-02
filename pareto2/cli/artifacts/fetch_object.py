@@ -11,7 +11,7 @@ if __name__=="__main__":
             raise RuntimeError("please enter object key")
         key=sys.argv[1]
         config=load_config()
-        bucketname=config["ArtifactsBucket"]
+        bucketname=config["globals"]["ArtifactsBucket"]
         s3=boto3.client("s3")        
         resp=s3.get_object(Bucket=bucketname,
                            Key=key)
