@@ -1,6 +1,9 @@
 ### short
 
-- macro timer
+- remove micro nomenclature
+- calculate minutes as math.ceil(interval/60)
+- rate is formatted minutes
+- number is math.floor(60/interval) if minutes == 1 else 1
 
 - metadata to validate event type against bucket/table attrs
 
