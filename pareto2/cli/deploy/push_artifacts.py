@@ -4,6 +4,8 @@ from pareto2.core.dsl import Config
 from pareto2.core.lambdas import Lambdas
 from pareto2.core.template import Template
 
+from pareto2.core.components import hungarorise
+
 from pareto2.core import init_template
 
 from botocore.exceptions import ClientError

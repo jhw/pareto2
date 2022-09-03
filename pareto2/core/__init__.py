@@ -33,7 +33,7 @@ def init_template(components,
                   timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
     template=Template(name=name,
                       timestamp=timestamp)
-    renderers=init_components(paths)
+    renderers=init_component_renderers(paths)
     for key, renderfn in renderers.items():
         renderfn(template=template,
                  components=components)

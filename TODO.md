@@ -1,8 +1,5 @@
 ### short [unified-config]
 
-- test core/__init__.py
-- test push artifacts
-
 - refactor init_parameters/parameters.update 
   - the former only creates template items
   - the latter adds default values
@@ -121,6 +118,9 @@
 
 ### done
 
+- test push artifacts
+- delete stack, redeploy
+- test core/__init__.py
 - test individual components
 - users are missing hungarorise imports
 - don't like redeploy_api.py, search_lambda_logs.py cli imports
