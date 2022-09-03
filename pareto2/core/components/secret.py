@@ -12,12 +12,12 @@ def init_secret(secret):
             "AWS::SecretsManager::Secret",
             props)
 
-def init_resources(md):
+def init_resources(components):
     return dict([init_secret(secret)
-                 for secret in md["secrets"]])
+                 for secret in components["secrets"]])
 
-def update_template(template, md):
-    template.resources.update(init_resources(md))
+def update_template(template, components):
+    template.resources.update(init_resources(components))
 
 if __name__=="__main__":
     try:
@@ -25,10 +25,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("secrets")
-        from pareto2.core.metadata import Metadata
-        md=Metadata(config["components"])
-        md.validate().expand()
-        update_template(template, md)
+        update_template(template, config["components"])
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

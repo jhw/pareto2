@@ -262,11 +262,11 @@ def init_cognito_resources(api, endpoints, resources):
             resources.append(init_validator(api, endpoint))
             resources.append(init_model(api, endpoint))
 
-def init_resources(md):
+def init_resources(components):
     endpoints={endpoint["name"]: endpoint
-               for endpoint in md["endpoints"]}
+               for endpoint in components["endpoints"]}
     resources=[]
-    for api in md["apis"]:
+    for api in components["apis"]:
         apiendpoints=[endpoints[name]
                       for name in api["endpoints"]]
         if api["type"]=="simple":
@@ -281,7 +281,7 @@ def init_resources(md):
 - RestApi and Stage (echoed from input) are required for apigw redeployment
 """
 
-def init_outputs(md):
+def init_outputs(components):
     def init_outputs(api, outputs):
         endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
                                             H("%s-api-stage" % api["name"]))}
@@ -291,13 +291,13 @@ def init_outputs(md):
                         H("%s-api-rest-api" % api["name"]): {"Value": restapi},
                         H("%s-api-stage" % api["name"]): {"Value": stage}})
     outputs={}
-    for api in md["apis"]:
+    for api in components["apis"]:
         init_outputs(api, outputs)
     return outputs
 
-def update_template(template, md):
-    template.resources.update(init_resources(md))
-    template.outputs.update(init_outputs(md))
+def update_template(template, components):
+    template.resources.update(init_resources(components))
+    template.outputs.update(init_outputs(components))
 
 if __name__=="__main__":
     try:
@@ -305,10 +305,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("apis")
-        from pareto2.core.metadata import Metadata
-        md=Metadata(config["components"])        
-        md.validate().expand()
-        update_template(template, md)
+        update_template(template, config["components"])
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

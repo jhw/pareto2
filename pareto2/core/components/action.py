@@ -230,15 +230,15 @@ def init_component(action):
     fn=eval("init_%s_component" % action["type"])
     return fn(action)
 
-def init_resources(md):
+def init_resources(components):
     resources=[]
-    for action in md["actions"]:
+    for action in components["actions"]:
         component=init_component(action)
         resources+=component
     return dict(resources)
 
-def update_template(template, md):
-    template.resources.update(init_resources(md))
+def update_template(template, components):
+    template.resources.update(init_resources(components))
 
 if __name__=="__main__":
     try:
@@ -246,10 +246,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("actions")
-        from pareto2.core.metadata import Metadata
-        md=Metadata(config["components"])
-        md.validate().expand()
-        update_template(template, md)
+        update_template(template, config["components"])
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

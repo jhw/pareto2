@@ -74,8 +74,8 @@ class Components(list):
 """
 
 def render_dash(fn):
-    def wrapped(md):
-        resourcename, dashprefix, components = fn(md)
+    def wrapped(components):
+        resourcename, dashprefix, components = fn(components)
         dashbody={"Fn::Sub": json.dumps(components.render())}
         dashname={"Fn::Sub": "${AppName}-%s-dash-${StageName}" % dashprefix}
         props={"DashboardBody":  dashbody,
@@ -86,54 +86,54 @@ def render_dash(fn):
     return wrapped
 
 @render_dash
-def init_actions(md):
-    resourcename=H("%s-dash-actions" % md["dashboard"]["name"])
+def init_actions(components):
+    resourcename=H("%s-dash-actions" % components["dashboard"]["name"])
     components=[Component.initialise("function",
                                      {"Title": action["name"],
                                       "ResourceName": "${%s}" % H("%s-function" % action["name"])})
-                for action in sorted(md["actions"],
+                for action in sorted(components["actions"],
                                      key=lambda x: x["name"])]
     return (resourcename, "actions", Components(components))
 
 @render_dash
-def init_apis(md):
-    resourcename=H("%s-dash-api" % md["dashboard"]["name"])
+def init_apis(components):
+    resourcename=H("%s-dash-api" % components["dashboard"]["name"])
     components=[Component.initialise("api",
                                      {"Title": api["name"],
                                       "ResourceName": "${%s}" % H("%s-api-rest-api" % api["name"])})
-                for api in sorted(md["apis"],
+                for api in sorted(components["apis"],
                                   key=lambda x: x["name"])]
     return (resourcename, "api", Components(components))
 
 @render_dash
-def init_buckets(md):
-    resourcename=H("%s-dash-bucket" % md["dashboard"]["name"])
+def init_buckets(components):
+    resourcename=H("%s-dash-bucket" % components["dashboard"]["name"])
     components=[Component.initialise("bucket",
                                      {"Title": bucket["name"],
                                       "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
-                for bucket in sorted(md["buckets"],
+                for bucket in sorted(components["buckets"],
                                      key=lambda x: x["name"])]
     return (resourcename, "bucket", Components(components))
 
 @render_dash
-def init_tables(md):
-    resourcename=H("%s-dash-table" % md["dashboard"]["name"])
+def init_tables(components):
+    resourcename=H("%s-dash-table" % components["dashboard"]["name"])
     components=[Component.initialise("table",
                                      {"Title": table["name"],
                                       "ResourceName": "${%s}" % H("%s-table" % table["name"])})
-                for table in sorted(md["tables"],
+                for table in sorted(components["tables"],
                                     key=lambda x: x["name"])]
     return (resourcename, "table", Components(components))
 
-def init_resources(md):
-    return dict([fn(md)
+def init_resources(components):
+    return dict([fn(components)
                  for fn in [init_actions,
                             init_apis,
                             init_buckets,
                             init_tables]])
 
-def update_template(template, md):
-    template.resources.update(init_resources(md))
+def update_template(template, components):
+    template.resources.update(init_resources(components))
 
 if __name__=="__main__":
     try:
@@ -141,10 +141,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("dashboards")
-        from pareto2.core.metadata import Metadata
-        md=Metadata(config["components"])
-        md.validate().expand()
-        update_template(template, md)
+        update_template(template, config["components"])
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

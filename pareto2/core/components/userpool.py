@@ -44,9 +44,9 @@ def init_web_client(userpool):
             "AWS::Cognito::UserPoolClient",
             props)
 
-def init_resources(md):
+def init_resources(components):
     resources=[]
-    for userpool in md["userpools"]:
+    for userpool in components["userpools"]:
         for fn in [init_userpool,
                    init_admin_client,
                    init_web_client]:
@@ -54,7 +54,7 @@ def init_resources(md):
             resources.append(resource)
     return dict(resources)
 
-def init_outputs(md):
+def init_outputs(components):
     def init_outputs(userpool, outputs):
         userpool_={"Ref": H("%s-userpool" % userpool["name"])}
         adminclient={"Ref": H("%s-userpool-admin-client" % userpool["name"])}
@@ -63,13 +63,13 @@ def init_outputs(md):
                         H("%s-userpool-admin-client" % userpool["name"]): {"Value": adminclient},
                         H("%s-userpool-web-client" % userpool["name"]): {"Value": webclient}})
     outputs={}
-    for userpool in md["userpools"]:
+    for userpool in components["userpools"]:
         init_outputs(userpool, outputs)
     return outputs
             
-def update_template(template, md):
-    template.resources.update(init_resources(md))
-    template.outputs.update(init_outputs(md))
+def update_template(template, components):
+    template.resources.update(init_resources(components))
+    template.outputs.update(init_outputs(components))
 
 if __name__=="__main__":
     try:
@@ -77,10 +77,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("userpools")
-        from pareto2.core.metadata import Metadata
-        md=Metadata(config["components"])        
-        md.validate().expand()
-        update_template(template, md)
+        update_template(template, config["components"])
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
