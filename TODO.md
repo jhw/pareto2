@@ -1,6 +1,5 @@
 ### short [unified-config]
 
-- test individual components
 - test core/__init__.py
 - test push artifacts
 
@@ -20,6 +19,7 @@
 
 - use per- stage config
 - try removing bucket, table names
+- check component spec is optional by removing secrets config
 - move event matching into list_events.py
 - add queue type w/ metadata validation
 - consider using 100% inline lambdas
@@ -121,6 +121,7 @@
 
 ### done
 
+- test individual components
 - users are missing hungarorise imports
 - don't like redeploy_api.py, search_lambda_logs.py cli imports
 - move all cli imports to top level
