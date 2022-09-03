@@ -2,13 +2,34 @@ from pareto2.core.template import Template
 
 from pareto2.core.components import hungarorise
 
-from importlib import import_module
-
 from datetime import datetime
 
 import os, re, yaml
 
 EndpointJSONSchema="http://json-schema.org/draft-07/schema#"
+
+"""
+- would like to dynamically import this stuff, probably based on file paths
+- but not confident you'll be able to do that if package is part of a layer (what's the AWS filepath??)
+"""
+
+import pareto2.core.components.action
+import pareto2.core.components.api
+import pareto2.core.components.bucket
+import pareto2.core.components.secret
+import pareto2.core.components.table
+import pareto2.core.components.timer
+import pareto2.core.components.topic
+import pareto2.core.components.userpool
+
+ComponentModules={"action": pareto2.core.components.action,
+                  "api": pareto2.core.components.api,
+                  "bucket": pareto2.core.components.bucket,
+                  "secret": pareto2.core.components.secret,                  
+                  "table": pareto2.core.components.table,
+                  "timer": pareto2.core.components.timer,
+                  "topic": pareto2.core.components.topic,
+                  "userpool": pareto2.core.components.userpool}
 
 class Config(dict):
 
@@ -174,33 +195,12 @@ class Components(dict):
         self.expand_endpoint_schema()
         return self
 
-    """
-    - this is probably not going to work inside a layer as file paths there look different
-    """
-        
-    def init_modules(self, paths):
-        components={}
-        for path in paths:
-            if not (os.path.exists(path) and
-                    os.path.isdir(path)):
-                continue
-            for filename in os.listdir(path):
-                if ("__init__" in filename or
-                    "__pycache__" in filename):
-                    continue
-                key=filename.split(".")[0]
-                modname="%s.%s" % (path.replace("/", "."), key)
-                mod=import_module(modname)
-                components[key]=mod
-        return components
-        
     def spawn_template(self,                  
                        name="main",
-                       paths=["pareto2/core/components"],
+                       modules=ComponentModules,
                        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         template=Template(name=name,
                           timestamp=timestamp)
-        modules=self.init_modules(paths)
         for key, values in self.items():
             mod=modules[key[:-1]]
             resourcefn=getattr(mod, "init_resources")

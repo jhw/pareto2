@@ -1,7 +1,6 @@
 ### short [components api]
 
-- replace file based iteration with direct module imports and references
-- convert components to classes
+- single component render method
 - add back support for local components
 - flatten component list to remove type containers 
 
@@ -11,9 +10,10 @@
 
 ### medium
 
+- add back dashboard at core level
+- include inline functions in chart generation
+
 - use per- stage config
-- add back dashboard -> part of core not core/components
-- add inline functions to chart generation
 - replace s3 lambdas with inline -> experimental package
 - convert async action error to push to sns 
 - table, queue error handlers
@@ -29,6 +29,7 @@
 
 ### thoughts
 
+- convert components to classes
 - search_lambda_logs.py cli facility to allow you to select log group ?
  - probably not worth it; just name log groups appropriately 
 - convert list_events/resources to use filterfn functionality rather than match() helper ?
@@ -114,6 +115,7 @@
 
 ### done
 
+- replace file based iteration with direct module imports and references
 - remove local components support / hardcode core components path
 - simplify init_outputs
 - convert components to handle single components at a time -> maybe via render method
