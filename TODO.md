@@ -1,12 +1,9 @@
 ### short [unified-config]
 
-- added filterfn into list_events
-- fetch_resources to replace match with filterfn
-- fetch_events to replace match with filterfn
+- check component spec is optional by removing secrets config
 
 - update dev/merge_config.py
 - try removing bucket, table names
-- check component spec is optional by removing secrets config
 - add inline functions to chart generation
 
 ### pareto2-demo, layman2
@@ -34,6 +31,8 @@
 
 ### thoughts
 
+- convert list_events/resources to use filterfn functionality rather than match() helper ?
+  - probably not worth it
 - add back events dashboard ?
   - not sure is that useful; more interesting to see async lambda invocations
 - convert action error handler and table streaming function to singletons ?
@@ -115,6 +114,7 @@
 
 ### done
 
+- added filterfn into list_events
 - check if timestamps can be specified as args and still changed
   - spawn_template, push_artifacts, others
 - move core/init/init_template stuff into config class

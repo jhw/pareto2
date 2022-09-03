@@ -1,6 +1,6 @@
 import re
 
-def fetch_events(cf, stackname, n):
+def fetch_events(cf, stackname, n, filterfn=lambda x: True):
     events, token = [], None
     while True:
         if len(events) > n:
@@ -9,7 +9,9 @@ def fetch_events(cf, stackname, n):
         if token:
             kwargs["NextToken"]=token
         resp=cf.describe_stack_events(**kwargs)
-        events+=resp["StackEvents"]
+        for event in resp["StackEvents"]:
+            if filterfn(event):
+                events.append(event)
         if "NextToken" in resp:
             token=resp["NextToken"]
         else:
