@@ -1,6 +1,5 @@
 ### short [components api]
 
-- merge init_components/init_resources
 - simplify init_outputs
 
 - remove local components support / hardcode core components path

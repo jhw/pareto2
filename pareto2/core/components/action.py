@@ -226,14 +226,9 @@ def init_sync_component(action):
         resources.append(resource)
     return resources
 
-def init_component(action):
-    fn=eval("init_%s_component" % action["type"])
-    return fn(action)
-
 def init_resources(action):
-    resources=[]
-    resources+=init_component(action)
-    return dict(resources)
+    fn=eval("init_%s_component" % action["type"])
+    return dict(fn(action))
 
 def init_outputs(action):
     return {}

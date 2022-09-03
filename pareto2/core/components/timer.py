@@ -132,7 +132,7 @@ def init_binding(timer):
             "AWS::Lambda::EventSourceMapping",
             props)
 
-def init_component(timer):
+def init_resources(timer):
     resources=[]
     for fn in [init_rule,
                init_permission,
@@ -142,11 +142,6 @@ def init_component(timer):
                init_binding]:
         resource=fn(timer)
         resources.append(resource)
-    return resources
-
-def init_resources(timer):
-    resources=[]
-    resources+=init_component(timer)
     return dict(resources)
 
 def init_outputs(timers):

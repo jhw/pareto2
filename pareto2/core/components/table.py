@@ -195,7 +195,7 @@ def init_streaming_role(table,
             "AWS::IAM::Role",
             props)
 
-def init_component(table):
+def init_resources(table):
     resources=[]
     for fn in [init_table]:
         resource=fn(table)
@@ -206,11 +206,6 @@ def init_component(table):
                    init_streaming_role]:
             resource=fn(table)
             resources.append(resource)
-    return resources
-
-def init_resources(table):
-    resources=[]
-    resources+=init_component(table)
     return dict(resources)
 
 def init_outputs(table):
