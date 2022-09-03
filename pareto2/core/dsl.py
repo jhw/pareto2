@@ -178,7 +178,7 @@ class Components(dict):
     - this is probably not going to work inside a layer as file paths there look different
     """
         
-    def init_renderers(self, paths):
+    def init_modules(self, paths):
         components={}
         for path in paths:
             if not (os.path.exists(path) and
@@ -200,12 +200,13 @@ class Components(dict):
                        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         template=Template(name=name,
                           timestamp=timestamp)
-        renderers=self.init_renderers(paths)
-        for key, mod in renderers.items():
+        modules=self.init_modules(paths)
+        for key in self:
+            mod=modules[key[:-1]]
             resourcefn=getattr(mod, "init_resources")
-            template.resources.update(resourcefn(self))
+            template.resources.update(resourcefn({key: self[key]}))
             outputfn=getattr(mod, "init_outputs")
-            template.outputs.update(outputfn(self))
+            template.outputs.update(outputfn({key: self[key]}))
         return template
     
 if __name__=="__main__":
