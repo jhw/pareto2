@@ -1,6 +1,5 @@
 ### short [components api]
 
-- remove local components support / hardcode core components path
 - replace file based iteration with direct module imports and references
 - convert components to classes
 - add back support for local components
@@ -115,6 +114,7 @@
 
 ### done
 
+- remove local components support / hardcode core components path
 - simplify init_outputs
 - convert components to handle single components at a time -> maybe via render method
 - convert Components to iterate over groups and then components

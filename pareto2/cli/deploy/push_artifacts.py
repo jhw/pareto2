@@ -34,10 +34,8 @@ class Artifacts:
         
     def build_template(self,
                        name,
-                       paths,
                        lambdas):
-        template=self.config["components"].spawn_template(paths=paths,
-                                                          name=name,
+        template=self.config["components"].spawn_template(name=name,
                                                           timestamp=self.timestamp)
         template.init_implied_parameters()
         values=self.config.parameters
@@ -48,12 +46,10 @@ class Artifacts:
         template.validate_root()
 
     def build(self,
-              component_paths=["pareto2/core/components"],
               template_name="template",
               run_tests=True):
         lambdas=self.build_lambdas(run_tests)
         self.build_template(name=template_name,
-                            paths=component_paths,
                             lambdas=lambdas)
 
 if __name__=="__main__":
@@ -65,9 +61,7 @@ if __name__=="__main__":
         artifacts=Artifacts(config=config,
                             root=appname,
                             s3=s3)        
-        comppaths=["pareto2/core/components",
-                   "components"]
-        artifacts.build(component_paths=comppaths)
+        artifacts.build()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:
