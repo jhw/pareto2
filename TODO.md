@@ -1,7 +1,5 @@
 ### short
 
-- test merge_config on old config structure
-  
 - test latest tag with layman2
 
 - refactor component api [notes]
@@ -115,6 +113,7 @@
 
 ### done
 
+- test merge_config on old config structure
 - remove dashboard
 - try removing bucket, table names
 - added filterfn into list_events
