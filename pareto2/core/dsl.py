@@ -7,10 +7,12 @@ class Config(dict):
     @classmethod
     def initialise(self, filename="config.yaml"):
         struct=yaml.safe_load(open(filename).read())
-        return Config({"globals": Globals(struct["globals"]),
+        config=Config({"globals": Globals(struct["globals"]),
                        "defaults": Defaults(struct["defaults"]),
                        "layers": Layers(struct["layers"]),
-                       "components": Components(struct["components"])})        
+                       "components": Components(struct["components"])})
+        config.validate().expand()
+        return config
         
     def __init__(self, struct):
         dict.__init__(self, struct)

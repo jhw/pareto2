@@ -1,10 +1,8 @@
 ### short [unified-config]
 
-- replace load_config.py with Config.initialise
-- replace load_config/metadata with new config
-
-- check hungarorise imports
+- replace metadata refs
 - move all cli imports to top level
+- check hungarorise imports
 
 - refactor init_parameters/parameters.update 
   - the former only creates template items
@@ -121,6 +119,8 @@
 
 ### done
 
+- see if validate, expand can be part of initialise()
+- replace load_config.py with Config.initialise
 - new dsl.py with config/globals/defaults/components
 - add separate layers block
 - hungarorise should handle underscores
