@@ -1,7 +1,7 @@
 ### short [unified-config]
 
-- check top level wildcard imports 
-- check hungarorise imports
+- users are missing hungarorise imports
+- don't like redeploy_api.py, search_lambda_logs.py cli imports
 
 - test individual components
 - test core/__init__.py
