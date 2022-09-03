@@ -20,23 +20,22 @@ if __name__=="__main__":
     _defaults=yaml.safe_load(open("config/defaults.yaml").read())
     components=yaml.safe_load(open("config/metadata.yaml").read())
     globalz={dehungarorise(k):v
-             for k, v in _app.items()}
+             for k, v in _app.items()
+             if "Arn" not in k}
     defaults={dehungarorise(k): v
-              for k, v in _defaults.items()
-              if "Arn" not in k}
-    layers={dehungarorise(k).split("-")[0]:k
-            for k, v in _defaults.items()
+              for k, v in _defaults.items()}
+    layers={dehungarorise(k).split("-")[0]:v
+            for k, v in _app.items()
             if "Arn" in k}
     endpoints={endpoint["name"]:endpoint
                for endpoint in components.pop("endpoints")}
-    for api in components["api"]:
+    for api in components["apis"]:
         api["endpoints"]=[endpoints[name]
                           for name in api["endpoints"]]
-    components.pop{"dashboard")
+    components.pop("dashboard")
     config={"globals": globalz,
-            "defaults" defaults,
+            "defaults": defaults,
             "layers": layers,
             "components": components}
-     with open("tmp/config.yaml", 'w') as f:
-         f.write(yaml.safe_dump(config, default_flow_style=False))
-                               default_flow_style=False))
+    with open("tmp/config.yaml", 'w') as f:
+        f.write(yaml.safe_dump(config, default_flow_style=False))
