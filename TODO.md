@@ -1,8 +1,11 @@
 ### short [unified-config]
 
+- added filterfn into list_events
+- fetch_resources to replace match with filterfn
+- fetch_events to replace match with filterfn
+
 - update dev/merge_config.py
 - try removing bucket, table names
-- move event matching into list_events.py
 - check component spec is optional by removing secrets config
 - add inline functions to chart generation
 

@@ -6,23 +6,6 @@ from botocore.exceptions import ClientError
 
 import boto3, sys
 
-def fetch_resources(cf, stackname, filterfn=lambda x: True):
-    resources, token = [], None
-    while True:
-        kwargs={"StackName": stackname}
-        if token:
-            kwargs["NextToken"]=token
-        resp=cf.list_stack_resources(**kwargs)
-        for resource in resp["StackResourceSummaries"]:
-            if filterfn(resource):
-                resources.append(resource)
-        if "NextToken" in resp:
-            token=resp["NextToken"]
-        else:
-            break
-    return sorted(resources,
-                  key=lambda x: x["LastUpdatedTimestamp"])
-
 def empty_bucket(s3, bucketname):
     try:
         print ("emptying %s" % bucketname)
