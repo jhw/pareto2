@@ -1,6 +1,7 @@
 ### short
 
-- check component spec is optional by removing secrets config
+- replace file- based loading of core pareto components
+- refactor component api
 - update dev/merge_config.py
 - try removing bucket, table names
 - add inline functions to chart generation
@@ -11,9 +12,8 @@
 
 ### medium
 
+- allow component groups to be optional
 - use per- stage config
-- replace file- based loading of core pareto components
-- refactor component api
 - add queue type w/ metadata validation
 - consider using 100% inline lambdas
 - search_lambda_logs.py cli facility to allow you to select log group
