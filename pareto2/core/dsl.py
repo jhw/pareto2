@@ -113,8 +113,7 @@ class Components(dict):
                     errors.append("%s component %s must be bound to %s action" % (attr,
                                                                                   component["action"],
                                                                                   type))
-        for attr, type in [("endpoints", "sync"),
-                           ("timers", "sync"),
+        for attr, type in [("timers", "sync"),
                            ("topics", "async")]:
             if attr in self:
                 validate_type(self, attr, type, errors)
@@ -164,10 +163,11 @@ class Components(dict):
             action["env"]={"variables": variables}
 
     def expand_endpoint_schema(self):
-        for endpoint in self["endpoints"]:
-            if (endpoint["method"]=="POST" and
-                "schema" in endpoint):
-                endpoint["schema"]["$schema"]=EndpointJSONSchema
+        for api in self["apis"]:
+            for endpoint in api["endpoints"]:
+                if (endpoint["method"]=="POST" and
+                    "schema" in endpoint):
+                    endpoint["schema"]["$schema"]=EndpointJSONSchema
             
     def expand(self):
         self.expand_action_env_vars()

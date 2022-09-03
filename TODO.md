@@ -10,6 +10,8 @@
   - remove dashboard
   - move endpoints under apis
   
+- check that 
+  
 - test latest tag with layman2
 
 - refactor component api [notes]
@@ -22,8 +24,7 @@
 
 - use per- stage config
 - add inline functions to chart generation
-- add back dashboard
-  - should be part of core not core/components
+- add back dashboard -> part of core not core/components
 - add queue type w/ metadata validation
 - ensure definition of component group is optional
 - consider using 100% inline lambdas

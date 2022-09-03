@@ -44,11 +44,11 @@ def init_rest_api(api):
 """
 
 @resource
-def init_deployment(api, endpoints):
+def init_deployment(api):
     resourcename=H("%s-api-deployment" % api["name"])
     props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     depends=[]
-    for endpoint in endpoints:
+    for endpoint in api["endpoints"]:
         depends+=[H("%s-api-method" % endpoint["name"]),
                   H("%s-api-cors-method" % endpoint["name"])]
     return (resourcename,            
@@ -223,13 +223,13 @@ def init_model(api, endpoint):
             "AWS::ApiGateway::Model",
             props)    
 
-def init_simple_resources(api, endpoints, resources):
+def init_simple_resources(api, resources):
     resources.append(init_rest_api(api))
-    resources.append(init_deployment(api, endpoints))
+    resources.append(init_deployment(api))
     resources.append(init_stage(api))
     for code in "4XX|5XX".split("|"):
         resources.append(init_default_response(api, code))
-    for endpoint in endpoints:
+    for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_simple_method,
                    init_permission,
@@ -242,14 +242,14 @@ def init_simple_resources(api, endpoints, resources):
             resources.append(init_validator(api, endpoint))
             resources.append(init_model(api, endpoint))
 
-def init_cognito_resources(api, endpoints, resources):
+def init_cognito_resources(api, resources):
     resources.append(init_rest_api(api))
-    resources.append(init_deployment(api, endpoints))
+    resources.append(init_deployment(api))
     resources.append(init_stage(api))
     resources.append(init_cognito_authorizer(api))    
     for code in "4XX|5XX".split("|"):
         resources.append(init_default_response(api, code))
-    for endpoint in endpoints:
+    for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_cognito_method,
                    init_permission,
@@ -263,16 +263,12 @@ def init_cognito_resources(api, endpoints, resources):
             resources.append(init_model(api, endpoint))
 
 def init_resources(components):
-    endpoints={endpoint["name"]: endpoint
-               for endpoint in components["endpoints"]}
     resources=[]
     for api in components["apis"]:
-        apiendpoints=[endpoints[name]
-                      for name in api["endpoints"]]
         if api["type"]=="simple":
-            init_simple_resources(api, apiendpoints, resources)
+            init_simple_resources(api, resources)
         elif api["type"]=="cognito":
-            init_cognito_resources(api, apiendpoints, resources)
+            init_cognito_resources(api, resources)
         else:
             raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["type"]))
     return dict(resources)
