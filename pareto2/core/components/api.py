@@ -262,7 +262,7 @@ def init_cognito_resources(api, resources):
             resources.append(init_validator(api, endpoint))
             resources.append(init_model(api, endpoint))
 
-def init_resources(api):
+def render_resources(api):
     resources=[]
     if api["type"]=="simple":
         init_simple_resources(api, resources)
@@ -276,7 +276,7 @@ def init_resources(api):
 - RestApi and Stage (echoed from input) are required for apigw redeployment
 """
 
-def init_outputs(api):
+def render_outputs(api):
     endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
                                         H("%s-api-stage" % api["name"]))}
     restapi={"Ref": H("%s-api-rest-api" % api["name"])}
@@ -294,8 +294,8 @@ if __name__=="__main__":
         from pareto2.core.template import Template
         template=Template("apis")
         for api in config["components"]["apis"]:
-            template.resources.update(init_resources(api))
-            template.outputs.update(init_outputs(api))
+            template.resources.update(render_resources(api))
+            template.outputs.update(render_outputs(api))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

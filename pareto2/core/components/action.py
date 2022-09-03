@@ -226,11 +226,11 @@ def init_sync_component(action):
         resources.append(resource)
     return resources
 
-def init_resources(action):
+def render_resources(action):
     fn=eval("init_%s_component" % action["type"])
     return dict(fn(action))
 
-def init_outputs(action):
+def render_outputs(action):
     return {}
 
 if __name__=="__main__":
@@ -240,8 +240,8 @@ if __name__=="__main__":
         from pareto2.core.template import Template
         template=Template("actions")
         for action in config["components"]["actions"]:
-            template.resources.update(init_resources(action))
-            template.outputs.update(init_outputs(action))
+            template.resources.update(render_resources(action))
+            template.outputs.update(render_outputs(action))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

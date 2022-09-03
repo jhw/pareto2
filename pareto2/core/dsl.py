@@ -202,9 +202,9 @@ class Components(dict):
         template=Template(name=name,
                           timestamp=timestamp)
         for key, values in self.items():
-            mod=modules[key[:-1]]
-            resourcefn=getattr(mod, "init_resources")
-            outputfn=getattr(mod, "init_outputs")
+            mod=modules[key[:-1]] # NB singularise
+            resourcefn=getattr(mod, "render_resources")
+            outputfn=getattr(mod, "render_outputs")
             for value in values:
                 template.resources.update(resourcefn(value))
                 template.outputs.update(outputfn(value))

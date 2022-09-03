@@ -10,12 +10,12 @@ def init_bucket(bucket):
             "AWS::S3::Bucket",
             props)
 
-def init_resources(bucket):
+def render_resources(bucket):
     resources=[]
     resources.append(init_bucket(bucket))
     return dict(resources)
 
-def init_outputs(bucket):
+def render_outputs(bucket):
     return {H("%s-bucket" % bucket["name"]): {"Value": {"Ref": H("%s-bucket" % bucket["name"])}}}
 
 if __name__=="__main__":
@@ -25,8 +25,8 @@ if __name__=="__main__":
         from pareto2.core.template import Template
         template=Template("buckets")
         for bucket in config["components"]["buckets"]:
-            template.resources.update(init_resources(bucket))
-            template.outputs.update(init_outputs(bucket))
+            template.resources.update(render_resources(bucket))
+            template.outputs.update(render_outputs(bucket))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

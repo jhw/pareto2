@@ -44,7 +44,7 @@ def init_web_client(userpool):
             "AWS::Cognito::UserPoolClient",
             props)
 
-def init_resources(userpool):
+def render_resources(userpool):
     resources=[]
     for fn in [init_userpool,
                init_admin_client,
@@ -53,7 +53,7 @@ def init_resources(userpool):
         resources.append(resource)
     return dict(resources)
 
-def init_outputs(userpool):
+def render_outputs(userpool):
     userpool_={"Ref": H("%s-userpool" % userpool["name"])}
     adminclient={"Ref": H("%s-userpool-admin-client" % userpool["name"])}
     webclient={"Ref": H("%s-userpool-web-client" % userpool["name"])}
@@ -70,8 +70,8 @@ if __name__=="__main__":
         from pareto2.core.template import Template
         template=Template("userpools")
         for userpool in config["components"]["userpools"]:
-            template.resources.update(init_resources(userpool))
-            template.outputs.update(init_outputs(userpool))
+            template.resources.update(render_resources(userpool))
+            template.outputs.update(render_outputs(userpool))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

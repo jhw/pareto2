@@ -132,7 +132,7 @@ def init_binding(timer):
             "AWS::Lambda::EventSourceMapping",
             props)
 
-def init_resources(timer):
+def render_resources(timer):
     resources=[]
     for fn in [init_rule,
                init_permission,
@@ -144,7 +144,7 @@ def init_resources(timer):
         resources.append(resource)
     return dict(resources)
 
-def init_outputs(timers):
+def render_outputs(timers):
     return {}
 
 if __name__=="__main__":
@@ -154,8 +154,8 @@ if __name__=="__main__":
         from pareto2.core.template import Template
         template=Template("timers")
         for timer in config["components"]["timers"]:
-            template.resources.update(init_resources(timer))
-            template.outputs.update(init_outputs(timer))
+            template.resources.update(render_resources(timer))
+            template.outputs.update(render_outputs(timer))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

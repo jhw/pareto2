@@ -195,7 +195,7 @@ def init_streaming_role(table,
             "AWS::IAM::Role",
             props)
 
-def init_resources(table):
+def render_resources(table):
     resources=[]
     for fn in [init_table]:
         resource=fn(table)
@@ -208,7 +208,7 @@ def init_resources(table):
             resources.append(resource)
     return dict(resources)
 
-def init_outputs(table):
+def render_outputs(table):
     return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}}
                                
 if __name__=="__main__":
@@ -218,8 +218,8 @@ if __name__=="__main__":
         from pareto2.core.template import Template
         template=Template("tables")
         for table in config["components"]["tables"]:
-            template.resources.update(init_resources(table))
-            template.outputs.update(init_outputs(table))
+            template.resources.update(render_resources(table))
+            template.outputs.update(render_outputs(table))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

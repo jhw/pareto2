@@ -1,8 +1,12 @@
 ### short [components api]
 
-- single component render method
-- add back support for local components
-- flatten component list to remove type containers 
+- script to flatten components config
+- modify spawn_template to work with flat component list
+
+- add back support for local components (how?)
+
+- add back dashboard at core level
+- include inline functions in chart generation
 
 ### pareto2-demo, layman2
 
@@ -10,8 +14,6 @@
 
 ### medium
 
-- add back dashboard at core level
-- include inline functions in chart generation
 
 - use per- stage config
 - replace s3 lambdas with inline -> experimental package
@@ -29,6 +31,7 @@
 
 ### thoughts
 
+- single component render method
 - convert components to classes
 - search_lambda_logs.py cli facility to allow you to select log group ?
  - probably not worth it; just name log groups appropriately 
