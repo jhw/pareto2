@@ -90,7 +90,7 @@ class Component(dict):
 
 class Parameter:
 
-    def __init__(self, value):
+    def __init__(self, value=None):
         self.value=value
 
     @property
@@ -183,13 +183,11 @@ class Template:
     - what parameters does a template need, because a resource is referenced within the resources block, but that same resource isn't declared locally; ie needs to be imported ?
     """
                 
-    def init_implied_parameters(self,
-                                  defaults={}):
+    def init_implied_parameters(self):
         refs, ids = self.resources.refs, self.resources.ids
         keys=sorted([ref for ref in refs
                      if ref not in ids])
-        params={key: Parameter(defaults[key]
-                               if key in defaults else None).render()
+        params={key: Parameter().render()
                 for key in keys}
         self.parameters.update(params)
 

@@ -43,13 +43,10 @@ class Artifacts:
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)
-        """
-        - init_implied_parameters initialises parameter variables
-        - parameters.update_defaults adds default values
-        """
-        template.init_implied_parameters({hungarorise(k):v
-                                          for k, v in self.config["defaults"].items()})
+        template.init_implied_parameters()
         values=dict(self.config["globals"])
+        values.update({hungarorise(k): v
+                       for k, v in self.config["defaults"].items()})
         values.update({"ArtifactsKey": lambdas.s3_key})
         if "layers" in config:            
             values.update({"%sLayerArn" % k.capitalize(): v

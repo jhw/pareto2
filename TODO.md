@@ -1,10 +1,8 @@
 ### short [unified-config]
 
-- refactor init_parameters/parameters.update 
-  - the former only creates template items
-  - the latter adds default values
 - default|globals|config.hungarorised
 - remove push_artifacts.py hungarorised import
+- convert globals to be non- hungarorised
 
 - move core/init/init_template stuff into config class
 
@@ -118,6 +116,9 @@
 
 ### done
 
+- refactor init_parameters/parameters.update 
+  - the former only creates template items
+  - the latter adds default values
 - test push artifacts
 - delete stack, redeploy
 - test core/__init__.py
