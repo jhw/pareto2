@@ -1,8 +1,11 @@
 ### short [unified-config]
 
-- replace metadata refs
 - move all cli imports to top level
+- check top level wildcard imports 
 - check hungarorise imports
+- test individual components
+- test core/__init__.py
+- test push artifacts
 
 - refactor init_parameters/parameters.update 
   - the former only creates template items
@@ -119,6 +122,7 @@
 
 ### done
 
+- replace metadata refs
 - see if validate, expand can be part of initialise()
 - replace load_config.py with Config.initialise
 - new dsl.py with config/globals/defaults/components

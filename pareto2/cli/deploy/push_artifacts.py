@@ -2,7 +2,6 @@ from pareto2.cli.deploy import *
 
 from pareto2.core.dsl import Config
 from pareto2.core.lambdas import Lambdas
-from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
 
 from pareto2.core import init_template
@@ -13,9 +12,8 @@ import boto3
 
 class Artifacts:
 
-    def __init__(self, config, md, root, timestamp, s3):
+    def __init__(self, config, root, timestamp, s3):
         self.config=config
-        self.md=md
         self.root=root
         self.timestamp=timestamp
         self.s3=s3
@@ -24,7 +22,7 @@ class Artifacts:
         lambdas=Lambdas(self.root, self.timestamp)
         if run_tests:
             lambdas.run_tests() # raises RuntimeError on failure
-        lambdas.validate(self.md)
+        lambdas.validate(self.config["components"])
         bucketname=self.config["globals"]["ArtifactsBucket"]
         lambdas.dump_s3(self.s3, bucketname)
         return lambdas
@@ -37,7 +35,7 @@ class Artifacts:
                        name,
                        paths,
                        lambdas):
-        template=init_template(self.md,
+        template=init_template(self.config["components"],
                                paths=paths,
                                name=name,
                                timestamp=self.timestamp)
@@ -77,13 +75,10 @@ if __name__=="__main__":
         apppath, appname = (os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else ".",
                             os.environ["PARETO2_APP_NAME"])
         config=Config.initialise()
-        md=Metadata(config["components"])
-        md.validate().expand()
         from datetime import datetime
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         s3=boto3.client("s3")
         artifacts=Artifacts(config=config,
-                            md=md,
                             root=appname,
                             timestamp=timestamp,
                             s3=s3)        
