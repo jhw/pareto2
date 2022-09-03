@@ -1,6 +1,5 @@
 ### short
 
-- check for components which have more than one "root"
 - move endpoint into API 
 - extend merge config to account for recent changes 
   - group into components, defaults, globals
@@ -19,6 +18,8 @@
 
 - use per- stage config
 - add inline functions to chart generation
+- add back dashboard
+  - should be part of core not core/components
 - add queue type w/ metadata validation
 - ensure definition of component group is optional
 - consider using 100% inline lambdas
@@ -119,6 +120,7 @@
 
 ### done
 
+- remove dashboard
 - try removing bucket, table names
 - added filterfn into list_events
 - check if timestamps can be specified as args and still changed
