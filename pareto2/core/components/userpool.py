@@ -54,13 +54,13 @@ def init_resources(userpool):
     return dict(resources)
 
 def init_outputs(userpool):
-    outputs={}
     userpool_={"Ref": H("%s-userpool" % userpool["name"])}
     adminclient={"Ref": H("%s-userpool-admin-client" % userpool["name"])}
     webclient={"Ref": H("%s-userpool-web-client" % userpool["name"])}
-    outputs.update({H("%s-userpool" % userpool["name"]): {"Value": userpool_},
-                    H("%s-userpool-admin-client" % userpool["name"]): {"Value": adminclient},
-                    H("%s-userpool-web-client" % userpool["name"]): {"Value": webclient}})
+    outputs={}
+    outputs[H("%s-userpool" % userpool["name"])]={"Value": userpool_}
+    outputs[H("%s-userpool-admin-client" % userpool["name"])]={"Value": adminclient}
+    outputs[H("%s-userpool-web-client" % userpool["name"])]={"Value": webclient}
     return outputs
             
 if __name__=="__main__":

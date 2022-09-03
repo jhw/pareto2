@@ -1,7 +1,5 @@
 ### short [components api]
 
-- simplify init_outputs
-
 - remove local components support / hardcode core components path
 - replace file based iteration with direct module imports and references
 - convert components to classes
@@ -117,6 +115,7 @@
 
 ### done
 
+- simplify init_outputs
 - convert components to handle single components at a time -> maybe via render method
 - convert Components to iterate over groups and then components
 - stop passing full components struct to core components

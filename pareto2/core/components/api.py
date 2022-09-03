@@ -277,14 +277,14 @@ def init_resources(api):
 """
 
 def init_outputs(api):
-    outputs={}
     endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
                                         H("%s-api-stage" % api["name"]))}
     restapi={"Ref": H("%s-api-rest-api" % api["name"])}
-    stage={"Ref": H("%s-api-stage" % api["name"])}    
-    outputs.update({H("%s-api-endpoint" % api["name"]): {"Value": endpoint},
-                    H("%s-api-rest-api" % api["name"]): {"Value": restapi},
-                    H("%s-api-stage" % api["name"]): {"Value": stage}})
+    stage={"Ref": H("%s-api-stage" % api["name"])}
+    outputs={}
+    outputs[H("%s-api-endpoint" % api["name"])]={"Value": endpoint}
+    outputs[H("%s-api-rest-api" % api["name"])]={"Value": restapi}
+    outputs[H("%s-api-stage" % api["name"])]={"Value": stage}
     return outputs
 
 if __name__=="__main__":
