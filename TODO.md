@@ -1,8 +1,12 @@
 ### short [unified-config]
 
-- init_config should initialise metadata
-
-- allow underscores in globals
+- new dsl.py with config/globals/defaults/components
+- replace load_config.py with Config.initialise
+- replace load_config/metadata with new config
+- refactor init_parameters/parameters.update 
+  - the former only creates template items
+  - the latter adds default values
+- default|globals|config.hungarorised
 
 ### pareto2-demo, layman2
 
@@ -11,8 +15,10 @@
 ### medium
 
 - use per- stage config
+- try removing bucket, table names
 - move event matching into list_events.py
 - add queue type w/ metadata validation
+- consider using 100% inline lambdas
 - replace file- based loading of core pareto components
 - search_lambda_logs.py cli facility to allow you to select log group
 - schema validation
