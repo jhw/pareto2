@@ -1,10 +1,15 @@
 ### short
 
-- use per- stage config
-- update dev/merge_config.py
-- replace file- based loading of core pareto components
-- refactor component api
-- add inline functions to chart generation
+- check for components which have more than one "root"
+- move endpoint into API 
+- extend merge config to account for recent changes 
+  - group into components, defaults, globals
+  - move layers our of defaulys
+  - de- hungarorise names
+  - move endpoints under APIs 
+- test latest tag with layman2
+
+- refactor component api [notes]
 
 ### pareto2-demo, layman2
 
@@ -12,6 +17,8 @@
 
 ### medium
 
+- use per- stage config
+- add inline functions to chart generation
 - add queue type w/ metadata validation
 - ensure definition of component group is optional
 - consider using 100% inline lambdas

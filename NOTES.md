@@ -1,3 +1,13 @@
+### component api 03/09/22
+
+- remove local components support
+- replace file based iteration with direct imports, renaming init component each time 
+- iterate over types and the over individual components
+- refactor component classes so you are passing an individual item at a time 
+- convert components to classes with render method
+- add back support for local components
+- flatten component list to remove type containers 
+
 ### macro timer 01/09/22
 
 - macro timer which is directly bound to action
