@@ -1,9 +1,6 @@
 ### short [unified-config]
 
-- default|globals|config.hungarorised
-- remove push_artifacts.py hungarorised import
-- convert globals to be non- hungarorised
-
+- de- hungarorise globals
 - move core/init/init_template stuff into config class
 
 ### pareto2-demo, layman2
@@ -116,6 +113,8 @@
 
 ### done
 
+- default|globals|config.hungarorised
+- remove push_artifacts.py hungarorised import
 - refactor init_parameters/parameters.update 
   - the former only creates template items
   - the latter adds default values

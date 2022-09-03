@@ -4,8 +4,6 @@ from pareto2.core.dsl import Config
 from pareto2.core.lambdas import Lambdas
 from pareto2.core.template import Template
 
-from pareto2.core.components import hungarorise
-
 from pareto2.core import init_template
 
 from botocore.exceptions import ClientError
@@ -44,13 +42,8 @@ class Artifacts:
                                name=name,
                                timestamp=self.timestamp)
         template.init_implied_parameters()
-        values=dict(self.config["globals"])
-        values.update({hungarorise(k): v
-                       for k, v in self.config["defaults"].items()})
-        values.update({"ArtifactsKey": lambdas.s3_key})
-        if "layers" in config:            
-            values.update({"%sLayerArn" % k.capitalize(): v
-                           for k, v in config["layers"].items()})
+        values=self.config.parameters
+        values["ArtifactsKey"]=lambdas.s3_key
         template.parameters.update_defaults(values)
         template.dump_s3(self.s3, self.config["globals"]["ArtifactsBucket"])
         template.parameters.validate()

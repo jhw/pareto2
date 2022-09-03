@@ -1,3 +1,5 @@
+from pareto2.core.components import hungarorise
+
 import os, re, yaml
 
 EndpointJSONSchema="http://json-schema.org/draft-07/schema#"
@@ -17,6 +19,15 @@ class Config(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
+    @property
+    def parameters(self):
+        params={}
+        for attr in ["globals",
+                     "defaults",
+                     "layers"]:
+            params.update(self[attr].parameters)
+        return params
+                
     def validate(self):
         self["components"].validate()
         return self
@@ -30,16 +41,34 @@ class Globals(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
+    """
+    - NB currently hungarorised/doesn't need conversion
+    """
+        
+    @property
+    def parameters(self):
+        return self
+        
 class Defaults(dict):
 
     def __init__(self, struct):
         dict.__init__(self, struct)
 
+    @property
+    def parameters(self):
+        return {hungarorise(k):v
+                for k, v in self.items()}
+        
 class Layers(dict):
 
     def __init__(self, struct):
         dict.__init__(self, struct)
 
+    @property
+    def parameters(self):
+        return {"%sLayerArn" % hungarorise(k):v
+                for k, v in self.items()}
+        
 class Components(dict):
 
     def __init__(self, struct):
