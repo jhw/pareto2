@@ -8,7 +8,9 @@ from pareto2.core import init_template
 
 from botocore.exceptions import ClientError
 
-import boto3
+from datetime import datetime
+
+import boto3, os
 
 class Artifacts:
 
@@ -64,18 +66,11 @@ class Artifacts:
                             paths=component_paths,
                             lambdas=lambdas)
 
-"""
-- ensure PYTHONPATH contains PARETO2_APP_PATH so can load module whose root is PARETO2_APP_NAME
-- filepath- based module imports are unlikely to work within a layer :(
-"""
-        
 if __name__=="__main__":
     try:
-        import os
         apppath, appname = (os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else ".",
                             os.environ["PARETO2_APP_NAME"])
         config=Config.initialise()
-        from datetime import datetime
         timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         s3=boto3.client("s3")
         artifacts=Artifacts(config=config,

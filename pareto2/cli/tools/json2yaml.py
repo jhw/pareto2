@@ -1,8 +1,7 @@
-import json, yaml
+import json, os, sys, yaml
 
 if __name__=="__main__":
     try:
-        import sys, os
         if len(sys.argv) < 2:
             raise RuntimeError("please enter filename")
         filename=sys.argv[1]

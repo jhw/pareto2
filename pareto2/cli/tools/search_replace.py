@@ -1,4 +1,4 @@
-import os, re, yaml
+import os, re, sys, yaml
 
 def refactor_src(pat, rep, root):
     def refactor(tokens):
@@ -25,7 +25,6 @@ def refactor_src(pat, rep, root):
                         
 if __name__=="__main__":
     try:
-        import sys
         if len(sys.argv) < 4:
             raise RuntimeError("please enter pat, rep, root")
         pat, rep, root = sys.argv[1:5]

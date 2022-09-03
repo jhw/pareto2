@@ -4,11 +4,10 @@ from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError
 
-import boto3, yaml
+import boto3, sys, yaml
 
 if __name__=="__main__":
     try:
-        import sys
         if len(sys.argv) < 4:
             raise RuntimeError("please enter stage, userpool, email")
         stage, userpoolprefix, email = sys.argv[1:4]

@@ -1,6 +1,6 @@
 from botocore.exceptions import ClientError
 
-import boto3
+import boto3, sys
 
 Region="eu-west-1"
 
@@ -11,7 +11,6 @@ def create_bucket(s3, bucketname, region=Region):
     
 if __name__=="__main__":
     try:
-        import sys
         if len(sys.argv) < 2:
             raise RuntimeError("please enter bucket name")
         bucketname=sys.argv[1]

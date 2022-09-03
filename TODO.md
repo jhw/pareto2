@@ -1,8 +1,8 @@
 ### short [unified-config]
 
-- move all cli imports to top level
 - check top level wildcard imports 
 - check hungarorise imports
+
 - test individual components
 - test core/__init__.py
 - test push artifacts
@@ -122,6 +122,7 @@
 
 ### done
 
+- move all cli imports to top level
 - replace metadata refs
 - see if validate, expand can be part of initialise()
 - replace load_config.py with Config.initialise

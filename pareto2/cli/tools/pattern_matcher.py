@@ -2,7 +2,7 @@ from botocore.exceptions import ClientError
 
 from moto import mock_events, mock_sqs
 
-import boto3, json
+import boto3, json, sys
 
 def warn(*args, **kwargs):
     pass
@@ -121,7 +121,6 @@ def parse_json(name, value):
     
 if __name__=="__main__":
     try:
-        import sys
         if len(sys.argv) < 3:
             raise RuntimeError("please enter pattern, event")
         pattern=parse_json("pattern", sys.argv[1])

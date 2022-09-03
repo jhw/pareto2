@@ -4,7 +4,7 @@ from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError
 
-import boto3
+import boto3, sys
 
 def fetch_resources(cf, stackname, filterfn=lambda x: True):
     resources, token = [], None
@@ -50,7 +50,6 @@ def delete_stack(cf, s3, stackname):
 
 if __name__=="__main__":
     try:
-        import sys
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stage")
         stage=sys.argv[1]

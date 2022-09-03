@@ -4,7 +4,7 @@ from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError, WaiterError
 
-import boto3
+import boto3, os, sys
 
 TemplatePath="https://s3.%s.amazonaws.com/%s/%s"
 
@@ -15,7 +15,6 @@ def stack_exists(cf, stackname):
 
 if __name__=="__main__":
     try:
-        import os, sys
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stage, filename?")
         stagename=sys.argv[1]

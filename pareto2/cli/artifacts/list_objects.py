@@ -2,7 +2,7 @@ from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError
 
-import boto3
+import boto3, sys
 
 def list_contents(s3, bucketname, prefix):
     paginator=s3.get_paginator("list_objects_v2")
@@ -19,7 +19,6 @@ def list_contents(s3, bucketname, prefix):
     
 if __name__=="__main__":
     try:
-        import sys
         prefix=sys.argv[1] if len(sys.argv) > 1 else None            
         config=Config.initialise()
         bucketname=config["globals"]["ArtifactsBucket"]
