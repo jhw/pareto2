@@ -10,7 +10,7 @@ import os
 - this is probably not going to work inside a layer as file paths there look different
 """
         
-def init_components(paths):
+def init_component_renderers(paths):
     components={}
     for path in paths:
         if not (os.path.exists(path) and
@@ -27,26 +27,23 @@ def init_components(paths):
             components[key]=fn
     return components
         
-def init_template(md,                  
+def init_template(components,                  
                   name="main",
                   paths=["pareto2/core/components"],
                   timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
     template=Template(name=name,
                       timestamp=timestamp)
-    components=init_components(paths)
-    for key, fn in components.items():
-        fn(template=template,
-           md=md)
+    renderers=init_components(paths)
+    for key, renderfn in renderers.items():
+        renderfn(template=template,
+                 components=components)
     return template
 
 if __name__=="__main__":
     try:
         from pareto2.core.dsl import Config
         config=Config.initialise()
-        from pareto2.core.metadata import Metadata
-        md=Metadata(config["components"])
-        md.validate().expand()
-        template=init_template(config, md)
+        template=init_template(config["components"])
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
