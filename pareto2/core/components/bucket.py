@@ -4,10 +4,8 @@ from pareto2.core.components import resource
 @resource
 def init_bucket(bucket):
     resourcename=H("%s-bucket" % bucket["name"])
-    name={"Fn::Sub": "%s-bucket-${AWS::StackName}-${AWS::Region}" % bucket["name"]}
     notconf={"EventBridgeConfiguration": {"EventBridgeEnabled": True}}
-    props={"BucketName": name,
-           "NotificationConfiguration": notconf}
+    props={"NotificationConfiguration": notconf}
     return (resourcename,
             "AWS::S3::Bucket",
             props)

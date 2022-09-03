@@ -1,9 +1,9 @@
 ### short
 
+- use per- stage config
+- update dev/merge_config.py
 - replace file- based loading of core pareto components
 - refactor component api
-- update dev/merge_config.py
-- try removing bucket, table names
 - add inline functions to chart generation
 
 ### pareto2-demo, layman2
@@ -12,9 +12,8 @@
 
 ### medium
 
-- allow component groups to be optional
-- use per- stage config
 - add queue type w/ metadata validation
+- ensure definition of component group is optional
 - consider using 100% inline lambdas
 - search_lambda_logs.py cli facility to allow you to select log group
 - convert async action error to push to sns 
@@ -113,6 +112,7 @@
 
 ### done
 
+- try removing bucket, table names
 - added filterfn into list_events
 - check if timestamps can be specified as args and still changed
   - spawn_template, push_artifacts, others

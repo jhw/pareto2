@@ -18,7 +18,7 @@ if __name__=="__main__":
         outputs=fetch_outputs(cf, stackname)
         for k in sorted(outputs.keys()):
             print ("%s\t%s" % (format_value(k),
-                               format_value(outputs[k])))
+                               outputs[k]))
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:

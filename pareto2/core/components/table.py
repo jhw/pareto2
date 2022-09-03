@@ -115,12 +115,10 @@ def init_table(table, streamtype=StreamType, **kwargs):
           "KeySchema": [{"AttributeName": index["name"],
                          "KeyType": "HASH"}]}
          for index in table["indexes"]]
-    name={"Fn::Sub": "%s-table-${AWS::StackName}-${AWS::Region}" % table["name"]}
     props={"AttributeDefinitions": attrs,
            "BillingMode": "PAY_PER_REQUEST",
            "KeySchema": key,
-           "GlobalSecondaryIndexes": gsi,
-           "TableName": name}
+           "GlobalSecondaryIndexes": gsi}
     if "streaming" in table:
         props["StreamSpecification"]={"StreamViewType": streamtype}
     return (resourcename,
