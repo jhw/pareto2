@@ -1,6 +1,5 @@
 ### short [unified-config]
 
-- new dsl.py with config/globals/defaults/components
 - replace load_config.py with Config.initialise
 - replace load_config/metadata with new config
 - refactor init_parameters/parameters.update 
@@ -118,6 +117,7 @@
 
 ### done
 
+- new dsl.py with config/globals/defaults/components
 - add separate layers block
 - hungarorise should handle underscores
 - allow underscores in defaults
