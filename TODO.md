@@ -1,8 +1,12 @@
-### short
+### short [components api]
 
-- test latest tag with layman2
-
-- refactor component api [notes]
+- remove local components support / hardcode core components path
+- replace file based iteration with direct imports, renaming update_template each time 
+- refactor component classes so you are passing an individual item at a time 
+- iterate over types and then over individual components
+- convert components to classes with render method
+- add back support for local components
+- flatten component list to remove type containers 
 
 ### pareto2-demo, layman2
 
@@ -11,14 +15,13 @@
 ### medium
 
 - use per- stage config
-- add inline functions to chart generation
 - add back dashboard -> part of core not core/components
-- add queue type w/ metadata validation
-- ensure definition of component group is optional
-- consider using 100% inline lambdas
+- add inline functions to chart generation
+- replace s3 lambdas with inline -> experimental package
 - search_lambda_logs.py cli facility to allow you to select log group
 - convert async action error to push to sns 
 - table, queue error handlers
+- add queue type w/ metadata validation
 
 ### long
 
@@ -113,6 +116,7 @@
 
 ### done
 
+- test latest tag with layman2
 - test merge_config on old config structure
 - remove dashboard
 - try removing bucket, table names
