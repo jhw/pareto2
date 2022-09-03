@@ -1,11 +1,15 @@
 ### short
 
 - move endpoint into API 
+
 - extend merge config to account for recent changes 
   - group into components, defaults, globals
   - move layers our of defaulys
   - de- hungarorise names
   - move endpoints under APIs 
+  - remove dashboard
+  - move endpoints under apis
+  
 - test latest tag with layman2
 
 - refactor component api [notes]
