@@ -1,3 +1,10 @@
+### continuous deploymnt 03/09/22
+
+- what is you had a cloudformation watcher that watched your code, continually tried to generate a template ?
+- then an app which watched for template changes and continually tried to deploy them ?
+- feels like inline code is important here so you only have a single artifact
+- would this get around the testing problem ? make you feel like you're developing live ?
+
 ### component api 03/09/22
 
 - remove local components support

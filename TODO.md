@@ -1,10 +1,14 @@
 ### short [components api]
 
+- add init_outputs to all components
+- move update_template code into Components class
+- refactor component main blocks to remove update_template references
+- convert components to handle single components at a time -> maybe via render method
+- convert Components to iterate over groups and then components
+
 - remove local components support / hardcode core components path
 - replace file based iteration with direct imports, renaming update_template each time 
-- refactor component classes so you are passing an individual item at a time 
-- iterate over types and then over individual components
-- convert components to classes with render method
+- convert components to classes
 - add back support for local components
 - flatten component list to remove type containers 
 
@@ -18,7 +22,6 @@
 - add back dashboard -> part of core not core/components
 - add inline functions to chart generation
 - replace s3 lambdas with inline -> experimental package
-- search_lambda_logs.py cli facility to allow you to select log group
 - convert async action error to push to sns 
 - table, queue error handlers
 - add queue type w/ metadata validation
@@ -33,6 +36,8 @@
 
 ### thoughts
 
+- search_lambda_logs.py cli facility to allow you to select log group ?
+ - probably not worth it; just name log groups appropriately 
 - convert list_events/resources to use filterfn functionality rather than match() helper ?
   - probably not worth it
 - add back events dashboard ?
