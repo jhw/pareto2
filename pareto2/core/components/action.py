@@ -230,14 +230,14 @@ def init_component(action):
     fn=eval("init_%s_component" % action["type"])
     return fn(action)
 
-def init_resources(components):
+def init_resources(actions):
     resources=[]
-    for action in components["actions"]:
+    for action in actions:
         component=init_component(action)
         resources+=component
     return dict(resources)
 
-def init_outputs(components):
+def init_outputs(actions):
     return {}
 
 if __name__=="__main__":
@@ -246,8 +246,8 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("actions")
-        template.resources.update(init_resources(config["components"]))
-        template.outputs.update(init_outputs(config["components"]))
+        template.resources.update(init_resources(config["components"]["actions"]))
+        template.outputs.update(init_outputs(config["components"]["actions"]))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

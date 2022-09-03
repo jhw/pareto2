@@ -1,5 +1,6 @@
 ### short [components api]
 
+- stop passing full components struct to core components
 - convert components to handle single components at a time -> maybe via render method
 - convert Components to iterate over groups and then components
 

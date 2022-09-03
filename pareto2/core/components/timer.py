@@ -144,14 +144,14 @@ def init_component(timer):
         resources.append(resource)
     return resources
 
-def init_resources(components):
+def init_resources(timers):
     resources=[]
-    for timer in components["timers"]:
+    for timer in timers:
         component=init_component(timer)
         resources+=component
     return dict(resources)
 
-def init_outputs(components):
+def init_outputs(timers):
     return {}
 
 if __name__=="__main__":
@@ -160,8 +160,8 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("timers")
-        template.resources.update(init_resources(config["components"]))
-        template.outputs.update(init_outputs(config["components"]))
+        template.resources.update(init_resources(config["components"]["timers"]))
+        template.outputs.update(init_outputs(config["components"]["timers"]))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

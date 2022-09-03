@@ -201,12 +201,12 @@ class Components(dict):
         template=Template(name=name,
                           timestamp=timestamp)
         modules=self.init_modules(paths)
-        for key in self:
+        for key, values in self.items():
             mod=modules[key[:-1]]
             resourcefn=getattr(mod, "init_resources")
-            template.resources.update(resourcefn({key: self[key]}))
+            template.resources.update(resourcefn(values))
             outputfn=getattr(mod, "init_outputs")
-            template.outputs.update(outputfn({key: self[key]}))
+            template.outputs.update(outputfn(values))
         return template
     
 if __name__=="__main__":

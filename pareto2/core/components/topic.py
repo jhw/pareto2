@@ -40,19 +40,18 @@ def init_permission(topic):
             "AWS::Lambda::Permission",
             props)
 
-
-def init_resources(components):
+def init_resources(topics):
     resources=[]
-    for topic in components["topics"]:
+    for topic in topics:
         for fn in [init_topic,
                    init_policy,
                    init_permission]:
             resources.append(fn(topic))
     return dict(resources)
 
-def init_outputs(components):
+def init_outputs(topics):
     return {H("%s-topic" % topic["name"]): {"Value": {"Ref": H("%s-topic" % topic["name"])}}
-            for topic in components["topics"]}
+            for topic in topics}
 
 if __name__=="__main__":
     try:
@@ -60,8 +59,8 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("topics")
-        template.resources.update(init_resources(config["components"]))
-        template.outputs.update(init_outputs(config["components"]))
+        template.resources.update(init_resources(config["components"]["topics"]))
+        template.outputs.update(init_outputs(config["components"]["topics"]))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))
