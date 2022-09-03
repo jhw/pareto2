@@ -46,9 +46,9 @@ class Lambdas:
                           if name.endswith("Test")]
         return classes
     
-    def validate_actions(self, md):
+    def validate_actions(self, components):
         actionnames=[action["name"]
-                     for action in md["actions"]]
+                     for action in components["actions"]]
         errors=[]
         for path in self.paths:
             if path.endswith("index.py"):
@@ -59,8 +59,8 @@ class Lambdas:
         if errors!=[]:
             raise RuntimeError("action not defined for %s" % ", ".join(errors))
 
-    def validate(self, md):
-        self.validate_actions(md)
+    def validate(self, components):
+        self.validate_actions(components)
 
     def run_tests(self):
         suite=unittest.TestSuite()
