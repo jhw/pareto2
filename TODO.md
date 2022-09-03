@@ -7,6 +7,7 @@
   - the former only creates template items
   - the latter adds default values
 - default|globals|config.hungarorised
+- move init_template stuff into config
 
 ### pareto2-demo, layman2
 
