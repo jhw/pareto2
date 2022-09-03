@@ -2,8 +2,6 @@ from pareto2.cli.deploy import *
 
 from pareto2.core.dsl import Config
 
-from pareto2.core.metadata import Metadata
-
 from botocore.exceptions import ClientError, WaiterError
 
 import boto3
@@ -23,8 +21,6 @@ if __name__=="__main__":
         stagename=sys.argv[1]
         filename="template-latest.json" if len(sys.argv) < 3 else sys.argv[2].split("/")[-1]
         config=Config.initialise()
-        md=Metadata(config["components"])
-        md.validate().expand()
         stackname="%s-%s" % (config["globals"]["AppName"],
                              stagename)
         cf=boto3.client("cloudformation")
