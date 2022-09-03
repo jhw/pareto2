@@ -1,16 +1,6 @@
 ### short
 
-- move endpoint into API 
-
-- extend merge config to account for recent changes 
-  - group into components, defaults, globals
-  - move layers our of defaulys
-  - de- hungarorise names
-  - move endpoints under APIs 
-  - remove dashboard
-  - move endpoints under apis
-  
-- check that 
+- test merge_config on old config structure
   
 - test latest tag with layman2
 
