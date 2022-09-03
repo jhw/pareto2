@@ -4,8 +4,6 @@ from pareto2.core.dsl import Config
 from pareto2.core.lambdas import Lambdas
 from pareto2.core.template import Template
 
-from pareto2.core import init_template
-
 from botocore.exceptions import ClientError
 
 from datetime import datetime
@@ -37,10 +35,9 @@ class Artifacts:
                        name,
                        paths,
                        lambdas):
-        template=init_template(self.config["components"],
-                               paths=paths,
-                               name=name,
-                               timestamp=self.timestamp)
+        template=self.config["components"].spawn_template(paths=paths,
+                                                          name=name,
+                                                          timestamp=self.timestamp)
         template.init_implied_parameters()
         values=self.config.parameters
         values["ArtifactsKey"]=lambdas.s3_key

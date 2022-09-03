@@ -1,6 +1,12 @@
 ### short [unified-config]
 
-- move core/init/init_template stuff into config class
+- check if timestamps can be specified as args and still changed
+  - spawn_template, push_artifacts, others
+
+- try removing bucket, table names
+- move event matching into list_events.py
+- check component spec is optional by removing secrets config
+- add inline functions to chart generation
 
 ### pareto2-demo, layman2
 
@@ -9,17 +15,12 @@
 ### medium
 
 - use per- stage config
-- try removing bucket, table names
-- check component spec is optional by removing secrets config
-- move event matching into list_events.py
+- replace file- based loading of core pareto components
 - add queue type w/ metadata validation
 - consider using 100% inline lambdas
-- replace file- based loading of core pareto components
 - search_lambda_logs.py cli facility to allow you to select log group
-- schema validation
 - convert async action error to push to sns 
 - table, queue error handlers
-- add inline functions to chart generation
 
 ### long
 
@@ -112,6 +113,7 @@
 
 ### done
 
+- move core/init/init_template stuff into config class
 - de- hungarorise globals
 - default|globals|config.hungarorised
 - remove push_artifacts.py hungarorised import
