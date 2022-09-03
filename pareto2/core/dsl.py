@@ -191,8 +191,7 @@ class Components(dict):
                 key=filename.split(".")[0]
                 modname="%s.%s" % (path.replace("/", "."), key)
                 mod=import_module(modname)
-                fn=getattr(mod, "update_template")
-                components[key]=fn
+                components[key]=mod
         return components
         
     def spawn_template(self,                  
@@ -202,9 +201,11 @@ class Components(dict):
         template=Template(name=name,
                           timestamp=timestamp)
         renderers=self.init_renderers(paths)
-        for key, renderfn in renderers.items():
-            renderfn(template=template,
-                     components=self)
+        for key, mod in renderers.items():
+            resourcefn=getattr(mod, "init_resources")
+            template.resources.update(resourcefn(self))
+            outputfn=getattr(mod, "init_outputs")
+            template.outputs.update(outputfn(self))
         return template
     
 if __name__=="__main__":

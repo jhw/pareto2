@@ -1,7 +1,5 @@
 ### short [components api]
 
-- move update_template code into Components class
-- refactor component main blocks to remove update_template references
 - convert components to handle single components at a time -> maybe via render method
 - convert Components to iterate over groups and then components
 
@@ -120,6 +118,8 @@
 
 ### done
 
+- refactor component main blocks to remove update_template references
+- move update_template code into Components class
 - add init_outputs to all components
 - test latest tag with layman2
 - test merge_config on old config structure
