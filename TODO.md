@@ -1,7 +1,6 @@
 ### short [unified-config]
 
 - check component spec is optional by removing secrets config
-
 - update dev/merge_config.py
 - try removing bucket, table names
 - add inline functions to chart generation
