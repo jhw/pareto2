@@ -2,6 +2,10 @@
 
 - replace load_config.py with Config.initialise
 - replace load_config/metadata with new config
+
+- check hungarorise imports
+- move all cli imports to top level
+
 - refactor init_parameters/parameters.update 
   - the former only creates template items
   - the latter adds default values

@@ -1,6 +1,6 @@
-from botocore.exceptions import ClientError
+from pareto2.core.dsl import Config
 
-from pareto2.cli import *
+from botocore.exceptions import ClientError
 
 import boto3
 
@@ -10,7 +10,7 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter object key")
         key=sys.argv[1]
-        config=load_config()
+        config=Config.initialise()
         bucketname=config["globals"]["ArtifactsBucket"]
         s3=boto3.client("s3")        
         resp=s3.get_object(Bucket=bucketname,

@@ -2,6 +2,8 @@ from pareto2.cli import hungarorise, fetch_outputs
 
 from pareto2.cli.deploy import *
 
+from pareto2.core.dsl import Config
+
 from botocore.exceptions import ClientError
 
 import boto3
@@ -12,8 +14,7 @@ if __name__=="__main__":
         if len(sys.argv) < 3:
             raise RuntimeError("please enter stage, apiname")
         stagename, apiname = sys.argv[1:3]
-        from pareto2.cli import load_config
-        config=load_config()
+        config=Config.initialise()
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["globals"]["AppName"],
                              stagename)

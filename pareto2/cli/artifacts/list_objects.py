@@ -1,4 +1,6 @@
-from pareto2.cli import *
+from pareto2.core.dsl import Config
+
+from botocore.exceptions import ClientError
 
 import boto3
 
@@ -19,9 +21,11 @@ if __name__=="__main__":
     try:
         import sys
         prefix=sys.argv[1] if len(sys.argv) > 1 else None            
-        config=load_config()
+        config=Config.initialise()
         bucketname=config["globals"]["ArtifactsBucket"]
         s3=boto3.client("s3")
         list_contents(s3, bucketname, prefix)
     except RuntimeError as error:
+        print ("Error: %s" % (str(error)))
+    except ClientError as error:
         print ("Error: %s" % (str(error)))

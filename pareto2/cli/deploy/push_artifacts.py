@@ -1,7 +1,6 @@
-from pareto2.cli import *
-
 from pareto2.cli.deploy import *
 
+from pareto2.core.dsl import Config
 from pareto2.core.lambdas import Lambdas
 from pareto2.core.metadata import Metadata
 from pareto2.core.template import Template
@@ -75,9 +74,9 @@ class Artifacts:
 if __name__=="__main__":
     try:
         import os
-        apppath=os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else "."
-        appname=os.environ["PARETO2_APP_NAME"]
-        config=load_config("%s/config.yaml" % apppath)
+        apppath, appname = (os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else ".",
+                            os.environ["PARETO2_APP_NAME"])
+        config=Config.initialise()
         md=Metadata(config["components"])
         md.validate().expand()
         from datetime import datetime

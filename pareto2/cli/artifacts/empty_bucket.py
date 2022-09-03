@@ -1,4 +1,6 @@
-from pareto2.cli import *
+from pareto2.core.dsl import Config
+
+from botocore.exceptions import ClientError
 
 import boto3
 
@@ -22,9 +24,11 @@ def delete_bucket(s3, bucketname):
     
 if __name__=="__main__":
     try:
-        config=load_config()
+        config=Config.initialise()
         bucketname=config["globals"]["ArtifactsBucket"]
         s3=boto3.client("s3")
         delete_bucket(s3, bucketname)
     except RuntimeError as error:
+        print ("Error: %s" % (str(error)))
+    except ClientError as error:
         print ("Error: %s" % (str(error)))

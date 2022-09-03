@@ -1,5 +1,7 @@
 from pareto2.cli.deploy import *
 
+from pareto2.core.dsl import Config
+
 from botocore.exceptions import ClientError
 
 import boto3, re
@@ -13,8 +15,7 @@ if __name__=="__main__":
         if not re.search("^\\d+$", n):
             raise RuntimeError("n is invalid")
         n=int(n)
-        from pareto2.cli import load_config
-        config=load_config()
+        config=Config.initialise()
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["globals"]["AppName"],
                              stagename)

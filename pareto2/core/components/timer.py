@@ -156,8 +156,8 @@ def update_template(template, md):
 
 if __name__=="__main__":
     try:
-        from pareto2.cli import load_config
-        config=load_config()
+        from pareto2.core.dsl import Config
+        config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("timers")
         from pareto2.core.metadata import Metadata

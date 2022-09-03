@@ -1,5 +1,7 @@
 from pareto2.cli.deploy import *
 
+from pareto2.core.dsl import Config
+
 from botocore.exceptions import ClientError
 
 import boto3
@@ -52,8 +54,7 @@ if __name__=="__main__":
         if len(sys.argv) < 2:
             raise RuntimeError("please enter stage")
         stage=sys.argv[1]
-        from pareto2.cli import load_config
-        config=load_config()
+        config=Config.initialise()
         stackname="%s-%s" % (config["globals"]["AppName"], stage)
         cf, s3 = boto3.client("cloudformation"), boto3.client("s3")
         delete_stack(cf, s3, stackname)

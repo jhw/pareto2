@@ -1,6 +1,6 @@
-from pareto2.cli import *
-
 from pareto2.cli.deploy import fetch_outputs
+
+from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError
 
@@ -12,7 +12,7 @@ if __name__=="__main__":
         if len(sys.argv) < 3:
             raise RuntimeError("please enter stage, userpool")
         stage, userpoolprefix = sys.argv[1:3]
-        config=load_config()
+        config=Config.initialise()
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["globals"]["AppName"], stage)
         outputs=fetch_outputs(cf, stackname)

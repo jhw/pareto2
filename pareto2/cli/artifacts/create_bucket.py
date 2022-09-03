@@ -1,3 +1,5 @@
+from botocore.exceptions import ClientError
+
 import boto3
 
 Region="eu-west-1"
@@ -16,4 +18,6 @@ if __name__=="__main__":
         s3=boto3.client("s3")
         create_bucket(s3, bucketname)
     except RuntimeError as error:
+        print ("Error: %s" % (str(error)))
+    except ClientError as error:
         print ("Error: %s" % (str(error)))

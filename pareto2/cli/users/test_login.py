@@ -1,6 +1,6 @@
-from pareto2.cli import *
-
 from pareto2.cli.deploy import fetch_outputs
+
+from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError
 
@@ -14,7 +14,7 @@ if __name__=="__main__":
         stage, userpoolprefix, email, password = sys.argv[1:5]
         if not re.search("^(\\w+\\.)?\\w+\\@\\D+\\.\\D+$", email):
             raise RuntimeError("email is invalid")
-        config=load_config()
+        config=Config.initialise()
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (config["globals"]["AppName"], stage)
         outputs=fetch_outputs(cf, stackname)

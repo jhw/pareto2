@@ -1,6 +1,6 @@
-from pareto2.cli import load_config
-
 from pareto2.cli.deploy import *
+
+from pareto2.core.dsl import Config
 
 from pareto2.core.metadata import Metadata
 
@@ -22,7 +22,7 @@ if __name__=="__main__":
             raise RuntimeError("please enter stage, filename?")
         stagename=sys.argv[1]
         filename="template-latest.json" if len(sys.argv) < 3 else sys.argv[2].split("/")[-1]
-        config=load_config()
+        config=Config.initialise()
         md=Metadata(config["components"])
         md.validate().expand()
         stackname="%s-%s" % (config["globals"]["AppName"],

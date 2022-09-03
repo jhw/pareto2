@@ -2,6 +2,8 @@ from pareto2.cli import hungarorise
 
 from pareto2.cli.deploy import *
 
+from pareto2.core.dsl import Config
+
 from botocore.exceptions import ClientError
 
 import boto3, re, sys, time
@@ -70,8 +72,7 @@ def fetch_events(logs, kwargs):
 
 if __name__=="__main__":
     try:
-        from pareto2.cli import load_config
-        config=load_config()
+        config=Config.initialise()
         if len(sys.argv) < 5:
             raise RuntimeError("Please enter stage, lambda, window, query")
         stage, lambdaname, window, query = sys.argv[1:5]
