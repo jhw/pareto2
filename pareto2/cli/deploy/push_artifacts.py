@@ -12,11 +12,12 @@ import boto3, os
 
 class Artifacts:
 
-    def __init__(self, config, root, timestamp, s3):
+    def __init__(self, config, root, s3,
+                 timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         self.config=config
         self.root=root
-        self.timestamp=timestamp
         self.s3=s3
+        self.timestamp=timestamp
 
     def build_lambdas(self, run_tests):
         lambdas=Lambdas(self.root, self.timestamp)
@@ -59,12 +60,10 @@ if __name__=="__main__":
     try:
         apppath, appname = (os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else ".",
                             os.environ["PARETO2_APP_NAME"])
-        config=Config.initialise()
-        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+        config=Config.initialise("%s/config.yaml" % apppath)
         s3=boto3.client("s3")
         artifacts=Artifacts(config=config,
                             root=appname,
-                            timestamp=timestamp,
                             s3=s3)        
         comppaths=["pareto2/core/components",
                    "components"]

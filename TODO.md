@@ -1,8 +1,6 @@
 ### short [unified-config]
 
-- check if timestamps can be specified as args and still changed
-  - spawn_template, push_artifacts, others
-
+- update dev/merge_config.py
 - try removing bucket, table names
 - move event matching into list_events.py
 - check component spec is optional by removing secrets config
@@ -16,6 +14,7 @@
 
 - use per- stage config
 - replace file- based loading of core pareto components
+- refactor component api
 - add queue type w/ metadata validation
 - consider using 100% inline lambdas
 - search_lambda_logs.py cli facility to allow you to select log group
@@ -113,6 +112,8 @@
 
 ### done
 
+- check if timestamps can be specified as args and still changed
+  - spawn_template, push_artifacts, others
 - move core/init/init_template stuff into config class
 - de- hungarorise globals
 - default|globals|config.hungarorised
