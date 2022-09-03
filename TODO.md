@@ -1,6 +1,5 @@
 ### short [components api]
 
-- add init_outputs to all components
 - move update_template code into Components class
 - refactor component main blocks to remove update_template references
 - convert components to handle single components at a time -> maybe via render method
@@ -121,6 +120,7 @@
 
 ### done
 
+- add init_outputs to all components
 - test latest tag with layman2
 - test merge_config on old config structure
 - remove dashboard

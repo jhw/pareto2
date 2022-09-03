@@ -151,8 +151,12 @@ def init_resources(components):
         resources+=component
     return dict(resources)
 
+def init_outputs(components):
+    return {}
+
 def update_template(template, components):
     template.resources.update(init_resources(components))
+    template.outputs.update(init_outputs(components))
 
 if __name__=="__main__":
     try:
