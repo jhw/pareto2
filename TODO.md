@@ -1,4 +1,4 @@
-### short [unified-config]
+### short
 
 - check component spec is optional by removing secrets config
 - update dev/merge_config.py
