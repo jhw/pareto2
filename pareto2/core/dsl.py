@@ -204,9 +204,10 @@ class Components(dict):
         for key, values in self.items():
             mod=modules[key[:-1]]
             resourcefn=getattr(mod, "init_resources")
-            template.resources.update(resourcefn(values))
             outputfn=getattr(mod, "init_outputs")
-            template.outputs.update(outputfn(values))
+            for value in values:
+                template.resources.update(resourcefn(value))
+                template.outputs.update(outputfn(value))
         return template
     
 if __name__=="__main__":

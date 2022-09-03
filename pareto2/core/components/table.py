@@ -208,16 +208,13 @@ def init_component(table):
             resources.append(resource)
     return resources
 
-def init_resources(tables):
+def init_resources(table):
     resources=[]
-    for table in tables:
-        component=init_component(table)
-        resources+=component
+    resources+=init_component(table)
     return dict(resources)
 
-def init_outputs(tables):
-    return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}
-            for table in tables}
+def init_outputs(table):
+    return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}}
                                
 if __name__=="__main__":
     try:
@@ -225,8 +222,9 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("tables")
-        template.resources.update(init_resources(config["components"]["tables"]))
-        template.outputs.update(init_outputs(config["components"]["tables"]))
+        for table in config["components"]["tables"]:
+            template.resources.update(init_resources(table))
+            template.outputs.update(init_outputs(table))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

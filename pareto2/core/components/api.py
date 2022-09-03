@@ -262,33 +262,29 @@ def init_cognito_resources(api, resources):
             resources.append(init_validator(api, endpoint))
             resources.append(init_model(api, endpoint))
 
-def init_resources(apis):
+def init_resources(api):
     resources=[]
-    for api in apis:
-        if api["type"]=="simple":
-            init_simple_resources(api, resources)
-        elif api["type"]=="cognito":
-            init_cognito_resources(api, resources)
-        else:
-            raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["type"]))
+    if api["type"]=="simple":
+        init_simple_resources(api, resources)
+    elif api["type"]=="cognito":
+        init_cognito_resources(api, resources)
+    else:
+        raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["type"]))
     return dict(resources)
 
 """
 - RestApi and Stage (echoed from input) are required for apigw redeployment
 """
 
-def init_outputs(apis):
-    def init_outputs(api, outputs):
-        endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
-                                            H("%s-api-stage" % api["name"]))}
-        restapi={"Ref": H("%s-api-rest-api" % api["name"])}
-        stage={"Ref": H("%s-api-stage" % api["name"])}    
-        outputs.update({H("%s-api-endpoint" % api["name"]): {"Value": endpoint},
-                        H("%s-api-rest-api" % api["name"]): {"Value": restapi},
-                        H("%s-api-stage" % api["name"]): {"Value": stage}})
+def init_outputs(api):
     outputs={}
-    for api in apis:
-        init_outputs(api, outputs)
+    endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
+                                        H("%s-api-stage" % api["name"]))}
+    restapi={"Ref": H("%s-api-rest-api" % api["name"])}
+    stage={"Ref": H("%s-api-stage" % api["name"])}    
+    outputs.update({H("%s-api-endpoint" % api["name"]): {"Value": endpoint},
+                    H("%s-api-rest-api" % api["name"]): {"Value": restapi},
+                    H("%s-api-stage" % api["name"]): {"Value": stage}})
     return outputs
 
 if __name__=="__main__":
@@ -297,8 +293,9 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("apis")
-        template.resources.update(init_resources(config["components"]["apis"]))
-        template.outputs.update(init_outputs(config["components"]["apis"]))
+        for api in config["components"]["apis"]:
+            template.resources.update(init_resources(api))
+            template.outputs.update(init_outputs(api))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

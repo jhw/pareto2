@@ -44,27 +44,23 @@ def init_web_client(userpool):
             "AWS::Cognito::UserPoolClient",
             props)
 
-def init_resources(userpools):
+def init_resources(userpool):
     resources=[]
-    for userpool in userpools:
-        for fn in [init_userpool,
-                   init_admin_client,
-                   init_web_client]:
-            resource=fn(userpool)
-            resources.append(resource)
+    for fn in [init_userpool,
+               init_admin_client,
+               init_web_client]:
+        resource=fn(userpool)
+        resources.append(resource)
     return dict(resources)
 
-def init_outputs(userpools):
-    def init_outputs(userpool, outputs):
-        userpool_={"Ref": H("%s-userpool" % userpool["name"])}
-        adminclient={"Ref": H("%s-userpool-admin-client" % userpool["name"])}
-        webclient={"Ref": H("%s-userpool-web-client" % userpool["name"])}
-        outputs.update({H("%s-userpool" % userpool["name"]): {"Value": userpool_},
-                        H("%s-userpool-admin-client" % userpool["name"]): {"Value": adminclient},
-                        H("%s-userpool-web-client" % userpool["name"]): {"Value": webclient}})
+def init_outputs(userpool):
     outputs={}
-    for userpool in userpools:
-        init_outputs(userpool, outputs)
+    userpool_={"Ref": H("%s-userpool" % userpool["name"])}
+    adminclient={"Ref": H("%s-userpool-admin-client" % userpool["name"])}
+    webclient={"Ref": H("%s-userpool-web-client" % userpool["name"])}
+    outputs.update({H("%s-userpool" % userpool["name"]): {"Value": userpool_},
+                    H("%s-userpool-admin-client" % userpool["name"]): {"Value": adminclient},
+                    H("%s-userpool-web-client" % userpool["name"]): {"Value": webclient}})
     return outputs
             
 if __name__=="__main__":
@@ -73,8 +69,9 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("userpools")
-        template.resources.update(init_resources(config["components"]["userpools"]))
-        template.outputs.update(init_outputs(config["components"]["userpools"]))
+        for userpool in config["components"]["userpools"]:
+            template.resources.update(init_resources(userpool))
+            template.outputs.update(init_outputs(userpool))
         template.dump_local()
     except RuntimeError as error:
         print ("Error: %s" % str(error))

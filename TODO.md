@@ -1,11 +1,10 @@
 ### short [components api]
 
-- stop passing full components struct to core components
-- convert components to handle single components at a time -> maybe via render method
-- convert Components to iterate over groups and then components
+- merge init_components/init_resources
+- simplify init_outputs
 
 - remove local components support / hardcode core components path
-- replace file based iteration with direct imports, renaming update_template each time 
+- replace file based iteration with direct module imports and references
 - convert components to classes
 - add back support for local components
 - flatten component list to remove type containers 
@@ -119,6 +118,9 @@
 
 ### done
 
+- convert components to handle single components at a time -> maybe via render method
+- convert Components to iterate over groups and then components
+- stop passing full components struct to core components
 - refactor component main blocks to remove update_template references
 - move update_template code into Components class
 - add init_outputs to all components
