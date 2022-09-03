@@ -1,5 +1,7 @@
 from pareto2.cli.deploy import fetch_outputs
 
+from pareto2.core.components import hungarorise
+
 from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError

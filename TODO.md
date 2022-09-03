@@ -1,8 +1,5 @@
 ### short [unified-config]
 
-- users are missing hungarorise imports
-- don't like redeploy_api.py, search_lambda_logs.py cli imports
-
 - test individual components
 - test core/__init__.py
 - test push artifacts
@@ -11,6 +8,7 @@
   - the former only creates template items
   - the latter adds default values
 - default|globals|config.hungarorised
+- remove push_artifacts.py hungarorised import
 
 - move core/init/init_template stuff into config class
 
@@ -123,6 +121,8 @@
 
 ### done
 
+- users are missing hungarorise imports
+- don't like redeploy_api.py, search_lambda_logs.py cli imports
 - move all cli imports to top level
 - replace metadata refs
 - see if validate, expand can be part of initialise()

@@ -1,6 +1,6 @@
-from pareto2.cli import hungarorise
-
 from pareto2.cli.deploy import *
+
+from pareto2.core.components import hungarorise
 
 from pareto2.core.dsl import Config
 
