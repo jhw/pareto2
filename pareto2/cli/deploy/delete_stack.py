@@ -54,7 +54,7 @@ if __name__=="__main__":
             raise RuntimeError("please enter stage")
         stage=sys.argv[1]
         config=Config.initialise()
-        stackname="%s-%s" % (config["globals"]["AppName"], stage)
+        stackname="%s-%s" % (config["globals"]["app-name"], stage)
         cf, s3 = boto3.client("cloudformation"), boto3.client("s3")
         delete_stack(cf, s3, stackname)
     except RuntimeError as error:

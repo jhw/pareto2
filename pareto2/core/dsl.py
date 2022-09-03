@@ -41,14 +41,11 @@ class Globals(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
-    """
-    - NB currently hungarorised/doesn't need conversion
-    """
-        
     @property
     def parameters(self):
-        return self
-        
+        return {hungarorise(k):v
+                for k, v in self.items()}
+
 class Defaults(dict):
 
     def __init__(self, struct):

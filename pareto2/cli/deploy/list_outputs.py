@@ -13,7 +13,7 @@ if __name__=="__main__":
         stagename=sys.argv[1]
         config=Config.initialise()
         cf=boto3.client("cloudformation")
-        stackname="%s-%s" % (config["globals"]["AppName"],
+        stackname="%s-%s" % (config["globals"]["app-name"],
                              stagename)
         outputs=fetch_outputs(cf, stackname)
         for k in sorted(outputs.keys()):

@@ -21,7 +21,7 @@ if __name__=="__main__":
             raise RuntimeError("email is invalid")
         config=Config.initialise()
         cf=boto3.client("cloudformation")
-        stackname="%s-%s" % (config["globals"]["AppName"], stage)
+        stackname="%s-%s" % (config["globals"]["app-name"], stage)
         outputs=fetch_outputs(cf, stackname)
         userpool=hungarorise("%s-userpool" % userpoolprefix)
         if userpool not in outputs:

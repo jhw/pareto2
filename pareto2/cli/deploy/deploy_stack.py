@@ -20,13 +20,13 @@ if __name__=="__main__":
         stagename=sys.argv[1]
         filename="template-latest.json" if len(sys.argv) < 3 else sys.argv[2].split("/")[-1]
         config=Config.initialise()
-        stackname="%s-%s" % (config["globals"]["AppName"],
+        stackname="%s-%s" % (config["globals"]["app-name"],
                              stagename)
         cf=boto3.client("cloudformation")
         action="update" if stack_exists(cf, stackname) else "create"
         fn=getattr(cf, "%s_stack" % action)
         templateurl=TemplatePath % (os.environ["AWS_REGION"],
-                                    config["globals"]["ArtifactsBucket"],
+                                    config["globals"]["artifacts-bucket"],
                                     filename)
         params=[{"ParameterKey": "StageName",
                  "ParameterValue": stagename}]

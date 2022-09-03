@@ -13,7 +13,7 @@ if __name__=="__main__":
         stagename, pattern = sys.argv[1:3]
         config=Config.initialise()
         cf=boto3.client("cloudformation")
-        stackname="%s-%s" % (config["globals"]["AppName"],
+        stackname="%s-%s" % (config["globals"]["app-name"],
                              stagename)
         resources, count = fetch_resources(cf, stackname), 0
         for resource in resources:

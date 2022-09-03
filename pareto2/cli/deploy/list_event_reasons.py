@@ -21,7 +21,7 @@ if __name__=="__main__":
         n=int(n)
         config=Config.initialise()
         cf=boto3.client("cloudformation")
-        stackname="%s-%s" % (config["globals"]["AppName"],
+        stackname="%s-%s" % (config["globals"]["app-name"],
                              stagename)
         events, count = fetch_events(cf, stackname, n), 0
         for event in events:

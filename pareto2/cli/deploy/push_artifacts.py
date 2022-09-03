@@ -25,7 +25,7 @@ class Artifacts:
         if run_tests:
             lambdas.run_tests() # raises RuntimeError on failure
         lambdas.validate(self.config["components"])
-        bucketname=self.config["globals"]["ArtifactsBucket"]
+        bucketname=self.config["globals"]["artifacts-bucket"]
         lambdas.dump_s3(self.s3, bucketname)
         return lambdas
 
@@ -45,7 +45,7 @@ class Artifacts:
         values=self.config.parameters
         values["ArtifactsKey"]=lambdas.s3_key
         template.parameters.update_defaults(values)
-        template.dump_s3(self.s3, self.config["globals"]["ArtifactsBucket"])
+        template.dump_s3(self.s3, self.config["globals"]["artifacts-bucket"])
         template.parameters.validate()
         template.validate_root()
 
