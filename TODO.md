@@ -1,6 +1,5 @@
 ### short [components api]
 
-- modify spawn_template to work with flat component list
 - update config.yaml
 - test
 
@@ -120,6 +119,7 @@
 
 ### done
 
+- modify spawn_template to work with flat component list
 - add endpoints sync check
 - add helpers for actions, tables, buckets etc so validation still works
 - script to flatten components config

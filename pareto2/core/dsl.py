@@ -266,13 +266,12 @@ class Components(dict):
                        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         template=Template(name=name,
                           timestamp=timestamp)
-        for key, values in self.items():
-            mod=modules[key[:-1]] # NB singularise
+        for component in self:
+            mod=modules[component["type"]]
             resourcefn=getattr(mod, "render_resources")
+            template.resources.update(resourcefn(component))
             outputfn=getattr(mod, "render_outputs")
-            for value in values:
-                template.resources.update(resourcefn(value))
-                template.outputs.update(outputfn(value))
+            template.outputs.update(outputfn(component))
         return template
     
 if __name__=="__main__":
