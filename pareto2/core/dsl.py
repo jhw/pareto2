@@ -22,14 +22,18 @@ import pareto2.core.components.timer
 import pareto2.core.components.topic
 import pareto2.core.components.userpool
 
-ComponentModules={"action": pareto2.core.components.action,
-                  "api": pareto2.core.components.api,
-                  "bucket": pareto2.core.components.bucket,
-                  "secret": pareto2.core.components.secret,                  
-                  "table": pareto2.core.components.table,
-                  "timer": pareto2.core.components.timer,
-                  "topic": pareto2.core.components.topic,
-                  "userpool": pareto2.core.components.userpool}
+CoreComponentModules={"action": pareto2.core.components.action,
+                      "api": pareto2.core.components.api,
+                      "bucket": pareto2.core.components.bucket,
+                      "secret": pareto2.core.components.secret,                  
+                      "table": pareto2.core.components.table,
+                      "timer": pareto2.core.components.timer,
+                      "topic": pareto2.core.components.topic,
+                      "userpool": pareto2.core.components.userpool}
+
+def add_local_components(modules):
+    print (modules)
+    return modules
 
 class Config(dict):
 
@@ -261,7 +265,7 @@ class Components(list):
 
     def spawn_template(self,                  
                        name="main",
-                       modules=ComponentModules,
+                       modules=add_local_components(CoreComponentModules),
                        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         template=Template(name=name,
                           timestamp=timestamp)
