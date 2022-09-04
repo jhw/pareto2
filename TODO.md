@@ -1,7 +1,14 @@
 ### short [components api]
 
-- update config.yaml
-- test
+```
+raceback (most recent call last):
+  File "pareto2/core/components/action.py", line 243, in <module>
+    template.resources.update(render_resources(action))
+  File "pareto2/core/components/action.py", line 230, in render_resources
+    fn=eval("init_%s_component" % action["type"])
+  File "<string>", line 1, in <module>
+NameError: name 'init_action_component' is not defined
+```
 
 - add local component modules
 - add APP_PATH support to local component modules

@@ -26,7 +26,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("secrets")
-        for secret in config["components"]["secrets"]:
+        for secret in config["components"].secrets:
             template.resources.update(render_resources(secret))
             template.outputs.update(render_outputs(secret))
         template.dump_local()

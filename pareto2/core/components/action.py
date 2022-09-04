@@ -239,7 +239,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("actions")
-        for action in config["components"]["actions"]:
+        for action in config["components"].actions:
             template.resources.update(render_resources(action))
             template.outputs.update(render_outputs(action))
         template.dump_local()

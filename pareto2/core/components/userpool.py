@@ -69,7 +69,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("userpools")
-        for userpool in config["components"]["userpools"]:
+        for userpool in config["components"].userpools:
             template.resources.update(render_resources(userpool))
             template.outputs.update(render_outputs(userpool))
         template.dump_local()

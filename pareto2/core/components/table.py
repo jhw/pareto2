@@ -217,7 +217,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("tables")
-        for table in config["components"]["tables"]:
+        for table in config["components"].tables:
             template.resources.update(render_resources(table))
             template.outputs.update(render_outputs(table))
         template.dump_local()

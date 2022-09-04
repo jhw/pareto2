@@ -24,7 +24,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("buckets")
-        for bucket in config["components"]["buckets"]:
+        for bucket in config["components"].buckets:
             template.resources.update(render_resources(bucket))
             template.outputs.update(render_outputs(bucket))
         template.dump_local()

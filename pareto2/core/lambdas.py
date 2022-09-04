@@ -48,7 +48,7 @@ class Lambdas:
     
     def validate_actions(self, components):
         actionnames=[action["name"]
-                     for action in components["actions"]]
+                     for action in components.actions]
         errors=[]
         for path in self.paths:
             if path.endswith("index.py"):

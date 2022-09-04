@@ -153,7 +153,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("timers")
-        for timer in config["components"]["timers"]:
+        for timer in config["components"].timers:
             template.resources.update(render_resources(timer))
             template.outputs.update(render_outputs(timer))
         template.dump_local()

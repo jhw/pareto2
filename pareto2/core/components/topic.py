@@ -57,7 +57,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("topics")
-        for topic in config["components"]["topics"]:
+        for topic in config["components"].topics:
             template.resources.update(render_resources(topic))
             template.outputs.update(render_outputs(topic))
         template.dump_local()

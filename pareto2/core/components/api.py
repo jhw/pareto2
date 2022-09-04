@@ -293,7 +293,7 @@ if __name__=="__main__":
         config=Config.initialise()
         from pareto2.core.template import Template
         template=Template("apis")
-        for api in config["components"]["apis"]:
+        for api in config["components"].apis:
             template.resources.update(render_resources(api))
             template.outputs.update(render_outputs(api))
         template.dump_local()

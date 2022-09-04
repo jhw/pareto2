@@ -93,28 +93,28 @@ class Layers(dict):
         return {"%sLayerArn" % hungarorise(k):v
                 for k, v in self.items()}
         
-class Components(dict):
+class Components(list):
 
     def __init__(self, struct):
-        dict.__init__(self, struct)
+        list.__init__(self, struct)
 
     @property
     def actions(self):
         return [component
                 for component in self
-                if self["type"]=="action"]
+                if component["type"]=="action"]
 
     @property
     def apis(self):
         return [component
                 for component in self
-                if self["type"]=="api"]
+                if component["type"]=="api"]
 
     @property
     def buckets(self):
         return [component
                 for component in self
-                if self["type"]=="bucket"]
+                if component["type"]=="bucket"]
 
     @property
     def endpoints(self):
@@ -136,31 +136,31 @@ class Components(dict):
     def secrets(self):
         return [component
                 for component in self
-                if self["type"]=="secret"]
+                if component["type"]=="secret"]
 
     @property
     def tables(self):
         return [component
                 for component in self
-                if self["type"]=="table"]
+                if component["type"]=="table"]
 
     @property
     def timers(self):
         return [component
                 for component in self
-                if self["type"]=="timer"]
+                if component["type"]=="timer"]
 
     @property
     def topics(self):
         return [component
                 for component in self
-                if self["type"]=="topic"]
+                if component["type"]=="topic"]
 
     @property
     def userpools(self):
         return [component
                 for component in self
-                if self["type"]=="userpool"]
+                if component["type"]=="userpool"]
             
     def validate_component_refs(self, errors):
         def filter_refs(element, refs, attr):
