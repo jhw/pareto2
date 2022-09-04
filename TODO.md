@@ -1,24 +1,9 @@
 ### short [components api]
 
-```
-raceback (most recent call last):
-  File "pareto2/core/components/action.py", line 243, in <module>
-    template.resources.update(render_resources(action))
-  File "pareto2/core/components/action.py", line 230, in render_resources
-    fn=eval("init_%s_component" % action["type"])
-  File "<string>", line 1, in <module>
-NameError: name 'init_action_component' is not defined
-```
-
-- replace "type" refs with "invocation"
-- add back old config.yaml
-- change merge_config.yaml to create new action "invocation" attr
-- re- test
-
-- replace config expansion with api insertion of $schema
-
 - add local component modules
 - add APP_PATH support to local component modules
+
+- replace config expansion with api insertion of $schema
 
 - add back dashboard at core level
 - include inline functions in chart generation
@@ -132,6 +117,9 @@ NameError: name 'init_action_component' is not defined
 
 ### done
 
+- rename invocation as invocation-type
+- rename api type as auth-type
+- replace "type" refs with "invocation"
 - modify spawn_template to work with flat component list
 - add endpoints sync check
 - add helpers for actions, tables, buckets etc so validation still works

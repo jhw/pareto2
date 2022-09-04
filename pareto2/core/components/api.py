@@ -264,12 +264,12 @@ def init_cognito_resources(api, resources):
 
 def render_resources(api):
     resources=[]
-    if api["type"]=="simple":
+    if api["auth-type"]=="simple":
         init_simple_resources(api, resources)
-    elif api["type"]=="cognito":
+    elif api["auth-type"]=="cognito":
         init_cognito_resources(api, resources)
     else:
-        raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["type"]))
+        raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
     return dict(resources)
 
 """

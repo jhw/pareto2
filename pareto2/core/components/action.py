@@ -227,7 +227,7 @@ def init_sync_component(action):
     return resources
 
 def render_resources(action):
-    fn=eval("init_%s_component" % action["type"])
+    fn=eval("init_%s_component" % action["invocation-type"])
     return dict(fn(action))
 
 def render_outputs(action):

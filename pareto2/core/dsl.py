@@ -188,22 +188,21 @@ class Components(list):
             if attr in self:
                 validate_refs(self, attr, errors)
 
-    def validate_action_types(self, errors):
-        def validate_type(self, attr, type, errors):
+    def validate_action_invocations(self, errors):
+        def validate_invoctype(self, attr, invoctype, errors):
             actions={action["name"]:action
                      for action in self.actions}
             for component in getattr(self, attr):
                 action=actions[component["action"]]
-                if action["type"]!=type:
+                if action["invocation-type"]!=invoctype:
                     errors.append("%s component %s must be bound to %s action" % (attr,
                                                                                   component["action"],
-                                                                                  type))
-        for attr, type in [("endpoints", "sync"),
-                           ("timers", "sync"),
-                           ("topics", "async")]:
+                                                                                  invoctype))
+        for attr, invoctype in [("endpoints", "sync"),
+                                ("timers", "sync"),
+                                ("topics", "async")]:
             if attr in self:
-                validate_type(self, attr, type, errors)
-
+                validate_invoctype(self, attr, invoctype, errors)
 
     def validate_action_event_config(self, errors):
         if "actions" in self:
@@ -222,7 +221,7 @@ class Components(list):
     def validate(self):
         errors=[]
         self.validate_component_refs(errors)
-        self.validate_action_types(errors)
+        self.validate_action_invocations(errors)
         self.validate_action_event_config(errors)
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
