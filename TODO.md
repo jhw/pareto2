@@ -10,6 +10,13 @@ raceback (most recent call last):
 NameError: name 'init_action_component' is not defined
 ```
 
+- replace "type" refs with "invocation"
+- add back old config.yaml
+- change merge_config.yaml to create new action "invocation" attr
+- re- test
+
+- replace config expansion with api insertion of $schema
+
 - add local component modules
 - add APP_PATH support to local component modules
 
@@ -23,7 +30,6 @@ NameError: name 'init_action_component' is not defined
 ### medium
 
 - use per- stage config
-- replace config expansion with api insertion of $schema
 - replace s3 lambdas with inline -> experimental package
 - convert async action error to push to sns 
 - table, queue error handlers
