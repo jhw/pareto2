@@ -1,9 +1,10 @@
 ### short [components api]
 
-- script to flatten components config
+- add endpoints sync check
 - modify spawn_template to work with flat component list
 
-- add back support for local components (how?)
+- add local component modules
+- add APP_PATH support to local component modules
 
 - add back dashboard at core level
 - include inline functions in chart generation
@@ -14,8 +15,8 @@
 
 ### medium
 
-
 - use per- stage config
+- replace config expansion with api insertion of $schema
 - replace s3 lambdas with inline -> experimental package
 - convert async action error to push to sns 
 - table, queue error handlers
@@ -118,6 +119,8 @@
 
 ### done
 
+- add helpers for actions, tables, buckets etc so validation still works
+- script to flatten components config
 - replace file based iteration with direct module imports and references
 - remove local components support / hardcode core components path
 - simplify init_outputs

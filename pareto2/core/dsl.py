@@ -98,6 +98,70 @@ class Components(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
+    @property
+    def actions(self):
+        return [component
+                for component in self
+                if self["type"]=="action"]
+
+    @property
+    def apis(self):
+        return [component
+                for component in self
+                if self["type"]=="api"]
+
+    @property
+    def buckets(self):
+        return [component
+                for component in self
+                if self["type"]=="bucket"]
+
+    @property
+    def endpoints(self):
+        endpoints=[]
+        for api in self.apis:
+            if "endpoints" in api:
+                endpoints+=api["endpoints"]
+        return endpoints
+
+    @property
+    def events(self):
+        events=[]
+        for action in self.actions:
+            if "events" in action:
+                events+=action["events"]
+        return events
+    
+    @property
+    def secrets(self):
+        return [component
+                for component in self
+                if self["type"]=="secret"]
+
+    @property
+    def tables(self):
+        return [component
+                for component in self
+                if self["type"]=="table"]
+
+    @property
+    def timers(self):
+        return [component
+                for component in self
+                if self["type"]=="timer"]
+
+    @property
+    def topics(self):
+        return [component
+                for component in self
+                if self["type"]=="topic"]
+
+    @property
+    def userpools(self):
+        return [component
+                for component in self
+                if self["type"]=="userpool"]
+            
     def validate_component_refs(self, errors):
         def filter_refs(element, refs, attr):
             if isinstance(element, list):
@@ -111,7 +175,7 @@ class Components(dict):
                         filter_refs(subelement, refs, attr)
         def validate_refs(self, attr, errors):
             names=[item["name"]
-                   for item in self[attr]]
+                   for item in getattr(self, attr)]
             refs=set()
             filter_refs(self, refs, attr[:-1])
             for ref in refs:
@@ -127,8 +191,8 @@ class Components(dict):
     def validate_action_types(self, errors):
         def validate_type(self, attr, type, errors):
             actions={action["name"]:action
-                     for action in self["actions"]}
-            for component in self[attr]:
+                     for action in self.actions}
+            for component in getattr(self, attr):
                 action=actions[component["action"]]
                 if action["type"]!=type:
                     errors.append("%s component %s must be bound to %s action" % (attr,
@@ -142,7 +206,7 @@ class Components(dict):
 
     def validate_action_event_config(self, errors):
         if "actions" in self:
-            for action in self["actions"]:
+            for action in self.actions:
                 if "events" in action:
                     for event in action["events"]:
                         if (event["type"]=="s3" and
@@ -174,7 +238,7 @@ class Components(dict):
                                           re.sub("\\s", "", text))
                     if (tok.upper()==tok and
                         len(tok) > 3)]
-        for action in self["actions"]:
+        for action in self.actions:
             variables=expand(action)
             """
             if variables!=[]:
@@ -184,7 +248,7 @@ class Components(dict):
             action["env"]={"variables": variables}
 
     def expand_endpoint_schema(self):
-        for api in self["apis"]:
+        for api in self.apis:
             for endpoint in api["endpoints"]:
                 if (endpoint["method"]=="POST" and
                     "schema" in endpoint):
