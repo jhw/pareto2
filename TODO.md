@@ -1,10 +1,11 @@
 ### short [components api]
 
 - add APP_PATH support to local component modules
-  - does import_module accept PYTHONPATH ?
+
 - replace config expansion with api insertion of $schema
+
 - add back dashboard at core level
-- include inline functions in chart generation
+  - include inline functions in chart generation
 
 ### pareto2-demo, layman2
 
