@@ -1,9 +1,17 @@
 ### short [components api]
 
+- rename local as custom 
+- API component  should use auth type none rather than simple.
+- simple gist for testing moduke import outside root
 - add APP_PATH support to local component modules
+- API should include $schema if doesnt exist 
+
+- add back dashboard at end of spawn template
+  - core components only  
+- add inline functions to dashboard 
+- consider driving dashboard from AWS type 
 
 - replace config expansion with api insertion of $schema
-
 - add back dashboard at core level
   - include inline functions in chart generation
 
@@ -14,10 +22,8 @@
 ### medium
 
 - use per- stage config
-- replace s3 lambdas with inline -> experimental package
 - convert async action error to push to sns 
 - table, queue error handlers
-- add queue type w/ metadata validation
 
 ### long
 
@@ -29,8 +35,15 @@
 
 ### thoughts
 
-- single component render method
-- convert components to classes
+- queue component ?
+  - feels like this is covered by timer component and tasker app
+- replace s3 lambdas with inline ?
+  - no feels like a bridge too far
+  - you are screwed if lambda exceeds 4096 chars which it might easily to, eg for a differ  
+- single component render method ?
+  - no feels more natural to have separate render_resources, render_outputs
+- convert components to classes ?
+  - no feels natural to have them as modules as they are stateless
 - search_lambda_logs.py cli facility to allow you to select log group ?
  - probably not worth it; just name log groups appropriately 
 - convert list_events/resources to use filterfn functionality rather than match() helper ?
