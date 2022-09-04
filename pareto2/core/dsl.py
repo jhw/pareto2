@@ -2,6 +2,8 @@ from pareto2.core.template import Template
 
 from pareto2.core.components import hungarorise
 
+from importlib import import_module
+
 from datetime import datetime
 
 import os, re, yaml
@@ -31,8 +33,20 @@ CoreComponentModules={"action": pareto2.core.components.action,
                       "topic": pareto2.core.components.topic,
                       "userpool": pareto2.core.components.userpool}
 
-def add_local_components(modules):
-    print (modules)
+def add_local_components(modules, paths=["components"]):
+    for path in paths:
+        if not (os.path.exists(path) and
+                os.path.isdir(path)):
+            continue
+        for filename in os.listdir(path):
+            if ("__init__" in filename or
+                "__pycache__" in filename):
+                continue
+            key=filename.split(".")[0]
+            modname="%s.%s" % (path.replace("/", "."), key)
+            print ("adding %s -> %s" % (key, modname))
+            mod=import_module(modname)
+            modules[key]=mod            
     return modules
 
 class Config(dict):

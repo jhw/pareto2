@@ -1,10 +1,8 @@
 ### short [components api]
 
-- add local component modules
 - add APP_PATH support to local component modules
-
+  - does import_module accept PYTHONPATH ?
 - replace config expansion with api insertion of $schema
-
 - add back dashboard at core level
 - include inline functions in chart generation
 
@@ -117,6 +115,7 @@
 
 ### done
 
+- add local component modules
 - rename invocation as invocation-type
 - rename api type as auth-type
 - replace "type" refs with "invocation"
