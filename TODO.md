@@ -1,7 +1,8 @@
 ### short [components api]
 
-- add endpoints sync check
 - modify spawn_template to work with flat component list
+- update config.yaml
+- test
 
 - add local component modules
 - add APP_PATH support to local component modules
@@ -119,6 +120,7 @@
 
 ### done
 
+- add endpoints sync check
 - add helpers for actions, tables, buckets etc so validation still works
 - script to flatten components config
 - replace file based iteration with direct module imports and references

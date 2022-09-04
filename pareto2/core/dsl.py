@@ -198,7 +198,8 @@ class Components(dict):
                     errors.append("%s component %s must be bound to %s action" % (attr,
                                                                                   component["action"],
                                                                                   type))
-        for attr, type in [("timers", "sync"),
+        for attr, type in [("endpoints", "sync"),
+                           ("timers", "sync"),
                            ("topics", "async")]:
             if attr in self:
                 validate_type(self, attr, type, errors)
