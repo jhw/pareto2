@@ -1,7 +1,5 @@
 ### short
 
-- delete/redeploy stack
-
 ### pareto2-demo, layman2
 
 - replace load_xxx, get_resources nomenclature with fetch_xxx
@@ -118,6 +116,7 @@
 
 ### done
 
+- delete/redeploy stack
 - spawn template to add dashboard with app name
 - get charts and dashboard
 - restrict charts to actions only 
