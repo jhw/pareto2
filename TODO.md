@@ -1,5 +1,7 @@
 ### short
 
+- export outputs
+
 - check components, tmp/components for custom components
 
 - extend dashboard to reference inline function
