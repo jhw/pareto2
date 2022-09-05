@@ -24,6 +24,8 @@ import pareto2.core.components.timer
 import pareto2.core.components.topic
 import pareto2.core.components.userpool
 
+import pareto2.core.dashboard
+
 def init_components(modules, custompaths):
     for path in custompaths:
         if not (os.path.exists(path) and
@@ -82,6 +84,16 @@ class Config(dict):
         self["components"].expand()
         return self
 
+    def add_dashboard(fn):
+        def wrapped(self, *args, **kwargs):
+            template=fn(self, *args, **kwargs)
+            resourcefn=getattr(pareto2.core.dashboard,
+                               "render_resources")
+            template.resources.update(resourcefn(self))
+            return template
+        return wrapped
+    
+    @add_dashboard
     def spawn_template(self,                  
                        name="main",
                        modules=ComponentModules,

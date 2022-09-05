@@ -1,6 +1,6 @@
 ### short
 
-- spawn template to add dashboard with app name
+- delete/redeploy stack
 
 ### pareto2-demo, layman2
 
@@ -118,6 +118,7 @@
 
 ### done
 
+- spawn template to add dashboard with app name
 - get charts and dashboard
 - restrict charts to actions only 
 - move spawn template into config root so have access to app name 
