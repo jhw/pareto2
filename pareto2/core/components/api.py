@@ -133,7 +133,7 @@ def init_method(api, endpoint, authorisation):
             props)
 
 @resource
-def init_simple_method(api, endpoint):
+def init_open_method(api, endpoint):
     authorisation={"AuthorizationType": "NONE"}
     return init_method(api, endpoint, authorisation)
 
@@ -223,7 +223,7 @@ def init_model(api, endpoint):
             "AWS::ApiGateway::Model",
             props)    
 
-def init_simple_resources(api, resources):
+def init_open_resources(api, resources):
     resources.append(init_rest_api(api))
     resources.append(init_deployment(api))
     resources.append(init_stage(api))
@@ -231,7 +231,7 @@ def init_simple_resources(api, resources):
         resources.append(init_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
-                   init_simple_method,
+                   init_open_method,
                    init_permission,
                    init_cors_method]:
             resource=fn(api, endpoint)
@@ -264,12 +264,13 @@ def init_cognito_resources(api, resources):
 
 def render_resources(api):
     resources=[]
-    if api["auth-type"]=="simple":
-        init_simple_resources(api, resources)
-    elif api["auth-type"]=="cognito":
-        init_cognito_resources(api, resources)
+    if "auth-type" not in api:
+        init_open_resources(api, resources)
     else:
-        raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
+        if api["auth-type"]=="cognito":
+            init_cognito_resources(api, resources)
+        else:
+            raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
     return dict(resources)
 
 """
