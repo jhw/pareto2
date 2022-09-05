@@ -1,9 +1,6 @@
 ### short
 
-- get charts and dashboard
-- restrict charts to actions only 
 - spawn template to add dashboard with app name
-- try driving dashboards off AWS type to incude inline functions
 
 ### pareto2-demo, layman2
 
@@ -11,6 +8,7 @@
 
 ### medium
 
+- generate dashboard based on AWS type to include inline functions
 - table, queue error handlers
 - error handlers to push to sns
 
@@ -120,6 +118,8 @@
 
 ### done
 
+- get charts and dashboard
+- restrict charts to actions only 
 - move spawn template into config root so have access to app name 
 - replace config.expand() with injection of $schema at api component level
 - replace API simple auth-type
