@@ -1,19 +1,15 @@
-### short [components api]
+### short
 
-- rename local as custom 
-- API component  should use auth type none rather than simple.
-- simple gist for testing moduke import outside root
-- add APP_PATH support to local component modules
-- API should include $schema if doesnt exist 
+- remove APP_PATH support
+- rename local as custom
+- replace API simple auth-type
+- replace config.expand() with injection of $schema at api component level
+- move spawn template into config root so have access to app name 
 
-- add back dashboard at end of spawn template
-  - core components only  
-- add inline functions to dashboard 
-- consider driving dashboard from AWS type 
-
-- replace config expansion with api insertion of $schema
-- add back dashboard at core level
-  - include inline functions in chart generation
+- get charts and dashboard
+- restrict charts to actions only 
+- spawn template to add dashboard with app name
+- try driving dashboards off AWS type to incude inline functions
 
 ### pareto2-demo, layman2
 
@@ -21,9 +17,8 @@
 
 ### medium
 
-- use per- stage config
-- convert async action error to push to sns 
 - table, queue error handlers
+- error handlers to push to sns
 
 ### long
 
@@ -35,6 +30,8 @@
 
 ### thoughts
 
+- use per- stage config ?
+  - not clear it will be required until you work on tiriac
 - queue component ?
   - feels like this is covered by timer component and tasker app
 - replace s3 lambdas with inline ?
