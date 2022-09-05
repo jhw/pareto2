@@ -24,17 +24,8 @@ import pareto2.core.components.timer
 import pareto2.core.components.topic
 import pareto2.core.components.userpool
 
-CoreComponentModules={"action": pareto2.core.components.action,
-                      "api": pareto2.core.components.api,
-                      "bucket": pareto2.core.components.bucket,
-                      "secret": pareto2.core.components.secret,                  
-                      "table": pareto2.core.components.table,
-                      "timer": pareto2.core.components.timer,
-                      "topic": pareto2.core.components.topic,
-                      "userpool": pareto2.core.components.userpool}
-
-def add_local_components(modules, paths=["components"]):
-    for path in paths:
+def init_components(modules, custompaths):
+    for path in custompaths:
         if not (os.path.exists(path) and
                 os.path.isdir(path)):
             continue
@@ -46,8 +37,18 @@ def add_local_components(modules, paths=["components"]):
             modname="%s.%s" % (path.replace("/", "."), key)
             print ("adding %s -> %s" % (key, modname))
             mod=import_module(modname)
-            modules[key]=mod            
+            modules[key]=mod   
     return modules
+
+ComponentModules=init_components({"action": pareto2.core.components.action,
+                                  "api": pareto2.core.components.api,
+                                  "bucket": pareto2.core.components.bucket,
+                                  "secret": pareto2.core.components.secret,                  
+                                  "table": pareto2.core.components.table,
+                                  "timer": pareto2.core.components.timer,
+                                  "topic": pareto2.core.components.topic,
+                                  "userpool": pareto2.core.components.userpool},
+                                 custompaths=["components"])
 
 class Config(dict):
 
@@ -279,7 +280,7 @@ class Components(list):
 
     def spawn_template(self,                  
                        name="main",
-                       modules=add_local_components(CoreComponentModules),
+                       modules=ComponentModules,
                        timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
         template=Template(name=name,
                           timestamp=timestamp)

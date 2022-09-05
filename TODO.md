@@ -1,6 +1,5 @@
 ### short
 
-- rename local as custom
 - replace API simple auth-type
 - replace config.expand() with injection of $schema at api component level
 - move spawn template into config root so have access to app name 
@@ -125,6 +124,7 @@
 
 ### done
 
+- rename local as custom
 - remove APP_PATH support
 - add local component modules
 - rename invocation as invocation-type
