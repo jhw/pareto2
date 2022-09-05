@@ -1,6 +1,5 @@
 ### short
 
-- replace config.expand() with injection of $schema at api component level
 - move spawn template into config root so have access to app name 
 
 - get charts and dashboard
@@ -123,6 +122,7 @@
 
 ### done
 
+- replace config.expand() with injection of $schema at api component level
 - replace API simple auth-type
 - rename local as custom
 - remove APP_PATH support

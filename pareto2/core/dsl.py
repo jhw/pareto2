@@ -266,16 +266,8 @@ class Components(list):
             """
             action["env"]={"variables": variables}
 
-    def expand_endpoint_schema(self):
-        for api in self.apis:
-            for endpoint in api["endpoints"]:
-                if (endpoint["method"]=="POST" and
-                    "schema" in endpoint):
-                    endpoint["schema"]["$schema"]=EndpointJSONSchema
-            
     def expand(self):
         self.expand_action_env_vars()
-        self.expand_endpoint_schema()
         return self
 
     def spawn_template(self,                  

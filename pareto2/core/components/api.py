@@ -17,6 +17,8 @@ PermissionSrcArn="arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${%s}/${%
 
 EndpointUrl="https://${%s}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${%s}"
 
+EndpointSchemaVersion="http://json-schema.org/draft-07/schema#"
+
 CorsMethodHeader="method.response.header.Access-Control-Allow-%s"
 
 CorsGatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
@@ -213,12 +215,15 @@ def init_validator(api, endpoint):
 """
 
 @resource
-def init_model(api, endpoint):
+def init_model(api, endpoint, schematype=EndpointSchemaVersion):
     resourcename=H("%s-api-model" % endpoint["name"])
+    schema=endpoint["schema"]
+    if "$schema" not in schema:
+        schema["$schema"]=schematype
     props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
            "ContentType": "application/json",
            "Name": resourcename,
-           "Schema": endpoint["schema"]}
+           "Schema": schema}
     return (resourcename,
             "AWS::ApiGateway::Model",
             props)    
