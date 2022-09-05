@@ -1,5 +1,7 @@
 ### short
 
+- check components, tmp/components for custom components
+
 - extend dashboard to reference inline function
   - sync action errors
   - table streaming
