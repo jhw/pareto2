@@ -4,7 +4,6 @@ export AWS_PROFILE=woldeploy
 export AWS_REGION=eu-west-1
 export PYTHONPATH=.
 
-export PARETO2_APP_PATH=.
 export PARETO2_APP_NAME=demo
 
 if [ ! -L demo ]; then

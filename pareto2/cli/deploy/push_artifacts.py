@@ -54,9 +54,8 @@ class Artifacts:
 
 if __name__=="__main__":
     try:
-        apppath, appname = (os.environ["PARETO2_APP_PATH"] if "PARETO2_APP_PATH" in os.environ else ".",
-                            os.environ["PARETO2_APP_NAME"])
-        config=Config.initialise("%s/config.yaml" % apppath)
+        config=Config.initialise()
+        appname=os.environ["PARETO2_APP_NAME"]
         s3=boto3.client("s3")
         artifacts=Artifacts(config=config,
                             root=appname,

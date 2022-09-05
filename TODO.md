@@ -1,6 +1,5 @@
 ### short
 
-- remove APP_PATH support
 - rename local as custom
 - replace API simple auth-type
 - replace config.expand() with injection of $schema at api component level
@@ -126,6 +125,7 @@
 
 ### done
 
+- remove APP_PATH support
 - add local component modules
 - rename invocation as invocation-type
 - rename api type as auth-type
