@@ -92,7 +92,7 @@ def init_actions(config):
                                {"Title": action["name"],
                                 "ResourceName": "${%s}" % H("%s-function" % action["name"])})
                 for action in sorted(config["components"].actions,
-                                     key=lambda x: x["name"])]
+                                     key=lambda x: x["name"])]    
     return (resourcename, "actions", Widgets(widgets))
 
 """
@@ -112,7 +112,7 @@ if __name__=="__main__":
         from pareto2.core.dsl import Config
         config=Config.initialise()
         from pareto2.core.template import Template
-        template=Template("dash")
+        template=Template("dash")        
         template.resources.update(render_resources(config))
         template.dump_local()
     except RuntimeError as error:

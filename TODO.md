@@ -1,13 +1,19 @@
 ### short
 
+- extend dashboard to reference inline function
+  - sync action errors
+  - table streaming
+  - timer scheduler
+
 ### pareto2-demo, layman2
 
 - replace load_xxx, get_resources nomenclature with fetch_xxx
 
 ### medium
 
-- generate dashboard based on AWS type to include inline functions
-- table, queue error handlers
+- see if dashboard can be driven off AWS::Type
+- table streaming error handling
+- timer queue error handling
 - error handlers to push to sns
 
 ### long
