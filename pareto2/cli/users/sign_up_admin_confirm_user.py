@@ -10,7 +10,7 @@ from pareto2.core.dsl import Config
 
 from botocore.exceptions import ClientError
 
-import boto3, sys, yaml
+import boto3, re, sys, yaml
 
 if __name__=="__main__":
     try:
