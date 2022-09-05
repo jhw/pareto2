@@ -81,7 +81,21 @@ class Config(dict):
     def expand(self):
         self["components"].expand()
         return self
-        
+
+    def spawn_template(self,                  
+                       name="main",
+                       modules=ComponentModules,
+                       timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
+        template=Template(name=name,
+                          timestamp=timestamp)
+        for component in self["components"]:
+            mod=modules[component["type"]]
+            resourcefn=getattr(mod, "render_resources")
+            template.resources.update(resourcefn(component))
+            outputfn=getattr(mod, "render_outputs")
+            template.outputs.update(outputfn(component))
+        return template
+    
 class Globals(dict):
 
     def __init__(self, struct):
@@ -270,20 +284,6 @@ class Components(list):
         self.expand_action_env_vars()
         return self
 
-    def spawn_template(self,                  
-                       name="main",
-                       modules=ComponentModules,
-                       timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
-        template=Template(name=name,
-                          timestamp=timestamp)
-        for component in self:
-            mod=modules[component["type"]]
-            resourcefn=getattr(mod, "render_resources")
-            template.resources.update(resourcefn(component))
-            outputfn=getattr(mod, "render_outputs")
-            template.outputs.update(outputfn(component))
-        return template
-    
 if __name__=="__main__":
     try:
         config=Config.initialise()

@@ -35,8 +35,8 @@ class Artifacts:
     def build_template(self,
                        name,
                        lambdas):
-        template=self.config["components"].spawn_template(name=name,
-                                                          timestamp=self.timestamp)
+        template=self.config.spawn_template(name=name,
+                                            timestamp=self.timestamp)
         template.init_implied_parameters()
         values=self.config.parameters
         values["ArtifactsKey"]=lambdas.s3_key

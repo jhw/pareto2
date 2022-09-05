@@ -1,7 +1,5 @@
 ### short
 
-- move spawn template into config root so have access to app name 
-
 - get charts and dashboard
 - restrict charts to actions only 
 - spawn template to add dashboard with app name
@@ -122,6 +120,7 @@
 
 ### done
 
+- move spawn template into config root so have access to app name 
 - replace config.expand() with injection of $schema at api component level
 - replace API simple auth-type
 - rename local as custom
