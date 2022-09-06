@@ -1,6 +1,5 @@
 ### short
 
-- api should check for explicit `open` type
 - export outputs
 
 ### pareto2-demo
@@ -125,6 +124,7 @@
 
 ### done
 
+- api should check for explicit `open` type
 - delete/redeploy stack
 - spawn template to add dashboard with app name
 - get charts and dashboard

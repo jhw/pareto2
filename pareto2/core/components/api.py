@@ -269,13 +269,13 @@ def init_cognito_resources(api, resources):
 
 def render_resources(api):
     resources=[]
-    if "auth-type" not in api:
+    if ("auth-type" not in api or
+        api["auth-type"]=="open"):
         init_open_resources(api, resources)
+    elif api["auth-type"]=="cognito":
+        init_cognito_resources(api, resources)
     else:
-        if api["auth-type"]=="cognito":
-            init_cognito_resources(api, resources)
-        else:
-            raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
+        raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
     return dict(resources)
 
 """
