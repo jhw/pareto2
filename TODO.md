@@ -1,8 +1,6 @@
 ### short
 
-- using both timeout-short and timeout-small!
 - api should check for explicit `open` type
-
 - export outputs
 
 ### pareto2-demo
