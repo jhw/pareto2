@@ -1,20 +1,21 @@
 ### short
 
+- using both timeout-short and timeout-small!
+- api should check for explicit `open` type
+
 - export outputs
 
-- check components, tmp/components for custom components
-
-- extend dashboard to reference inline function
-  - sync action errors
-  - table streaming
-  - timer scheduler
-
-### pareto2-demo, layman2
+### pareto2-demo
 
 - replace load_xxx, get_resources nomenclature with fetch_xxx
 
 ### medium
 
+- check components, tmp/components for custom components
+- extend dashboard to reference inline function
+  - sync action errors
+  - table streaming
+  - timer scheduler
 - see if dashboard can be driven off AWS::Type
 - table streaming error handling
 - timer queue error handling
