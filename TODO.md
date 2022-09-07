@@ -1,10 +1,11 @@
 ### short
 
+- make table indexes optional
 - export outputs
 
 ### medium
 
-- examine why pareto2 layer is so large
+- exclude awscli/boto3/botocore from pip package
 - check components, tmp/components for custom components
 - extend dashboard to reference inline function
   - sync action errors
