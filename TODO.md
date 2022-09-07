@@ -2,12 +2,9 @@
 
 - export outputs
 
-### pareto2-demo
-
-- replace load_xxx, get_resources nomenclature with fetch_xxx
-
 ### medium
 
+- examine why pareto2 layer is so large
 - check components, tmp/components for custom components
 - extend dashboard to reference inline function
   - sync action errors
@@ -124,6 +121,7 @@
 
 ### done
 
+- replace load_xxx, get_resources nomenclature with fetch_xxx
 - api should check for explicit `open` type
 - delete/redeploy stack
 - spawn template to add dashboard with app name
