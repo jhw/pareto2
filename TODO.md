@@ -1,11 +1,11 @@
 ### short
 
 - make table indexes optional
-- export outputs
+- separate into pareto2, pareto2ools packages
 
 ### medium
 
-- exclude awscli/boto3/botocore from pip package
+- export outputs
 - check components, tmp/components for custom components
 - extend dashboard to reference inline function
   - sync action errors
@@ -122,6 +122,7 @@
 
 ### done
 
+- move lambdas into cli
 - replace load_xxx, get_resources nomenclature with fetch_xxx
 - api should check for explicit `open` type
 - delete/redeploy stack
