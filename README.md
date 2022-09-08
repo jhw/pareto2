@@ -1,2 +1,1 @@
-An opinionated serverless orchestration layer
-
+An opinionated Cloudformation pre- processor
