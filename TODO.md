@@ -1,6 +1,5 @@
 ### short
 
-- make table indexes optional
 - separate into pareto2, pareto2ools packages
 
 ### medium
@@ -122,6 +121,7 @@
 
 ### done
 
+- make table indexes optional
 - move lambdas into cli
 - replace load_xxx, get_resources nomenclature with fetch_xxx
 - api should check for explicit `open` type

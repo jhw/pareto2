@@ -101,24 +101,28 @@ StreamBatchSize=10
 @resource
 def init_table(table, streamtype=StreamType, **kwargs):
     resourcename=H("%s-table" % table["name"])
-    attrs=[{"AttributeName": name,
-            "AttributeType": type_}
-           for name, type_ in [("pk", "S"),
-                               ("sk", "S")]+[(index["name"], index["type"])
-                                             for index in table["indexes"]]]
-    key=[{"AttributeName": k,
-          "KeyType": v}
-         for k, v in [("pk", "HASH"),
-                      ("sk", "RANGE")]]
-    gsi=[{"IndexName": "%s-index" % index["name"],
-          "Projection": {"ProjectionType": "ALL"},
-          "KeySchema": [{"AttributeName": index["name"],
-                         "KeyType": "HASH"}]}
-         for index in table["indexes"]]
-    props={"AttributeDefinitions": attrs,
+    attrs=[("pk", "S"),
+           ("sk", "S")]
+    if "indexes" in table:
+        attrs+=[(index["name"], index["type"])
+                for index in table["indexes"]]
+    formattedattrs=[{"AttributeName": name,
+                     "AttributeType": type_}
+                    for name, type_ in attrs]
+    keyschema=[{"AttributeName": k,
+                "KeyType": v}
+               for k, v in [("pk", "HASH"),
+                            ("sk", "RANGE")]]
+    props={"AttributeDefinitions": formattedattrs,
            "BillingMode": "PAY_PER_REQUEST",
-           "KeySchema": key,
-           "GlobalSecondaryIndexes": gsi}
+           "KeySchema": keyschema}
+    if "indexes" in table:
+        gsi=[{"IndexName": "%s-index" % index["name"],
+              "Projection": {"ProjectionType": "ALL"},
+              "KeySchema": [{"AttributeName": index["name"],
+                             "KeyType": "HASH"}]}
+             for index in table["indexes"]]
+        props["GlobalSecondaryIndexes"]=gsi
     if "streaming" in table:
         props["StreamSpecification"]={"StreamViewType": streamtype}
     return (resourcename,
