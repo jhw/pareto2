@@ -1,7 +1,1 @@
-awscli
-boto3
-botocore
-docker # for moto
-jsonschema
-moto
 pyyaml
