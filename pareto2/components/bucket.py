@@ -1,5 +1,5 @@
-from pareto2.core.components import hungarorise as H
-from pareto2.core.components import resource
+from pareto2.components import hungarorise as H
+from pareto2.components import resource
 
 @resource
 def init_bucket(bucket):
@@ -20,9 +20,9 @@ def render_outputs(bucket):
 
 if __name__=="__main__":
     try:
-        from pareto2.core.dsl import Config
+        from pareto2.dsl import Config
         config=Config.initialise()
-        from pareto2.core.template import Template
+        from pareto2.template import Template
         template=Template("buckets")
         for bucket in config["components"].buckets:
             template.resources.update(render_resources(bucket))

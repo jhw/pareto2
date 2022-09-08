@@ -1,5 +1,5 @@
-from pareto2.core.components import hungarorise as H
-from pareto2.core.components import resource
+from pareto2.components import hungarorise as H
+from pareto2.components import resource
 
 import json
 
@@ -22,9 +22,9 @@ def render_outputs(secret):
 
 if __name__=="__main__":
     try:
-        from pareto2.core.dsl import Config
+        from pareto2.dsl import Config
         config=Config.initialise()
-        from pareto2.core.template import Template
+        from pareto2.template import Template
         template=Template("secrets")
         for secret in config["components"].secrets:
             template.resources.update(render_resources(secret))

@@ -1,6 +1,6 @@
-from pareto2.core.components import hungarorise as H
-from pareto2.core.components import uppercase as U
-from pareto2.core.components import resource
+from pareto2.components import hungarorise as H
+from pareto2.components import uppercase as U
+from pareto2.components import resource
 
 AsyncPermissions={"lambda:InvokeFunction", # to allow sync invocation of error function
                   "logs:CreateLogGroup",
@@ -235,9 +235,9 @@ def render_outputs(action):
 
 if __name__=="__main__":
     try:
-        from pareto2.core.dsl import Config
+        from pareto2.dsl import Config
         config=Config.initialise()
-        from pareto2.core.template import Template
+        from pareto2.template import Template
         template=Template("actions")
         for action in config["components"].actions:
             template.resources.update(render_resources(action))

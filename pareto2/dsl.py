@@ -1,6 +1,6 @@
-from pareto2.core.template import Template
+from pareto2.template import Template
 
-from pareto2.core.components import hungarorise
+from pareto2.components import hungarorise
 
 from importlib import import_module
 
@@ -15,16 +15,16 @@ EndpointJSONSchema="http://json-schema.org/draft-07/schema#"
 - but not confident you'll be able to do that if package is part of a layer (what's the AWS filepath??)
 """
 
-import pareto2.core.components.action
-import pareto2.core.components.api
-import pareto2.core.components.bucket
-import pareto2.core.components.secret
-import pareto2.core.components.table
-import pareto2.core.components.timer
-import pareto2.core.components.topic
-import pareto2.core.components.userpool
+import pareto2.components.action
+import pareto2.components.api
+import pareto2.components.bucket
+import pareto2.components.secret
+import pareto2.components.table
+import pareto2.components.timer
+import pareto2.components.topic
+import pareto2.components.userpool
 
-import pareto2.core.dashboard
+import pareto2.dashboard
 
 def init_components(modules, custompaths):
     for path in custompaths:
@@ -42,14 +42,14 @@ def init_components(modules, custompaths):
             modules[key]=mod   
     return modules
 
-ComponentModules=init_components({"action": pareto2.core.components.action,
-                                  "api": pareto2.core.components.api,
-                                  "bucket": pareto2.core.components.bucket,
-                                  "secret": pareto2.core.components.secret,                  
-                                  "table": pareto2.core.components.table,
-                                  "timer": pareto2.core.components.timer,
-                                  "topic": pareto2.core.components.topic,
-                                  "userpool": pareto2.core.components.userpool},
+ComponentModules=init_components({"action": pareto2.components.action,
+                                  "api": pareto2.components.api,
+                                  "bucket": pareto2.components.bucket,
+                                  "secret": pareto2.components.secret,                  
+                                  "table": pareto2.components.table,
+                                  "timer": pareto2.components.timer,
+                                  "topic": pareto2.components.topic,
+                                  "userpool": pareto2.components.userpool},
                                  custompaths=["components"])
 
 class Config(dict):
@@ -87,7 +87,7 @@ class Config(dict):
     def add_dashboard(fn):
         def wrapped(self, *args, **kwargs):
             template=fn(self, *args, **kwargs)
-            resourcefn=getattr(pareto2.core.dashboard,
+            resourcefn=getattr(pareto2.dashboard,
                                "render_resources")
             template.resources.update(resourcefn(self))
             return template

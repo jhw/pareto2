@@ -1,8 +1,8 @@
-from pareto2.core.components import hungarorise as H
+from pareto2.components import hungarorise as H
 
 import json, yaml
 
-ChartSrc="pareto2/core/charts/%s.yaml"
+ChartSrc="pareto2/charts/%s.yaml"
 
 PageWidth=24
 
@@ -109,9 +109,9 @@ def render_resources(config):
 
 if __name__=="__main__":
     try:
-        from pareto2.core.dsl import Config
+        from pareto2.dsl import Config
         config=Config.initialise()
-        from pareto2.core.template import Template
+        from pareto2.template import Template
         template=Template("dash")        
         template.resources.update(render_resources(config))
         template.dump_local()

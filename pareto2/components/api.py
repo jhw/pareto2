@@ -6,8 +6,8 @@
 - much less confidence about this on the YAML side; but if you ever do need to try and ensure compliance between local and remote YAML parsers, try ruamel.yaml in place of pyyaml
 """
 
-from pareto2.core.components import hungarorise as H
-from pareto2.core.components import resource
+from pareto2.components import hungarorise as H
+from pareto2.components import resource
 
 import json, yaml
 
@@ -295,9 +295,9 @@ def render_outputs(api):
 
 if __name__=="__main__":
     try:
-        from pareto2.core.dsl import Config
+        from pareto2.dsl import Config
         config=Config.initialise()
-        from pareto2.core.template import Template
+        from pareto2.template import Template
         template=Template("apis")
         for api in config["components"].apis:
             template.resources.update(render_resources(api))
