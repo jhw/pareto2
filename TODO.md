@@ -1,21 +1,23 @@
 ### short
 
-- Using legacy 'setup.py install' for {...}, since package 'wheel' is not installed
-- simple way to develop
-  - add back pareto2-demo symlinks? 
+```
+ParetodemoTargetTableParetodemoTableEventRule => 1 validation error detected: Value 'paretodemo-target-table-paretodemo-table-event-rule-paretodemo-dev' at 'targets.1.member.id' failed to satisfy constraint: Member must have length less than or equal to 64 (Service: AmazonCloudWatchEvents; Status Code: 400; Error Code: ValidationException; Request ID: 012b94b3-f5b6-4282-8de4-e6dbd956c6bb; Proxy: null)
+```
+
+- ^^^ max target id length
 
 ### medium
 
-- export outputs
-- check components, tmp/components for custom components
-- extend dashboard to reference inline function
-  - sync action errors
-  - table streaming
-  - timer scheduler
-- see if dashboard can be driven off AWS::Type
-- table streaming error handling
-- timer queue error handling
 - error handlers to push to sns
+
+- "Using legacy 'setup.py install' for {...}, since package 'wheel' is not installed"
+
+- simple way to develop
+  - add back pareto2-demo symlinks? 
+- export outputs
+- extend dashboard to reference inline function
+  - can dashboard can be driven off AWS::Type?
+- table streaming, timer queue error handling
 
 ### long
 
