@@ -1,6 +1,8 @@
 ### short
 
-- Using legacy 'setup.py install' for {...}, since package 'wheel' is not installed.
+- Using legacy 'setup.py install' for {...}, since package 'wheel' is not installed
+- simple way to develop
+  - add back pareto2-demo symlinks? 
 
 ### medium
 
