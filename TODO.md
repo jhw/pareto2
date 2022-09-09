@@ -1,5 +1,7 @@
 ### short
 
+- Using legacy 'setup.py install' for {...}, since package 'wheel' is not installed.
+
 ### medium
 
 - export outputs
