@@ -1,7 +1,5 @@
 ### short
 
-- separate into pareto2, pareto2ools packages
-
 ### medium
 
 - export outputs
@@ -121,6 +119,7 @@
 
 ### done
 
+- separate into pareto2, pareto2ools packages
 - make table indexes optional
 - move lambdas into cli
 - replace load_xxx, get_resources nomenclature with fetch_xxx
