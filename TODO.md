@@ -1,11 +1,5 @@
 ### short
 
-```
-ParetodemoTargetTableParetodemoTableEventRule => 1 validation error detected: Value 'paretodemo-target-table-paretodemo-table-event-rule-paretodemo-dev' at 'targets.1.member.id' failed to satisfy constraint: Member must have length less than or equal to 64 (Service: AmazonCloudWatchEvents; Status Code: 400; Error Code: ValidationException; Request ID: 012b94b3-f5b6-4282-8de4-e6dbd956c6bb; Proxy: null)
-```
-
-- ^^^ max target id length
-
 ### medium
 
 - error handlers to push to sns
@@ -29,6 +23,8 @@ ParetodemoTargetTableParetodemoTableEventRule => 1 validation error detected: Va
 
 ### thoughts
 
+- restrict event rule target id length ?
+  - no has to be runtime error because of fn::sub usage
 - use per- stage config ?
   - not clear it will be required until you work on tiriac
 - queue component ?
