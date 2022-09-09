@@ -2,8 +2,6 @@ from pareto2.components import hungarorise as H
 
 import json, yaml
 
-ChartSrc="pareto2/charts/%s.yaml"
-
 PageWidth=24
 
 class Widget(list):
@@ -14,7 +12,7 @@ class Widget(list):
             for k, v in params.items():
                 text=text.replace("{{%s}}" % k, v)
             return yaml.safe_load(text)
-        body=open(ChartSrc % type).read()
+        body=open("/".join(__file__.split("/")[:-1])+"/charts/%s.yaml" % type).read()
         return Widget(preprocess(body, params))
     
     def __init__(self, items=[]):
