@@ -1,7 +1,5 @@
 ### short
 
-- moto dependencies 
-
 ### medium
 
 - group permissions by service 
@@ -128,6 +126,7 @@
 
 ### done
 
+- moto dependencies 
 - only create cors resources with cognito API 
 - remove async error handling 
 - add back paretodemo as local app to develop against
