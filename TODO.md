@@ -1,6 +1,6 @@
 ### short
 
-- add moto dependencies 
+- moto dependencies 
 
 ### medium
 
