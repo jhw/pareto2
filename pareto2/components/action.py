@@ -2,8 +2,7 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
-AsyncPermissions={"lambda:InvokeFunction", # to allow sync invocation of error function
-                  "logs:CreateLogGroup",
+AsyncPermissions={"logs:CreateLogGroup",
                   "logs:CreateLogStream",
                   "logs:PutLogEvents"}
 
@@ -17,15 +16,6 @@ SyncPermissions={"logs:CreateLogGroup",
                  "sqs:DeleteMessage",
                  "sqs:GetQueueAttributes",
                  "sqs:ReceiveMessage"}
-
-ErrorPermissions={"logs:CreateLogGroup",
-                  "logs:CreateLogStream",
-                  "logs:PutLogEvents"}
-
-ErrorsCode="""def handler(event, context=None):
-    print (event)"""
-
-ErrorsMemorySize, ErrorsTimeout = "small", "short"
 
 @resource            
 def init_function(action):
@@ -88,63 +78,6 @@ def init_sync_function_role(action, permissions=SyncPermissions):
     return init_function_role(action, basepermissions=permissions)
 
 @resource
-def init_event_config(action):
-    resourcename=H("%s-function-event-config" % action["name"])
-    retries=action["retries"] if "retries" in action else 0
-    funcname=H("%s-function" % action["name"])
-    destarn={"Fn::GetAtt": [H("%s-error-function" % action["name"]), "Arn"]}
-    destconfig={"OnFailure": {"Destination": destarn}}
-    props={"MaximumRetryAttempts": retries,
-           "FunctionName": {"Ref": funcname},
-           "Qualifier": "$LATEST",
-           "DestinationConfig": destconfig}
-    return (resourcename,
-            "AWS::Lambda::EventInvokeConfig",
-            props)
-
-@resource            
-def init_error_function(action,
-                        memorysize=ErrorsMemorySize,
-                        timeout=ErrorsTimeout,
-                        code=ErrorsCode):
-    resourcename=H("%s-error-function" % action["name"])
-    rolename=H("%s-error-function-role" % action["name"])
-    code={"ZipFile": code}
-    runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
-    memorysize=H("memory-size-%s" % memorysize)
-    timeout=H("timeout-%s" % timeout)
-    props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
-           "MemorySize": {"Ref": memorysize},
-           "Timeout": {"Ref": timeout},
-           "Code": code,
-           "Handler": "index.handler",
-           "Runtime": runtime}
-    return (resourcename, 
-            "AWS::Lambda::Function",
-            props)
-
-@resource
-def init_error_function_role(action, permissions=ErrorPermissions):
-    resourcename=H("%s-error-function-role" % action["name"])
-    assumerolepolicydoc={"Version": "2012-10-17",
-                         "Statement": [{"Action": "sts:AssumeRole",
-                                        "Effect": "Allow",
-                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : permission,
-                              "Effect": "Allow",
-                              "Resource": "*"}
-                             for permission in sorted(list(permissions))]}
-    policyname={"Fn::Sub": "%s-error-function-role-policy-${AWS::StackName}" % action["name"]}
-    policies=[{"PolicyDocument": policydoc,
-               "PolicyName": policyname}]
-    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
-           "Policies": policies}
-    return (resourcename,
-            "AWS::IAM::Role",
-            props)
-
-@resource
 def _init_event_rule(action, event, pattern):
     def init_target(action, event):
         id={"Fn::Sub": "%s-%s-event-rule-${AWS::StackName}" % (action["name"],
@@ -204,10 +137,7 @@ def init_event_rule_permission(action, event):
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
-               init_async_function_role,
-               init_event_config,
-               init_error_function,
-               init_error_function_role]:
+               init_async_function_role]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:

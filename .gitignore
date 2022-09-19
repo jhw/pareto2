@@ -3,3 +3,8 @@ env
 __pycache__
 tmp
 
+config.yaml
+paretodemo
+fixtures
+scripts
+

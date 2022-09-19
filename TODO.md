@@ -1,14 +1,13 @@
 ### short
 
-### medium
+- add moto dependencies 
 
-- add back paretodemo as local app to develop against
+### medium
 
 - group permissions by service 
 - wildcard permissions to remove all other permissions for same service 
 - new topics attribute for config 
 - add sns support to Pareto test 
-- limit Moto dependencies 
 - check eventbridge target id max length and consider replacing with fixed random slug
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 - only create cors resources with cognito API 
@@ -17,7 +16,6 @@
 - check API validates userpool 
 - check action packages are validated against layers 
 - fix tools pattern matcher 
-- remove async error handling 
 
 - replace app and stage name with stack name
 - convert artifacts bucket to env variable 
@@ -131,6 +129,8 @@
 
 ### done
 
+- remove async error handling 
+- add back paretodemo as local app to develop against
 - separate into pareto2, pareto2ools packages
 - make table indexes optional
 - move lambdas into cli
