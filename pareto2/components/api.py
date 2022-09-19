@@ -21,7 +21,7 @@ EndpointSchemaVersion="http://json-schema.org/draft-07/schema#"
 
 CorsMethodHeader="method.response.header.Access-Control-Allow-%s"
 
-CorsGatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
+GatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
 
 CorsHeaders=yaml.safe_load("""
 - Content-Type
@@ -47,6 +47,18 @@ def init_rest_api(api):
 
 @resource
 def init_deployment(api):
+    resourcename=H("%s-api-deployment" % api["name"])
+    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
+    depends=[]
+    for endpoint in api["endpoints"]:
+        depends.append(H("%s-api-method" % endpoint["name"]))
+    return (resourcename,            
+            "AWS::ApiGateway::Deployment",
+            props,
+            depends)
+
+@resource
+def init_cognito_deployment(api):
     resourcename=H("%s-api-deployment" % api["name"])
     props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     depends=[]
@@ -89,10 +101,10 @@ def init_cognito_authorizer(api):
 
 @resource
 def init_default_response(api, code):        
-    params={CorsGatewayHeader % k.capitalize(): "'%s'" % v # NB quotes
+    params={GatewayHeader % k.capitalize(): "'%s'" % v # NB quotes
             for k, v in [("headers", "*"),
                          ("origin", "*")]}
-    resourcename=H("%s-api-cors-default-%s" % (api["name"], code))
+    resourcename=H("%s-api-response-%s" % (api["name"], code))
     props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
            "ResponseType": "DEFAULT_%s" % code,
            "ResponseParameters": params}
@@ -237,8 +249,7 @@ def init_open_resources(api, resources):
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_open_method,
-                   init_permission,
-                   init_cors_method]:
+                   init_permission]:
             resource=fn(api, endpoint)
             resources.append(resource)
         if "parameters" in endpoint:
@@ -249,7 +260,7 @@ def init_open_resources(api, resources):
 
 def init_cognito_resources(api, resources):
     resources.append(init_rest_api(api))
-    resources.append(init_deployment(api))
+    resources.append(init_cognito_deployment(api))
     resources.append(init_stage(api))
     resources.append(init_cognito_authorizer(api))    
     for code in "4XX|5XX".split("|"):

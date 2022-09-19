@@ -10,7 +10,6 @@
 - add sns support to Pareto test 
 - check eventbridge target id max length and consider replacing with fixed random slug
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
-- only create cors resources with cognito API 
 - check topic validates action
 - check unique API paths 
 - check API validates userpool 
@@ -129,6 +128,7 @@
 
 ### done
 
+- only create cors resources with cognito API 
 - remove async error handling 
 - add back paretodemo as local app to develop against
 - separate into pareto2, pareto2ools packages
