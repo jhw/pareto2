@@ -2,16 +2,26 @@
 
 ### medium
 
-- error handlers to push to sns
+- add back paretodemo as local app to develop against
 
-- "Using legacy 'setup.py install' for {...}, since package 'wheel' is not installed"
+- group permissions by service 
+- wildcard permissions to remove all other permissions for same service 
+- new topics attribute for config 
+- add sns support to Pareto test 
+- limit Moto dependencies 
+- check eventbridge target id max length and consider replacing with fixed random slug
+- improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
+- only create cors resources with cognito API 
+- check topic validates action
+- check unique API paths 
+- check API validates userpool 
+- check action packages are validated against layers 
+- fix tools pattern matcher 
+- remove async error handling 
 
-- simple way to develop
-  - add back pareto2-demo symlinks? 
-- export outputs
-- extend dashboard to reference inline function
-  - can dashboard can be driven off AWS::Type?
-- table streaming, timer queue error handling
+- replace app and stage name with stack name
+- convert artifacts bucket to env variable 
+- remove globals 
 
 ### long
 
