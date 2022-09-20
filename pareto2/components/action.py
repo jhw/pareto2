@@ -52,7 +52,15 @@ def init_function_role(action, basepermissions):
         permissions=set(basepermissions)
         if "permissions" in action:
             permissions.update(set(action["permissions"]))
-        return permissions        
+        return sorted(list(permissions))
+    def group_permissions(permissions):
+        groups={}
+        for permission in permissions:
+            prefix=permission.split(":")[0]
+            groups.setdefault(prefix, [])
+            groups[prefix].append(permission)
+        return [sorted(group)
+                for group in list(groups.values())]
     resourcename=H("%s-function-role" % action["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
@@ -60,10 +68,11 @@ def init_function_role(action, basepermissions):
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
     permissions=init_permissions(action, basepermissions)
     policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : permission,
+               "Statement": [{"Action" : group,
                               "Effect": "Allow",
                               "Resource": "*"}
-                             for permission in sorted(list(permissions))]}
+                             for group in group_permissions(permissions)]}
+    print (policydoc)
     policyname={"Fn::Sub": "%s-function-role-policy-${AWS::StackName}" % action["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]

@@ -1,14 +1,14 @@
 ### short
 
-- group permissions by service 
+- add permissions grouping to non- action role generators (table)
+
+- wildcard permissions to remove all other permissions for same service 
 
 ### medium
 
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 
 - dedicated action, api config classes to allow subclassing of validation code
-
-- wildcard permissions to remove all other permissions for same service 
 
 - new topics attribute for config 
 
@@ -128,6 +128,7 @@
 
 ### done
 
+- group permissions by service 
 - check eventbridge target id max length and consider replacing with fixed random slug
 - add sns support to Pareto test 
 - validate packages against layers
