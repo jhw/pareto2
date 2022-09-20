@@ -1,10 +1,13 @@
 ### short
 
-- improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
+- group permissions by service 
 
 ### medium
 
-- group permissions by service 
+- improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
+
+- dedicated action, api config classes to allow subclassing of validation code
+
 - wildcard permissions to remove all other permissions for same service 
 
 - new topics attribute for config 
