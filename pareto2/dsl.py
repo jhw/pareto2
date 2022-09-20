@@ -57,8 +57,7 @@ class Config(dict):
     @classmethod
     def initialise(self, filename="config.yaml"):
         struct=yaml.safe_load(open(filename).read())
-        config=Config({"globals": Globals(struct["globals"]),
-                       "defaults": Defaults(struct["defaults"]),
+        config=Config({"defaults": Defaults(struct["defaults"]),
                        "layers": Layers(struct["layers"]),
                        "components": Components(struct["components"])})
         config.validate().expand()
@@ -70,8 +69,7 @@ class Config(dict):
     @property
     def parameters(self):
         params={}
-        for attr in ["globals",
-                     "defaults",
+        for attr in ["defaults",
                      "layers"]:
             params.update(self[attr].parameters)
         return params
@@ -120,16 +118,6 @@ class Config(dict):
             template.outputs.update(outputfn(component))
         return template
     
-class Globals(dict):
-
-    def __init__(self, struct):
-        dict.__init__(self, struct)
-
-    @property
-    def parameters(self):
-        return {hungarorise(k):v
-                for k, v in self.items()}
-
 class Defaults(dict):
 
     def __init__(self, struct):
