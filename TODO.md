@@ -126,6 +126,8 @@
 
 ### done
 
+- add command line auth-type option to api
+- enable cors for open api
 - moto dependencies 
 - only create cors resources with cognito API 
 - remove async error handling 

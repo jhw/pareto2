@@ -51,18 +51,6 @@ def init_deployment(api):
     props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     depends=[]
     for endpoint in api["endpoints"]:
-        depends.append(H("%s-api-method" % endpoint["name"]))
-    return (resourcename,            
-            "AWS::ApiGateway::Deployment",
-            props,
-            depends)
-
-@resource
-def init_cors_deployment(api):
-    resourcename=H("%s-api-deployment" % api["name"])
-    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
-    depends=[]
-    for endpoint in api["endpoints"]:
         depends+=[H("%s-api-method" % endpoint["name"]),
                   H("%s-api-cors-method" % endpoint["name"])]
     return (resourcename,            
@@ -240,14 +228,21 @@ def init_model(api, endpoint, schematype=EndpointSchemaVersion):
             "AWS::ApiGateway::Model",
             props)    
 
+"""
+- NB an open API is still CORS- enabled
+"""
+
 def init_open_resources(api, resources):
     resources.append(init_rest_api(api))
     resources.append(init_deployment(api))
     resources.append(init_stage(api))
+    for code in "4XX|5XX".split("|"):
+        resources.append(init_cors_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_open_method,
-                   init_permission]:
+                   init_permission,
+                   init_cors_method]:
             resource=fn(api, endpoint)
             resources.append(resource)
         if "parameters" in endpoint:
@@ -258,7 +253,7 @@ def init_open_resources(api, resources):
 
 def init_cognito_resources(api, resources):
     resources.append(init_rest_api(api))
-    resources.append(init_cors_deployment(api))
+    resources.append(init_deployment(api))
     resources.append(init_stage(api))
     resources.append(init_cognito_authorizer(api))    
     for code in "4XX|5XX".split("|"):
