@@ -1,7 +1,5 @@
 ### short
 
-- validate packages against layers
-
 ### medium
 
 - group permissions by service 
@@ -124,6 +122,7 @@
 
 ### done
 
+- validate packages against layers
 - validate unique endpoint paths
 - validate unique action event names
 - check unique names

@@ -45,7 +45,7 @@ def init_components(modules, custompaths):
 ComponentModules=init_components({"action": pareto2.components.action,
                                   "api": pareto2.components.api,
                                   "bucket": pareto2.components.bucket,
-                                  "secret": pareto2.components.secret,                  
+                                  "secret": pareto2.components.secret,
                                   "table": pareto2.components.table,
                                   "timer": pareto2.components.timer,
                                   "topic": pareto2.components.topic,
@@ -75,9 +75,21 @@ class Config(dict):
                      "layers"]:
             params.update(self[attr].parameters)
         return params
-                
+
+    def validate_layers(self):
+        layernames, errors = list(self["layers"].keys()), set()
+        for component in self["components"]:
+            if (component["type"]=="action" and
+                "packages" in component):
+                for packagename in component["packages"]:
+                    if packagename not in layernames:
+                        errors.add(packagename)
+        if len(errors) > 0:
+            raise RuntimeError("unknown package(s) %s" % ", ".join(errors))
+    
     def validate(self):
         self["components"].validate()
+        self.validate_layers()
         return self
 
     def expand(self):
