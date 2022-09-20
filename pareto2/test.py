@@ -18,11 +18,6 @@ stream:
   type: NEW_AND_OLD_IMAGES    
 """)
 
-TestRouter=yaml.safe_load("""
-name: test-router
-patterns: []
-""")
-
 FunctionName="test-function"
 
 class Context:
