@@ -126,6 +126,7 @@
 
 ### done
 
+- refactor permission group so takes a key and multiple values
 - add permissions grouping to non- action role generators (table)
 - group permissions by service 
 - check eventbridge target id max length and consider replacing with fixed random slug

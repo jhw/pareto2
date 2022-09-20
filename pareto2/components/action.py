@@ -54,18 +54,19 @@ def init_function_role(action, basepermissions):
             permissions.update(set(action["permissions"]))
         return sorted(list(permissions))
     class Group(list):
-        def __init__(self, item=[]):
+        def __init__(self, key, item=[]):
             list.__init__(item)
-        @property
-        def values(self):
-            return sorted(self)            
+            self.key=key
+        def render(self):
+            return ["%s:%s" % (self.key, value)
+                    for value in self]
     def group_permissions(permissions):
         groups={}
         for permission in permissions:
-            prefix=permission.split(":")[0]
-            groups.setdefault(prefix, Group())
-            groups[prefix].append(permission)
-        return [group.values
+            prefix, suffix = permission.split(":")
+            groups.setdefault(prefix, Group(prefix))
+            groups[prefix].append(suffix)
+        return [group.render()
                 for group in list(groups.values())]
     resourcename=H("%s-function-role" % action["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
