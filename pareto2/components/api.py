@@ -21,7 +21,7 @@ EndpointSchemaVersion="http://json-schema.org/draft-07/schema#"
 
 CorsMethodHeader="method.response.header.Access-Control-Allow-%s"
 
-GatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
+CorsGatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
 
 CorsHeaders=yaml.safe_load("""
 - Content-Type
@@ -58,7 +58,7 @@ def init_deployment(api):
             depends)
 
 @resource
-def init_cognito_deployment(api):
+def init_cors_deployment(api):
     resourcename=H("%s-api-deployment" % api["name"])
     props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     depends=[]
@@ -100,8 +100,8 @@ def init_cognito_authorizer(api):
 """
 
 @resource
-def init_default_response(api, code):        
-    params={GatewayHeader % k.capitalize(): "'%s'" % v # NB quotes
+def init_cors_default_response(api, code):        
+    params={CorsGatewayHeader % k.capitalize(): "'%s'" % v # NB quotes
             for k, v in [("headers", "*"),
                          ("origin", "*")]}
     resourcename=H("%s-api-response-%s" % (api["name"], code))
@@ -244,8 +244,6 @@ def init_open_resources(api, resources):
     resources.append(init_rest_api(api))
     resources.append(init_deployment(api))
     resources.append(init_stage(api))
-    for code in "4XX|5XX".split("|"):
-        resources.append(init_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_open_method,
@@ -260,11 +258,11 @@ def init_open_resources(api, resources):
 
 def init_cognito_resources(api, resources):
     resources.append(init_rest_api(api))
-    resources.append(init_cognito_deployment(api))
+    resources.append(init_cors_deployment(api))
     resources.append(init_stage(api))
     resources.append(init_cognito_authorizer(api))    
     for code in "4XX|5XX".split("|"):
-        resources.append(init_default_response(api, code))
+        resources.append(init_cors_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_cognito_method,
@@ -306,11 +304,18 @@ def render_outputs(api):
 
 if __name__=="__main__":
     try:
+        import sys
+        if len(sys.argv) < 2:
+            raise RuntimeError("please enter auth-type")
+        authtype=sys.argv[1]
+        if authtype not in ["open", "cognito"]:
+            raise RuntimeError("auth-type is invalid")
         from pareto2.dsl import Config
         config=Config.initialise()
         from pareto2.template import Template
         template=Template("apis")
         for api in config["components"].apis:
+            api["auth-type"]=authtype
             template.resources.update(render_resources(api))
             template.outputs.update(render_outputs(api))
         template.dump_local()
