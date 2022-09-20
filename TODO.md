@@ -1,7 +1,8 @@
 ### short
 
-- check unique api paths 
-- check action packages are validated against layers 
+- validate unique endpoint paths
+- validate unique action event names
+- validate packages against layers
 
 ### medium
 
