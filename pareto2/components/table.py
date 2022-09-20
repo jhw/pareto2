@@ -180,16 +180,25 @@ def init_streaming_role(table,
                                      "logs:CreateLogGroup",
                                      "logs:CreateLogStream",
                                      "logs:PutLogEvents"]):
+    def group_permissions(permissions):
+        groups={}
+        for permission in permissions:
+            prefix=permission.split(":")[0]
+            groups.setdefault(prefix, [])
+            groups[prefix].append(permission)
+        return [sorted(group)
+                for group in list(groups.values())]
+
     resourcename=H("%s-table-streaming-function-role" % table["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
     policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : permission,
+               "Statement": [{"Action" : group,
                               "Effect": "Allow",
                               "Resource": "*"}
-                             for permission in sorted(permissions)]}
+                             for group in group_permissions(permissions)]}
     policyname={"Fn::Sub": "%s-table-streaming-function-role-policy-${AWS::StackName}" % table["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
