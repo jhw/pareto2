@@ -239,12 +239,11 @@ class Components(list):
             actions={action["name"]:action
                      for action in self.actions}
             for component in getattr(self, attr):
-                if component["action"] in actions: # might be invalid
-                    action=actions[component["action"]]
-                    if action["invocation-type"]!=invoctype:
-                        errors.append("%s component %s must be bound to %s action" % (attr,
-                                                                                      component["action"],
-                                                                                      invoctype))
+                action=actions[component["action"]]
+                if action["invocation-type"]!=invoctype:
+                    errors.append("%s component %s must be bound to %s action" % (attr,
+                                                                                  component["action"],
+                                                                                  invoctype))
         for attr, invoctype in [("endpoints", "sync"),
                                 ("timers", "sync"),
                                 ("topics", "async")]:
@@ -264,12 +263,13 @@ class Components(list):
                                                                              event["name"]))
 
     def validate(self):
-        errors=[]
-        self.validate_component_refs(errors)
-        self.validate_action_invocations(errors)
-        self.validate_action_events(errors)
-        if errors!=[]:
-            raise RuntimeError(", ".join(errors))
+        for fn in [self.validate_component_refs,
+                   self.validate_action_invocations,
+                   self.validate_action_events]:            
+            errors=[]
+            fn(errors)
+            if errors!=[]:
+                raise RuntimeError(", ".join(errors))
         return self
 
     def expand_action_env_vars(self):

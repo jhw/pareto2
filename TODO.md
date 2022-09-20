@@ -125,6 +125,8 @@
 
 ### done
 
+- dsl to break after each validation run
+- remove check for actions and test with bad topic reference
 - check API validates userpool 
 - check topic validates action
 - remove badly formatted checks stopping dsl validation from completing
