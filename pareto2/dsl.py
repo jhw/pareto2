@@ -249,7 +249,7 @@ class Components(list):
             if attr in self:
                 validate_invoctype(self, attr, invoctype, errors)
 
-    def validate_action_event_config(self, errors):
+    def validate_action_events(self, errors):
         if "actions" in self:
             for action in self.actions:
                 if "events" in action:
@@ -262,12 +262,12 @@ class Components(list):
                               "table" not in event):
                             errors.append("%s/%s event is missing table attr" % (action["name"],
                                                                                  event["name"]))
-                
+
     def validate(self):
         errors=[]
         self.validate_component_refs(errors)
         self.validate_action_invocations(errors)
-        self.validate_action_event_config(errors)
+        self.validate_action_events(errors)
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
         return self
