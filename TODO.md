@@ -1,10 +1,8 @@
 ### short
 
-- dedicated action, api config classes to allow subclassing of validation code
+- new topics attribute for config 
 
 ### medium
-
-- new topics attribute for config 
 
 - replace app and stage name with stack name
 - convert artifacts bucket to env variable 
@@ -24,6 +22,8 @@
 
 ### thoughts
 
+- dedicated action, api config classes to allow subclassing of validation code ?
+  - not clear this improves matters
 - restrict event rule target id length ?
   - no has to be runtime error because of fn::sub usage
 - use per- stage config ?
