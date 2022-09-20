@@ -1,16 +1,19 @@
 ### short
 
-- new topics attribute for config 
+- remove app name from dashboard
 
 ### medium
 
-- replace app and stage name with stack name
-- convert artifacts bucket to env variable 
-- remove globals 
-
 ### paretocli
 
+- new topics attribute for config 
+- convert artifacts bucket to env variable 
+- remove globals 
 - fix tools pattern matcher 
+
+### layman, slacker, deployer
+
+- remove manual specification of moto deps
 
 ### long
 
