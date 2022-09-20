@@ -1,7 +1,5 @@
 ### short
 
-- remove app name from dashboard
-
 ### medium
 
 ### paretocli
@@ -125,6 +123,7 @@
 
 ### done
 
+- remove app name from dashboard
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 - wildcard permissions to remove all other permissions for same service 
 - refactor permission group so takes a key and multiple values

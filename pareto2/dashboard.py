@@ -85,7 +85,7 @@ def render_dash(fn):
 
 @render_dash
 def init_actions(config):
-    resourcename=H("%s-dash-actions" % config["globals"]["app-name"])
+    resourcename=H("dash-actions")
     widgets=[Widget.initialise("function",
                                {"Title": action["name"],
                                 "ResourceName": "${%s}" % H("%s-function" % action["name"])})
@@ -93,13 +93,6 @@ def init_actions(config):
                                      key=lambda x: x["name"])]    
     return (resourcename, "actions", Widgets(widgets))
 
-"""
-def render_resources(config):
-    resources=[]
-    for fn in [init_actions]:
-        resources+=fn(config)
-    return dict(resources)
-"""
 
 def render_resources(config):
     return dict([fn(config)
