@@ -260,17 +260,22 @@ class Components(list):
             validate_invoctype(self, attr, invoctype, errors)
 
     def validate_action_events(self, errors):
+        def validate_event(action, event, errors):
+            if (event["type"]=="s3" and
+                "bucket" not in event):
+                errors.append("%s/%s event is missing bucket attr" % (action["name"],
+                                                                      event["name"]))
+            elif (event["type"]=="dynamodb" and
+                  "table" not in event):
+                errors.append("%s/%s event is missing table attr" % (action["name"],
+                                                                     event["name"]))
         for action in self.actions:
             if "events" in action:
+                names=[]
                 for event in action["events"]:
-                    if (event["type"]=="s3" and
-                        "bucket" not in event):
-                        errors.append("%s/%s event is missing bucket attr" % (action["name"],
-                                                                              event["name"]))
-                    elif (event["type"]=="dynamodb" and
-                          "table" not in event):
-                        errors.append("%s/%s event is missing table attr" % (action["name"],
-                                                                             event["name"]))
+                    validate_event(action, event, errors)
+                if len(names)!=len(set(names)):
+                    errors.append("%s event names are not unique" % action["name"])
 
     def validate(self):
         for fn in [self.validate_unique_names,

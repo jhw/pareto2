@@ -1,7 +1,6 @@
 ### short
 
 - validate unique endpoint paths
-- validate unique action event names
 - validate packages against layers
 
 ### medium
@@ -126,6 +125,7 @@
 
 ### done
 
+- validate unique action event names
 - check unique names
 - dsl to break after each validation run
 - remove check for actions and test with bad topic reference
