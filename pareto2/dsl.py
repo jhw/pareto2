@@ -237,11 +237,12 @@ class Components(list):
             actions={action["name"]:action
                      for action in self.actions}
             for component in getattr(self, attr):
-                action=actions[component["action"]]
-                if action["invocation-type"]!=invoctype:
-                    errors.append("%s component %s must be bound to %s action" % (attr,
-                                                                                  component["action"],
-                                                                                  invoctype))
+                if component["action"] in actions: # might be invalid
+                    action=actions[component["action"]]
+                    if action["invocation-type"]!=invoctype:
+                        errors.append("%s component %s must be bound to %s action" % (attr,
+                                                                                      component["action"],
+                                                                                      invoctype))
         for attr, invoctype in [("endpoints", "sync"),
                                 ("timers", "sync"),
                                 ("topics", "async")]:

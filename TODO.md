@@ -8,7 +8,6 @@
 - add sns support to Pareto test 
 - check eventbridge target id max length and consider replacing with fixed random slug
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
-- check topic validates action
 - check unique API paths 
 - check API validates userpool 
 - check action packages are validated against layers 
@@ -126,6 +125,7 @@
 
 ### done
 
+- check topic validates action
 - remove badly formatted checks stopping dsl validation from completing
 - add command line auth-type option to api
 - enable cors for open api
