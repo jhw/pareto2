@@ -1,7 +1,5 @@
 ### short
 
-- wildcard permissions to remove all other permissions for same service 
-
 ### medium
 
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
@@ -126,6 +124,7 @@
 
 ### done
 
+- wildcard permissions to remove all other permissions for same service 
 - refactor permission group so takes a key and multiple values
 - add permissions grouping to non- action role generators (table)
 - group permissions by service 
