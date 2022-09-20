@@ -1,5 +1,6 @@
 ### short
 
+
 ### medium
 
 - group permissions by service 
@@ -126,6 +127,7 @@
 
 ### done
 
+- remove badly formatted checks stopping dsl validation from completing
 - add command line auth-type option to api
 - enable cors for open api
 - moto dependencies 

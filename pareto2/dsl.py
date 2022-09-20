@@ -230,8 +230,7 @@ class Components(list):
         for attr in ["actions",
                      "tables",
                      "buckets"]:
-            if attr in self:
-                validate_refs(self, attr, errors)
+            validate_refs(self, attr, errors)
 
     def validate_action_invocations(self, errors):
         def validate_invoctype(self, attr, invoctype, errors):
@@ -246,22 +245,20 @@ class Components(list):
         for attr, invoctype in [("endpoints", "sync"),
                                 ("timers", "sync"),
                                 ("topics", "async")]:
-            if attr in self:
-                validate_invoctype(self, attr, invoctype, errors)
+            validate_invoctype(self, attr, invoctype, errors)
 
     def validate_action_events(self, errors):
-        if "actions" in self:
-            for action in self.actions:
-                if "events" in action:
-                    for event in action["events"]:
-                        if (event["type"]=="s3" and
-                            "bucket" not in event):
-                            errors.append("%s/%s event is missing bucket attr" % (action["name"],
-                                                                                  event["name"]))
-                        elif (event["type"]=="dynamodb" and
-                              "table" not in event):
-                            errors.append("%s/%s event is missing table attr" % (action["name"],
-                                                                                 event["name"]))
+        for action in self.actions:
+            if "events" in action:
+                for event in action["events"]:
+                    if (event["type"]=="s3" and
+                        "bucket" not in event):
+                        errors.append("%s/%s event is missing bucket attr" % (action["name"],
+                                                                              event["name"]))
+                    elif (event["type"]=="dynamodb" and
+                          "table" not in event):
+                        errors.append("%s/%s event is missing table attr" % (action["name"],
+                                                                             event["name"]))
 
     def validate(self):
         errors=[]
