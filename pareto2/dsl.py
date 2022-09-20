@@ -206,7 +206,17 @@ class Components(list):
         return [component
                 for component in self
                 if component["type"]=="userpool"]
-            
+
+    def validate_unique_names(self, errors):
+        types=set([item["type"]
+                   for item in self])
+        for type in types:
+            names=[item["name"]
+                   for item in self
+                   if item["type"]==type]
+            if len(names)!=len(set(names)):
+                errors.append("%s names are not unique" % type)
+    
     def validate_component_refs(self, errors):
         def filter_refs(element, refs, attr):
             if isinstance(element, list):
@@ -263,7 +273,8 @@ class Components(list):
                                                                              event["name"]))
 
     def validate(self):
-        for fn in [self.validate_component_refs,
+        for fn in [self.validate_unique_names,
+                   self.validate_component_refs,
                    self.validate_action_invocations,
                    self.validate_action_events]:            
             errors=[]

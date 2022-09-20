@@ -1,6 +1,6 @@
 ### short
 
-- check unique API paths 
+- check unique api paths 
 - check action packages are validated against layers 
 
 ### medium
@@ -125,6 +125,7 @@
 
 ### done
 
+- check unique names
 - dsl to break after each validation run
 - remove check for actions and test with bad topic reference
 - check API validates userpool 
