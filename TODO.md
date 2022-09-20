@@ -5,7 +5,6 @@
 - group permissions by service 
 - wildcard permissions to remove all other permissions for same service 
 - new topics attribute for config 
-- add sns support to Pareto test 
 - check eventbridge target id max length and consider replacing with fixed random slug
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 - fix tools pattern matcher 
@@ -122,6 +121,7 @@
 
 ### done
 
+- add sns support to Pareto test 
 - validate packages against layers
 - validate unique endpoint paths
 - validate unique action event names
