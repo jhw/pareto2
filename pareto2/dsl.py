@@ -207,7 +207,7 @@ class Components(list):
                 for component in self
                 if component["type"]=="userpool"]
 
-    def validate_unique_names(self, errors):
+    def validate_names(self, errors):
         types=set([item["type"]
                    for item in self])
         for type in types:
@@ -217,7 +217,7 @@ class Components(list):
             if len(names)!=len(set(names)):
                 errors.append("%s names are not unique" % type)
     
-    def validate_component_refs(self, errors):
+    def validate_refs(self, errors):
         def filter_refs(element, refs, attr):
             if isinstance(element, list):
                 for subelement in element:
@@ -277,11 +277,23 @@ class Components(list):
                 if len(names)!=len(set(names)):
                     errors.append("%s event names are not unique" % action["name"])
 
+    def validate_api_endpoints(self, errors):
+        for api in self.apis:
+            names, paths = [], []
+            for endpoint in api["endpoints"]:
+                names.append(endpoint["name"])
+                paths.append(endpoint["path"])
+            if len(names)!=len(set(names)):
+                errors.append("%s endpoint names are not unique" % api["name"])
+            if len(paths)!=len(set(paths)):
+                errors.append("%s endpoint paths are not unique" % api["name"])
+                    
     def validate(self):
-        for fn in [self.validate_unique_names,
-                   self.validate_component_refs,
+        for fn in [self.validate_names,
+                   self.validate_refs,
                    self.validate_action_invocations,
-                   self.validate_action_events]:            
+                   self.validate_action_events,
+                   self.validate_api_endpoints]:
             errors=[]
             fn(errors)
             if errors!=[]:
