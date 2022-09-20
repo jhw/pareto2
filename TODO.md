@@ -1,13 +1,13 @@
 ### short
 
-- check eventbridge target id max length and consider replacing with fixed random slug
+- improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 
 ### medium
 
 - group permissions by service 
 - wildcard permissions to remove all other permissions for same service 
+
 - new topics attribute for config 
-- improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 
 - replace app and stage name with stack name
 - convert artifacts bucket to env variable 
@@ -125,6 +125,7 @@
 
 ### done
 
+- check eventbridge target id max length and consider replacing with fixed random slug
 - add sns support to Pareto test 
 - validate packages against layers
 - validate unique endpoint paths
