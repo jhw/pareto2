@@ -1,7 +1,5 @@
 ### short
 
-- add permissions grouping to non- action role generators (table)
-
 - wildcard permissions to remove all other permissions for same service 
 
 ### medium
@@ -128,6 +126,7 @@
 
 ### done
 
+- add permissions grouping to non- action role generators (table)
 - group permissions by service 
 - check eventbridge target id max length and consider replacing with fixed random slug
 - add sns support to Pareto test 
