@@ -228,8 +228,10 @@ class Components(list):
                 if ref not in names:
                     errors.append("invalid %s reference [%s]" % (attr[:-1], ref))
         for attr in ["actions",
+                     "buckets",
                      "tables",
-                     "buckets"]:
+                     "topics",
+                     "userpools"]:
             validate_refs(self, attr, errors)
 
     def validate_action_invocations(self, errors):

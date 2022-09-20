@@ -1,5 +1,8 @@
 ### short
 
+- check unique API paths 
+- check action packages are validated against layers 
+
 ### medium
 
 - group permissions by service 
@@ -8,9 +11,6 @@
 - add sns support to Pareto test 
 - check eventbridge target id max length and consider replacing with fixed random slug
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
-- check unique API paths 
-- check API validates userpool 
-- check action packages are validated against layers 
 - fix tools pattern matcher 
 
 - replace app and stage name with stack name
@@ -125,6 +125,7 @@
 
 ### done
 
+- check API validates userpool 
 - check topic validates action
 - remove badly formatted checks stopping dsl validation from completing
 - add command line auth-type option to api
