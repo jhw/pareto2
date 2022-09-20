@@ -1,12 +1,10 @@
 ### short
 
+- dedicated action, api config classes to allow subclassing of validation code
+
 ### medium
 
-- improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
-
 - new topics attribute for config 
-
-- dedicated action, api config classes to allow subclassing of validation code
 
 - replace app and stage name with stack name
 - convert artifacts bucket to env variable 
@@ -124,6 +122,7 @@
 
 ### done
 
+- improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 - wildcard permissions to remove all other permissions for same service 
 - refactor permission group so takes a key and multiple values
 - add permissions grouping to non- action role generators (table)

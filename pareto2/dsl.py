@@ -319,7 +319,7 @@ class Components(list):
                 raise RuntimeError("%s handler not found" % action["name"])
             text=open(path).read()
             return [tok[1:-1].lower().replace("_", "-")
-                    for tok in re.findall(r"\[(.*?)\]",
+                    for tok in re.findall(r"os\.environ\[(.*?)\]",
                                           re.sub("\\s", "", text))
                     if (tok.upper()==tok and
                         len(tok) > 3)]
