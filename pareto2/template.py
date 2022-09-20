@@ -1,13 +1,6 @@
-import json, os, re, yaml
+import json, os, re
 
 from datetime import datetime
-
-DefaultParameters=yaml.safe_load("""
-AppName:
-  Type: String
-StageName:
-  Type: String
-""")
 
 class Component(dict):
 
@@ -109,7 +102,7 @@ class Parameter:
     
 class Parameters(Component):
 
-    def __init__(self, item=DefaultParameters):
+    def __init__(self, item={}):
         Component.__init__(self, item)
 
     @property
@@ -134,7 +127,7 @@ class Parameters(Component):
                 return False
         return True
 
-    def validate(self, mandatory=["StageName"]):
+    def validate(self, mandatory=[]):
         params=self.mandatory_keys
         for key in mandatory:
             if key not in params:

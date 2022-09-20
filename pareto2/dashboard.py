@@ -66,18 +66,11 @@ class Widgets(list):
             widgets+=row.render(y=y)
         return {"widgets": widgets}
 
-"""
-- dash names are specified as otherwise it's very hard to see what stage they belong to; dash is your app root; other widgets are not named because they exist and are visible below the root
-- params are defined at init_xxx level as some widgets (eg apigw) might need more than resource name (eg stage)
-"""
-
 def render_dash(fn):
     def wrapped(md):
         resourcename, dashprefix, widgets = fn(md)
         dashbody={"Fn::Sub": json.dumps(widgets.render())}
-        dashname={"Fn::Sub": "${AppName}-%s-dash-${StageName}" % dashprefix}
-        props={"DashboardBody":  dashbody,
-               "DashboardName": dashname}
+        props={"DashboardBody":  dashbody}
         struct={"Type": "AWS::CloudWatch::Dashboard",
                 "Properties": props}
         return (resourcename, struct)

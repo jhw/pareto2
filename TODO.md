@@ -1,5 +1,7 @@
 ### short
 
+- remove AppName, StageName parameters
+
 ### medium
 
 ### paretocli
