@@ -1,17 +1,21 @@
 ### short
 
+- check eventbridge target id max length and consider replacing with fixed random slug
+
 ### medium
 
 - group permissions by service 
 - wildcard permissions to remove all other permissions for same service 
 - new topics attribute for config 
-- check eventbridge target id max length and consider replacing with fixed random slug
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
-- fix tools pattern matcher 
 
 - replace app and stage name with stack name
 - convert artifacts bucket to env variable 
 - remove globals 
+
+### paretocli
+
+- fix tools pattern matcher 
 
 ### long
 
