@@ -223,8 +223,8 @@ class Components(list):
                    for item in getattr(self, attr)]
             refs=set()
             filter_refs(self, refs, attr[:-1])
+            # print (attr, names, refs)
             for ref in refs:
-                # print (attr[:-1], ref)
                 if ref not in names:
                     errors.append("invalid %s reference [%s]" % (attr[:-1], ref))
         for attr in ["actions",
@@ -296,7 +296,6 @@ class Components(list):
 if __name__=="__main__":
     try:
         config=Config.initialise()
-        config.validate().expand()
         print (config)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
