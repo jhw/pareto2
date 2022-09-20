@@ -6,9 +6,9 @@
 
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 
-- dedicated action, api config classes to allow subclassing of validation code
-
 - new topics attribute for config 
+
+- dedicated action, api config classes to allow subclassing of validation code
 
 - replace app and stage name with stack name
 - convert artifacts bucket to env variable 
