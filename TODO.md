@@ -1,10 +1,17 @@
 ### short
 
-- remove AppName, StageName parameters
+- remove dsl code expansion
+- add config initialise file / initialise zip 
+- add support for action sources to event rules 
 
 ### medium
 
 ### paretocli
+
+- add action env variable expansion to push artifacts 
+- remove pareto2 dependency 
+
+---
 
 - new topics attribute for config 
 - convert artifacts bucket to env variable 
@@ -125,6 +132,7 @@
 
 ### done
 
+- remove AppName, StageName parameters
 - remove app name from dashboard
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM
 - wildcard permissions to remove all other permissions for same service 
