@@ -60,7 +60,7 @@ class Config(dict):
         config=Config({"defaults": Defaults(struct["defaults"]),
                        "layers": Layers(struct["layers"]),
                        "components": Components(struct["components"])})
-        config.validate().expand()
+        config.validate()
         return config
         
     def __init__(self, struct):
@@ -88,10 +88,6 @@ class Config(dict):
     def validate(self):
         self["components"].validate()
         self.validate_layers()
-        return self
-
-    def expand(self):
-        self["components"].expand()
         return self
 
     def add_dashboard(fn):
@@ -298,30 +294,6 @@ class Components(list):
             fn(errors)
             if errors!=[]:
                 raise RuntimeError(", ".join(errors))
-        return self
-
-    def expand_action_env_vars(self):
-        def expand(action):
-            path="%s/index.py" % action["name"].replace("-", "/")
-            if not os.path.isfile(path):
-                raise RuntimeError("%s handler not found" % action["name"])
-            text=open(path).read()
-            return [tok[1:-1].lower().replace("_", "-")
-                    for tok in re.findall(r"os\.environ\[(.*?)\]",
-                                          re.sub("\\s", "", text))
-                    if (tok.upper()==tok and
-                        len(tok) > 3)]
-        for action in self.actions:
-            variables=expand(action)
-            """
-            if variables!=[]:
-                print ("%s -> %s" % (action["name"],
-                                     ", ".join(variables)))
-            """
-            action["env"]={"variables": variables}
-
-    def expand(self):
-        self.expand_action_env_vars()
         return self
 
 if __name__=="__main__":
