@@ -1,7 +1,5 @@
 ### short
 
-- remove dsl code expansion
-- add config initialise file / initialise zip 
 - add support for action sources to event rules 
 
 ### medium
@@ -132,6 +130,7 @@
 
 ### done
 
+- remove dsl code expansion
 - remove AppName, StageName parameters
 - remove app name from dashboard
 - improve os variable handling to avoid catching variable like AWS_REGION and CAPABILITY_IAM

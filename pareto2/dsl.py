@@ -55,7 +55,7 @@ ComponentModules=init_components({"action": pareto2.components.action,
 class Config(dict):
 
     @classmethod
-    def initialise(self, filename="config.yaml"):
+    def init_file(self, filename="config.yaml"):
         struct=yaml.safe_load(open(filename).read())
         config=Config({"defaults": Defaults(struct["defaults"]),
                        "layers": Layers(struct["layers"]),
@@ -298,7 +298,7 @@ class Components(list):
 
 if __name__=="__main__":
     try:
-        config=Config.initialise()
+        config=Config.init_file()
         print (config)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
