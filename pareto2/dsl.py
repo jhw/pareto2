@@ -257,14 +257,14 @@ class Components(list):
 
     def validate_action_events(self, errors):
         def validate_event(action, event, errors):
-            if (event["type"]=="s3" and
-                "bucket" not in event):
-                errors.append("%s/%s event is missing bucket attr" % (action["name"],
-                                                                      event["name"]))
-            elif (event["type"]=="dynamodb" and
-                  "table" not in event):
-                errors.append("%s/%s event is missing table attr" % (action["name"],
-                                                                     event["name"]))
+            for key, attr in [("s3", "bucket"),
+                              ("dynamodb", "table"),
+                              ("lambda", "action")]:
+                if (event["type"]==key and
+                    attr not in event):
+                    errors.append("%s/%s event is missing %s attr" % (action["name"],
+                                                                      event["name"],
+                                                                      attr))
         for action in self.actions:
             if "events" in action:
                 names=[]
