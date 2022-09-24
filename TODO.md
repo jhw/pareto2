@@ -4,15 +4,16 @@
 
 ### paretocli
 
+- check push_artifacts.py looks for artifacts bucket in os.environ
+- check no references to globals in push_artifacts
+- remove pareto2 dependency in requirements.py
 - add action env variable expansion to push artifacts 
-- remove pareto2 dependency 
+- update tools/pattern_matcher.py
+- check eventbridge array pattern matching
 
 ---
 
-- new topics attribute for config 
-- convert artifacts bucket to env variable 
-- remove globals 
-- fix tools pattern matcher 
+- new `topics` attribute
 
 ### layman, slacker, deployer
 
