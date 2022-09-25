@@ -1,2 +1,2 @@
-moto[apigateway,cloudformation,cloudwatch,codebuild,dynamodb,events,iam,lambda,logs,s3,secretsmanager,sns,sqs]
+moto[dynamodb,lambda,s3,sns]
 pyyaml
