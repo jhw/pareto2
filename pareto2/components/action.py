@@ -58,7 +58,7 @@ def init_function_role(action, basepermissions):
             list.__init__(item)
             self.key=key
         def render(self):
-            return ["%s:*"] if "*" in self else ["%s:%s" % (self.key, value) for value in self]
+            return ["%s:*" % self.key] if "*" in self else ["%s:%s" % (self.key, value) for value in self]
     def group_permissions(permissions):
         groups={}
         for permission in permissions:

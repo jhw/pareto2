@@ -1,7 +1,5 @@
 ### short
 
-- action permissions is fucked up if you send wildcard permissions
-
 ### medium
 
 ### paretocli
@@ -33,5 +31,6 @@
 
 ### done
 
+- action permissions is fucked up if you send wildcard permissions
 - fix Config.initialise() refs
 
