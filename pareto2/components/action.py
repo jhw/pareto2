@@ -200,7 +200,7 @@ def render_outputs(action):
 if __name__=="__main__":
     try:
         from pareto2.dsl import Config
-        config=Config.initialise()
+        config=Config.init_file()
         from pareto2.template import Template
         template=Template("actions")
         for action in config["components"].actions:

@@ -66,7 +66,7 @@ def render_outputs(userpool):
 if __name__=="__main__":
     try:
         from pareto2.dsl import Config
-        config=Config.initialise()
+        config=Config.init_file()
         from pareto2.template import Template
         template=Template("userpools")
         for userpool in config["components"].userpools:
