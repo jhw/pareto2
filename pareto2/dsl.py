@@ -108,11 +108,8 @@ class Config(dict):
     
     @add_dashboard
     def spawn_template(self,                  
-                       name="main",
-                       modules=ComponentModules,
-                       timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
-        template=Template(name=name,
-                          timestamp=timestamp)
+                       modules=ComponentModules):
+        template=Template()
         for component in self["components"]:
             mod=modules[component["type"]]
             resourcefn=getattr(mod, "render_resources")
