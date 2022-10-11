@@ -1,6 +1,5 @@
 ### short
 
-- remove any other boto- client related code
 - stop template rendering None parameter as string
 - check template.parameters.validate() mandatory option
 - stop lambda retries
@@ -22,6 +21,7 @@
 
 ### done
 
+- remove any other boto- client related code
 - refactor component main block template dumping stuff
 - remove template s3 dump code
 - action permissions is fucked up if you send wildcard permissions
