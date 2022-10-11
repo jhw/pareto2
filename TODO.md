@@ -1,7 +1,5 @@
 ### short
 
-- stop lambda retries
-
 ### medium
 
 ### long
@@ -16,6 +14,7 @@
 
 ### done
 
+- stop lambda retries
 - rename packages as layers
 - renamed defaults as parameters
 - merge layers into parameters

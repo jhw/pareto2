@@ -93,6 +93,17 @@ def init_async_function_role(action, permissions=AsyncPermissions):
 def init_sync_function_role(action, permissions=SyncPermissions):
     return init_function_role(action, basepermissions=permissions)
 
+@resource
+def init_async_function_event_config(action, retries=0):
+    resourcename=H("%s-function-event-config" % action["name"])
+    funcname=H("%s-function" % action["name"])
+    props={"MaximumRetryAttempts": retries,
+           "FunctionName": {"Ref": funcname},
+           "Qualifier": "$LATEST"}
+    return (resourcename,
+            "AWS::Lambda::EventInvokeConfig",
+            props)
+
 """
 - event rule uses random slug in id because of max length 64
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
@@ -171,7 +182,8 @@ def init_event_rule_permission(action, event):
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
-               init_async_function_role]:
+               init_async_function_role,
+               init_async_function_event_config]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
