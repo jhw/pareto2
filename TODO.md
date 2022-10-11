@@ -1,23 +1,15 @@
 ### short
 
+- remove template s3 dump code
+- remove any other boto- client related code
+- stop template rendering None parameter as string
+- check template.parameters.validate() mandatory option
+- stop lambda retries
+- renamed defaults as parameters
+- merge layers into parameters
+- rename packages as layers
+
 ### medium
-
-### paretocli
-
-- check push_artifacts.py looks for artifacts bucket in os.environ
-- check no references to globals in push_artifacts
-- remove pareto2 dependency in requirements.py
-- add action env variable expansion to push artifacts 
-- update tools/pattern_matcher.py
-- check eventbridge array pattern matching
-
----
-
-- new `topics` attribute
-
-### layman, slacker, deployer
-
-- remove manual specification of moto deps
 
 ### long
 
