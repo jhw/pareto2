@@ -57,8 +57,7 @@ class Config(dict):
     @classmethod
     def init_file(self, filename="config.yaml"):
         struct=yaml.safe_load(open(filename).read())
-        config=Config({"defaults": Defaults(struct["defaults"]),
-                       "layers": Layers(struct["layers"]),
+        config=Config({"parameters": Parameters(struct["parameters"]),
                        "components": Components(struct["components"])})
         config.validate()
         return config
@@ -69,22 +68,30 @@ class Config(dict):
     @property
     def parameters(self):
         params={}
-        for attr in ["defaults",
-                     "layers"]:
+        for attr in ["parameters"]:
             params.update(self[attr].parameters)
         return params
 
+    @property
+    def layernames(self):
+        layernames=[]
+        for key in self["parameters"]:
+            if key.endswith("-layer-arn"):
+                layername="-".join(key.split("-")[:-2])
+                layernames.append(layername)
+        return layernames
+    
     def validate_layers(self):
-        layernames, errors = list(self["layers"].keys()), set()
+        layernames, errors = self.layernames, set()
         for component in self["components"]:
             if (component["type"]=="action" and
-                "packages" in component):
-                for packagename in component["packages"]:
-                    if packagename not in layernames:
-                        errors.add(packagename)
+                "layers" in component):
+                for layername in component["layers"]:
+                    if layername not in layernames:
+                        errors.add(layername)
         if len(errors) > 0:
-            raise RuntimeError("unknown package(s) %s" % ", ".join(errors))
-    
+            raise RuntimeError("unknown layer(s) %s" % ", ".join(errors))
+        
     def validate(self):
         self["components"].validate()
         self.validate_layers()
@@ -114,7 +121,7 @@ class Config(dict):
             template.outputs.update(outputfn(component))
         return template
     
-class Defaults(dict):
+class Parameters(dict):
 
     def __init__(self, struct):
         dict.__init__(self, struct)
@@ -122,16 +129,6 @@ class Defaults(dict):
     @property
     def parameters(self):
         return {hungarorise(k):v
-                for k, v in self.items()}
-        
-class Layers(dict):
-
-    def __init__(self, struct):
-        dict.__init__(self, struct)
-
-    @property
-    def parameters(self):
-        return {"%sLayerArn" % hungarorise(k):v
                 for k, v in self.items()}
         
 class Components(list):

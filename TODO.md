@@ -1,8 +1,5 @@
 ### short
 
-- renamed defaults as parameters
-- merge layers into parameters
-- rename packages as layers
 - stop lambda retries
 
 ### medium
@@ -19,6 +16,9 @@
 
 ### done
 
+- rename packages as layers
+- renamed defaults as parameters
+- merge layers into parameters
 - remove any other boto- client related code
 - refactor component main block template dumping stuff
 - remove template s3 dump code
