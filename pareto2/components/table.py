@@ -229,10 +229,10 @@ if __name__=="__main__":
         from pareto2.dsl import Config
         config=Config.init_file()
         from pareto2.template import Template
-        template=Template("tables")
+        template=Template()
         for table in config["components"].tables:
             template.resources.update(render_resources(table))
             template.outputs.update(render_outputs(table))
-        template.dump_local()
+        print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))

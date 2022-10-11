@@ -308,11 +308,11 @@ if __name__=="__main__":
         from pareto2.dsl import Config
         config=Config.init_file()
         from pareto2.template import Template
-        template=Template("apis")
+        template=Template()
         for api in config["components"].apis:
             api["auth-type"]=authtype
             template.resources.update(render_resources(api))
             template.outputs.update(render_outputs(api))
-        template.dump_local()
+        print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))

@@ -68,10 +68,10 @@ if __name__=="__main__":
         from pareto2.dsl import Config
         config=Config.init_file()
         from pareto2.template import Template
-        template=Template("userpools")
+        template=Template()
         for userpool in config["components"].userpools:
             template.resources.update(render_resources(userpool))
             template.outputs.update(render_outputs(userpool))
-        template.dump_local()
+        print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))

@@ -152,10 +152,10 @@ if __name__=="__main__":
         from pareto2.dsl import Config
         config=Config.init_file()
         from pareto2.template import Template
-        template=Template("timers")
+        template=Template()
         for timer in config["components"].timers:
             template.resources.update(render_resources(timer))
             template.outputs.update(render_outputs(timer))
-        template.dump_local()
+        print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))
