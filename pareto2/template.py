@@ -1,6 +1,4 @@
-import json, os, re
-
-from datetime import datetime
+import re
 
 class Component(dict):
 
@@ -160,12 +158,8 @@ class Outputs(Component):
 class Template:
 
     def __init__(self,
-                 name="template",
-                 version="2010-09-09",
-                 timestamp=datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")):
-        self.name=name
+                 version="2010-09-09"):
         self.version=version
-        self.timestamp=timestamp
         for attr in ["parameters",
                      "resources",
                      "outputs"]:
@@ -195,8 +189,7 @@ class Template:
         refs=self.resources.refs+self.outputs.refs
         for ref in refs:
             if ref not in ids:
-                errors.append("%s %s not defined" % (self.name, ref))
-
+                errors.append("%s not defined in template" % ref)
                 
     def validate_root(self):
         errors=[]
@@ -204,30 +197,5 @@ class Template:
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
 
-    def to_json(self):
-        return json.dumps(self.render(),
-                          indent=2)
-
-    @property
-    def s3_timestamped_key(self):
-        return "%s-%s.json" % (self.name,
-                               self.timestamp)
-
-    @property
-    def s3_latest_key(self):
-        return "%s-latest.json" % self.name
-    
-    def dump_s3(self, s3, bucketname):
-        for s3key in [self.s3_timestamped_key,
-                      self.s3_latest_key]:
-            s3.put_object(Bucket=bucketname,
-                          Key=s3key,
-                          Body=self.to_json(),
-                          ContentType="application/json")
-
-    def dump_local(self):
-        with open("tmp/%s" % self.s3_timestamped_key, 'w') as f:
-            f.write(self.to_json())
-        
 if __name__=="__main__":
     pass
