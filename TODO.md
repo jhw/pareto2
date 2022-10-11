@@ -1,11 +1,9 @@
 ### short
 
-- stop template rendering None parameter as string
-- check template.parameters.validate() mandatory option
-- stop lambda retries
 - renamed defaults as parameters
 - merge layers into parameters
 - rename packages as layers
+- stop lambda retries
 
 ### medium
 
