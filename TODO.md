@@ -1,5 +1,9 @@
 ### short
 
+- dsl main block, repeating stuff in actions
+- check layer keys against layer values
+- repeat for topics, buckets
+
 ### medium
 
 ### long
