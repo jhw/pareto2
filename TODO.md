@@ -1,10 +1,10 @@
 ### short
 
-- dsl main block, repeating stuff in actions
-- check layer keys against layer values
 - repeat for topics, buckets
 
 ### medium
+
+- dsl main block, repeating stuff in actions?
 
 ### long
 
@@ -18,6 +18,7 @@
 
 ### done
 
+- check layer keys against layer values
 - stop lambda retries
 - rename packages as layers
 - renamed defaults as parameters

@@ -72,17 +72,9 @@ class Config(dict):
             params.update(self[attr].parameters)
         return params
 
-    @property
-    def layernames(self):
-        layernames=[]
-        for key in self["parameters"]:
-            if key.endswith("-layer-arn"):
-                layername="-".join(key.split("-")[:-2])
-                layernames.append(layername)
-        return layernames
-    
-    def validate_layers(self):
-        layernames, errors = self.layernames, set()
+    def cross_validate_layers(self):
+        layernames, errors = self["parameters"].layers.names, set()
+        print (layernames)
         for component in self["components"]:
             if (component["type"]=="action" and
                 "layers" in component):
@@ -93,8 +85,10 @@ class Config(dict):
             raise RuntimeError("unknown layer(s) %s" % ", ".join(errors))
         
     def validate(self):
-        self["components"].validate()
-        self.validate_layers()
+        for attr in ["parameters",
+                     "components"]:
+            self[attr].validate()
+        self.cross_validate_layers()
         return self
 
     def add_dashboard(fn):
@@ -117,12 +111,52 @@ class Config(dict):
             outputfn=getattr(mod, "render_outputs")
             template.outputs.update(outputfn(component))
         return template
+
+class Layers(dict):
+
+    @classmethod
+    def initialise(self, parameters):
+        layers={}
+        for k, v in parameters.items():
+            if (isinstance(v, str) and
+                v.startswith("arn:aws:lambda:") and
+                ":layer:" in v):
+                layers[k]=v
+        return Layers(layers)    
     
+    def __init__(self, struct):
+        dict.__init__(self, struct)
+
+    def validate(self, errors):
+        for k in self:
+            if not k.endswith("-layer-arn"):
+                errors.append("invalid layer key: %s" % k)
+
+    @property
+    def names(self):
+        return ["-".join(k.split("-")[:-2])
+                for k in self]
+                
 class Parameters(dict):
 
     def __init__(self, struct):
         dict.__init__(self, struct)
 
+    @property
+    def layers(self):
+        return Layers.initialise(self)
+
+    def validate_layers(self, errors):
+        self.layers.validate(errors)
+            
+    def validate(self):
+        errors=[]
+        for fn in [self.validate_layers]:
+            fn(errors)
+        if errors!=[]:
+            raise RuntimeError(", ".join(errors))
+        return self
+        
     @property
     def parameters(self):
         return {hungarorise(k):v
@@ -277,7 +311,11 @@ class Components(list):
                 errors.append("%s endpoint names are not unique" % api["name"])
             if len(paths)!=len(set(paths)):
                 errors.append("%s endpoint paths are not unique" % api["name"])
-                    
+
+    """
+    - errors are redefined at each point in the loop as some of these validation functions are conditional
+    """
+                
     def validate(self):
         for fn in [self.validate_names,
                    self.validate_refs,
