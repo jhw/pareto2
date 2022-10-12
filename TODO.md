@@ -1,9 +1,8 @@
 ### short
 
-- repeat for topics, buckets
-
 ### medium
 
+- parameters buckets clas
 - dsl main block, repeating stuff in actions?
 
 ### long
@@ -18,6 +17,7 @@
 
 ### done
 
+- repeat for topics, buckets
 - check layer keys against layer values
 - stop lambda retries
 - rename packages as layers

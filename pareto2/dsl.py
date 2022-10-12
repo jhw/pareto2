@@ -74,7 +74,6 @@ class Config(dict):
 
     def cross_validate_layers(self):
         layernames, errors = self["parameters"].layers.names, set()
-        print (layernames)
         for component in self["components"]:
             if (component["type"]=="action" and
                 "layers" in component):
@@ -136,7 +135,31 @@ class Layers(dict):
     def names(self):
         return ["-".join(k.split("-")[:-2])
                 for k in self]
-                
+
+class Topics(dict):
+
+    @classmethod
+    def initialise(self, parameters):
+        topics={}
+        for k, v in parameters.items():
+            if (isinstance(v, str) and
+                v.startswith("arn:aws:sns:")):
+                topics[k]=v
+        return Topics(topics)    
+    
+    def __init__(self, struct):
+        dict.__init__(self, struct)
+
+    def validate(self, errors):
+        for k in self:
+            if not k.endswith("-topic-arn"):
+                errors.append("invalid topic key: %s" % k)
+
+    @property
+    def names(self):
+        return ["-".join(k.split("-")[:-2])
+                for k in self]
+    
 class Parameters(dict):
 
     def __init__(self, struct):
@@ -148,10 +171,19 @@ class Parameters(dict):
 
     def validate_layers(self, errors):
         self.layers.validate(errors)
+
+    @property
+    def topics(self):
+        return Topics.initialise(self)
+
+    def validate_topics(self, errors):
+        self.topics.validate(errors)
+
             
     def validate(self):
         errors=[]
-        for fn in [self.validate_layers]:
+        for fn in [self.validate_layers,
+                   self.validate_topics]:
             fn(errors)
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
