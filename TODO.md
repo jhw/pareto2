@@ -2,8 +2,8 @@
 
 ### medium
 
-- parameters buckets clas
-- dsl main block, repeating stuff in actions?
+- parameters buckets class
+- dsl __main__ block
 
 ### long
 
