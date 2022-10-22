@@ -1,11 +1,11 @@
 ### short
 
-- clean up demo.yaml
 - refactor dash main block
 - dsl to validate event sources
 
 ### medium
 
+- clean up demo.yaml
 - apply function defaults to inline functions
 - add back s3, ddb dashboards
 - investigate adding app name to dashboard

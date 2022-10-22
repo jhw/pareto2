@@ -17,7 +17,7 @@ components:
       name: demo
       type: table
   invocation-type: async
-  name: demo-latyers-update
+  name: demo-layers-update
   type: action
 - events:
   - name: layers-create
