@@ -1,6 +1,8 @@
 ### short
 
-- refactor dsl action events validator
+- remove paretodemo
+
+- dsl to validate event sources
 - consider refactoring event topic, pattern as head, body
 - check whether action env vars takes list or keys
 - add default size/timeout parameters (small, short)
@@ -12,8 +14,6 @@
 - add back s3, ddb dashboards
 
 ### long
-
-- remove paretodemo
 
 - apigw api keys
 - lambda alarms, timeouts

@@ -315,24 +315,6 @@ class Components(list):
                                 ("topics", "async")]:
             validate_invoctype(self, attr, invoctype, errors)
 
-    def validate_action_events(self, errors):
-        def validate_event(action, event, errors):
-            for key, attr in [("s3", "bucket"),
-                              ("dynamodb", "table"),
-                              ("lambda", "action")]:
-                if (event["type"]==key and
-                    attr not in event):
-                    errors.append("%s/%s event is missing %s attr" % (action["name"],
-                                                                      event["name"],
-                                                                      attr))
-        for action in self.actions:
-            if "events" in action:
-                names=[]
-                for event in action["events"]:
-                    validate_event(action, event, errors)
-                if len(names)!=len(set(names)):
-                    errors.append("%s event names are not unique" % action["name"])
-
     def validate_api_endpoints(self, errors):
         for api in self.apis:
             names, paths = [], []
@@ -352,7 +334,6 @@ class Components(list):
         for fn in [self.validate_names,
                    self.validate_refs,
                    self.validate_action_invocations,
-                   # self.validate_action_events,
                    self.validate_api_endpoints]:
             errors=[]
             fn(errors)
