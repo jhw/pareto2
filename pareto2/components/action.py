@@ -19,6 +19,18 @@ SyncPermissions={"logs:CreateLogGroup",
                  "sqs:GetQueueAttributes",
                  "sqs:ReceiveMessage"}
 
+FunctionDefaults={"size": "small",
+                  "timeout": "short"}
+
+def function_defaults(fn):
+    def wrapped(action, defaults=FunctionDefaults):
+        for k, v in defaults.items():
+            if k not in action:
+                action[k]=v
+        return fn(action)
+    return wrapped
+
+@function_defaults
 @resource            
 def init_function(action):    
     resourcename=H("%s-function" % action["name"])

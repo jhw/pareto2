@@ -1,12 +1,16 @@
 ### short
 
+- convert "short" to "default"
 - dsl to validate event sources
-- add default size/timeout parameters (small, short)
 
 ### medium
 
-- refactor search lambda logs
 - add back s3, ddb dashboards
+- wheel
+
+### paretocli
+
+- refactor search lambda logs
 
 ### long
 
@@ -23,6 +27,7 @@
 
 ### done
 
+- add default size/timeout parameters (small, short)
 - add arn support to action env vars
 - remove paretodemo
 - add env vars to demo.yaml

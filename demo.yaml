@@ -1,17 +1,13 @@
 components:
-- invocation-type: sync
+- env:
+    variables:
+    - foo_bar
+    - foo_bar_arn
+  invocation-type: sync
   name: demo-api-create
-  size: small
-  timeout: short
   type: action
-  env:
-   variables:
-   - foo_bar
-   - foo_bar_arn
 - invocation-type: sync
   name: demo-api-delete
-  size: small
-  timeout: short
   type: action
 - events:
   - name: layers-delete
@@ -28,8 +24,6 @@ components:
   permissions:
   - lambda:DeleteLayerVersion
   - lambda:ListLayers
-  size: small
-  timeout: short
   type: action
 - events:
   - name: layers-update
@@ -43,8 +37,6 @@ components:
       type: table
   invocation-type: async
   name: demo-pipeline-builds-update
-  size: small
-  timeout: short
   type: action
 - events:
   - name: layers-create
@@ -82,22 +74,16 @@ components:
   type: action
 - invocation-type: async
   name: demo-pipeline-stages-update
-  size: small
-  timeout: short
   type: action
 - invocation-type: sync
   name: demo-ui-builds
   permissions:
   - dynamodb:Query
-  size: small
-  timeout: short
   type: action
 - invocation-type: sync
   name: demo-ui-stages
   permissions:
   - dynamodb:Query
-  size: small
-  timeout: short
   type: action
 - auth-type: open
   endpoints:
@@ -176,8 +162,6 @@ components:
   name: demo
   type: timer
 parameters:
-  memory-size-large: 2048
-  memory-size-medium: 1024
   memory-size-small: 512
   runtime-version: '3.8'
   timeout-long: 30
