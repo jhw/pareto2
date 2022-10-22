@@ -1,7 +1,5 @@
 ### short
 
-- dsl to validate event sources
-
 ### medium
 
 - replace demo.yaml with something a bit more coherent
@@ -27,6 +25,7 @@
 
 ### done
 
+- dsl to validate event sources
 - refactor dash main block
 - convert "short" to "default"
 - add default size/timeout parameters (small, short)

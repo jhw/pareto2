@@ -315,6 +315,26 @@ class Components(list):
                                 ("topics", "async")]:
             validate_invoctype(self, attr, invoctype, errors)
 
+    def validate_action_event_sources(self, errors):
+        bucketnames=[bucket["name"] for bucket in self.buckets]        
+        tablenames=[table["name"] for table in self.tables]
+        for action in self.actions:
+            if "events" in action:
+                for event in action["events"]:
+                    if "source" in event:
+                        source=event["source"]
+                        if (source["type"]=="bucket" and
+                            source["name"] not in bucketnames):
+                            errors.append("%s/%s event has bad bucket reference: %s" % (action["name"],
+                                                                                        event["name"],
+                                                                                        source["name"]))
+                        elif (source["type"]=="table" and
+                              source["name"] not in tablenames):
+                            errors.append("%s/%s event has bad table reference: %s" % (action["name"],
+                                                                                       event["name"],
+                                                                                       source["name"]))
+                            
+            
     def validate_api_endpoints(self, errors):
         for api in self.apis:
             names, paths = [], []
@@ -334,6 +354,7 @@ class Components(list):
         for fn in [self.validate_names,
                    self.validate_refs,
                    self.validate_action_invocations,
+                   self.validate_action_event_sources,
                    self.validate_api_endpoints]:
             errors=[]
             fn(errors)
