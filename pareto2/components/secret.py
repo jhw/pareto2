@@ -22,6 +22,10 @@ def render_outputs(secret):
 
 if __name__=="__main__":
     try:
+        import os, sys
+        filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
+        if not os.path.exists(filename):
+            raise RuntimeError("%s does not exist" % filename)
         from pareto2.dsl import Config
         config=Config.init_file(filename="demo.yaml")
         from pareto2.template import Template
@@ -30,5 +34,14 @@ if __name__=="__main__":
             template.resources.update(render_resources(secret))
             template.outputs.update(render_outputs(secret))
         print (template.render())
+        print ()
+        template.init_implied_parameters()
+        for validator in [template.parameters.validate,
+                          template.validate]:
+            try:
+                validator()
+            except RuntimeError as error:
+                print ("Warning: %s" % str(error))
+
     except RuntimeError as error:
         print ("Error: %s" % str(error))
