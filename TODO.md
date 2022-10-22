@@ -1,9 +1,10 @@
 ### short
 
+- apply function defaults to inline functions
+
 ### medium
 
 - replace demo.yaml with something a bit more coherent
-- apply function defaults to inline functions
 - add back s3, ddb dashboards
 - investigate adding app name to dashboard
 
