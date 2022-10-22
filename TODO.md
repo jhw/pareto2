@@ -26,6 +26,7 @@
 
 ### done
 
+- replace components __main__ blocks with single version based in template.py
 - extend demo
 - roll out action __main__ changes to other components
 - add explicit event source attr

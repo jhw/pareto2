@@ -143,10 +143,6 @@ components:
   userpool: demo
 - name: demo
   type: bucket
-- action: demo-pipeline-stages-update
-  bucket: demo
-  name: demo
-  type: builder
 - name: demo
   indexes:
   - name: codebuild-build-id
