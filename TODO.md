@@ -1,6 +1,5 @@
 ### short
 
-- refactor dash main block
 - dsl to validate event sources
 
 ### medium
@@ -28,6 +27,7 @@
 
 ### done
 
+- refactor dash main block
 - convert "short" to "default"
 - add default size/timeout parameters (small, short)
 - add arn support to action env vars

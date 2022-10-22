@@ -93,8 +93,12 @@ def render_resources(config):
 
 if __name__=="__main__":
     try:
+        import os, sys
+        filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
+        if not os.path.exists(filename):
+            raise RuntimeError("%s does not exist" % filename)
         from pareto2.dsl import Config
-        config=Config.init_file(filename="demo.yaml")
+        config=Config.init_file(filename=filename)
         from pareto2.template import Template
         template=Template("dash")        
         template.resources.update(render_resources(config))
