@@ -2,10 +2,7 @@
 
 - create migration script
 
-- check/remove parameter mandatory key validation stuff
-- replace with completeness check, but with optional ignore arg
-
--  add explicit event source attr
+- add explicit event source attr
 - rename event source attrs as type (table, bucket) and name
 - add event topic attr which pattern matches against detail-type 
 - ensure topic/pattern/source are optional params
@@ -30,6 +27,9 @@
 ### thoughts
 
 ### done
+
+- check/remove parameter mandatory key validation stuff
+- replace with completeness check, but with optional ignore arg
 
 - repeat for topics, buckets
 - check layer keys against layer values

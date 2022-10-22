@@ -103,36 +103,19 @@ class Parameters(Component):
     def __init__(self, item={}):
         Component.__init__(self, item)
 
-    @property
-    def mandatory_keys(self):
-        return [k for k, v in self.items()
-                if "Default" not in v]
-
-    @property
-    def optional_keys(self):
-        return [k for k, v in self.items()
-                if "Default" in v]
-        
     def update_defaults(self, params):
         for k, v in params.items():
             if k in self:
                 self[k]["Default"]=str(v)
 
-    @property
-    def is_complete(self):
-        for v in self.values():
-            if "Default" not in v:
+    def validate(self, ignore=[]):
+        for k, v in self.items():
+            if k in ignore:
+                pass
+            elif "Default" not in v:
                 return False
         return True
 
-    def validate(self, mandatory=[]):
-        params=self.mandatory_keys
-        for key in mandatory:
-            if key not in params:
-                raise RuntimeError("%s not specified as mandatory key" % key)
-        if len(params)!=len(mandatory):
-            raise RuntimeError("Invalid mandatory parameters - %s" % ", ".join(params))
-    
 class Resources(Component):
 
     def __init__(self, item={}):
