@@ -109,12 +109,14 @@ class Parameters(Component):
                 self[k]["Default"]=str(v)
 
     def validate(self, ignore=[]):
+        errors=[]
         for k, v in self.items():
             if k in ignore:
                 pass
             elif "Default" not in v:
-                return False
-        return True
+                errors.append("%s has no default value" % k)
+        if errors!=[]:
+            raise RuntimeError("; ".join(errors))
 
 class Resources(Component):
 
@@ -174,7 +176,7 @@ class Template:
             if ref not in ids:
                 errors.append("%s not defined in template" % ref)
                 
-    def validate_root(self):
+    def validate(self):
         errors=[]
         self.cross_validate_refs(errors)
         if errors!=[]:

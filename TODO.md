@@ -1,17 +1,13 @@
 ### short
 
-- component main blocks should call template.parameters.validate, template.validate_root
-- renmae template.validate_root
-
-- add explicit event source attr
-- rename event source attrs as type (table, bucket) and name
+- test event source changes
 - add event topic attr which pattern matches against detail-type 
 - ensure topic/pattern/source are optional params
 - check whether action env vars takes list or keys
+- add default size/timeout parameters (small, short)
 
 ### medium
 
-- add default size/timeout parameters (small, short)
 - add arn support to action env vars
 - refactor search lambda logs
 - add back s3, ddb dashboards
@@ -29,6 +25,10 @@
 
 ### done
 
+- add explicit event source attr
+- rename event source attrs as type (table, bucket) and name
+- component main blocks should call template.parameters.validate, template.validate_root
+- rename template.validate_root
 - create migration script
 - remove event action source 
 - check/remove parameter mandatory key validation stuff
