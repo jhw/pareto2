@@ -1,5 +1,8 @@
 ### short
 
+- component main blocks should call template.parameters.validate, template.validate_root
+- renmae template.validate_root
+
 - add explicit event source attr
 - rename event source attrs as type (table, bucket) and name
 - add event topic attr which pattern matches against detail-type 
