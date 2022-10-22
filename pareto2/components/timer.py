@@ -154,7 +154,7 @@ if __name__=="__main__":
         if not os.path.exists(filename):
             raise RuntimeError("%s does not exist" % filename)
         from pareto2.dsl import Config
-        config=Config.init_file(filename="demo.yaml")
+        config=Config.init_file(filename=filename)
         from pareto2.template import Template
         template=Template()
         for timer in config["components"].timers:
@@ -169,6 +169,5 @@ if __name__=="__main__":
                 validator()
             except RuntimeError as error:
                 print ("Warning: %s" % str(error))
-
     except RuntimeError as error:
         print ("Error: %s" % str(error))

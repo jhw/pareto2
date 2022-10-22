@@ -1,7 +1,5 @@
 ### short
 
-- roll out action __main__ changes to other components
-
 - test event source changes
 - add event topic attr which pattern matches against detail-type 
 - ensure topic/pattern/source are optional params
@@ -28,6 +26,7 @@
 
 ### done
 
+- roll out action __main__ changes to other components
 - add explicit event source attr
 - rename event source attrs as type (table, bucket) and name
 - component main blocks should call template.parameters.validate, template.validate_root

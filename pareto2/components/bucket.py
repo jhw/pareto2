@@ -40,6 +40,5 @@ if __name__=="__main__":
                 validator()
             except RuntimeError as error:
                 print ("Warning: %s" % str(error))
-
     except RuntimeError as error:
         print ("Error: %s" % str(error))
