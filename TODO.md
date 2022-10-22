@@ -15,6 +15,7 @@
 - add arn support to action env vars
 - refactor search lambda logs
 - add back s3, ddb dashboards
+- delete paretodemo
 
 ### long
 
