@@ -5,7 +5,7 @@
 
 ### medium
 
-- clean up demo.yaml
+- replace demo.yaml with something a bit more coherent
 - apply function defaults to inline functions
 - add back s3, ddb dashboards
 - investigate adding app name to dashboard
