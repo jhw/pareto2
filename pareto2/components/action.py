@@ -156,8 +156,12 @@ def init_s3_event_rule(action, event):
     return _init_event_rule(action, event, pattern)
 
 def init_event_rule(action, event):
-    fn=eval("init_%s_event_rule" % event["type"])
-    return fn(action, event)
+    if event["type"]=="s3":
+        return init_s3_event_rule(action, event)
+    elif event["type"]=="dynamodb":
+        return init_dynamodb_event_rule(action, event)
+    else:
+        raise RuntimeError("no event rule handler for type %s" % event["type"])
 
 @resource
 def init_event_rule_permission(action, event):
