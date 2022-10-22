@@ -6,25 +6,6 @@ components:
   invocation-type: sync
   name: demo-api-create
   type: action
-- invocation-type: sync
-  name: demo-api-delete
-  type: action
-- events:
-  - name: layers-delete
-    pattern:
-      eventName:
-      - REMOVE
-      pk:
-      - BUILD
-    source:
-      name: demo
-      type: table
-  invocation-type: async
-  name: demo-layers-delete
-  permissions:
-  - lambda:DeleteLayerVersion
-  - lambda:ListLayers
-  type: action
 - events:
   - name: layers-update
     pattern:
@@ -36,7 +17,7 @@ components:
       name: demo
       type: table
   invocation-type: async
-  name: demo-pipeline-builds-update
+  name: demo-latyers-update
   type: action
 - events:
   - name: layers-create
@@ -55,31 +36,6 @@ components:
   size: large
   timeout: long
   type: action
-- events:
-  - name: pipeline-stages-init
-    pattern:
-      eventName:
-      - INSERT
-      pk:
-      - BUILD
-    source:
-      name: demo
-      type: table
-  invocation-type: async
-  name: demo-pipeline-stages-init
-  permissions:
-  - codebuild:startBuild
-  size: medium
-  timeout: medium
-  type: action
-- invocation-type: async
-  name: demo-pipeline-stages-update
-  type: action
-- invocation-type: sync
-  name: demo-ui-builds
-  permissions:
-  - dynamodb:Query
-  type: action
 - invocation-type: sync
   name: demo-ui-stages
   permissions:
@@ -87,10 +43,6 @@ components:
   type: action
 - auth-type: open
   endpoints:
-  - action: demo-ui-builds
-    method: GET
-    name: ui-builds-list
-    path: list-builds
   - action: demo-ui-stages
     method: GET
     name: ui-stages-list
@@ -119,17 +71,6 @@ components:
       - name
       - type
       type: object
-  - action: demo-api-delete
-    method: POST
-    name: api-delete
-    path: delete-layer
-    schema:
-      properties:
-        name:
-          type: string
-      required:
-      - name
-      type: object
   name: demo-private
   stage:
     name: 1-0-0
@@ -148,7 +89,7 @@ components:
   type: table
 - name: demo
   type: userpool
-- action: demo-layers-delete
+- action: demo-layers-create
   name: demo
   type: topic
 - name: demo
@@ -162,8 +103,10 @@ components:
   name: demo
   type: timer
 parameters:
-  memory-size-small: 512
+  memory-size-large: 2048
+  memory-size-medium: 1024
+  memory-size-default: 512
   runtime-version: '3.8'
   timeout-long: 30
   timeout-medium: 15
-  timeout-short: 5
+  timeout-default: 5

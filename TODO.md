@@ -1,12 +1,14 @@
 ### short
 
-- convert "short" to "default"
+- clean up demo.yaml
+- refactor dash main block
 - dsl to validate event sources
 
 ### medium
 
+- apply function defaults to inline functions
 - add back s3, ddb dashboards
-- wheel
+- investigate adding app name to dashboard
 
 ### paretocli
 
@@ -14,11 +16,10 @@
 
 ### long
 
+- wheel packages
 - apigw api keys
-- lambda alarms, timeouts
-- burningmonk apigw stuff
-- appsync + graphql
-- lambda powertools
+- lambda alarms
+- apigw logging
 
 ### thoughts
 
@@ -27,6 +28,7 @@
 
 ### done
 
+- convert "short" to "default"
 - add default size/timeout parameters (small, short)
 - add arn support to action env vars
 - remove paretodemo

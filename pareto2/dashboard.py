@@ -94,10 +94,10 @@ def render_resources(config):
 if __name__=="__main__":
     try:
         from pareto2.dsl import Config
-        config=Config.init_file()
+        config=Config.init_file(filename="demo.yaml")
         from pareto2.template import Template
         template=Template("dash")        
         template.resources.update(render_resources(config))
-        template.dump_local()
+        print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))

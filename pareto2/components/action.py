@@ -19,8 +19,8 @@ SyncPermissions={"logs:CreateLogGroup",
                  "sqs:GetQueueAttributes",
                  "sqs:ReceiveMessage"}
 
-FunctionDefaults={"size": "small",
-                  "timeout": "short"}
+FunctionDefaults={"size": "default",
+                  "timeout": "default"}
 
 def function_defaults(fn):
     def wrapped(action, defaults=FunctionDefaults):
