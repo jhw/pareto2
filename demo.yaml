@@ -4,6 +4,9 @@ components:
   size: small
   timeout: short
   type: action
+  env:
+   variables:
+   - foobar
 - invocation-type: sync
   name: demo-api-delete
   size: small
