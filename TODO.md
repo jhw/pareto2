@@ -1,24 +1,20 @@
 ### short
 
-- ensure topic/pattern/source are optional params
-
-- add event topic attr which pattern matches against detail-type 
-
 - refactor dsl action events validator
-
 - check what the api auth-type parameter is doing in __main__
-
+- consider refactoring event topic, pattern as head, body
 - check whether action env vars takes list or keys
 - add default size/timeout parameters (small, short)
+- add arn support to action env vars
 
 ### medium
 
-- add arn support to action env vars
 - refactor search lambda logs
 - add back s3, ddb dashboards
-- delete paretodemo
 
 ### long
+
+- remove paretodemo
 
 - apigw api keys
 - lambda alarms, timeouts
@@ -30,6 +26,8 @@
 
 ### done
 
+- ensure topic/pattern/source are optional params
+- add event topic attr which pattern matches against detail-type 
 - remove template validation from component blocks
 - check demo has both bucket and table validations
 - test event source changes

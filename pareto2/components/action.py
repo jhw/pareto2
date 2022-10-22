@@ -140,8 +140,16 @@ def _init_event_rule(action, event, pattern):
 """
 
 def init_table_event_rule(action, event):
-    pattern={"detail": event["pattern"]}
-    pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
+    pattern={}
+    if "topic" in event:
+        pattern["detail-type"]=event["topic"]
+    if "pattern" in event:
+        pattern["detail"]=event["pattern"]
+    if "source" in event:
+        pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
+    if pattern=={}:
+        raise RuntimeError("%s/%s event config is blank" % (action["name"],
+                                                            event["name"]))
     return _init_event_rule(action, event, pattern)
 
 """
@@ -149,10 +157,19 @@ def init_table_event_rule(action, event):
 """
 
 def init_bucket_event_rule(action, event):
-    pattern={"detail": event["pattern"]}
-    pattern["detail"].setdefault("bucket", {})
-    pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["name"])}]
-    pattern["source"]=["aws.s3"]
+    pattern={}
+    if "topic" in event:
+        pattern["detail-type"]=event["topic"]
+    if "pattern" in event:
+        pattern["detail"]=event["pattern"]
+    if "source" in event:
+        pattern.setdefault("detail", {})
+        pattern["detail"].setdefault("bucket", {})
+        pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["name"])}]
+        pattern["source"]=["aws.s3"]
+    if pattern=={}:
+        raise RuntimeError("%s/%s event config is blank" % (action["name"],
+                                                            event["name"]))
     return _init_event_rule(action, event, pattern)
 
 def init_event_rule(action, event):
