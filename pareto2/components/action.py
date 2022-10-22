@@ -155,11 +155,6 @@ def init_s3_event_rule(action, event):
     pattern["source"]=["aws.s3"]
     return _init_event_rule(action, event, pattern)
 
-def init_lambda_event_rule(action, event):
-    pattern={"detail": event["pattern"]}
-    pattern["source"]=[{"Ref": H("%s-function" % event["action"])}]
-    return _init_event_rule(action, event, pattern)
-
 def init_event_rule(action, event):
     fn=eval("init_%s_event_rule" % event["type"])
     return fn(action, event)

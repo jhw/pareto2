@@ -6,7 +6,6 @@
 - rename event source attrs as type (table, bucket) and name
 - add event topic attr which pattern matches against detail-type 
 - ensure topic/pattern/source are optional params
-- remove event action source 
 - check whether action env vars takes list or keys
 
 ### medium
@@ -28,6 +27,7 @@
 
 ### done
 
+- remove event action source 
 - check/remove parameter mandatory key validation stuff
 - replace with completeness check, but with optional ignore arg
 
