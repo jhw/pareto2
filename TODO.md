@@ -1,6 +1,5 @@
 ### short
 
-- add arn support to action env vars
 - dsl to validate event sources
 - add default size/timeout parameters (small, short)
 
@@ -24,6 +23,7 @@
 
 ### done
 
+- add arn support to action env vars
 - remove paretodemo
 - add env vars to demo.yaml
 - check whether action env vars takes list or keys

@@ -6,7 +6,8 @@ components:
   type: action
   env:
    variables:
-   - foobar
+   - foo_bar
+   - foo_bar_arn
 - invocation-type: sync
   name: demo-api-delete
   size: small

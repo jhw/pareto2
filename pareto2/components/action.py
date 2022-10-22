@@ -2,7 +2,7 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
-import random
+import random, re
 
 AsyncPermissions={"logs:CreateLogGroup",
                   "logs:CreateLogStream",
@@ -20,7 +20,7 @@ SyncPermissions={"logs:CreateLogGroup",
                  "sqs:ReceiveMessage"}
 
 @resource            
-def init_function(action):
+def init_function(action):    
     resourcename=H("%s-function" % action["name"])
     rolename=H("%s-function-role" % action["name"])
     memorysize=H("memory-size-%s" % action["size"])
@@ -39,8 +39,15 @@ def init_function(action):
         props["Layers"]=[{"Ref": H("%s-layer-arn" % pkgname)}
                          for pkgname in action["layers"]]
     if "env" in action:
-        variables={U(k): {"Ref": H(k)}
-                   for k in action["env"]["variables"]}
+        def format_env_ref(k):
+            if k.lower().endswith("arn"):
+                k2="-".join([tok for tok in re.split("\\-|\\_", k)
+                             if tok!=''][:-1])
+                return (U(k), {"Fn::GetAtt": [H(k2), "Arn"]})
+            else:
+                return (U(k), {"Ref": H(k)})
+        variables=dict([format_env_ref(k)
+                        for k in action["env"]["variables"]])
         props["Environment"]={"Variables": variables}
     return (resourcename, 
             "AWS::Lambda::Function",
