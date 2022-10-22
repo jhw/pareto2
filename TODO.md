@@ -1,7 +1,6 @@
 ### short
 
 - refactor dsl action events validator
-- check what the api auth-type parameter is doing in __main__
 - consider refactoring event topic, pattern as head, body
 - check whether action env vars takes list or keys
 - add default size/timeout parameters (small, short)
@@ -26,6 +25,7 @@
 
 ### done
 
+- check what the api auth-type parameter is doing in __main__
 - ensure topic/pattern/source are optional params
 - add event topic attr which pattern matches against detail-type 
 - remove template validation from component blocks

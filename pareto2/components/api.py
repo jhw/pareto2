@@ -300,12 +300,7 @@ def render_outputs(api):
 if __name__=="__main__":
     try:
         import os, sys
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter auth-type")
-        authtype=sys.argv[1]
-        if authtype not in ["open", "cognito"]:
-            raise RuntimeError("auth-type is invalid")
-        filename=sys.argv[2] if len(sys.argv) > 2 else "config.yaml"
+        filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
         if not os.path.exists(filename):
             raise RuntimeError("%s does not exist" % filename)
         from pareto2.dsl import Config
@@ -313,7 +308,6 @@ if __name__=="__main__":
         from pareto2.template import Template
         template=Template()
         for api in config["components"].apis:
-            api["auth-type"]=authtype
             template.resources.update(render_resources(api))
             template.outputs.update(render_outputs(api))
         print (template.render())
