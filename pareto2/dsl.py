@@ -352,7 +352,7 @@ class Components(list):
         for fn in [self.validate_names,
                    self.validate_refs,
                    self.validate_action_invocations,
-                   self.validate_action_events,
+                   # self.validate_action_events,
                    self.validate_api_endpoints]:
             errors=[]
             fn(errors)

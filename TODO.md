@@ -1,8 +1,14 @@
 ### short
 
-- test event source changes
+- check demo has both bucket and table validations
+
+- remove template validation from component blocks
+
 - add event topic attr which pattern matches against detail-type 
 - ensure topic/pattern/source are optional params
+
+- refactor dsl action events validation
+
 - check whether action env vars takes list or keys
 - add default size/timeout parameters (small, short)
 - check what the api auth-type parameter is doing in __main__
@@ -26,6 +32,7 @@
 
 ### done
 
+- test event source changes
 - replace components __main__ blocks with single version based in template.py
 - extend demo
 - roll out action __main__ changes to other components

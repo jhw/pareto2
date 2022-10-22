@@ -139,27 +139,27 @@ def _init_event_rule(action, event, pattern):
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
 """
 
-def init_dynamodb_event_rule(action, event):
+def init_table_event_rule(action, event):
     pattern={"detail": event["pattern"]}
-    pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["table"])}]
+    pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
     return _init_event_rule(action, event, pattern)
 
 """
 - event is created by s3 eventbridge notification config
 """
 
-def init_s3_event_rule(action, event):
+def init_bucket_event_rule(action, event):
     pattern={"detail": event["pattern"]}
     pattern["detail"].setdefault("bucket", {})
-    pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["bucket"])}]
+    pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["name"])}]
     pattern["source"]=["aws.s3"]
     return _init_event_rule(action, event, pattern)
 
 def init_event_rule(action, event):
-    if event["type"]=="s3":
-        return init_s3_event_rule(action, event)
-    elif event["type"]=="dynamodb":
-        return init_dynamodb_event_rule(action, event)
+    if event["source"]["type"]=="bucket":
+        return init_bucket_event_rule(action, event)
+    elif event["source"]["type"]=="table":
+        return init_table_event_rule(action, event)
     else:
         raise RuntimeError("no event rule handler for type %s" % event["type"])
 

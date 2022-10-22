@@ -16,8 +16,9 @@ components:
       - REMOVE
       pk:
       - BUILD
-    table: demo
-    type: dynamodb
+    source:
+      name: demo
+      type: table
   invocation-type: async
   name: demo-layers-delete
   permissions:
@@ -33,21 +34,23 @@ components:
       - INSERT
       sk:
       - STAGE
-    table: demo
-    type: dynamodb  
+    source:
+      name: demo
+      type: table
   invocation-type: async
   name: demo-pipeline-builds-update
   size: small
   timeout: short
   type: action
 - events:
-  - bucket: demo
-    name: layers-create
+  - name: layers-create
     pattern:
       object:
         key:
         - prefix: build
-    type: s3
+    source:
+      name: demo
+      type: bucket
   invocation-type: async
   name: demo-layers-create
   permissions:
@@ -63,8 +66,9 @@ components:
       - INSERT
       pk:
       - BUILD
-    table: demo
-    type: dynamodb
+    source:
+      name: demo
+      type: table
   invocation-type: async
   name: demo-pipeline-stages-init
   permissions:
@@ -79,18 +83,18 @@ components:
   type: action
 - invocation-type: sync
   name: demo-ui-builds
+  permissions:
+  - dynamodb:Query
   size: small
   timeout: short
   type: action
-  permissions:
-  - dynamodb:Query
 - invocation-type: sync
   name: demo-ui-stages
+  permissions:
+  - dynamodb:Query
   size: small
   timeout: short
   type: action
-  permissions:
-  - dynamodb:Query
 - auth-type: open
   endpoints:
   - action: demo-ui-builds
@@ -143,10 +147,10 @@ components:
   userpool: demo
 - name: demo
   type: bucket
-- name: demo
-  indexes:
+- indexes:
   - name: codebuild-build-id
     type: S
+  name: demo
   streaming:
     debug: true
     size: small
@@ -154,24 +158,24 @@ components:
   type: table
 - name: demo
   type: userpool
-- name: demo
+- action: demo-layers-delete
+  name: demo
   type: topic
-  action: demo-layers-delete
 - name: demo
+  type: secret
   values:
     foo: bar
-  type: secret
-- name: demo
-  type: timer
-  action: demo-api-create
-  body: 
+- action: demo-api-create
+  body:
     foo: bar
   interval: 1
+  name: demo
+  type: timer
 parameters:
-  memory-size-small: 512
-  memory-size-medium: 1024
   memory-size-large: 2048
+  memory-size-medium: 1024
+  memory-size-small: 512
   runtime-version: '3.8'
-  timeout-short: 5
-  timeout-medium: 15
   timeout-long: 30
+  timeout-medium: 15
+  timeout-short: 5
