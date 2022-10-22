@@ -1,10 +1,13 @@
 ### short
 
+- roll out action __main__ changes to other components
+
 - test event source changes
 - add event topic attr which pattern matches against detail-type 
 - ensure topic/pattern/source are optional params
 - check whether action env vars takes list or keys
 - add default size/timeout parameters (small, short)
+- check what the api auth-type parameter is doing in __main__
 
 ### medium
 
