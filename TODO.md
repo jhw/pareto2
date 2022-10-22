@@ -26,6 +26,7 @@
 
 ### done
 
+- extend demo
 - roll out action __main__ changes to other components
 - add explicit event source attr
 - rename event source attrs as type (table, bucket) and name

@@ -1,11 +1,11 @@
 components:
 - invocation-type: sync
-  name: layman2-api-create
+  name: demo-api-create
   size: small
   timeout: short
   type: action
 - invocation-type: sync
-  name: layman2-api-delete
+  name: demo-api-delete
   size: small
   timeout: short
   type: action
@@ -16,10 +16,10 @@ components:
       - REMOVE
       pk:
       - BUILD
-    table: layman2
+    table: demo
     type: dynamodb
   invocation-type: async
-  name: layman2-layers-delete
+  name: demo-layers-delete
   permissions:
   - lambda:DeleteLayerVersion
   - lambda:ListLayers
@@ -33,15 +33,15 @@ components:
       - INSERT
       sk:
       - STAGE
-    table: layman2
+    table: demo
     type: dynamodb  
   invocation-type: async
-  name: layman2-pipeline-builds-update
+  name: demo-pipeline-builds-update
   size: small
   timeout: short
   type: action
 - events:
-  - bucket: layman2
+  - bucket: demo
     name: layers-create
     pattern:
       object:
@@ -49,7 +49,7 @@ components:
         - prefix: build
     type: s3
   invocation-type: async
-  name: layman2-layers-create
+  name: demo-layers-create
   permissions:
   - lambda:PublishLayerVersion
   - s3:GetObject
@@ -63,29 +63,29 @@ components:
       - INSERT
       pk:
       - BUILD
-    table: layman2
+    table: demo
     type: dynamodb
   invocation-type: async
-  name: layman2-pipeline-stages-init
+  name: demo-pipeline-stages-init
   permissions:
   - codebuild:startBuild
   size: medium
   timeout: medium
   type: action
 - invocation-type: async
-  name: layman2-pipeline-stages-update
+  name: demo-pipeline-stages-update
   size: small
   timeout: short
   type: action
 - invocation-type: sync
-  name: layman2-ui-builds
+  name: demo-ui-builds
   size: small
   timeout: short
   type: action
   permissions:
   - dynamodb:Query
 - invocation-type: sync
-  name: layman2-ui-stages
+  name: demo-ui-stages
   size: small
   timeout: short
   type: action
@@ -93,23 +93,23 @@ components:
   - dynamodb:Query
 - auth-type: open
   endpoints:
-  - action: layman2-ui-builds
+  - action: demo-ui-builds
     method: GET
     name: ui-builds-list
     path: list-builds
-  - action: layman2-ui-stages
+  - action: demo-ui-stages
     method: GET
     name: ui-stages-list
     parameters:
     - layername
     path: list-stages
-  name: layman2-public
+  name: demo-public
   stage:
     name: 1-0-0
   type: api
 - auth-type: cognito
   endpoints:
-  - action: layman2-api-create
+  - action: demo-api-create
     method: POST
     name: api-create
     path: create-layer
@@ -125,7 +125,7 @@ components:
       - name
       - type
       type: object
-  - action: layman2-api-delete
+  - action: demo-api-delete
     method: POST
     name: api-delete
     path: delete-layer
@@ -136,18 +136,18 @@ components:
       required:
       - name
       type: object
-  name: layman2-private
+  name: demo-private
   stage:
     name: 1-0-0
   type: api
-  userpool: layman2
-- name: layman2
+  userpool: demo
+- name: demo
   type: bucket
-- action: layman2-pipeline-stages-update
-  bucket: layman2
-  name: layman2
+- action: demo-pipeline-stages-update
+  bucket: demo
+  name: demo
   type: builder
-- name: layman2
+- name: demo
   indexes:
   - name: codebuild-build-id
     type: S
@@ -156,8 +156,21 @@ components:
     size: small
     timeout: short
   type: table
-- name: layman2
+- name: demo
   type: userpool
+- name: demo
+  type: topic
+  action: demo-layers-delete
+- name: demo
+  values:
+    foo: bar
+  type: secret
+- name: demo
+  type: timer
+  action: demo-api-create
+  body: 
+    foo: bar
+  interval: 1
 parameters:
   memory-size-small: 512
   memory-size-medium: 1024
