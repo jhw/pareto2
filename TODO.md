@@ -2,9 +2,9 @@
 
 - remove paretodemo
 
+- add arn support to action env vars
 - dsl to validate event sources
 - add default size/timeout parameters (small, short)
-- add arn support to action env vars
 
 ### medium
 
