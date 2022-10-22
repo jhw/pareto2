@@ -369,8 +369,6 @@ if __name__=="__main__":
         from pareto2.dsl import Config
         config=Config.init_file(filename=filename)
         template=config.spawn_template()
-        print (template.render())
-        print ()
         template.init_implied_parameters()
         for validator in [template.parameters.validate,
                           template.validate]:
@@ -378,6 +376,5 @@ if __name__=="__main__":
                 validator()
             except RuntimeError as error:
                 print ("Warning: %s" % str(error))
-
     except RuntimeError as error:
         print ("Error: %s" % str(error))

@@ -238,13 +238,5 @@ if __name__=="__main__":
             template.resources.update(render_resources(table))
             template.outputs.update(render_outputs(table))
         print (template.render())
-        print ()
-        template.init_implied_parameters()
-        for validator in [template.parameters.validate,
-                          template.validate]:
-            try:
-                validator()
-            except RuntimeError as error:
-                print ("Warning: %s" % str(error))
     except RuntimeError as error:
         print ("Error: %s" % str(error))
