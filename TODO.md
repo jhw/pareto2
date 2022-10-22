@@ -1,7 +1,5 @@
 ### short
 
-- remove paretodemo
-
 - add arn support to action env vars
 - dsl to validate event sources
 - add default size/timeout parameters (small, short)
@@ -22,10 +20,11 @@
 ### thoughts
 
 - consider refactoring event topic, pattern as head, body?
-  - think topic, pattern probably more natural
+  - think topic, pattern probably more naturalg
 
 ### done
 
+- remove paretodemo
 - add env vars to demo.yaml
 - check whether action env vars takes list or keys
 - check what the api auth-type parameter is doing in __main__
