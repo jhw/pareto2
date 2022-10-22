@@ -211,7 +211,7 @@ def render_outputs(action):
 if __name__=="__main__":
     try:
         from pareto2.dsl import Config
-        config=Config.init_file()
+        config=Config.init_file(filename="demo.yaml")
         from pareto2.template import Template
         template=Template()
         for action in config["components"].actions:

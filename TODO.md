@@ -1,7 +1,5 @@
 ### short
 
-- create migration script
-
 - add explicit event source attr
 - rename event source attrs as type (table, bucket) and name
 - add event topic attr which pattern matches against detail-type 
@@ -27,6 +25,7 @@
 
 ### done
 
+- create migration script
 - remove event action source 
 - check/remove parameter mandatory key validation stuff
 - replace with completeness check, but with optional ignore arg

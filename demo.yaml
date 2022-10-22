@@ -1,0 +1,168 @@
+components:
+- invocation-type: sync
+  name: layman2-api-create
+  size: small
+  timeout: short
+  type: action
+- invocation-type: sync
+  name: layman2-api-delete
+  size: small
+  timeout: short
+  type: action
+- events:
+  - name: layers-delete
+    pattern:
+      eventName:
+      - REMOVE
+      pk:
+      - BUILD
+    table: layman2
+    type: dynamodb
+  invocation-type: async
+  name: layman2-layers-delete
+  permissions:
+  - lambda:DeleteLayerVersion
+  - lambda:ListLayers
+  size: small
+  timeout: short
+  type: action
+- events:
+  - name: layers-update
+    pattern:
+      eventName:
+      - INSERT
+      sk:
+      - STAGE
+    table: layman2
+    type: dynamodb  
+  invocation-type: async
+  name: layman2-pipeline-builds-update
+  size: small
+  timeout: short
+  type: action
+- events:
+  - bucket: layman2
+    name: layers-create
+    pattern:
+      object:
+        key:
+        - prefix: build
+    type: s3
+  invocation-type: async
+  name: layman2-layers-create
+  permissions:
+  - lambda:PublishLayerVersion
+  - s3:GetObject
+  size: large
+  timeout: long
+  type: action
+- events:
+  - name: pipeline-stages-init
+    pattern:
+      eventName:
+      - INSERT
+      pk:
+      - BUILD
+    table: layman2
+    type: dynamodb
+  invocation-type: async
+  name: layman2-pipeline-stages-init
+  permissions:
+  - codebuild:startBuild
+  size: medium
+  timeout: medium
+  type: action
+- invocation-type: async
+  name: layman2-pipeline-stages-update
+  size: small
+  timeout: short
+  type: action
+- invocation-type: sync
+  name: layman2-ui-builds
+  size: small
+  timeout: short
+  type: action
+  permissions:
+  - dynamodb:Query
+- invocation-type: sync
+  name: layman2-ui-stages
+  size: small
+  timeout: short
+  type: action
+  permissions:
+  - dynamodb:Query
+- auth-type: open
+  endpoints:
+  - action: layman2-ui-builds
+    method: GET
+    name: ui-builds-list
+    path: list-builds
+  - action: layman2-ui-stages
+    method: GET
+    name: ui-stages-list
+    parameters:
+    - layername
+    path: list-stages
+  name: layman2-public
+  stage:
+    name: 1-0-0
+  type: api
+- auth-type: cognito
+  endpoints:
+  - action: layman2-api-create
+    method: POST
+    name: api-create
+    path: create-layer
+    schema:
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        type:
+          type: string
+      required:
+      - name
+      - type
+      type: object
+  - action: layman2-api-delete
+    method: POST
+    name: api-delete
+    path: delete-layer
+    schema:
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+  name: layman2-private
+  stage:
+    name: 1-0-0
+  type: api
+  userpool: layman2
+- name: layman2
+  type: bucket
+- action: layman2-pipeline-stages-update
+  bucket: layman2
+  name: layman2
+  type: builder
+- name: layman2
+  indexes:
+  - name: codebuild-build-id
+    type: S
+  streaming:
+    debug: true
+    size: small
+    timeout: short
+  type: table
+- name: layman2
+  type: userpool
+parameters:
+  memory-size-small: 512
+  memory-size-medium: 1024
+  memory-size-large: 2048
+  runtime-version: '3.8'
+  timeout-short: 5
+  timeout-medium: 15
+  timeout-long: 30

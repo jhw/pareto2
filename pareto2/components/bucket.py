@@ -21,7 +21,7 @@ def render_outputs(bucket):
 if __name__=="__main__":
     try:
         from pareto2.dsl import Config
-        config=Config.init_file()
+        config=Config.init_file(filename="demo.yaml")
         from pareto2.template import Template
         template=Template()
         for bucket in config["components"].buckets:

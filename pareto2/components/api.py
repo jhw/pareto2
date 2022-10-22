@@ -306,7 +306,7 @@ if __name__=="__main__":
         if authtype not in ["open", "cognito"]:
             raise RuntimeError("auth-type is invalid")
         from pareto2.dsl import Config
-        config=Config.init_file()
+        config=Config.init_file(filename="demo.yaml")
         from pareto2.template import Template
         template=Template()
         for api in config["components"].apis:
