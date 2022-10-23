@@ -33,7 +33,14 @@ def remove_async_invocation(struct):
         if component["type"]=="action":
             if component["invocation-type"]=="async":
                 component.pop("invocation-type")
-            
+
+def remap_sync_invocation_as_queue(struct):
+    for component in struct["components"]:         
+        if component["type"]=="action":
+            if ("invocation-type" in component and
+                component["invocation-type"]=="sync"):
+                component["invocation-type"]="queue"
+                
 if __name__=="__main__":
     try:
         filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
@@ -43,7 +50,8 @@ if __name__=="__main__":
         # update_event_sources(struct)
         # remove_small_short(struct)
         # reset_table_streaming(struct)
-        remove_async_invocation(struct)
+        # remove_async_invocation(struct)
+        remap_sync_invocation_as_queue(struct)
         with open(filename, 'w') as f:
             f.write(yaml.safe_dump(struct,
                                    default_flow_style=False))

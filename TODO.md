@@ -1,6 +1,5 @@
 ### short
 
-- migration script to refactor sync type as queue type
 - rename sync refs in action component as queue
 - refactor sync refs in dsl validation as queue
 
@@ -42,6 +41,7 @@
 
 ### done
 
+- migration script to refactor sync type as queue type
 - migrator to remove async
 - allow invocation check to assume async functions by default
 - action decorator to insert async

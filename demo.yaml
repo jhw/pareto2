@@ -3,12 +3,12 @@ components:
     variables:
     - foo_bar
     - foo_bar_arn
-  invocation-type: sync
+  invocation-type: queue
   name: demo-api-get
   permissions:
   - dynamodb:Query
   type: action
-- invocation-type: sync
+- invocation-type: queue
   name: demo-api-post
   type: action
 - events:
@@ -42,7 +42,7 @@ components:
   type: action
 - name: demo-topic-target
   type: action
-- invocation-type: sync
+- invocation-type: queue
   name: demo-timer-target
   type: action
 - auth-type: open
