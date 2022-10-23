@@ -22,7 +22,12 @@ def remove_small_short(struct):
                          ("timeout", "short")]:
                 if component[k]==v:
                     component.pop(k)
-                
+
+def reset_table_streaming(struct):
+    for component in struct["components"]:         
+        if component["type"]=="table":
+            component["streaming"]={}
+            
 if __name__=="__main__":
     try:
         filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
@@ -30,7 +35,8 @@ if __name__=="__main__":
             raise RuntimeError("%s does not exist" % filename)
         struct=yaml.safe_load(open(filename).read())
         # update_event_sources(struct)
-        remove_small_short(struct)
+        # remove_small_short(struct)
+        # reset_table_streaming(struct)
         with open(filename, 'w') as f:
             f.write(yaml.safe_dump(struct,
                                    default_flow_style=False))

@@ -28,6 +28,7 @@
 
 ### done
 
+- migrator to blank table streaming
 - timer function size, timeout
 - apply function defaults to inline functions
 - refactor demo.yaml
