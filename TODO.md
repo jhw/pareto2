@@ -1,5 +1,6 @@
 ### short
 
+- migrator to remove async
 - allow invocation check to assume async functions by default
 - action decorator to insert async
 
