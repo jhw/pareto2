@@ -311,8 +311,8 @@ class Components(list):
                     errors.append("%s component %s must be bound to %s action" % (attr,
                                                                                   component["action"],
                                                                                   invoctype))
-        for attr, invoctype in [("endpoints", "sync"),
-                                ("timers", "sync"),
+        for attr, invoctype in [("endpoints", "queue"),
+                                ("timers", "queue"),
                                 ("topics", "async")]:
             validate_invoctype(self, attr, invoctype, errors)
 

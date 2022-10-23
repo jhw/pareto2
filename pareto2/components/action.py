@@ -8,16 +8,12 @@ AsyncPermissions={"logs:CreateLogGroup",
                   "logs:CreateLogStream",
                   "logs:PutLogEvents"}
 
-"""
-- sync action is most commonly bound to sqs
-"""
-
-SyncPermissions={"logs:CreateLogGroup",
-                 "logs:CreateLogStream",
-                 "logs:PutLogEvents",                 
-                 "sqs:DeleteMessage",
-                 "sqs:GetQueueAttributes",
-                 "sqs:ReceiveMessage"}
+QueuePermissions={"logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents",                 
+                  "sqs:DeleteMessage",
+                  "sqs:GetQueueAttributes",
+                  "sqs:ReceiveMessage"}
 
 ActionDefaults={"size": "default",
                 "timeout": "default",
@@ -101,7 +97,7 @@ def init_function_role(action, basepermissions):
 def init_async_function_role(action, permissions=AsyncPermissions):
     return init_function_role(action, basepermissions=permissions)
 
-def init_sync_function_role(action, permissions=SyncPermissions):
+def init_queue_function_role(action, permissions=QueuePermissions):
     return init_function_role(action, basepermissions=permissions)
 
 @resource
@@ -221,10 +217,10 @@ def init_async_component(action):
                 resources.append(resource)
     return resources
 
-def init_sync_component(action):
+def init_queue_component(action):
     resources=[]
     for fn in [init_function,
-               init_sync_function_role]:
+               init_queue_function_role]:
         resource=fn(action)
         resources.append(resource)
     return resources

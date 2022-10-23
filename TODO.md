@@ -1,8 +1,5 @@
 ### short
 
-- rename sync refs in action component as queue
-- refactor sync refs in dsl validation as queue
-
 - add action component support for apigw invocation type
 - add DSL support for apigw invocation type
 - migration script to lookup endpoints and change queue invocation types to apigw
@@ -41,6 +38,8 @@
 
 ### done
 
+- rename sync refs in action component as queue
+- refactor sync refs in dsl validation as queue
 - migration script to refactor sync type as queue type
 - migrator to remove async
 - allow invocation check to assume async functions by default
