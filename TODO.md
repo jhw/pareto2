@@ -1,6 +1,5 @@
 ### short
 
-- refactor demo.yaml
 - apply function defaults to inline functions
 - make functions async by default
 - add sync, apigw types
@@ -28,6 +27,7 @@
 
 ### done
 
+- refactor demo.yaml
 - dsl to validate event sources
 - refactor dash main block
 - convert "short" to "default"

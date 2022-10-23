@@ -4,10 +4,31 @@ components:
     - foo_bar
     - foo_bar_arn
   invocation-type: sync
-  name: demo-api-create
+  name: demo-api-get
+  permissions:
+  - dynamodb:Query
+  type: action
+- invocation-type: sync
+  name: demo-api-post
   type: action
 - events:
-  - name: layers-update
+  - name: bucket-streaming
+    pattern:
+      object:
+        key:
+        - prefix: build
+    source:
+      name: demo
+      type: bucket
+  invocation-type: async
+  name: demo-bucket-streaming
+  permissions:
+  - s3:GetObject
+  size: large
+  timeout: long
+  type: action
+- events:
+  - name: table-streaming2
     pattern:
       eventName:
       - INSERT
@@ -17,59 +38,40 @@ components:
       name: demo
       type: table
   invocation-type: async
-  name: demo-layers-update
-  type: action
-- events:
-  - name: layers-create
-    pattern:
-      object:
-        key:
-        - prefix: build
-    source:
-      name: demo
-      type: bucket
-  invocation-type: async
-  name: demo-layers-create
+  name: demo-table-streaming2
   permissions:
-  - lambda:PublishLayerVersion
-  - s3:GetObject
-  size: large
-  timeout: long
+  - dynamodb:GetItem
+  type: action
+- invocation-type: async
+  name: demo-topic-target
   type: action
 - invocation-type: sync
-  name: demo-ui-stages
-  permissions:
-  - dynamodb:Query
+  name: demo-timer-target
   type: action
 - auth-type: open
   endpoints:
-  - action: demo-ui-stages
+  - action: demo-api-get
     method: GET
-    name: ui-stages-list
+    name: api-get
     parameters:
-    - layername
-    path: list-stages
+    - name
+    path: api-get
   name: demo-public
   stage:
     name: 1-0-0
   type: api
 - auth-type: cognito
   endpoints:
-  - action: demo-api-create
+  - action: demo-api-post
     method: POST
-    name: api-create
-    path: create-layer
+    name: api-post
+    path: api-post
     schema:
       properties:
         name:
           type: string
-        path:
-          type: string
-        type:
-          type: string
       required:
       - name
-      - type
       type: object
   name: demo-private
   stage:
@@ -79,7 +81,7 @@ components:
 - name: demo
   type: bucket
 - indexes:
-  - name: codebuild-build-id
+  - name: some-attribute
     type: S
   name: demo
   streaming:
@@ -89,14 +91,14 @@ components:
   type: table
 - name: demo
   type: userpool
-- action: demo-layers-create
+- action: demo-topic-target
   name: demo
   type: topic
 - name: demo
   type: secret
   values:
     foo: bar
-- action: demo-api-create
+- action: demo-timer-target
   body:
     foo: bar
   interval: 1
