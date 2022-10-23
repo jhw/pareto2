@@ -1,10 +1,26 @@
 ### short
 
-- add back s3, ddb dashboards [0.2.6]
-- investigate adding app name to dashboard
-- separate sync, apigw types
+- migration script to refactor sync type as queue type
+- rename sync refs in action component as queue
+- refactor sync refs in dsl validation as queue
+
+- add action component support for apigw invocation type
+- add DSL support for apigw invocation type
+- migration script to lookup endpoints and change queue invocation types to apigw
 
 ### medium
+
+- dash to add dashboard name (type, random slug)
+- add S3, ddb dashboards
+
+- add config support for callbacks
+
+### expander
+
+- insert app/stage name into dashboards 
+- convert config callbacks into manifest.json
+- validate layer and topic arns 
+- extend conflict schema validating
 
 ### paretocli
 
