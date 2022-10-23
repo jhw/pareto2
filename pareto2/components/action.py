@@ -4,9 +4,9 @@ from pareto2.components import resource
 
 import random, re
 
-AsyncPermissions={"logs:CreateLogGroup",
-                  "logs:CreateLogStream",
-                  "logs:PutLogEvents"}
+AsyncPermissions=ApigwPermissions={"logs:CreateLogGroup",
+                                   "logs:CreateLogStream",
+                                   "logs:PutLogEvents"}
 
 QueuePermissions={"logs:CreateLogGroup",
                   "logs:CreateLogStream",
@@ -98,6 +98,9 @@ def init_async_function_role(action, permissions=AsyncPermissions):
     return init_function_role(action, basepermissions=permissions)
 
 def init_queue_function_role(action, permissions=QueuePermissions):
+    return init_function_role(action, basepermissions=permissions)
+
+def init_apigw_function_role(action, permissions=ApigwPermissions):
     return init_function_role(action, basepermissions=permissions)
 
 @resource
@@ -221,6 +224,14 @@ def init_queue_component(action):
     resources=[]
     for fn in [init_function,
                init_queue_function_role]:
+        resource=fn(action)
+        resources.append(resource)
+    return resources
+
+def init_apigw_component(action):
+    resources=[]
+    for fn in [init_function,
+               init_apigw_function_role]:
         resource=fn(action)
         resources.append(resource)
     return resources
