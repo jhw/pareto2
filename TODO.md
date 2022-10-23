@@ -1,10 +1,11 @@
 ### short
 
+- add back s3, ddb dashboards [0.2.6]
+
 - separate sync, apigw types
 
 ### medium
 
-- add back s3, ddb dashboards
 - investigate adding app name to dashboard
 
 ### paretocli

@@ -86,7 +86,6 @@ def init_actions(config):
                                      key=lambda x: x["name"])]    
     return (resourcename, "actions", Widgets(widgets))
 
-
 def render_resources(config):
     return dict([fn(config)
                  for fn in [init_actions]])
