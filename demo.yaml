@@ -3,12 +3,12 @@ components:
     variables:
     - foo_bar
     - foo_bar_arn
-  invocation-type: queue
+  invocation-type: apigw
   name: demo-api-get
   permissions:
   - dynamodb:Query
   type: action
-- invocation-type: queue
+- invocation-type: apigw
   name: demo-api-post
   type: action
 - events:

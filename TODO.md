@@ -1,7 +1,5 @@
 ### short
 
-- migration script to lookup endpoints and change queue invocation types to apigw
-
 ### medium
 
 - dash to add dashboard name (type, random slug)
@@ -36,6 +34,7 @@
 
 ### done
 
+- migration script to lookup endpoints and change queue invocation types to apigw
 - add DSL support for apigw invocation type
 - add action component support for apigw invocation type
 - rename sync refs in action component as queue
