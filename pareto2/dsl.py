@@ -365,7 +365,7 @@ class Components(list):
 
 if __name__=="__main__":
     try:
-        import os, sys
+        import json, os, sys
         filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
         if not os.path.exists(filename):
             raise RuntimeError("%s does not exist" % filename)
@@ -377,7 +377,10 @@ if __name__=="__main__":
                           template.validate]:
             try:
                 validator()
-            except RuntimeError as error:
-                print ("Warning: %s" % str(error))
+            except RuntimeError as error:                
+                print ("Warning: %s" % str(error))        
+        with open("tmp/template.json", 'w') as f:
+            f.write(json.dumps(template.render(),
+                               indent=2))
     except RuntimeError as error:
         print ("Error: %s" % str(error))
