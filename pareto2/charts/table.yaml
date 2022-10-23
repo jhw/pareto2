@@ -1,0 +1,145 @@
+- format: h3
+  height: 1
+  type: text
+  value: {{Title}}
+- body:
+  - - metrics:
+      - - AWS/DynamoDB
+        - ProvisionedReadCapacityUnits
+        - TableName
+        - {{ResourceName}}
+        - color: '#E02020'
+          label: Provisioned
+      - - .
+        - ConsumedReadCapacityUnits
+        - .
+        - .
+        - id: m1
+          stat: Sum
+          visible: false
+      - - color: '#0073BB'
+          expression: m1/PERIOD(m1)
+          id: e1
+          label: Consumed
+          region: ${AWS::Region}
+      period: 60
+      region: ${AWS::Region}
+      stacked: false
+      stat: Average
+      title: Read usage (average units/second)
+      view: timeSeries
+      yAxis:
+        left:
+          showUnits: false
+    - metrics:
+      - - AWS/DynamoDB
+        - ThrottledRequests
+        - TableName
+        - {{ResourceName}}
+        - Operation
+        - GetItem
+        - color: '#0073BB'
+      - - '...'
+        - Scan
+        - color: '#FF7F0F'
+      - - '...'
+        - Query
+        - color: '#2DA02D'
+      - - '...'
+        - BatchGetItem
+        - color: '#9468BD'
+      period: 60
+      region: ${AWS::Region}
+      stacked: false
+      stat: Sum
+      title: Read throttled requests (count)
+      view: timeSeries
+      yAxis:
+        left:
+          showUnits: false
+    - metrics:
+      - - AWS/DynamoDB
+        - ReadThrottleEvents
+        - TableName
+        - {{ResourceName}}
+        - label: Provisioned
+      period: 60
+      region: ${AWS::Region}
+      stacked: false
+      stat: Sum
+      title: Read throttled events (count)
+      view: timeSeries
+      yAxis:
+        left:
+          showUnits: false
+  - - metrics:
+      - - AWS/DynamoDB
+        - ProvisionedWriteCapacityUnits
+        - TableName
+        - {{ResourceName}}
+        - color: '#E02020'
+          label: Provisioned
+      - - .
+        - ConsumedWriteCapacityUnits
+        - .
+        - .
+        - id: m1
+          stat: Sum
+          visible: false
+      - - color: '#0073BB'
+          expression: m1/PERIOD(m1)
+          id: e1
+          label: Consumed
+          region: ${AWS::Region}
+      period: 60
+      region: ${AWS::Region}
+      stacked: false
+      stat: Average
+      title: Write usage (average units/second)
+      view: timeSeries
+      yAxis:
+        left:
+          showUnits: false
+    - metrics:
+      - - AWS/DynamoDB
+        - ThrottledRequests
+        - TableName
+        - {{ResourceName}}
+        - Operation
+        - PutItem
+        - color: '#0073BB'
+      - - '...'
+        - UpdateItem
+        - color: '#FF7F0F'
+      - - '...'
+        - DeleteItem
+        - color: '#2DA02D'
+      - - '...'
+        - BatchWriteItem
+        - color: '#9468BD'
+      period: 60
+      region: ${AWS::Region}
+      stacked: false
+      stat: Sum
+      title: Write throttled requests (count)
+      view: timeSeries
+      yAxis:
+        left:
+          showUnits: false
+    - metrics:
+      - - AWS/DynamoDB
+        - WriteThrottleEvents
+        - TableName
+        - {{ResourceName}}
+        - label: Provisioned
+      period: 60
+      region: ${AWS::Region}
+      stacked: false
+      stat: Sum
+      title: Write throttled events (count)
+      view: timeSeries
+      yAxis:
+        left:
+          showUnits: false
+  height: 6
+  type: charts

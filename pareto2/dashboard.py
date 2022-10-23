@@ -87,9 +87,31 @@ def init_actions(config):
                                      key=lambda x: x["name"])]    
     return (resourcename, "actions", Widgets(widgets))
 
+@render_dash
+def init_buckets(config):
+    resourcename=H("dash-buckets")
+    widgets=[Widget.initialise("function",
+                               {"Title": bucket["name"],
+                                "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
+                for bucket in sorted(config["components"].buckets,
+                                     key=lambda x: x["name"])]    
+    return (resourcename, "buckets", Widgets(widgets))
+
+@render_dash
+def init_tables(config):
+    resourcename=H("dash-tables")
+    widgets=[Widget.initialise("function",
+                               {"Title": table["name"],
+                                "ResourceName": "${%s}" % H("%s-table" % table["name"])})
+                for table in sorted(config["components"].tables,
+                                     key=lambda x: x["name"])]    
+    return (resourcename, "tables", Widgets(widgets))
+
 def render_resources(config):
     return dict([fn(config)
-                 for fn in [init_actions]])
+                 for fn in [init_actions,
+                            init_buckets,
+                            init_tables]])
 
 if __name__=="__main__":
     try:
@@ -100,7 +122,7 @@ if __name__=="__main__":
         from pareto2.dsl import Config
         config=Config.init_file(filename=filename)
         from pareto2.template import Template
-        template=Template("dash")        
+        template=Template()        
         template.resources.update(render_resources(config))
         print (template.render())
     except RuntimeError as error:

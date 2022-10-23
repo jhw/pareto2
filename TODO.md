@@ -1,9 +1,6 @@
 ### short
 
-- add S3, ddb dashboards
-
 ### medium
-
 
 - add config support for callbacks
 
@@ -13,6 +10,7 @@
 - convert config callbacks into manifest.json
 - validate layer and topic arns 
 - extend conflict schema validating
+- remove print statements ?
 
 ### paretocli
 
@@ -34,6 +32,7 @@
 
 ### done
 
+- add S3, ddb dashboards
 - dash to add dashboard name (type, random slug)
 - migration script to lookup endpoints and change queue invocation types to apigw
 - add DSL support for apigw invocation type
