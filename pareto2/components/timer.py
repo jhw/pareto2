@@ -21,11 +21,11 @@ def handler(event, context,
 """
 
 """
-- SchedulerRate could be longer but it will be #{SchedulerRate} seconds before the first timer is called
-- possible tradeoff between cost of events rule execution vs cost of sqs message execution
+- going to assume below that runtime cost of scheduler function is always small hence it's okay to hardcode these values as defaults
+- this is unlike (eg) table streaming lambda which could be called on extensively, depending on updates to the underlying table
 """
 
-SchedulerMemorySize, SchedulerTimeout = "small", "short"
+SchedulerMemorySize, SchedulerTimeout = "default", "default"
 
 @resource
 def init_rule(timer):

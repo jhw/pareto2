@@ -1,6 +1,5 @@
 ### short
 
-- timer function size, timeout
 - make functions async by default
 - add sync, apigw types
 
@@ -27,6 +26,7 @@
 
 ### done
 
+- timer function size, timeout
 - apply function defaults to inline functions
 - refactor demo.yaml
 - dsl to validate event sources
