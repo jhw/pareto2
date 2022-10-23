@@ -306,7 +306,8 @@ class Components(list):
                      for action in self.actions}
             for component in getattr(self, attr):
                 action=actions[component["action"]]
-                if action["invocation-type"]!=invoctype:
+                invocationtype=action["invocation-type"] if "invocation-type" in action else "async"
+                if invocationtype!=invoctype:
                     errors.append("%s component %s must be bound to %s action" % (attr,
                                                                                   component["action"],
                                                                                   invoctype))

@@ -19,18 +19,10 @@ SyncPermissions={"logs:CreateLogGroup",
                  "sqs:GetQueueAttributes",
                  "sqs:ReceiveMessage"}
 
-FunctionDefaults={"size": "default",
-                  "timeout": "default"}
+ActionDefaults={"size": "default",
+                "timeout": "default",
+                "invocation-type": "async"}
 
-def function_defaults(fn):
-    def wrapped(action, defaults=FunctionDefaults):
-        for k, v in defaults.items():
-            if k not in action:
-                action[k]=v
-        return fn(action)
-    return wrapped
-
-@function_defaults
 @resource            
 def init_function(action):    
     resourcename=H("%s-function" % action["name"])
@@ -237,6 +229,15 @@ def init_sync_component(action):
         resources.append(resource)
     return resources
 
+def action_defaults(fn):
+    def wrapped(action, defaults=ActionDefaults):
+        for k, v in defaults.items():
+            if k not in action:
+                action[k]=v
+        return fn(action)
+    return wrapped
+
+@action_defaults
 def render_resources(action):
     fn=eval("init_%s_component" % action["invocation-type"])
     return dict(fn(action))

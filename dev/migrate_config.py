@@ -27,6 +27,12 @@ def reset_table_streaming(struct):
     for component in struct["components"]:         
         if component["type"]=="table":
             component["streaming"]={}
+
+def remove_async_invocation(struct):
+    for component in struct["components"]:         
+        if component["type"]=="action":
+            if component["invocation-type"]=="async":
+                component.pop("invocation-type")
             
 if __name__=="__main__":
     try:
@@ -37,6 +43,7 @@ if __name__=="__main__":
         # update_event_sources(struct)
         # remove_small_short(struct)
         # reset_table_streaming(struct)
+        remove_async_invocation(struct)
         with open(filename, 'w') as f:
             f.write(yaml.safe_dump(struct,
                                    default_flow_style=False))

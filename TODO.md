@@ -1,12 +1,9 @@
 ### short
 
-- migrator to remove async
-- allow invocation check to assume async functions by default
-- action decorator to insert async
+- separate sync, apigw types
 
 ### medium
 
-- separate sync, apigw types
 - add back s3, ddb dashboards
 - investigate adding app name to dashboard
 
@@ -23,11 +20,16 @@
 
 ### thoughts
 
+- apply table defaults at root table level?
+  - no because is more complex, applied at nested level
 - consider refactoring event topic, pattern as head, body?
   - think topic, pattern probably more naturalg
 
 ### done
 
+- migrator to remove async
+- allow invocation check to assume async functions by default
+- action decorator to insert async
 - migrator to blank table streaming
 - timer function size, timeout
 - apply function defaults to inline functions
