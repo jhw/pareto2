@@ -1,9 +1,9 @@
 ### short
 
+- add S3, ddb dashboards
+
 ### medium
 
-- dash to add dashboard name (type, random slug)
-- add S3, ddb dashboards
 
 - add config support for callbacks
 
@@ -34,6 +34,7 @@
 
 ### done
 
+- dash to add dashboard name (type, random slug)
 - migration script to lookup endpoints and change queue invocation types to apigw
 - add DSL support for apigw invocation type
 - add action component support for apigw invocation type

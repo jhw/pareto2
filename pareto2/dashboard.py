@@ -70,7 +70,8 @@ def render_dash(fn):
     def wrapped(md):
         resourcename, dashprefix, widgets = fn(md)
         dashbody={"Fn::Sub": json.dumps(widgets.render())}
-        props={"DashboardBody":  dashbody}
+        props={"DashboardBody":  dashbody,
+               "DashboardName": dashprefix}
         struct={"Type": "AWS::CloudWatch::Dashboard",
                 "Properties": props}
         return (resourcename, struct)
