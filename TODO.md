@@ -1,10 +1,11 @@
 ### short
 
-- make functions async by default
-- add sync, apigw types
+- allow invocation check to assume async functions by default
+- action decorator to insert async
 
 ### medium
 
+- separate sync, apigw types
 - add back s3, ddb dashboards
 - investigate adding app name to dashboard
 
