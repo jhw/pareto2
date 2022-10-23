@@ -1,10 +1,12 @@
 ### short
 
+- refactor demo.yaml
 - apply function defaults to inline functions
+- make functions async by default
+- add sync, apigw types
 
 ### medium
 
-- replace demo.yaml with something a bit more coherent
 - add back s3, ddb dashboards
 - investigate adding app name to dashboard
 
@@ -14,7 +16,7 @@
 
 ### long
 
-- wheel packages
+- wheel package
 - apigw api keys
 - lambda alarms
 - apigw logging
