@@ -98,6 +98,10 @@ StreamWindow=1
 StreamRetries=3
 StreamBatchSize=10
 
+StreamingFunctionDefaults={"size": "default",
+                           "timeout": "default",
+                           "debug": "false"}
+
 @resource
 def init_table(table, streamtype=StreamType, **kwargs):
     resourcename=H("%s-table" % table["name"])
@@ -146,6 +150,17 @@ def init_streaming_binding(table,
             "AWS::Lambda::EventSourceMapping",
             props)
 
+def streaming_function_defaults(fn):
+    def wrapped(table, defaults=StreamingFunctionDefaults, **kwargs):
+        if "streaming" in table:
+            streaming=table["streaming"]
+            for k, v in defaults.items():
+                if k not in streaming:
+                    streaming[k]=v
+        return fn(table, **kwargs)
+    return wrapped
+
+@streaming_function_defaults
 @resource            
 def init_streaming_function(table,
                             batchsize=StreamBatchSize,

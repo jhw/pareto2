@@ -1,6 +1,6 @@
 ### short
 
-- apply function defaults to inline functions
+- timer function size, timeout
 - make functions async by default
 - add sync, apigw types
 
@@ -27,6 +27,7 @@
 
 ### done
 
+- apply function defaults to inline functions
 - refactor demo.yaml
 - dsl to validate event sources
 - refactor dash main block

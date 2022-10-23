@@ -84,10 +84,7 @@ components:
   - name: some-attribute
     type: S
   name: demo
-  streaming:
-    debug: true
-    size: small
-    timeout: short
+  streaming: {}
   type: table
 - name: demo
   type: userpool
