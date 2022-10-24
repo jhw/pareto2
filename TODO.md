@@ -1,5 +1,8 @@
 ### short
 
+- undo env arn support
+- remove invocation-type by inferring from (endpoint, timer) bindings
+
 ### medium
 
 - add config support for callbacks

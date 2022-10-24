@@ -2,7 +2,6 @@ components:
 - env:
     variables:
     - foo_bar
-    - foo_bar_arn
   invocation-type: apigw
   name: demo-api-get
   permissions:

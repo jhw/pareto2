@@ -39,15 +39,8 @@ def init_function(action):
         props["Layers"]=[{"Ref": H("%s-layer-arn" % pkgname)}
                          for pkgname in action["layers"]]
     if "env" in action:
-        def format_env_ref(k):
-            if k.lower().endswith("arn"):
-                k2="-".join([tok for tok in re.split("\\-|\\_", k)
-                             if tok!=''][:-1])
-                return (U(k), {"Fn::GetAtt": [H(k2), "Arn"]})
-            else:
-                return (U(k), {"Ref": H(k)})
-        variables=dict([format_env_ref(k)
-                        for k in action["env"]["variables"]])
+        variables={U(k): {"Ref": H(k)}
+                   for k in action["env"]["variables"]}
         props["Environment"]={"Variables": variables}
     return (resourcename, 
             "AWS::Lambda::Function",
