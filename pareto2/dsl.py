@@ -59,7 +59,7 @@ class Config(dict):
         struct=yaml.safe_load(open(filename).read())
         config=Config({"parameters": Parameters(struct["parameters"]),
                        "components": Components(struct["components"])})
-        config.validate()
+        config.validate().expand()
         return config
         
     def __init__(self, struct):
@@ -90,6 +90,10 @@ class Config(dict):
         self.cross_validate_layers()
         return self
 
+    def expand(self):
+        self["components"].infer_invocation_types()
+        return self
+    
     def add_dashboard(fn):
         def wrapped(self, *args, **kwargs):
             template=fn(self, *args, **kwargs)
@@ -346,6 +350,45 @@ class Components(list):
                 raise RuntimeError(", ".join(errors))
         return self
 
+    def infer_invocation_types(self):
+        class Bindings(dict):
+            @classmethod
+            def initialise(self, config):
+                bindings={}
+                for api in config.apis:
+                    for endpoint in api["endpoints"]:
+                        action=endpoint["action"]
+                        bindings.setdefault(action, [])
+                        bindings[action].append("endpoint")
+                for timer in config.timers:
+                    action=timer["action"]
+                    bindings.setdefault(action, [])
+                    bindings[action].append("timer")
+                for topic in config.topics:
+                    action=topic["action"]
+                    bindings.setdefault(action, [])
+                    bindings[action].append("topic")
+                return Bindings(bindings)
+            def __init__(self, item={}):
+                dict.__init__(self, item)
+            def validate(self):
+                errors=[]
+                for k, values in self.items():
+                    if len(values)!=1:
+                        errors.append("%s has multiple bindings" % k)
+                if errors!=[]:
+                    raise RuntimeError("; ".join(errors))
+        bindings=Bindings.initialise(self)
+        bindings.validate()
+        for action in self.actions:
+            if (action["name"] in bindings and
+                bindings[action["name"]]=="endpoint"):
+                action["invocation-type"]="apigw"
+            elif (action["name"] in bindings and
+                bindings[action["name"]]=="timer"):
+                action["invocation-type"]="queue"
+        return self
+    
 if __name__=="__main__":
     try:
         import json, os, sys
