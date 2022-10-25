@@ -1,10 +1,14 @@
 ### short
 
-- undo env arn support
-- remove invocation-type by inferring from (endpoint, timer) bindings
+- remove dsl invocation checks
+- init_file to call new expand() method prior to return
+- expand to create map of endpoint, topic, timer bindings
+- populate invocation type depending on bindings map
+- dev/migrate-0-3-17.py
 
 ### medium
 
+- replace dash name randomisation with __file__ app name lookup
 - add config support for callbacks
 
 ### expander
@@ -35,6 +39,7 @@
 
 ### done
 
+- undo env arn support
 - add S3, ddb dashboards
 - dash to add dashboard name (type, random slug)
 - migration script to lookup endpoints and change queue invocation types to apigw
