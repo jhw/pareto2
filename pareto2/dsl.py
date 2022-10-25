@@ -300,22 +300,6 @@ class Components(list):
                      "userpools"]:
             validate_refs(self, attr, errors)
 
-    def validate_action_invocations(self, errors):
-        def validate_invoctype(self, attr, invoctype, errors):
-            actions={action["name"]:action
-                     for action in self.actions}
-            for component in getattr(self, attr):
-                action=actions[component["action"]]
-                invocationtype=action["invocation-type"] if "invocation-type" in action else "async"
-                if invocationtype!=invoctype:
-                    errors.append("%s component %s must be bound to %s action" % (attr,
-                                                                                  component["action"],
-                                                                                  invoctype))
-        for attr, invoctype in [("endpoints", "apigw"),
-                                ("timers", "queue"),
-                                ("topics", "async")]:
-            validate_invoctype(self, attr, invoctype, errors)
-
     def validate_action_event_sources(self, errors):
         bucketnames=[bucket["name"] for bucket in self.buckets]        
         tablenames=[table["name"] for table in self.tables]
@@ -354,7 +338,6 @@ class Components(list):
     def validate(self):
         for fn in [self.validate_names,
                    self.validate_refs,
-                   self.validate_action_invocations,
                    self.validate_action_event_sources,
                    self.validate_api_endpoints]:
             errors=[]

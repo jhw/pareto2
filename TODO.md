@@ -1,6 +1,5 @@
 ### short
 
-- remove dsl invocation checks
 - init_file to call new expand() method prior to return
 - expand to create map of endpoint, topic, timer bindings
 - populate invocation type depending on bindings map
@@ -39,6 +38,7 @@
 
 ### done
 
+- remove dsl invocation checks
 - undo env arn support
 - add S3, ddb dashboards
 - dash to add dashboard name (type, random slug)
