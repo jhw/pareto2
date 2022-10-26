@@ -83,12 +83,17 @@ class Config(dict):
                         errors.add(layername)
         if len(errors) > 0:
             raise RuntimeError("unknown layer(s) %s" % ", ".join(errors))
+
+    def cross_validate_callbacks(self):
+        pass
         
     def validate(self):
         for attr in ["parameters",
-                     "components"]:
+                     "components",
+                     "callbacks"]:
             self[attr].validate()
         self.cross_validate_layers()
+        self.cross_validate_callbacks()
         return self
 
     def expand(self):
@@ -398,7 +403,10 @@ class Callbacks(list):
 
     def __init__(self, struct):
         list.__init__(self, struct)
-    
+
+    def validate(self):
+        pass
+        
 if __name__=="__main__":
     try:
         import json, os, sys
