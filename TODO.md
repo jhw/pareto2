@@ -1,6 +1,5 @@
 ### short
 
-- add callbacks class to config (type, action, body)
 - add callbacks section to demo
 - validate callbacks action
 - migration script to add callbacks
@@ -8,6 +7,7 @@
 
 ### medium
 
+- limit callbacks action to async action
 - replace dash name randomisation with __file__ app name lookup
 - wheel package
 
@@ -39,6 +39,7 @@
 
 ### done
 
+- add callbacks class to config (type, action, body)
 - liberate bindings class in dsl 
 - dev/migrate-0-3-17.py
 - init_file to call new expand() method prior to return

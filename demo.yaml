@@ -94,6 +94,11 @@ components:
   interval: 1
   name: demo
   type: timer
+callbacks:
+- action: demo-timer-target
+  body:
+    foo: bar
+  type: oncreate
 parameters:
   memory-size-default: 512
   memory-size-large: 2048
