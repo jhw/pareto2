@@ -1,9 +1,15 @@
 ### short
 
+- liberate bindings class in dsl 
+- add callbacks class to config (type, action, body)
+- add callbacks section to demo
+- validate callbacks action
+- migration script to add callbacks
+- 0-3-18
+
 ### medium
 
 - replace dash name randomisation with __file__ app name lookup
-- add config support for callbacks
 - wheel package
 
 ### expander
