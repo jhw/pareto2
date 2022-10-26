@@ -99,6 +99,7 @@ callbacks:
   body:
     foo: bar
   type: oncreate
+  name: hello-world
 parameters:
   memory-size-default: 512
   memory-size-large: 2048

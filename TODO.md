@@ -1,7 +1,5 @@
 ### short
 
-- callbacks validation skeleton
-- validate callbacks action
 - migration script to add callbacks
 - 0-3-18
 
@@ -39,6 +37,8 @@
 
 ### done
 
+- callbacks validation skeleton
+- validate callbacks action
 - add callbacks class to config (type, action, body)
 - liberate bindings class in dsl 
 - dev/migrate-0-3-17.py

@@ -85,7 +85,14 @@ class Config(dict):
             raise RuntimeError("unknown layer(s) %s" % ", ".join(errors))
 
     def cross_validate_callbacks(self):
-        pass
+        actionnames, errors = [action["name"]
+                               for action in self["components"].actions], []
+        for callback in self["callbacks"]:
+            if callback["action"] not in actionnames:
+                errors.append("callback %s bound to unknown action %s" % (callback["name"],
+                                                                          callback["action"]))
+        if errors!=[]:
+            raise RuntimeError("; ".join(errors))
         
     def validate(self):
         for attr in ["parameters",
