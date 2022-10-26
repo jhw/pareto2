@@ -197,7 +197,38 @@ class Parameters(dict):
     def parameters(self):
         return {hungarorise(k):v
                 for k, v in self.items()}
-        
+
+class Bindings(dict):
+
+    @classmethod
+    def initialise(self, config):
+        bindings={}
+        for api in config.apis:
+            for endpoint in api["endpoints"]:
+                action=endpoint["action"]
+                bindings.setdefault(action, [])
+                bindings[action].append("endpoint")
+            for timer in config.timers:
+                action=timer["action"]
+                bindings.setdefault(action, [])
+                bindings[action].append("timer")
+            for topic in config.topics:
+                action=topic["action"]
+                bindings.setdefault(action, [])
+                bindings[action].append("topic")
+            return Bindings(bindings)
+
+    def __init__(self, item={}):
+        dict.__init__(self, item)
+    
+    def validate(self):
+        errors=[]
+        for k, values in self.items():
+            if len(values)!=1:
+                errors.append("%s has multiple bindings" % k)
+        if errors!=[]:
+            raise RuntimeError("; ".join(errors))
+    
 class Components(list):
 
     def __init__(self, struct):
@@ -351,33 +382,6 @@ class Components(list):
         return self
 
     def infer_invocation_types(self):
-        class Bindings(dict):
-            @classmethod
-            def initialise(self, config):
-                bindings={}
-                for api in config.apis:
-                    for endpoint in api["endpoints"]:
-                        action=endpoint["action"]
-                        bindings.setdefault(action, [])
-                        bindings[action].append("endpoint")
-                for timer in config.timers:
-                    action=timer["action"]
-                    bindings.setdefault(action, [])
-                    bindings[action].append("timer")
-                for topic in config.topics:
-                    action=topic["action"]
-                    bindings.setdefault(action, [])
-                    bindings[action].append("topic")
-                return Bindings(bindings)
-            def __init__(self, item={}):
-                dict.__init__(self, item)
-            def validate(self):
-                errors=[]
-                for k, values in self.items():
-                    if len(values)!=1:
-                        errors.append("%s has multiple bindings" % k)
-                if errors!=[]:
-                    raise RuntimeError("; ".join(errors))
         bindings=Bindings.initialise(self)
         bindings.validate()
         for action in self.actions:

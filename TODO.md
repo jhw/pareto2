@@ -1,6 +1,5 @@
 ### short
 
-- liberate bindings class in dsl 
 - add callbacks class to config (type, action, body)
 - add callbacks section to demo
 - validate callbacks action
@@ -40,6 +39,7 @@
 
 ### done
 
+- liberate bindings class in dsl 
 - dev/migrate-0-3-17.py
 - init_file to call new expand() method prior to return
 - expand to create map of endpoint, topic, timer bindings
