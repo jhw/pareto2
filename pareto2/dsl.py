@@ -58,7 +58,8 @@ class Config(dict):
     def init_file(self, filename="config.yaml"):
         struct=yaml.safe_load(open(filename).read())
         config=Config({"parameters": Parameters(struct["parameters"]),
-                       "components": Components(struct["components"])})
+                       "components": Components(struct["components"]),
+                       "callbacks": Callbacks(struct["callbacks"])})
         config.validate().expand()
         return config
         
@@ -392,6 +393,11 @@ class Components(list):
                 bindings[action["name"]]=="timer"):
                 action["invocation-type"]="queue"
         return self
+
+class Callbacks(list):
+
+    def __init__(self, struct):
+        list.__init__(self, struct)
     
 if __name__=="__main__":
     try:

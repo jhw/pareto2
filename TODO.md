@@ -1,6 +1,6 @@
 ### short
 
-- add callbacks section to demo
+- callbacks validation skeleton
 - validate callbacks action
 - migration script to add callbacks
 - 0-3-18
