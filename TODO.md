@@ -1,8 +1,5 @@
 ### short
 
-- migration script to add callbacks
-- 0-3-18
-
 ### medium
 
 - limit callbacks action to async action
@@ -37,6 +34,7 @@
 
 ### done
 
+- migration script to add callbacks
 - callbacks validation skeleton
 - validate callbacks action
 - add callbacks class to config (type, action, body)
