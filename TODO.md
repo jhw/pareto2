@@ -1,5 +1,7 @@
 ### short
 
+- *** rule random names are causing rules to be deleted / created every time! **
+
 ### medium
 
 - limit callbacks action to async action
@@ -34,6 +36,8 @@
 
 ### done
 
+- remove local components support
+- remove timer 
 - migration script to add callbacks
 - callbacks validation skeleton
 - validate callbacks action

@@ -20,37 +20,18 @@ import pareto2.components.api
 import pareto2.components.bucket
 import pareto2.components.secret
 import pareto2.components.table
-import pareto2.components.timer
 import pareto2.components.topic
 import pareto2.components.userpool
 
 import pareto2.dashboard
 
-def init_components(modules, custompaths):
-    for path in custompaths:
-        if not (os.path.exists(path) and
-                os.path.isdir(path)):
-            continue
-        for filename in os.listdir(path):
-            if ("__init__" in filename or
-                "__pycache__" in filename):
-                continue
-            key=filename.split(".")[0]
-            modname="%s.%s" % (path.replace("/", "."), key)
-            print ("adding %s -> %s" % (key, modname))
-            mod=import_module(modname)
-            modules[key]=mod   
-    return modules
-
-ComponentModules=init_components({"action": pareto2.components.action,
-                                  "api": pareto2.components.api,
-                                  "bucket": pareto2.components.bucket,
-                                  "secret": pareto2.components.secret,
-                                  "table": pareto2.components.table,
-                                  "timer": pareto2.components.timer,
-                                  "topic": pareto2.components.topic,
-                                  "userpool": pareto2.components.userpool},
-                                 custompaths=["components"])
+ComponentModules={"action": pareto2.components.action,
+                  "api": pareto2.components.api,
+                  "bucket": pareto2.components.bucket,
+                  "secret": pareto2.components.secret,
+                  "table": pareto2.components.table,
+                  "topic": pareto2.components.topic,
+                  "userpool": pareto2.components.userpool}
 
 class Config(dict):
 
@@ -221,10 +202,6 @@ class Bindings(dict):
                 action=endpoint["action"]
                 bindings.setdefault(action, [])
                 bindings[action].append("endpoint")
-            for timer in config.timers:
-                action=timer["action"]
-                bindings.setdefault(action, [])
-                bindings[action].append("timer")
             for topic in config.topics:
                 action=topic["action"]
                 bindings.setdefault(action, [])
@@ -292,12 +269,6 @@ class Components(list):
         return [component
                 for component in self
                 if component["type"]=="table"]
-
-    @property
-    def timers(self):
-        return [component
-                for component in self
-                if component["type"]=="timer"]
 
     @property
     def topics(self):
@@ -401,9 +372,6 @@ class Components(list):
             if (action["name"] in bindings and
                 bindings[action["name"]]=="endpoint"):
                 action["invocation-type"]="apigw"
-            elif (action["name"] in bindings and
-                bindings[action["name"]]=="timer"):
-                action["invocation-type"]="queue"
         return self
 
 class Callbacks(list):
