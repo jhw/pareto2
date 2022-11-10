@@ -1,7 +1,5 @@
 ### short
 
-- git push origin :callbacks
-
 ### push_artifacts
 
 - add ext components support
@@ -41,6 +39,7 @@
 
 ### done
 
+- git push origin :callbacks
 - remove randomisation in components, except maybe for dashboard
 - remove local components support
 - remove timer 
