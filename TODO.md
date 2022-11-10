@@ -1,6 +1,13 @@
 ### short
 
-- *** rule random names are causing rules to be deleted / created every time! **
+- check random reference in tables
+
+- git push origin :callbacks
+
+### push_artifacts
+
+- add ext components support
+- add stage name or dash suffix to prevent dash randomisation
 
 ### medium
 
@@ -36,6 +43,7 @@
 
 ### done
 
+- remove randomisation in components, except maybe for dashboard
 - remove local components support
 - remove timer 
 - migration script to add callbacks

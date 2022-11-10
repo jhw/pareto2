@@ -39,8 +39,6 @@ components:
   type: action
 - name: demo-topic-target
   type: action
-- name: demo-timer-target
-  type: action
 - auth-type: open
   endpoints:
   - action: demo-api-get
@@ -88,14 +86,8 @@ components:
   type: secret
   values:
     foo: bar
-- action: demo-timer-target
-  body:
-    foo: bar
-  interval: 1
-  name: demo
-  type: timer
 callbacks:
-- action: demo-timer-target
+- action: demo-topic-target
   body:
     foo: bar
   type: oncreate

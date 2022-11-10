@@ -2,7 +2,7 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
-import random, re
+import re
 
 AsyncPermissions=ApigwPermissions={"logs:CreateLogGroup",
                                    "logs:CreateLogStream",
@@ -108,22 +108,19 @@ def init_async_function_event_config(action, retries=0):
             props)
 
 """
-- event rule uses random slug in id because of max length 64
+- event rule target id max length 64
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
-- problem is combination of action.name + event.name + AWS::StackName can often exceed 64 chars, and there is no Fn::Substring function to put a ceiling on it
+- don't introduce random elements in ids because this means rules will be deleted and recreated every time a stack deploys!
+- unfortunately there is no instrinsic Fn::Substring function
 """
 
 @resource
 def _init_event_rule(action, event, pattern):
-    def random_id(n=16):
-        return "".join([chr(65+int(26*random.random()))
-                        for i in range(n)])
+    def compact(text):
+        return "".join([tok[:3] for tok in text.split("-")])         
     def init_target(action, event):
-        """
-        id={"Fn::Sub": "%s-%s-event-rule-${AWS::StackName}" % (action["name"],
-                                                               event["name"])}
-        """
-        id={"Fn::Sub": "%s-${AWS::StackName}" % random_id(n=8)}
+        id={"Fn::Sub": compact("%s-%s-eventrule-${AWS::StackName}" % (action["name"],
+                                                                      event["name"]))}
         arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
         return {"Id": id,
                 "Arn": arn}
