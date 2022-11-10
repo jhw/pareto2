@@ -1,7 +1,5 @@
 ### short
 
-- check random reference in tables
-
 - git push origin :callbacks
 
 ### push_artifacts

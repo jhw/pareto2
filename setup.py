@@ -53,10 +53,10 @@ def format_dependencies(root="requirements.txt"):
 
 setuptools.setup(
     name="pareto2",
-    version="0.3.18",
+    version="0.3.19",
     author="jhw",
     author_email="justin.worrall@gmail.com",
-    description="OTP for serverless",
+    description="An SDK for serverless apps",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jhw/pareto2",
