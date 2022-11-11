@@ -116,11 +116,9 @@ def init_async_function_event_config(action, retries=0):
 
 @resource
 def _init_event_rule(action, event, pattern):
-    def compact(text):
-        return "".join([tok[:3] for tok in text.split("-")])         
     def init_target(action, event):
-        id={"Fn::Sub": compact("%s-%s-eventrule-${AWS::StackName}" % (action["name"],
-                                                                      event["name"]))}
+        id={"Fn::Sub": "%s-%s-target-${AWS::StackName}" % (action["name"],
+                                                           event["name"])}
         arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
         return {"Id": id,
                 "Arn": arn}
