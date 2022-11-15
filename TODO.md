@@ -1,27 +1,15 @@
-### short
+### short [layer insertion]
 
-### push_artifacts
-
-- add ext components support
-- add stage name or dash suffix to prevent dash randomisation
+- remove all DSL layer and topic validation code 
+- new config level method to which you can pass URL for population 
+- lookup layer refs
+- fetch layers from layman
+- dedicated layers class to lookup layer arn given name
+- lookup layers given refs using prefix matching
+- populate defaults with layer parameters or raise runtime error if not found 
+- main block takes new layers URL 
 
 ### medium
-
-- limit callbacks action to async action
-- replace dash name randomisation with __file__ app name lookup
-- wheel package
-
-### expander
-
-- insert app/stage name into dashboards 
-- convert config callbacks into manifest.json
-- validate layer and topic arns 
-- extend conflict schema validating
-- remove print statements ?
-
-### paretocli
-
-- refactor search lambda logs
 
 ### long
 
