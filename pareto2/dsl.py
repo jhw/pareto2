@@ -38,7 +38,10 @@ class Layers(dict):
     @classmethod
     def initialise(self, endpoint):
         url="%s/list-layers" % endpoint
-        layers=json.loads(urllib.request.urlopen(url).read())
+        try:
+            layers=json.loads(urllib.request.urlopen(url).read())
+        except:
+            raise RuntimeError("error reading from %s" % url)
         return Layers({layer["name"]: layer["layer-arn"]
                        for layer in layers})
     

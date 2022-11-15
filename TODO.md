@@ -1,12 +1,8 @@
-### short [layer insertion]
+### short
 
-- new config level method to which you can pass URL for population 
-- lookup layer refs
-- fetch layers from layman
-- dedicated layers class to lookup layer arn given name
-- lookup layers given refs using prefix matching
-- populate defaults with layer parameters or raise runtime error if not found 
-- main block takes new layers URL 
+### paretocli, expander ###
+
+- config.validate().expand() must now be called explicitly!
 
 ### medium
 
