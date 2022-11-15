@@ -109,7 +109,7 @@ class Config(dict):
             template.outputs.update(outputfn(component))
         return template
 
-class Layers(dict):
+class LayerArns(dict):
 
     @classmethod
     def initialise(self, parameters):
@@ -119,7 +119,7 @@ class Layers(dict):
                 v.startswith("arn:aws:lambda:") and
                 ":layer:" in v):
                 layers[k]=v
-        return Layers(layers)    
+        return LayerArns(layers)    
     
     def __init__(self, struct):
         dict.__init__(self, struct)
@@ -134,7 +134,7 @@ class Layers(dict):
         return ["-".join(k.split("-")[:-2])
                 for k in self]
 
-class Topics(dict):
+class TopicArns(dict):
 
     @classmethod
     def initialise(self, parameters):
@@ -143,7 +143,7 @@ class Topics(dict):
             if (isinstance(v, str) and
                 v.startswith("arn:aws:sns:")):
                 topics[k]=v
-        return Topics(topics)    
+        return TopicArns(topics)    
     
     def __init__(self, struct):
         dict.__init__(self, struct)
@@ -165,14 +165,14 @@ class Parameters(dict):
 
     @property
     def layers(self):
-        return Layers.initialise(self)
+        return LayerArns.initialise(self)
 
     def validate_layers(self, errors):
         self.layers.validate(errors)
 
     @property
     def topics(self):
-        return Topics.initialise(self)
+        return TopicArns.initialise(self)
 
     def validate_topics(self, errors):
         self.topics.validate(errors)
@@ -385,7 +385,9 @@ class Callbacks(list):
 if __name__=="__main__":
     try:
         import json, os, sys
-        filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
+        if len(sys.argv) < 2:
+            raise RuntimeError("please enter filename")
+        filename=sys.argv[1]
         if not os.path.exists(filename):
             raise RuntimeError("%s does not exist" % filename)
         from pareto2.dsl import Config

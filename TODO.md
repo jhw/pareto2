@@ -1,6 +1,5 @@
 ### short [layer insertion]
 
-- remove all DSL layer and topic validation code 
 - new config level method to which you can pass URL for population 
 - lookup layer refs
 - fetch layers from layman
