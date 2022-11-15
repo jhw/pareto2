@@ -6,6 +6,9 @@ components:
   permissions:
   - dynamodb:Query
   type: action
+  layers:
+  - pyyaml
+  - jsonschema
 - name: demo-api-post
   type: action
 - events:

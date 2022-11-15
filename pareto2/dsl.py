@@ -6,7 +6,7 @@ from importlib import import_module
 
 from datetime import datetime
 
-import os, re, yaml
+import json, os, re, urllib.request, yaml
 
 EndpointJSONSchema="http://json-schema.org/draft-07/schema#"
 
@@ -33,6 +33,25 @@ ComponentModules={"action": pareto2.components.action,
                   "topic": pareto2.components.topic,
                   "userpool": pareto2.components.userpool}
 
+class Layers(dict):
+
+    @classmethod
+    def initialise(self, endpoint):
+        url="%s/list-layers" % endpoint
+        layers=json.loads(urllib.request.urlopen(url).read())
+        return Layers({layer["name"]: layer["layer-arn"]
+                       for layer in layers})
+    
+    def __init__(self, item={}):
+        dict.__init__(self, item)
+
+    def lookup(self, fragment):
+        matches=sorted([key for key in self
+                        if key.startswith(fragment)])
+        if matches==[]:
+            raise RuntimeError("%s not found in layers" % fragment)
+        return self[matches.pop()]
+
 class Config(dict):
 
     @classmethod
@@ -41,7 +60,6 @@ class Config(dict):
         config=Config({"parameters": Parameters(struct["parameters"]),
                        "components": Components(struct["components"]),
                        "callbacks": Callbacks(struct["callbacks"])})
-        config.validate().expand()
         return config
         
     def __init__(self, struct):
@@ -54,6 +72,20 @@ class Config(dict):
             params.update(self[attr].parameters)
         return params
 
+    def populate_layer_parameters(self, endpoint):
+        def filter_layer_refs(actions):
+            refs=set()
+            for action in actions:
+                if "layers" in action:
+                    refs.update(set(action["layers"]))
+            return list(refs)
+        layers=Layers.initialise(endpoint)
+        refs=filter_layer_refs(self["components"].actions)
+        for ref in refs:
+            key="%s-layer-arn" % ref
+            layerarn=layers.lookup(ref)
+            self["parameters"][key]=layerarn
+                                
     def cross_validate_layers(self):
         layernames, errors = self["parameters"].layers.names, set()
         for component in self["components"]:
@@ -74,7 +106,7 @@ class Config(dict):
                                                                           callback["action"]))
         if errors!=[]:
             raise RuntimeError("; ".join(errors))
-        
+
     def validate(self):
         for attr in ["parameters",
                      "components",
@@ -386,12 +418,19 @@ if __name__=="__main__":
     try:
         import json, os, sys
         if len(sys.argv) < 2:
-            raise RuntimeError("please enter filename")
-        filename=sys.argv[1]
+            raise RuntimeError("please enter filename, layman api?")
+        filename=sys.argv[1]        
         if not os.path.exists(filename):
             raise RuntimeError("%s does not exist" % filename)
+        laymanapiendpoint=sys.argv[2] if len(sys.argv) > 2 else None
+        if (laymanapiendpoint and
+            not laymanapiendpoint.startswith("https://")):
+            raise RuntimeError("layman api is invalid")
         from pareto2.dsl import Config
         config=Config.init_file(filename=filename)
+        if laymanapiendpoint:
+            config.populate_layer_parameters(laymanapiendpoint)
+        config.validate().expand()
         template=config.spawn_template()
         template.init_implied_parameters()
         for validator in [template.parameters.validate,
