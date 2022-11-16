@@ -62,7 +62,8 @@ class Config(dict):
         struct=yaml.safe_load(open(filename).read())
         config=Config({"parameters": Parameters(struct["parameters"]),
                        "components": Components(struct["components"]),
-                       "callbacks": Callbacks(struct["callbacks"])})
+                       "callbacks": Callbacks(struct["callbacks"]),
+                       "env": Environment(struct["env"])})
         return config
         
     def __init__(self, struct):
@@ -113,7 +114,8 @@ class Config(dict):
     def validate(self):
         for attr in ["parameters",
                      "components",
-                     "callbacks"]:
+                     "callbacks",
+                     "env"]:
             self[attr].validate()
         self.cross_validate_layers()
         self.cross_validate_callbacks()
@@ -416,7 +418,15 @@ class Callbacks(list):
 
     def validate(self):
         pass
-        
+
+class Environment(dict):
+
+    def __init__(self, struct):
+        dict.__init__(self)
+
+    def validate(self):
+        pass
+    
 if __name__=="__main__":
     try:
         import json, os, sys
