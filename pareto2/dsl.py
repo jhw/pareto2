@@ -239,11 +239,11 @@ class Bindings(dict):
                 action=endpoint["action"]
                 bindings.setdefault(action, [])
                 bindings[action].append("endpoint")
-            for topic in config.topics:
-                action=topic["action"]
-                bindings.setdefault(action, [])
-                bindings[action].append("topic")
-            return Bindings(bindings)
+        for topic in config.topics:
+            action=topic["action"]
+            bindings.setdefault(action, [])
+            bindings[action].append("topic")
+        return Bindings(bindings)
 
     def __init__(self, item={}):
         dict.__init__(self, item)
