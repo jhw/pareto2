@@ -422,7 +422,7 @@ class Callbacks(list):
 class Environment(dict):
 
     def __init__(self, struct):
-        dict.__init__(self)
+        dict.__init__(self, struct)
 
     def validate(self):
         pass
