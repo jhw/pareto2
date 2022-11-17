@@ -1,8 +1,9 @@
 ### short
 
-### paretocli, expander ###
-
-- config.validate().expand() must now be called explicitly!
+- Config.load_file should really just be Config.load
+- layer population should take entire env struct
+- layer population should be part of expansion routine
+- dsl __main__ demo.yaml routine is not covering bindings validation
 
 ### medium
 
