@@ -1,9 +1,13 @@
 ### short
 
-- Config.load_file should really just be Config.load
-- layer population should take entire env struct
+- remove cross_validate_layers
 - layer population should be part of expansion routine
+  - layer population should take entire env struct
+
 - dsl __main__ demo.yaml routine is not covering bindings validation
+
+- [paretocli] refactor push_artifacts so expand() takes config.env
+- [expander] refactor templater so expand() takes config.env
 
 ### medium
 
@@ -23,6 +27,7 @@
 
 ### done
 
+- Config.load_file should really just be Config.load
 - git push origin :callbacks
 - remove randomisation in components, except maybe for dashboard
 - remove local components support

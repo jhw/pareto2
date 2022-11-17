@@ -58,7 +58,7 @@ class Layers(dict):
 class Config(dict):
 
     @classmethod
-    def init_file(self, filename="config.yaml"):
+    def initialise(self, filename="config.yaml"):
         struct=yaml.safe_load(open(filename).read())
         config=Config({"parameters": Parameters(struct["parameters"]),
                        "components": Components(struct["components"]),
@@ -440,7 +440,7 @@ if __name__=="__main__":
             not laymanapiendpoint.startswith("https://")):
             raise RuntimeError("layman api is invalid")
         from pareto2.dsl import Config
-        config=Config.init_file(filename=filename)
+        config=Config.initialise(filename=filename)
         if laymanapiendpoint:
             config.populate_layer_parameters(laymanapiendpoint)
         config.validate().expand()
