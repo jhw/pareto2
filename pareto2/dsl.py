@@ -109,9 +109,9 @@ class Config(dict):
         self.cross_validate_callbacks()
         return self
 
-    def expand(self, env):
-        if "layman-api" in env:
-            self.populate_layer_parameters(env["layman-api"])
+    def expand(self):
+        if "layman-api" in self["env"]:
+            self.populate_layer_parameters(self["env"]["layman-api"])
         self["components"].infer_invocation_types()
         return self
     
@@ -430,11 +430,10 @@ if __name__=="__main__":
         if (laymanapi and
             not laymanapi.startswith("https://")):
             raise RuntimeError("layman api is invalid")
-        else:
-            env["layman-api"]=laymanapi
         from pareto2.dsl import Config
         config=Config.initialise(filename=filename)
-        config.validate().expand(env)
+        config["env"]["layman-api"]=laymanapi
+        config.validate().expand()
         template=config.spawn_template()
         template.init_implied_parameters()
         for validator in [template.parameters.validate,

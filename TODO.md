@@ -1,11 +1,11 @@
 ### short
 
+### medium
+
 - dsl __main__ demo.yaml routine is not covering bindings validation
 
 - [paretocli] refactor push_artifacts so expand() takes config.env
 - [expander] refactor templater so expand() takes config.env
-
-### medium
 
 ### long
 
@@ -23,6 +23,7 @@
 
 ### done
 
+- populate layer versions should use self.env and shouldnt need env passing to it
 - layer population should be part of expansion routine
   - layer population should take entire env struct
 - remove cross_validate_layers
