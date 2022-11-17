@@ -90,17 +90,6 @@ class Config(dict):
             layerarn=layers.lookup(ref)
             self["parameters"][key]=layerarn
                                 
-    def cross_validate_layers(self):
-        layernames, errors = self["parameters"].layers.names, set()
-        for component in self["components"]:
-            if (component["type"]=="action" and
-                "layers" in component):
-                for layername in component["layers"]:
-                    if layername not in layernames:
-                        errors.add(layername)
-        if len(errors) > 0:
-            raise RuntimeError("unknown layer(s) %s" % ", ".join(errors))
-
     def cross_validate_callbacks(self):
         actionnames, errors = [action["name"]
                                for action in self["components"].actions], []
@@ -117,11 +106,12 @@ class Config(dict):
                      "callbacks",
                      "env"]:
             self[attr].validate()
-        self.cross_validate_layers()
         self.cross_validate_callbacks()
         return self
 
-    def expand(self):
+    def expand(self, env):
+        if "layman-api" in env:
+            self.populate_layer_parameters(env["layman-api"])
         self["components"].infer_invocation_types()
         return self
     
@@ -435,15 +425,16 @@ if __name__=="__main__":
         filename=sys.argv[1]        
         if not os.path.exists(filename):
             raise RuntimeError("%s does not exist" % filename)
-        laymanapiendpoint=sys.argv[2] if len(sys.argv) > 2 else None
-        if (laymanapiendpoint and
-            not laymanapiendpoint.startswith("https://")):
+        env={}
+        laymanapi=sys.argv[2] if len(sys.argv) > 2 else None
+        if (laymanapi and
+            not laymanapi.startswith("https://")):
             raise RuntimeError("layman api is invalid")
+        else:
+            env["layman-api"]=laymanapi
         from pareto2.dsl import Config
         config=Config.initialise(filename=filename)
-        if laymanapiendpoint:
-            config.populate_layer_parameters(laymanapiendpoint)
-        config.validate().expand()
+        config.validate().expand(env)
         template=config.spawn_template()
         template.init_implied_parameters()
         for validator in [template.parameters.validate,
