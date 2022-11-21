@@ -1,11 +1,17 @@
 ### short
 
-- endpoints
-- events
-- layers
-- permissions
+- add topics as per buckets and tables 
+- define action before appending
+- if events, layers, permissions exist in infra, add them to actions 
+- remove extra fields option from schema root 
+- add source, topic, pattern fields to event schema 
+- add method and API to endpoint schema as required fields, method as enum
+- add endpoint pameters and schema fields 
+- scripts method to filter APIs 
+- add APIs if public, private 
+- add userpool if private apis exist 
+- attach endpoints to APIs
 
-- apis
 - action environment variables 
 - action callbacks
 - action invocation types
