@@ -1,17 +1,19 @@
 ### short
 
-- replace demo.yaml with demo scripts
-- new script class
-- add schema validation for events, endpoint, callbacks 
-- filter environment variables 
-- add buckets, tables
-- filter action endpoints 
-- add APIs for defined endpoints, userpool for private apis 
-- create named action for each lambda 
-- add action environment variables 
-- add action events if they exist
-- add action callbacks if exist 
-- add api endpoints if endpoints exists 
+- replace file loading with simple inline config
+- add basic demo handler in package
+- expand to walk through files based on root argument
+- new script class to parse infra from code
+- add action definition for each index file
+
+- infra schema validation
+- implied buckets, tables
+- apis given endpoint parents
+- action environment variables 
+- action events
+- action callbacks
+- action endpoints
+- action invocation types
 
 ### paretocli
 
