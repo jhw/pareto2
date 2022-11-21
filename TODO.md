@@ -1,7 +1,5 @@
 ### short
 
-- rename DSL as config
-- separate config module into per class modules 
 - replace demo.yaml with demo scripts
 - new script class
 - add schema validation for events, endpoint, callbacks 
@@ -50,6 +48,8 @@
 
 ### done
 
+- rename DSL as config
+- separate config module into per class modules 
 - where is the action env variable inference code ?
 - remove existing expansions 
 - review and document existing expansions - layers, permissions, bindings/type inferences, one more 

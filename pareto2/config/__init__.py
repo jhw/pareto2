@@ -1,8 +1,15 @@
+
+from pareto2.config.callbacks import Callbacks
+from pareto2.config.components import Components
+from pareto2.config.environment import Environment
+from pareto2.config.layers import Layers
+from pareto2.config.parameters import Parameters
+
 from pareto2.template import Template
 
 from pareto2.components import hungarorise
 
-import json, urllib.request, yaml
+import yaml
 
 import pareto2.components.action
 import pareto2.components.api
@@ -21,28 +28,6 @@ ComponentModules={"action": pareto2.components.action,
                   "table": pareto2.components.table,
                   "topic": pareto2.components.topic,
                   "userpool": pareto2.components.userpool}
-
-class Layers(dict):
-
-    @classmethod
-    def initialise(self, endpoint):
-        url="%s/list-layers" % endpoint
-        try:
-            layers=json.loads(urllib.request.urlopen(url).read())
-        except:
-            raise RuntimeError("error reading from %s" % url)
-        return Layers({layer["name"]: layer["layer-arn"]
-                       for layer in layers})
-    
-    def __init__(self, item={}):
-        dict.__init__(self, item)
-
-    def lookup(self, fragment):
-        matches=sorted([key for key in self
-                        if key.startswith(fragment)])
-        if matches==[]:
-            raise RuntimeError("%s not found in layers" % fragment)
-        return self[matches.pop()]
 
 class Config(dict):
 
@@ -107,97 +92,6 @@ class Config(dict):
             template.outputs.update(outputfn(component))
         return template
 
-class Parameters(dict):
-
-    def __init__(self, struct):
-        dict.__init__(self, struct)
-
-    @property
-    def layers(self):
-        return LayerArns.initialise(self)
-
-    @property
-    def topics(self):
-        return TopicArns.initialise(self)
-
-    @property
-    def parameters(self):
-        return {hungarorise(k):v
-                for k, v in self.items()}
-
-class Components(list):
-
-    def __init__(self, struct):
-        list.__init__(self, struct)
-
-    @property
-    def actions(self):
-        return [component
-                for component in self
-                if component["type"]=="action"]
-
-    @property
-    def apis(self):
-        return [component
-                for component in self
-                if component["type"]=="api"]
-
-    @property
-    def buckets(self):
-        return [component
-                for component in self
-                if component["type"]=="bucket"]
-
-    @property
-    def endpoints(self):
-        endpoints=[]
-        for api in self.apis:
-            if "endpoints" in api:
-                endpoints+=api["endpoints"]
-        return endpoints
-
-    @property
-    def events(self):
-        events=[]
-        for action in self.actions:
-            if "events" in action:
-                events+=action["events"]
-        return events
-    
-    @property
-    def secrets(self):
-        return [component
-                for component in self
-                if component["type"]=="secret"]
-
-    @property
-    def tables(self):
-        return [component
-                for component in self
-                if component["type"]=="table"]
-
-    @property
-    def topics(self):
-        return [component
-                for component in self
-                if component["type"]=="topic"]
-
-    @property
-    def userpools(self):
-        return [component
-                for component in self
-                if component["type"]=="userpool"]
-
-class Callbacks(list):
-
-    def __init__(self, struct):
-        list.__init__(self, struct)
-
-class Environment(dict):
-
-    def __init__(self, struct):
-        dict.__init__(self, struct)
-
 if __name__=="__main__":
     try:
         import os, sys
@@ -210,14 +104,6 @@ if __name__=="__main__":
         config.expand()
         template=config.spawn_template()
         template.init_implied_parameters()
-        for validator in [template.parameters.validate,
-                          template.validate]:
-            try:
-                validator()
-            except RuntimeError as error:                
-                print ("Warning: %s" % str(error))        
-        with open("tmp/template.json", 'w') as f:
-            f.write(json.dumps(template.render(),
-                               indent=2))
+        print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))
