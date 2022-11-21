@@ -1,6 +1,5 @@
 ### short
 
-- init userpools if private api
 - add userpool ref to private api 
 - attach endpoints to APIs
 
@@ -47,6 +46,7 @@
 
 ### done
 
+- init userpools if private api
 - helpers to create apis
 - add APIs if public, private 
 - dump apis

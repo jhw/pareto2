@@ -61,7 +61,8 @@ class Config(dict):
             self["components"].append(script.action)
         for attr in ["apis",
                      "buckets",
-                     "tables"]:            
+                     "tables",
+                     "userpools"]:
             self["components"]+=getattr(scripts, attr)
         return self
     

@@ -108,7 +108,8 @@ class Scripts(list):
         apis={}
         for _, script in self:
             if "endpoint" in script.infra:
-                apiname=script.infra["endpoint"]["api"]
+                endpoint=script.infra["endpoint"]
+                apiname=endpoint["api"]
                 apis[apiname]=init_api(apiname)
         return list(apis.values())
                 
@@ -135,7 +136,18 @@ class Scripts(list):
             topics.update({topic["name"]:topic
                            for topic in script.topics})
         return list(topics.values())
-            
+
+    @property
+    def userpools(self):
+        for _, script in self:
+            if "endpoint" in script.infra:
+                endpoint=script.infra["endpoint"]
+                apiname=endpoint["api"]
+                if "private" in apiname:
+                    return [{"name": "api",
+                             "type": "userpool"}]
+        return []
+    
 class Script:
 
     def __init__(self, filename):
