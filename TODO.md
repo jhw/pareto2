@@ -1,11 +1,10 @@
 ### short
 
-- expand to walk through files based on root argument
-- new script class to parse infra from code
-- add action definition for each index file
+- scripts class
+- aggregate buckets, tables across scripts
+- add buckets, tables config
 
 - infra schema validation
-- implied buckets, tables
 - apis given endpoint parents
 - action environment variables 
 - action events
@@ -13,6 +12,7 @@
 - action endpoints
 - action invocation types
 - layer arn population
+- table indexes
 
 ### paretocli
 
@@ -32,6 +32,7 @@
 - topics could be inferred from env variables 
 - suspect secrets can be inferred from env variables also 
 - could iterate over ext directory to add custom components
+- client migration script
 
 ### long
 
@@ -49,6 +50,12 @@
 
 ### done
 
+- filter environment variables
+- add bucketname, tablename os.environ
+- script.partition
+- add action definition for each index file
+- expand to walk through files based on root argument
+- new script class to parse infra from code
 - pass root to script
 - replace file loading with simple inline config
 - add basic demo handler in package

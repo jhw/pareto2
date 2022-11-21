@@ -3,12 +3,13 @@ from pareto2.config.callbacks import Callbacks
 from pareto2.config.components import Components
 from pareto2.config.environment import Environment
 from pareto2.config.parameters import Parameters
+from pareto2.config.script import Script
 
 from pareto2.template import Template
 
 from pareto2.components import hungarorise
 
-import yaml
+import os
 
 import pareto2.components.action
 import pareto2.components.api
@@ -45,7 +46,14 @@ class Config(dict):
         return params
 
     def expand(self, root):
-        print (root)
+        for localroot, dirs, files in os.walk(root):
+            for filename in files:
+                if filename.endswith("index.py"):
+                    absfilename=os.path.join(localroot, filename)
+                    script=Script(absfilename)
+                    print (script.infra)
+                    print (script.envvars)
+                    self["components"].append(script.action)
         return self
     
     def add_dashboard(fn):
