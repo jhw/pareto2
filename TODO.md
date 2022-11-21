@@ -1,7 +1,8 @@
 ### short
 
-- replace file loading with simple inline config
 - add basic demo handler in package
+- pass root to script
+- replace file loading with simple inline config
 - expand to walk through files based on root argument
 - new script class to parse infra from code
 - add action definition for each index file
