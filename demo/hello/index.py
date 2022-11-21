@@ -18,6 +18,8 @@ infra:
   - foo:bar
   layers:
   - pyyaml
+  size: medium
+  timeout: medium
 """
 
 import os

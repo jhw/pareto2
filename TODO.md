@@ -1,6 +1,5 @@
 ### short
 
-- action size and timeout 
 - initialise actions after apis
 - attach endpoints to apis 
 - populate action env variables
@@ -47,6 +46,7 @@
 
 ### done
 
+- action size and timeout 
 - add userpool ref to private api 
 - init userpools if private api
 - helpers to create apis

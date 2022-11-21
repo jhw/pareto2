@@ -62,6 +62,18 @@ properties:
     type: array
   permissions:
     type: array
+  size:
+    type: string
+    enum:
+    - default
+    - medium
+    - large
+  timeout:
+    type: string
+    enum:
+    - default
+    - medium
+    - long
 required: []
 additionalProperties: false
 """)
@@ -205,7 +217,9 @@ class Script:
                 "type": "action"}
         for attr in ["layers",
                      "permissions",
-                     "events"]:
+                     "events",
+                     "size",
+                     "timeout"]:
             if attr in self.infra:
                 action[attr]=self.infra[attr]
         return action
