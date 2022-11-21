@@ -57,13 +57,21 @@ class Config(dict):
 
     def expand(self, root):
         scripts=Scripts.initialise(root)
-        for _, script in scripts:
-            self["components"].append(script.action)
         for attr in ["apis",
                      "buckets",
                      "tables",
                      "userpools"]:
             self["components"]+=getattr(scripts, attr)
+        apis={api["name"]:api
+              for api in self["components"].apis}
+        for path, script in scripts:
+            actionname="-".join(path.split("/")[:-1])
+            self["components"].append(script.action)
+            if "endpoint" in script.infra:
+                endpoint=script.infra["endpoint"]
+                endpoint["action"]=actionname
+                api=apis[endpoint["api"]]
+                api["endpoints"].append(endpoint)
         return self
     
     def add_dashboard(fn):

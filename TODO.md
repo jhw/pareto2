@@ -1,14 +1,20 @@
 ### short
 
-- initialise actions after apis
-- attach endpoints to apis 
+- action invocation types
 - populate action env variables
 
 - action callbacks
-- action invocation types
-- layer arn population
+- layer arn population -> should maybe be done by push artifacts, expander?
 - table indexes
+- ext components -> iterate over directory
 - secrets
+- client migration script
+
+### medium
+
+### tiriac
+
+- remove skel stuff
 
 ### paretocli
 
@@ -25,10 +31,6 @@
 
 ### medium
 
-- topics could be inferred from env variables 
-- suspect secrets can be inferred from env variables also 
-- could iterate over ext directory to add custom components
-- client migration script
 
 ### long
 
@@ -46,6 +48,8 @@
 
 ### done
 
+- initialise actions after apis
+- attach endpoints to apis 
 - action size and timeout 
 - add userpool ref to private api 
 - init userpools if private api
