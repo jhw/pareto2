@@ -2,18 +2,7 @@ from pareto2.template import Template
 
 from pareto2.components import hungarorise
 
-from importlib import import_module
-
-from datetime import datetime
-
-import json, os, re, urllib.request, yaml
-
-EndpointJSONSchema="http://json-schema.org/draft-07/schema#"
-
-"""
-- would like to dynamically import this stuff, probably based on file paths
-- but not confident you'll be able to do that if package is part of a layer (what's the AWS filepath??)
-"""
+import json, urllib.request, yaml
 
 import pareto2.components.action
 import pareto2.components.api
@@ -89,11 +78,12 @@ class Config(dict):
             key="%s-layer-arn" % ref
             layerarn=layers.lookup(ref)
             self["parameters"][key]=layerarn
-                                
+
     def expand(self):
+        """
         if "layman-api" in self["env"]:
             self.populate_layer_parameters(self["env"]["layman-api"])
-        self["components"].infer_invocation_types()
+        """
         return self
     
     def add_dashboard(fn):
@@ -117,45 +107,6 @@ class Config(dict):
             template.outputs.update(outputfn(component))
         return template
 
-class LayerArns(dict):
-
-    @classmethod
-    def initialise(self, parameters):
-        layers={}
-        for k, v in parameters.items():
-            if (isinstance(v, str) and
-                v.startswith("arn:aws:lambda:") and
-                ":layer:" in v):
-                layers[k]=v
-        return LayerArns(layers)    
-    
-    def __init__(self, struct):
-        dict.__init__(self, struct)
-
-    @property
-    def names(self):
-        return ["-".join(k.split("-")[:-2])
-                for k in self]
-
-class TopicArns(dict):
-
-    @classmethod
-    def initialise(self, parameters):
-        topics={}
-        for k, v in parameters.items():
-            if (isinstance(v, str) and
-                v.startswith("arn:aws:sns:")):
-                topics[k]=v
-        return TopicArns(topics)    
-    
-    def __init__(self, struct):
-        dict.__init__(self, struct)
-
-    @property
-    def names(self):
-        return ["-".join(k.split("-")[:-2])
-                for k in self]
-    
 class Parameters(dict):
 
     def __init__(self, struct):
@@ -174,25 +125,6 @@ class Parameters(dict):
         return {hungarorise(k):v
                 for k, v in self.items()}
 
-class Bindings(dict):
-
-    @classmethod
-    def initialise(self, config):
-        bindings={}
-        for api in config.apis:
-            for endpoint in api["endpoints"]:
-                action=endpoint["action"]
-                bindings.setdefault(action, [])
-                bindings[action].append("endpoint")
-        for topic in config.topics:
-            action=topic["action"]
-            bindings.setdefault(action, [])
-            bindings[action].append("topic")
-        return Bindings(bindings)
-
-    def __init__(self, item={}):
-        dict.__init__(self, item)
-    
 class Components(list):
 
     def __init__(self, struct):
@@ -256,14 +188,6 @@ class Components(list):
                 for component in self
                 if component["type"]=="userpool"]
 
-    def infer_invocation_types(self):
-        bindings=Bindings.initialise(self)
-        for action in self.actions:
-            if (action["name"] in bindings and
-                bindings[action["name"]]=="endpoint"):
-                action["invocation-type"]="apigw"
-        return self
-
 class Callbacks(list):
 
     def __init__(self, struct):
@@ -276,20 +200,13 @@ class Environment(dict):
 
 if __name__=="__main__":
     try:
-        import json, os, sys
+        import os, sys
         if len(sys.argv) < 2:
-            raise RuntimeError("please enter filename, layman api?")
+            raise RuntimeError("please enter filename")
         filename=sys.argv[1]        
         if not os.path.exists(filename):
             raise RuntimeError("%s does not exist" % filename)
-        env={}
-        laymanapi=sys.argv[2] if len(sys.argv) > 2 else None
-        if (laymanapi and
-            not laymanapi.startswith("https://")):
-            raise RuntimeError("layman api is invalid")
-        from pareto2.dsl import Config
         config=Config.initialise(filename=filename)
-        config["env"]["layman-api"]=laymanapi
         config.expand()
         template=config.spawn_template()
         template.init_implied_parameters()

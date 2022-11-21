@@ -1,10 +1,10 @@
 ### short
 
-- review and document existing expansions - layers, permissions, bindings/type inferences, one more 
-- remove existing expansions 
+- where is the action env variable inference code ?
+
 - rename DSL as config
 - separate config module into per class modules 
-- replace demop.yaml with demo scripts
+- replace demo.yaml with demo scripts
 - new script class
 - add schema validation for events, endpoint, callbacks 
 - filter environment variables 
@@ -39,6 +39,8 @@
 
 ### done
 
+- remove existing expansions 
+- review and document existing expansions - layers, permissions, bindings/type inferences, one more 
 - remove all validation code 
 - branch 0-4
 - populate layer versions should use self.env and shouldnt need env passing to it
