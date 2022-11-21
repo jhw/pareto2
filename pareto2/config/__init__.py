@@ -63,10 +63,13 @@ class Config(dict):
         apis={api["name"]:api
               for api in self["components"].apis}
         for path, script in scripts:
-            actionname="-".join(path.split("/")[:-1])
-            self["components"].append(script.action)
+            action, envvars, = script.action, script.envvars
+            if envvars!=[]:
+                action["env"]={"variables": envvars}
+            self["components"].append(action)
             if "endpoint" in script.infra:
                 endpoint=script.infra["endpoint"]
+                actionname="-".join(path.split("/")[:-1])
                 endpoint["action"]=actionname
                 api=apis[endpoint["api"]]
                 api["endpoints"].append(endpoint)

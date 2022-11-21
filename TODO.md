@@ -1,7 +1,5 @@
 ### short
 
-- populate action env variables
-
 - ext components -> iterate over directory
 - action callbacks
 - table indexes
@@ -9,10 +7,6 @@
 - client migration script
 
 ### medium
-
-### tiriac
-
-- remove skel stuff
 
 ### paretocli -> push_artifacts
 
@@ -28,8 +22,9 @@
 - remove templater permisison inference
 - add layer parameter lookup
 
-### medium
+### tiriac
 
+- remove skel stuff
 
 ### long
 
@@ -47,6 +42,7 @@
 
 ### done
 
+- populate action env variables
 - remove layers and environments
 - action invocation types
 - initialise actions after apis
