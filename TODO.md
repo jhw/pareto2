@@ -1,10 +1,9 @@
 ### short
 
-- action invocation types
+- remove layers and environments
 - populate action env variables
 
 - action callbacks
-- layer arn population -> should maybe be done by push artifacts, expander?
 - table indexes
 - ext components -> iterate over directory
 - secrets
@@ -16,18 +15,19 @@
 
 - remove skel stuff
 
-### paretocli
+### paretocli -> push_artifacts
 
-- simplify push_artifacts
-  - remove action env variables
-  - remove permisison inference
-  - remove schema validation?
+- remove action env variables
+- remove permisison inference
+- remove schema validation?
+- add layer parameter lookup
 
 ### expander
 
 - remove preprocessor schema validation
 - remove templater action env variables
 - remove templater permisison inference
+- add layer parameter lookup
 
 ### medium
 
@@ -48,6 +48,7 @@
 
 ### done
 
+- action invocation types
 - initialise actions after apis
 - attach endpoints to apis 
 - action size and timeout 

@@ -222,6 +222,8 @@ class Script:
                      "timeout"]:
             if attr in self.infra:
                 action[attr]=self.infra[attr]
+        if "endpoint" in self.infra:
+            action["invocation-type"]="apigw"
         return action
 
     @property
