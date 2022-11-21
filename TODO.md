@@ -1,7 +1,10 @@
 ### short
 
-- attach endpoints to APIs
-- action environment variables 
+- action size and timeout 
+- initialise actions after apis
+- attach endpoints to apis 
+- populate action env variables
+
 - action callbacks
 - action invocation types
 - layer arn population
