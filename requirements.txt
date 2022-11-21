@@ -1,2 +1,3 @@
+jsonschema
 moto[dynamodb,s3,sns]
 pyyaml

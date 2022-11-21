@@ -1,12 +1,13 @@
 ### short
 
-- infra schema validation
-- apis given endpoint parents
-- action layers
+- endpoints
+- events
+- layers
+- permissions
+
+- apis
 - action environment variables 
-- action events
 - action callbacks
-- action endpoints
 - action invocation types
 - layer arn population
 - table indexes
@@ -47,6 +48,7 @@
 
 ### done
 
+- infra schema validation
 - parameter defaults
 - streaming table
 - scripts class

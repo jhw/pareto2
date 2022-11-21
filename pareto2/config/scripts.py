@@ -1,4 +1,30 @@
-import os, re, yaml
+import jsonschema, os, re, yaml
+
+InfraSchema=yaml.safe_load("""
+"$schema": "http://json-schema.org/draft-07/schema#"
+type: object
+definitions:
+  event:
+    type: object
+    properties: {}
+    required: []
+    additionalProperties: true
+properties:
+  endpoint:
+    type: object
+    properties: {}
+    required: []
+    additionalProperties: true
+  events:
+    type: array
+    items:
+      "$ref": "#/definitions/event"
+  layers:
+    type: array
+  permissions:
+    type: array
+required: []
+""")
 
 class Scripts(list):
 
@@ -37,9 +63,17 @@ class Script:
     def __init__(self, filename):
         self.filename=filename
         self.body=open(filename).read()
-        self.infra=self.filter_infra(self.body)
         self.envvars=self.filter_envvars(self.body)
+        self.infra=self.filter_infra(self.body)
+        self.validate_infra()
 
+    def validate_infra(self, schema=InfraSchema):
+        try:
+            jsonschema.validate(instance=self.infra,
+                                schema=schema)
+        except jsonschema.exceptions.ValidationError as error:
+            raise RuntimeError("error validating infra schema: %s" % str(error))
+        
     def filter_infra(self, text):
         def parse_yaml(text):
             return yaml.safe_load(text)
