@@ -83,6 +83,15 @@ class Scripts(list):
         list.__init__(self, items)
 
     @property
+    def apis(self):
+        apinames=set()
+        for _, script in self:
+            if "endpoint" in script.infra:
+                apiname=script.infra["endpoint"]["api"]
+                apinames.add(apiname)
+        return apinames
+                
+    @property
     def buckets(self):
         buckets={}
         for _, script in self:

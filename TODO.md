@@ -1,6 +1,7 @@
 ### short
 
-- scripts method to filter APIs 
+- dump apis
+- helpers to create apis
 - add APIs if public, private 
 - add userpool if private apis exist 
 - attach endpoints to APIs
@@ -10,6 +11,7 @@
 - action invocation types
 - layer arn population
 - table indexes
+- secrets
 
 ### paretocli
 
@@ -47,6 +49,7 @@
 
 ### done
 
+- scripts method to filter APIs 
 - nested event source type
 - add demo events, endpoint, layers, permissions
 - add method and API to endpoint schema as required fields, method as enum
