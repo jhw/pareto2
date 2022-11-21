@@ -1,6 +1,5 @@
 ### short
 
-- add topics as per buckets and tables 
 - define action before appending
 - if events, layers, permissions exist in infra, add them to actions 
 - remove extra fields option from schema root 
@@ -54,6 +53,7 @@
 
 ### done
 
+- add topics as per buckets and tables 
 - infra schema validation
 - parameter defaults
 - streaming table

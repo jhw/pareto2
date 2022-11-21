@@ -57,6 +57,15 @@ class Scripts(list):
             tables.update({table["name"]:table
                            for table in script.tables})
         return list(tables.values())
+
+    @property
+    def topics(self):
+        topics={}
+        for _, script in self:
+            topics.update({topic["name"]:topic
+                           for topic in script.topics})
+        return list(topics.values())
+
             
 class Script:
 
@@ -132,7 +141,15 @@ class Script:
                  "type": "table"}
                 for varname in self.envvars
                 if varname.endswith("_TABLE")]
-            
+
+    @property
+    def topics(self):
+        return [{"name": "-".join([tok.lower()
+                                   for tok in varname.split("_")[:-1]]),
+                 "type": "topic"}
+                for varname in self.envvars
+                if varname.endswith("_TOPIC")]
+    
 if __name__=="__main__":
     pass
 
