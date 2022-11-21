@@ -83,13 +83,34 @@ class Scripts(list):
         list.__init__(self, items)
 
     @property
-    def apis(self):
-        apinames=set()
+    def apis(self, stagename="1-0-0"):
+        def init_public(apiname):
+            return {"name": apiname,
+                    "type": "api",
+                    "endpoints": [],
+                    "stage": {"name": stagename},
+                    "auth-type": "open"}
+        """
+        - change auth-type to cognito and add pool reference
+        """
+        def init_private(apiname):
+            return {"name": apiname,
+                    "type": "api",
+                    "endpoints": [],
+                    "stage": {"name": stagename},
+                    "auth-type": "open"}
+        def init_api(apiname):
+            for pat, fn in [("public", init_public),
+                            ("private", init_private)]:
+                if pat in apiname:
+                    return fn(apiname)
+            raise RuntimeError("no api initialiser for '%s'" % apiname)
+        apis={}
         for _, script in self:
             if "endpoint" in script.infra:
                 apiname=script.infra["endpoint"]["api"]
-                apinames.add(apiname)
-        return apinames
+                apis[apiname]=init_api(apiname)
+        return list(apis.values())
                 
     @property
     def buckets(self):

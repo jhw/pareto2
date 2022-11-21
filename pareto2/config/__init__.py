@@ -59,14 +59,10 @@ class Config(dict):
         scripts=Scripts.initialise(root)
         for _, script in scripts:
             self["components"].append(script.action)
-        for attr in ["buckets",
+        for attr in ["apis",
+                     "buckets",
                      "tables"]:            
             self["components"]+=getattr(scripts, attr)
-        # START TEMP CODE
-        print ()
-        print (scripts.apis)
-        print ()
-        # END TEMP CODE
         return self
     
     def add_dashboard(fn):

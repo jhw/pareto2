@@ -1,8 +1,7 @@
 ### short
 
-- helpers to create apis
-- add APIs if public, private 
-- add userpool if private apis exist 
+- init userpools if private api
+- add userpool ref to private api 
 - attach endpoints to APIs
 
 - action environment variables 
@@ -48,6 +47,8 @@
 
 ### done
 
+- helpers to create apis
+- add APIs if public, private 
 - dump apis
 - scripts method to filter APIs 
 - nested event source type
