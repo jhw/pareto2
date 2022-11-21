@@ -19,6 +19,8 @@ import pareto2.components.userpool
 
 import pareto2.dashboard
 
+import yaml
+
 ComponentModules={"action": pareto2.components.action,
                   "api": pareto2.components.api,
                   "bucket": pareto2.components.bucket,
@@ -27,11 +29,21 @@ ComponentModules={"action": pareto2.components.action,
                   "topic": pareto2.components.topic,
                   "userpool": pareto2.components.userpool}
 
+ParameterDefaults=yaml.safe_load("""
+memory-size-default: 512
+memory-size-large: 2048
+memory-size-medium: 1024
+runtime-version: '3.8'
+timeout-default: 5
+timeout-long: 30
+timeout-medium: 15
+""")
+
 class Config(dict):
 
     def __init__(self):
         dict.__init__(self,
-                      {"parameters": Parameters(),
+                      {"parameters": Parameters(ParameterDefaults),
                        "components": Components(),
                        "callbacks": Callbacks(),
                        "env": Environment()})

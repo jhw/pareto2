@@ -1,7 +1,5 @@
 ### short
 
-- parameter defaults
-
 - infra schema validation
 - apis given endpoint parents
 - action layers
@@ -49,6 +47,7 @@
 
 ### done
 
+- parameter defaults
 - streaming table
 - scripts class
 - aggregate buckets, tables across scripts
