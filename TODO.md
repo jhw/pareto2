@@ -1,6 +1,5 @@
 ### short
 
-- dump apis
 - helpers to create apis
 - add APIs if public, private 
 - add userpool if private apis exist 
@@ -49,6 +48,7 @@
 
 ### done
 
+- dump apis
 - scripts method to filter APIs 
 - nested event source type
 - add demo events, endpoint, layers, permissions
