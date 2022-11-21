@@ -1,8 +1,6 @@
 ### short
 
-- add userpool ref to private api 
 - attach endpoints to APIs
-
 - action environment variables 
 - action callbacks
 - action invocation types
@@ -46,6 +44,7 @@
 
 ### done
 
+- add userpool ref to private api 
 - init userpools if private api
 - helpers to create apis
 - add APIs if public, private 

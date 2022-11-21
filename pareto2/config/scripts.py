@@ -90,15 +90,13 @@ class Scripts(list):
                     "endpoints": [],
                     "stage": {"name": stagename},
                     "auth-type": "open"}
-        """
-        - change auth-type to cognito and add pool reference
-        """
         def init_private(apiname):
             return {"name": apiname,
                     "type": "api",
                     "endpoints": [],
                     "stage": {"name": stagename},
-                    "auth-type": "open"}
+                    "userpool": "api",
+                    "auth-type": "cognito"}
         def init_api(apiname):
             for pat, fn in [("public", init_public),
                             ("private", init_private)]:
