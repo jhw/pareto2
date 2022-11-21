@@ -1,11 +1,10 @@
 ### short
 
-- scripts class
-- aggregate buckets, tables across scripts
-- add buckets, tables config
+- parameter defaults
 
 - infra schema validation
 - apis given endpoint parents
+- action layers
 - action environment variables 
 - action events
 - action callbacks
@@ -50,6 +49,10 @@
 
 ### done
 
+- streaming table
+- scripts class
+- aggregate buckets, tables across scripts
+- add buckets, tables config
 - filter environment variables
 - add bucketname, tablename os.environ
 - script.partition
