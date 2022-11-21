@@ -1,11 +1,10 @@
 ### short
 
-- remove layers and environments
 - populate action env variables
 
+- ext components -> iterate over directory
 - action callbacks
 - table indexes
-- ext components -> iterate over directory
 - secrets
 - client migration script
 
@@ -48,6 +47,7 @@
 
 ### done
 
+- remove layers and environments
 - action invocation types
 - initialise actions after apis
 - attach endpoints to apis 

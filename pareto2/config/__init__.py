@@ -1,7 +1,6 @@
 
 from pareto2.config.callbacks import Callbacks
 from pareto2.config.components import Components
-from pareto2.config.environment import Environment
 from pareto2.config.parameters import Parameters
 from pareto2.config.scripts import Scripts
 
@@ -45,8 +44,7 @@ class Config(dict):
         dict.__init__(self,
                       {"parameters": Parameters(ParameterDefaults),
                        "components": Components(),
-                       "callbacks": Callbacks(),
-                       "env": Environment()})
+                       "callbacks": Callbacks()})
 
     @property
     def parameters(self):
