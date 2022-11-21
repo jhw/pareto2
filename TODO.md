@@ -1,11 +1,28 @@
 ### short
 
+- remove all validation code 
+- review and document existing expansions - layers, permissions, bindings/type inferences, one more 
+- remove existing expansions 
+- rename DSL as config
+- separate config module into per class modules 
+- replace demop.yaml with demo scripts
+- new script class
+- add schema validation for events, endpoint, callbacks 
+- filter environment variables 
+- add buckets, tables
+- filter action endpoints 
+- add APIs for defined endpoints, userpool for private apis 
+- create named action for each lambda 
+- add action environment variables 
+- add action events if they exist
+- add action callbacks if exist 
+- add api endpoints if endpoints exists 
+
 ### medium
 
-- dsl __main__ demo.yaml routine is not covering bindings validation
-
-- [paretocli] refactor push_artifacts so expand() takes config.env
-- [expander] refactor templater so expand() takes config.env
+- topics could be inferred from env variables 
+- suspect secrets can be inferred from env variables also 
+- could iterate over ext directory to add custom components
 
 ### long
 
@@ -23,6 +40,7 @@
 
 ### done
 
+- branch 0-4
 - populate layer versions should use self.env and shouldnt need env passing to it
 - layer population should be part of expansion routine
   - layer population should take entire env struct
