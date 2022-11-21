@@ -1,7 +1,5 @@
 ### short
 
-- where is the action env variable inference code ?
-
 - rename DSL as config
 - separate config module into per class modules 
 - replace demo.yaml with demo scripts
@@ -16,6 +14,19 @@
 - add action events if they exist
 - add action callbacks if exist 
 - add api endpoints if endpoints exists 
+
+### paretocli
+
+- simplify push_artifacts
+  - remove action env variables
+  - remove permisison inference
+  - remove schema validation?
+
+### expander
+
+- remove preprocessor schema validation
+- remove templater action env variables
+- remove templater permisison inference
 
 ### medium
 
@@ -39,6 +50,7 @@
 
 ### done
 
+- where is the action env variable inference code ?
 - remove existing expansions 
 - review and document existing expansions - layers, permissions, bindings/type inferences, one more 
 - remove all validation code 
