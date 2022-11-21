@@ -1,6 +1,5 @@
 ### short
 
-- nested event source type
 - scripts method to filter APIs 
 - add APIs if public, private 
 - add userpool if private apis exist 
@@ -48,6 +47,7 @@
 
 ### done
 
+- nested event source type
 - add demo events, endpoint, layers, permissions
 - add method and API to endpoint schema as required fields, method as enum
 - add endpoint parameters and schema fields

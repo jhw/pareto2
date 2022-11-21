@@ -15,6 +15,17 @@ definitions:
         type: object
       source:
         type: object
+        properties:
+          name:
+            type: string
+          type: 
+            type: string
+            enum:
+            - bucket
+            - table
+        required:
+        - name
+        - type
     required:
     - name
     additionalProperties: false
