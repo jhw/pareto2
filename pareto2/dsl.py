@@ -90,25 +90,6 @@ class Config(dict):
             layerarn=layers.lookup(ref)
             self["parameters"][key]=layerarn
                                 
-    def cross_validate_callbacks(self):
-        actionnames, errors = [action["name"]
-                               for action in self["components"].actions], []
-        for callback in self["callbacks"]:
-            if callback["action"] not in actionnames:
-                errors.append("callback %s bound to unknown action %s" % (callback["name"],
-                                                                          callback["action"]))
-        if errors!=[]:
-            raise RuntimeError("; ".join(errors))
-
-    def validate(self):
-        for attr in ["parameters",
-                     "components",
-                     "callbacks",
-                     "env"]:
-            self[attr].validate()
-        self.cross_validate_callbacks()
-        return self
-
     def expand(self):
         if "layman-api" in self["env"]:
             self.populate_layer_parameters(self["env"]["layman-api"])
@@ -151,11 +132,6 @@ class LayerArns(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
-    def validate(self, errors):
-        for k in self:
-            if not k.endswith("-layer-arn"):
-                errors.append("invalid layer key: %s" % k)
-
     @property
     def names(self):
         return ["-".join(k.split("-")[:-2])
@@ -175,11 +151,6 @@ class TopicArns(dict):
     def __init__(self, struct):
         dict.__init__(self, struct)
 
-    def validate(self, errors):
-        for k in self:
-            if not k.endswith("-topic-arn"):
-                errors.append("invalid topic key: %s" % k)
-
     @property
     def names(self):
         return ["-".join(k.split("-")[:-2])
@@ -194,26 +165,10 @@ class Parameters(dict):
     def layers(self):
         return LayerArns.initialise(self)
 
-    def validate_layers(self, errors):
-        self.layers.validate(errors)
-
     @property
     def topics(self):
         return TopicArns.initialise(self)
 
-    def validate_topics(self, errors):
-        self.topics.validate(errors)
-
-            
-    def validate(self):
-        errors=[]
-        for fn in [self.validate_layers,
-                   self.validate_topics]:
-            fn(errors)
-        if errors!=[]:
-            raise RuntimeError(", ".join(errors))
-        return self
-        
     @property
     def parameters(self):
         return {hungarorise(k):v
@@ -237,14 +192,6 @@ class Bindings(dict):
 
     def __init__(self, item={}):
         dict.__init__(self, item)
-    
-    def validate(self):
-        errors=[]
-        for k, values in self.items():
-            if len(values)!=1:
-                errors.append("%s has multiple bindings" % k)
-        if errors!=[]:
-            raise RuntimeError("; ".join(errors))
     
 class Components(list):
 
@@ -309,92 +256,8 @@ class Components(list):
                 for component in self
                 if component["type"]=="userpool"]
 
-    def validate_names(self, errors):
-        types=set([item["type"]
-                   for item in self])
-        for type in types:
-            names=[item["name"]
-                   for item in self
-                   if item["type"]==type]
-            if len(names)!=len(set(names)):
-                errors.append("%s names are not unique" % type)
-    
-    def validate_refs(self, errors):
-        def filter_refs(element, refs, attr):
-            if isinstance(element, list):
-                for subelement in element:
-                    filter_refs(subelement, refs, attr)
-            elif isinstance(element, dict):
-                for key, subelement in element.items():
-                    if key==attr:
-                        refs.add(subelement)
-                    else:
-                        filter_refs(subelement, refs, attr)
-        def validate_refs(self, attr, errors):
-            names=[item["name"]
-                   for item in getattr(self, attr)]
-            refs=set()
-            filter_refs(self, refs, attr[:-1])
-            # print (attr, names, refs)
-            for ref in refs:
-                if ref not in names:
-                    errors.append("invalid %s reference [%s]" % (attr[:-1], ref))
-        for attr in ["actions",
-                     "buckets",
-                     "tables",
-                     "topics",
-                     "userpools"]:
-            validate_refs(self, attr, errors)
-
-    def validate_action_event_sources(self, errors):
-        bucketnames=[bucket["name"] for bucket in self.buckets]        
-        tablenames=[table["name"] for table in self.tables]
-        for action in self.actions:
-            if "events" in action:
-                for event in action["events"]:
-                    if "source" in event:
-                        source=event["source"]
-                        if (source["type"]=="bucket" and
-                            source["name"] not in bucketnames):
-                            errors.append("%s/%s event has bad bucket reference: %s" % (action["name"],
-                                                                                        event["name"],
-                                                                                        source["name"]))
-                        elif (source["type"]=="table" and
-                              source["name"] not in tablenames):
-                            errors.append("%s/%s event has bad table reference: %s" % (action["name"],
-                                                                                       event["name"],
-                                                                                       source["name"]))
-                            
-            
-    def validate_api_endpoints(self, errors):
-        for api in self.apis:
-            names, paths = [], []
-            for endpoint in api["endpoints"]:
-                names.append(endpoint["name"])
-                paths.append(endpoint["path"])
-            if len(names)!=len(set(names)):
-                errors.append("%s endpoint names are not unique" % api["name"])
-            if len(paths)!=len(set(paths)):
-                errors.append("%s endpoint paths are not unique" % api["name"])
-
-    """
-    - errors are redefined at each point in the loop as some of these validation functions are conditional
-    """
-                
-    def validate(self):
-        for fn in [self.validate_names,
-                   self.validate_refs,
-                   self.validate_action_event_sources,
-                   self.validate_api_endpoints]:
-            errors=[]
-            fn(errors)
-            if errors!=[]:
-                raise RuntimeError(", ".join(errors))
-        return self
-
     def infer_invocation_types(self):
         bindings=Bindings.initialise(self)
-        bindings.validate()
         for action in self.actions:
             if (action["name"] in bindings and
                 bindings[action["name"]]=="endpoint"):
@@ -406,17 +269,11 @@ class Callbacks(list):
     def __init__(self, struct):
         list.__init__(self, struct)
 
-    def validate(self):
-        pass
-
 class Environment(dict):
 
     def __init__(self, struct):
         dict.__init__(self, struct)
 
-    def validate(self):
-        pass
-    
 if __name__=="__main__":
     try:
         import json, os, sys
@@ -433,7 +290,7 @@ if __name__=="__main__":
         from pareto2.dsl import Config
         config=Config.initialise(filename=filename)
         config["env"]["layman-api"]=laymanapi
-        config.validate().expand()
+        config.expand()
         template=config.spawn_template()
         template.init_implied_parameters()
         for validator in [template.parameters.validate,

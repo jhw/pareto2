@@ -1,6 +1,5 @@
 ### short
 
-- remove all validation code 
 - review and document existing expansions - layers, permissions, bindings/type inferences, one more 
 - remove existing expansions 
 - rename DSL as config
@@ -40,6 +39,7 @@
 
 ### done
 
+- remove all validation code 
 - branch 0-4
 - populate layer versions should use self.env and shouldnt need env passing to it
 - layer population should be part of expansion routine
