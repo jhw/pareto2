@@ -1,6 +1,6 @@
 class Parameters(dict):
 
-    def __init__(self, struct):
+    def __init__(self, struct={}):
         dict.__init__(self, struct)
 
     @property

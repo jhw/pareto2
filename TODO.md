@@ -1,8 +1,5 @@
 ### short
 
-- add basic demo handler in package
-- pass root to script
-- replace file loading with simple inline config
 - expand to walk through files based on root argument
 - new script class to parse infra from code
 - add action definition for each index file
@@ -15,6 +12,7 @@
 - action callbacks
 - action endpoints
 - action invocation types
+- layer arn population
 
 ### paretocli
 
@@ -51,6 +49,9 @@
 
 ### done
 
+- pass root to script
+- replace file loading with simple inline config
+- add basic demo handler in package
 - rename DSL as config
 - separate config module into per class modules 
 - where is the action env variable inference code ?

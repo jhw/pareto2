@@ -1,6 +1,6 @@
 class Components(list):
 
-    def __init__(self, struct):
+    def __init__(self, struct=[]):
         list.__init__(self, struct)
 
     @property

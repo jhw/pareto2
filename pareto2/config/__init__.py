@@ -2,7 +2,6 @@
 from pareto2.config.callbacks import Callbacks
 from pareto2.config.components import Components
 from pareto2.config.environment import Environment
-from pareto2.config.layers import Layers
 from pareto2.config.parameters import Parameters
 
 from pareto2.template import Template
@@ -31,17 +30,12 @@ ComponentModules={"action": pareto2.components.action,
 
 class Config(dict):
 
-    @classmethod
-    def initialise(self, filename="config.yaml"):
-        struct=yaml.safe_load(open(filename).read())
-        config=Config({"parameters": Parameters(struct["parameters"]),
-                       "components": Components(struct["components"]),
-                       "callbacks": Callbacks(struct["callbacks"]),
-                       "env": Environment(struct["env"])})
-        return config
-        
-    def __init__(self, struct):
-        dict.__init__(self, struct)
+    def __init__(self):
+        dict.__init__(self,
+                      {"parameters": Parameters(),
+                       "components": Components(),
+                       "callbacks": Callbacks(),
+                       "env": Environment()})
 
     @property
     def parameters(self):
@@ -50,25 +44,8 @@ class Config(dict):
             params.update(self[attr].parameters)
         return params
 
-    def populate_layer_parameters(self, endpoint):
-        def filter_layer_refs(actions):
-            refs=set()
-            for action in actions:
-                if "layers" in action:
-                    refs.update(set(action["layers"]))
-            return list(refs)
-        layers=Layers.initialise(endpoint)
-        refs=filter_layer_refs(self["components"].actions)
-        for ref in refs:
-            key="%s-layer-arn" % ref
-            layerarn=layers.lookup(ref)
-            self["parameters"][key]=layerarn
-
-    def expand(self):
-        """
-        if "layman-api" in self["env"]:
-            self.populate_layer_parameters(self["env"]["layman-api"])
-        """
+    def expand(self, root):
+        print (root)
         return self
     
     def add_dashboard(fn):
@@ -96,12 +73,14 @@ if __name__=="__main__":
     try:
         import os, sys
         if len(sys.argv) < 2:
-            raise RuntimeError("please enter filename")
-        filename=sys.argv[1]        
-        if not os.path.exists(filename):
+            raise RuntimeError("please enter root")
+        root=sys.argv[1]        
+        if not os.path.exists(root):
             raise RuntimeError("%s does not exist" % filename)
-        config=Config.initialise(filename=filename)
-        config.expand()
+        if not os.path.isdir(root):
+            raise RuntimeError("%s is not a directory")
+        config=Config()
+        config.expand(root)
         template=config.spawn_template()
         template.init_implied_parameters()
         print (template.render())
