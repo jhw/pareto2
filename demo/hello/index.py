@@ -1,7 +1,23 @@
 """
 infra:
-  events: []
-  endpoint: {}
+  events: 
+  - name: whatevs
+    pattern:
+      hello: world
+    source:
+      name: demo
+      type: bucket
+  endpoint: 
+    name: hello
+    api: public
+    path: hello-world
+    method: GET
+    parameters:
+    - whatevs
+  permissions:
+  - foo:bar
+  layers:
+  - pyyaml
 """
 
 import os

@@ -6,15 +6,43 @@ type: object
 definitions:
   event:
     type: object
-    properties: {}
-    required: []
-    additionalProperties: true
+    properties: 
+      name:
+        type: string
+      topic:
+        type: string
+      pattern:
+        type: object
+      source:
+        type: object
+    required:
+    - name
+    additionalProperties: false
 properties:
   endpoint:
     type: object
-    properties: {}
-    required: []
-    additionalProperties: true
+    properties: 
+      name:
+        type: string    
+      api:
+        type: string
+      method:
+        type: string
+        enum:
+        - GET
+        - POST
+      path:
+        type: string
+      parameters:
+        type: array
+      schema:
+        type: object
+    required:
+    - name
+    - api
+    - method
+    - path
+    additionalProperties: false
   events:
     type: array
     items:
@@ -24,6 +52,7 @@ properties:
   permissions:
     type: array
 required: []
+additionalProperties: false
 """)
 
 class Scripts(list):
@@ -65,7 +94,6 @@ class Scripts(list):
             topics.update({topic["name"]:topic
                            for topic in script.topics})
         return list(topics.values())
-
             
 class Script:
 
@@ -103,7 +131,7 @@ class Script:
                     if is_yaml_dict(chunk):
                         struct=parse_yaml(chunk)
                         if is_infra(struct):
-                            return struct
+                            return struct["infra"]
                 else:
                     block=[]                        
             elif inblock:
@@ -122,8 +150,14 @@ class Script:
 
     @property
     def action(self):
-        return {"name": self.action_name,
+        action={"name": self.action_name,
                 "type": "action"}
+        for attr in ["layers",
+                     "permissions",
+                     "events"]:
+            if attr in self.infra:
+                action[attr]=self.infra[attr]
+        return action
 
     @property
     def buckets(self):

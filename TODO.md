@@ -1,11 +1,6 @@
 ### short
 
-- define action before appending
-- if events, layers, permissions exist in infra, add them to actions 
-- remove extra fields option from schema root 
-- add source, topic, pattern fields to event schema 
-- add method and API to endpoint schema as required fields, method as enum
-- add endpoint pameters and schema fields 
+- nested event source type
 - scripts method to filter APIs 
 - add APIs if public, private 
 - add userpool if private apis exist 
@@ -53,6 +48,13 @@
 
 ### done
 
+- add demo events, endpoint, layers, permissions
+- add method and API to endpoint schema as required fields, method as enum
+- add endpoint parameters and schema fields
+- add source, topic, pattern fields to event schema 
+- remove extra fields option from schema root 
+- define action before appending
+- if events, layers, permissions exist in infra, add them to actions 
 - add topics as per buckets and tables 
 - infra schema validation
 - parameter defaults
