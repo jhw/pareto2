@@ -1,19 +1,24 @@
 ### short
 
-- ext components -> iterate over directory
+- clean up component main blocks
+- separate action name and action path
+- validate permission format
+
 - action callbacks
 - table indexes
 - secrets
-- client migration script
 
 ### medium
+
+- client migration script
 
 ### paretocli -> push_artifacts
 
 - remove action env variables
-- remove permisison inference
-- remove schema validation?
+- remove permissson inference
+- [remove schema validation?]
 - add layer parameter lookup
+- add ext components insertion
 
 ### expander
 
@@ -21,6 +26,7 @@
 - remove templater action env variables
 - remove templater permisison inference
 - add layer parameter lookup
+- add ext component insertion
 
 ### tiriac
 
@@ -42,6 +48,7 @@
 
 ### done
 
+- create table with empty indexes
 - populate action env variables
 - remove layers and environments
 - action invocation types

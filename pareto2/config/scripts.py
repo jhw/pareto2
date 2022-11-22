@@ -157,6 +157,10 @@ class Scripts(list):
                     return [{"name": "api",
                              "type": "userpool"}]
         return []
+
+def dehungarorise(text):
+    return "-".join([tok.lower()
+                     for tok in text.split("_")])
     
 class Script:
 
@@ -228,25 +232,23 @@ class Script:
 
     @property
     def buckets(self):
-        return [{"name": "-".join([tok.lower()
-                                   for tok in varname.split("_")[:-1]]),
+        return [{"name": dehungarorise(varname),
                  "type": "bucket"}
                 for varname in self.envvars
                 if varname.endswith("_BUCKET")]
 
     @property
     def tables(self):
-        return [{"name": "-".join([tok.lower()
-                                   for tok in varname.split("_")[:-1]]),
-                 "streaming": {}, 
+        return [{"name": dehungarorise(varname),
+                 "streaming": {},
+                 "indexes": [],
                  "type": "table"}
                 for varname in self.envvars
                 if varname.endswith("_TABLE")]
 
     @property
     def topics(self):
-        return [{"name": "-".join([tok.lower()
-                                   for tok in varname.split("_")[:-1]]),
+        return [{"name": dehungarorise(varname),
                  "type": "topic"}
                 for varname in self.envvars
                 if varname.endswith("_TOPIC")]

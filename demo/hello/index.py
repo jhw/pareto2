@@ -25,6 +25,7 @@ infra:
 import os
 
 def handler(event, context,
+            topicname=os.environ["DEMO_TOPIC"],
             tablename=os.environ["DEMO_TABLE"],
             bucketname=os.environ["DEMO_BUCKET"]):
     print (event)
