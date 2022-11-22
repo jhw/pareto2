@@ -52,18 +52,4 @@ def render_outputs(topic):
     return {H("%s-topic" % topic["name"]): {"Value": {"Ref": H("%s-topic" % topic["name"])}}}
 
 if __name__=="__main__":
-    try:
-        import os, sys
-        filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
-        if not os.path.exists(filename):
-            raise RuntimeError("%s does not exist" % filename)
-        from pareto2.dsl import Config
-        config=Config.initialise(filename=filename)
-        from pareto2.template import Template
-        template=Template()
-        for topic in config["components"].topics:
-            template.resources.update(render_resources(topic))
-            template.outputs.update(render_outputs(topic))
-        print (template.render())
-    except RuntimeError as error:
-        print ("Error: %s" % str(error))
+    pass

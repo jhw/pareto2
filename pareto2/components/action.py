@@ -241,18 +241,4 @@ def render_outputs(action):
     return {}
 
 if __name__=="__main__":
-    try:
-        import os, sys
-        filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
-        if not os.path.exists(filename):
-            raise RuntimeError("%s does not exist" % filename)
-        from pareto2.dsl import Config
-        config=Config.initialise(filename=filename)
-        from pareto2.template import Template
-        template=Template()
-        for action in config["components"].actions:
-            template.resources.update(render_resources(action))
-            template.outputs.update(render_outputs(action))
-        print (template.render())
-    except RuntimeError as error:
-        print ("Error: %s" % str(error))
+    pass

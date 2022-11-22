@@ -1,6 +1,5 @@
 ### short
 
-- clean up component main blocks
 - separate action name and action path
 - validate permission format
 
@@ -31,6 +30,7 @@
 ### tiriac
 
 - remove skel stuff
+- bundle github src credential code
 
 ### long
 
@@ -48,6 +48,7 @@
 
 ### done
 
+- clean up component main blocks
 - create table with empty indexes
 - populate action env variables
 - remove layers and environments

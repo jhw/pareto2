@@ -240,18 +240,4 @@ def render_outputs(table):
     return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}}
                                
 if __name__=="__main__":
-    try:
-        import os, sys
-        filename=sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
-        if not os.path.exists(filename):
-            raise RuntimeError("%s does not exist" % filename)
-        from pareto2.dsl import Config
-        config=Config.initialise(filename=filename)
-        from pareto2.template import Template
-        template=Template()
-        for table in config["components"].tables:
-            template.resources.update(render_resources(table))
-            template.outputs.update(render_outputs(table))
-        print (template.render())
-    except RuntimeError as error:
-        print ("Error: %s" % str(error))
+    pass
