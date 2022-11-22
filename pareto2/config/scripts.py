@@ -213,7 +213,22 @@ class Script:
         self.body=open(filename).read()
         self.envvars=self.filter_envvars(self.body)
         self.infra=self.filter_infra(self.body)
+        self.validate()
+
+    def validate(self):
         self.validate_infra()
+        if "endpoint" in self.infra:
+            self.validate_endpoint()
+
+    def validate_endpoint(self):
+        endpoint=self.infra["endpoint"]
+        if (("parameters" in endpoint and
+             "schema" in endpoint) or
+            (endpoint["method"]=="GET" and
+             "parameters" not in endpoint) or
+            (endpoint["method"]=="POST" and
+             "schema" not in endpoint)):
+            raise RuntimeError("%s endpoint is mis- configured" % self.filename)
 
     def validate_infra(self, schema=InfraSchema):
         try:

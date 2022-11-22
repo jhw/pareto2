@@ -2,7 +2,6 @@
 
 - attach indexes to table
 - render secret components > convert value to values
-- validate GET+params or POST+schema
 - action callbacks
 
 ### medium
@@ -50,6 +49,7 @@
 
 ### done
 
+- validate GET+params or POST+schema
 - index requires table attribute
 - add secret to infra
 - add index to infra
