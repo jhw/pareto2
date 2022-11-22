@@ -278,7 +278,6 @@ class Script:
     def action_path(self):
         return "-".join(self.filename.split("/")[:-1])
 
-
     @property
     def action(self):
         action={"name": self.action_name,

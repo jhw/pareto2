@@ -1,8 +1,9 @@
 ### short
 
-- attach indexes to table
 - render secret components > convert value to values
-- action callbacks
+
+- add callbacks to infra schema
+- render callback components
 
 ### medium
 
@@ -49,6 +50,7 @@
 
 ### done
 
+- attach indexes to table
 - validate GET+params or POST+schema
 - index requires table attribute
 - add secret to infra
