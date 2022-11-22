@@ -1,6 +1,6 @@
 ### short
 
-- separate action name and action path
+- abstract endpoint attachment
 - validate permission format
 
 - action callbacks
@@ -48,6 +48,7 @@
 
 ### done
 
+- separate action name and action path
 - clean up component main blocks
 - create table with empty indexes
 - populate action env variables

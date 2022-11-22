@@ -213,11 +213,17 @@ class Script:
 
     @property
     def action_name(self):
+        return "-".join(self.filename.split("/")[1:-1])
+    
+    @property
+    def action_path(self):
         return "-".join(self.filename.split("/")[:-1])
+
 
     @property
     def action(self):
         action={"name": self.action_name,
+                "path": self.action_path,            
                 "type": "action"}
         for attr in ["layers",
                      "permissions",
