@@ -2,7 +2,6 @@
 
 - add callbacks to infra schema
 - render callback components
-
 - client migration script
 
 ### medium
