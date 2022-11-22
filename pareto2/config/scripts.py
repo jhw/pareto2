@@ -38,11 +38,26 @@ definitions:
         type: string
         enum:
         - S
+    required:
+    - name
+    - type
+    additionalProperties: false
   layer:
     type: string
   permission:
     type: string
     pattern: "^\\\\w+\\\\:\\\\w+$"
+  secret:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+    required:
+    - name
+    - value
+    additionalProperties: false
 properties:
   endpoint:
     type: object
@@ -84,6 +99,10 @@ properties:
     type: array
     items:
       "$ref": "#/definitions/permission"
+  secrets:
+    type: array
+    items:
+      "$ref": "#/definitions/secret"
   size:
     type: string
     enum:

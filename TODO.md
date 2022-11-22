@@ -1,12 +1,9 @@
 ### short
 
-- add secret to infra
 - index requires table attribute
 - attach indexes to table
-- render secret components
-
+- render secret components > convert value to values
 - validate GET+params or POST+schema
-
 - action callbacks
 
 ### medium
@@ -54,6 +51,7 @@
 
 ### done
 
+- add secret to infra
 - add index to infra
 - validate permission format
 - abstract endpoint attachment
