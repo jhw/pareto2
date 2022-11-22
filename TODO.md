@@ -1,6 +1,5 @@
 ### short
 
-- index requires table attribute
 - attach indexes to table
 - render secret components > convert value to values
 - validate GET+params or POST+schema
@@ -51,6 +50,7 @@
 
 ### done
 
+- index requires table attribute
 - add secret to infra
 - add index to infra
 - validate permission format

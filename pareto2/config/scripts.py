@@ -38,9 +38,12 @@ definitions:
         type: string
         enum:
         - S
+      table:
+        type: string
     required:
     - name
     - type
+    - table
     additionalProperties: false
   layer:
     type: string

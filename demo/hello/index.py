@@ -17,6 +17,7 @@ infra:
   indexes: 
   - name: hello-index
     type: S
+    table: demo
   layers:
   - pyyaml
   permissions:
