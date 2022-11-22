@@ -101,6 +101,7 @@ class Config(dict):
             self["components"].append(action)
         self.attach_endpoints(scripts)
         self.attach_indexes(scripts)
+        self["callbacks"]+=scripts.callbacks
         return self
     
     def add_dashboard(fn):

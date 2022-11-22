@@ -1,7 +1,5 @@
 ### short
 
-- render callbacks to config
-
 ### medium
 
 - should config really be allowed to create multiple callbacks with the same type ?
@@ -47,6 +45,7 @@
 
 ### done
 
+- render callbacks to config
 - aggregate callbacks
 - add callbacks to schema with type and body
 - type is an enum with oncreate value only
