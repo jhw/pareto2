@@ -29,6 +29,15 @@ definitions:
     required:
     - name
     additionalProperties: false
+  index:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        enum:
+        - S
   layer:
     type: string
   permission:
@@ -63,6 +72,10 @@ properties:
     type: array
     items:
       "$ref": "#/definitions/event"
+  indexes:
+    type: array
+    items:
+      "$ref": "#/definitions/index"
   layers:
     type: array
     items:

@@ -14,10 +14,13 @@ infra:
     method: GET
     parameters:
     - whatevs
-  permissions:
-  - foo:bar
+  indexes: 
+  - name: hello-index
+    type: S
   layers:
   - pyyaml
+  permissions:
+  - foo:bar
   size: medium
   timeout: medium
 """

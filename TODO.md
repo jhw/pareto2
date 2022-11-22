@@ -1,9 +1,11 @@
 ### short
 
-- add index to infra
-- attach indexes to table
 - add secret to infra
+- index requires table attribute
+- attach indexes to table
 - render secret components
+
+- validate GET+params or POST+schema
 
 - action callbacks
 
@@ -41,6 +43,10 @@
 
 ### thoughts
 
+- validate schema format ?
+  - leave as free- form
+- infer GET/POST from parameters/schema?
+  - no is probably clearer not to
 - apply table defaults at root table level?
   - no because is more complex, applied at nested level
 - consider refactoring event topic, pattern as head, body?
@@ -48,6 +54,7 @@
 
 ### done
 
+- add index to infra
 - validate permission format
 - abstract endpoint attachment
 - separate action name and action path
