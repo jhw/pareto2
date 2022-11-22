@@ -4,6 +4,8 @@
 
 ### medium
 
+- should config really be allowed to create multiple callbacks with the same type ?
+
 ### paretocli -> push_artifacts
 
 - remove action env variables
@@ -45,6 +47,7 @@
 
 ### done
 
+- aggregate callbacks
 - add callbacks to schema with type and body
 - type is an enum with oncreate value only
 - body is an object

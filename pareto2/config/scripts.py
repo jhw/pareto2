@@ -228,6 +228,18 @@ class Scripts(list):
                              "type": "userpool"}]
         return []
 
+    @property
+    def callbacks(self):
+        callbacks=[]
+        for _, script in self:
+            actionname=script.action_name
+            if "callbacks" in script.infra:                
+                for callback in script.infra["callbacks"]:
+                    callback["name"]="%s-cb" % script.action_name
+                    callback["action"]=script.action_name
+                    callbacks.append(callback)
+        return callbacks
+
 def dehungarorise(text):
     return "-".join([tok.lower()
                      for tok in text.split("_")])
