@@ -1,6 +1,5 @@
 ### short
 
-- abstract endpoint attachment
 - validate permission format
 
 - action callbacks
@@ -48,6 +47,7 @@
 
 ### done
 
+- abstract endpoint attachment
 - separate action name and action path
 - clean up component main blocks
 - create table with empty indexes

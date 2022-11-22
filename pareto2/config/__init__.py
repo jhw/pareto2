@@ -53,6 +53,17 @@ class Config(dict):
             params.update(self[attr].parameters)
         return params
 
+    def attach_endpoints(self, scripts):
+        apis={api["name"]:api
+              for api in self["components"].apis}
+        for path, script in scripts:
+            if "endpoint" in script.infra:
+                endpoint=script.infra["endpoint"]
+                actionname="-".join(path.split("/")[:-1])
+                endpoint["action"]=actionname
+                api=apis[endpoint["api"]]
+                api["endpoints"].append(endpoint)
+    
     def expand(self, root):
         scripts=Scripts.initialise(root)
         for attr in ["apis",
@@ -60,19 +71,12 @@ class Config(dict):
                      "tables",
                      "userpools"]:
             self["components"]+=getattr(scripts, attr)
-        apis={api["name"]:api
-              for api in self["components"].apis}
         for path, script in scripts:
             action, envvars, = script.action, script.envvars
             if envvars!=[]:
                 action["env"]={"variables": envvars}
             self["components"].append(action)
-            if "endpoint" in script.infra:
-                endpoint=script.infra["endpoint"]
-                actionname="-".join(path.split("/")[:-1])
-                endpoint["action"]=actionname
-                api=apis[endpoint["api"]]
-                api["endpoints"].append(endpoint)
+        self.attach_endpoints(scripts)
         return self
     
     def add_dashboard(fn):
