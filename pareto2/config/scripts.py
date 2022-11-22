@@ -29,6 +29,11 @@ definitions:
     required:
     - name
     additionalProperties: false
+  layer:
+    type: string
+  permission:
+    type: string
+    pattern: "^\\\\w+\\\\:\\\\w+$"
 properties:
   endpoint:
     type: object
@@ -60,8 +65,12 @@ properties:
       "$ref": "#/definitions/event"
   layers:
     type: array
+    items:
+      "$ref": "#/definitions/layer"
   permissions:
     type: array
+    items:
+      "$ref": "#/definitions/permission"
   size:
     type: string
     enum:

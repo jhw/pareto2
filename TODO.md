@@ -1,10 +1,11 @@
 ### short
 
-- validate permission format
+- add index to infra
+- attach indexes to table
+- add secret to infra
+- render secret components
 
 - action callbacks
-- table indexes
-- secrets
 
 ### medium
 
@@ -47,6 +48,7 @@
 
 ### done
 
+- validate permission format
 - abstract endpoint attachment
 - separate action name and action path
 - clean up component main blocks
