@@ -1,9 +1,5 @@
 ### short
 
-- add callbacks to schema with type and body
-- type is an enum with oncreate value only
-- body is an object
-
 - render callbacks to config
 
 ### medium
@@ -49,6 +45,9 @@
 
 ### done
 
+- add callbacks to schema with type and body
+- type is an enum with oncreate value only
+- body is an object
 - render secret components > convert value to values
 - attach indexes to table
 - validate GET+params or POST+schema

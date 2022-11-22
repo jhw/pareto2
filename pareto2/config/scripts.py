@@ -4,6 +4,19 @@ InfraSchema=yaml.safe_load("""
 "$schema": "http://json-schema.org/draft-07/schema#"
 type: object
 definitions:
+  callback:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+        - oncreate
+      body:
+        type: object
+    required:
+    - type
+    - body
+    additionalProperties: false
   event:
     type: object
     properties: 
@@ -26,6 +39,7 @@ definitions:
         required:
         - name
         - type
+        additionalProperties: false
     required:
     - name
     additionalProperties: false
@@ -86,6 +100,10 @@ properties:
     - method
     - path
     additionalProperties: false
+  callbacks:
+    type: array
+    items:
+      "$ref": "#/definitions/callback"
   events:
     type: array
     items:

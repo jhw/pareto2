@@ -1,5 +1,9 @@
 """
 infra:
+  callbacks:
+  - type: oncreate
+    body:
+      hello: world
   events: 
   - name: whatevs
     pattern:
