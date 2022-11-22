@@ -176,6 +176,14 @@ class Scripts(list):
         return list(buckets.values())
         
     @property
+    def secrets(self):
+        secrets={}
+        for _, script in self:
+            secrets.update({secret["name"]:secret
+                           for secret in script.secrets})
+        return list(secrets.values())
+
+    @property
     def tables(self):
         tables={}
         for _, script in self:
@@ -301,6 +309,13 @@ class Script:
                 for varname in self.envvars
                 if varname.endswith("_BUCKET")]
 
+    @property
+    def secrets(self):
+        return [{"name": secret["name"],
+                 "values": [secret["value"]],
+                 "type": "secret"}
+                for secret in self.infra["secrets"]] if "secrets" in self.infra else []
+    
     @property
     def tables(self):
         return [{"name": dehungarorise(varname),

@@ -1,13 +1,11 @@
 ### short
 
-- render secret components > convert value to values
-
 - add callbacks to infra schema
 - render callback components
 
-### medium
-
 - client migration script
+
+### medium
 
 ### paretocli -> push_artifacts
 
@@ -50,6 +48,7 @@
 
 ### done
 
+- render secret components > convert value to values
 - attach indexes to table
 - validate GET+params or POST+schema
 - index requires table attribute
