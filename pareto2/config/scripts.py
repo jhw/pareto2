@@ -1,4 +1,4 @@
-import jsonschema, os, re, yaml
+import jsonschema, re, yaml
 
 InfraSchema=yaml.safe_load("""
 "$schema": "http://json-schema.org/draft-07/schema#"
@@ -141,17 +141,6 @@ additionalProperties: false
 """)
 
 class Scripts(list):
-
-    @classmethod
-    def initialise(self, root):
-        scripts=[]
-        for localroot, dirs, files in os.walk(root):
-            for filename in files:
-                if filename.endswith("index.py"):
-                    absfilename=os.path.join(localroot, filename)
-                    script=Script(absfilename)
-                    scripts.append((absfilename, script))
-        return Scripts(scripts)    
     
     def __init__(self, items=[]):
         list.__init__(self, items)
@@ -246,9 +235,9 @@ def dehungarorise(text):
     
 class Script:
 
-    def __init__(self, filename):
+    def __init__(self, filename, body):
         self.filename=filename
-        self.body=open(filename).read()
+        self.body=body
         self.envvars=self.filter_envvars(self.body)
         self.infra=self.filter_infra(self.body)
         self.validate()

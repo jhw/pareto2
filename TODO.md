@@ -1,6 +1,5 @@
 ### short
 
-- democratise expand so it takes a list of (path, text) pairs
 - iterate over extensions directory and include in config
 
 ### medium
@@ -32,6 +31,7 @@
 
 ### done
 
+- democratise expand so it takes a list of (path, text) pairs
 - render callbacks to config
 - aggregate callbacks
 - add callbacks to schema with type and body

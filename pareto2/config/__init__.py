@@ -2,7 +2,6 @@
 from pareto2.config.callbacks import Callbacks
 from pareto2.config.components import Components
 from pareto2.config.parameters import Parameters
-from pareto2.config.scripts import Scripts
 
 from pareto2.template import Template
 
@@ -86,8 +85,7 @@ class Config(dict):
                     table=tables[tablename]
                     table["indexes"].append(index)
                 
-    def expand(self, root):
-        scripts=Scripts.initialise(root)
+    def expand(self, scripts):
         for attr in ["apis",
                      "buckets",
                      "secrets",
@@ -134,9 +132,20 @@ if __name__=="__main__":
         if not os.path.exists(root):
             raise RuntimeError("%s does not exist" % filename)
         if not os.path.isdir(root):
-            raise RuntimeError("%s is not a directory")
+            raise RuntimeError("%s is not a directory")        
+        def init_scripts(root):
+            from pareto2.config.scripts import Script, Scripts
+            scripts=[]
+            for localroot, dirs, files in os.walk(root):
+                for _filename in files:
+                    if _filename.endswith("index.py"):
+                        filename=os.path.join(localroot, _filename)
+                        body=open(filename).read()
+                        script=Script(filename, body)
+                        scripts.append((filename, script))
+            return Scripts(scripts)            
         config=Config()
-        config.expand(root)
+        config.expand(init_scripts(root))
         template=config.spawn_template()
         template.init_implied_parameters()
         print (template.render())
