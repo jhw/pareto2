@@ -59,11 +59,10 @@ class Config(dict):
     def attach_endpoints(self, scripts):
         apis={api["name"]:api
               for api in self["components"].apis}
-        for path, script in scripts:
+        for script in scripts:
             if "endpoint" in script.infra:
                 endpoint=script.infra["endpoint"]
-                actionname="-".join(path.split("/")[:-1])
-                endpoint["action"]=actionname
+                endpoint["action"]=script.action_name
                 api=apis[endpoint["api"]]
                 api["endpoints"].append(endpoint)
 
@@ -75,7 +74,7 @@ class Config(dict):
     def attach_indexes(self, scripts):
         tables={table["name"]:table
                 for table in self["components"].tables}
-        for path, script in scripts:
+        for script in scripts:
             if "indexes" in script.infra:
                 indexes=script.infra["indexes"]
                 for index in indexes:
@@ -92,7 +91,7 @@ class Config(dict):
                      "tables",
                      "userpools"]:
             self["components"]+=getattr(scripts, attr)
-        for path, script in scripts:
+        for script in scripts:
             action, envvars, = script.action, script.envvars
             if envvars!=[]:
                 action["env"]={"variables": envvars}
@@ -125,16 +124,9 @@ class Config(dict):
 
 if __name__=="__main__":
     try:
-        import os, sys
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter root")
-        root=sys.argv[1]        
-        if not os.path.exists(root):
-            raise RuntimeError("%s does not exist" % filename)
-        if not os.path.isdir(root):
-            raise RuntimeError("%s is not a directory")        
+        from pareto2.config.scripts import Script, Scripts
+        import os
         def init_scripts(root):
-            from pareto2.config.scripts import Script, Scripts
             scripts=[]
             for localroot, dirs, files in os.walk(root):
                 for _filename in files:
@@ -142,10 +134,10 @@ if __name__=="__main__":
                         filename=os.path.join(localroot, _filename)
                         body=open(filename).read()
                         script=Script(filename, body)
-                        scripts.append((filename, script))
+                        scripts.append(script)
             return Scripts(scripts)            
         config=Config()
-        config.expand(init_scripts(root))
+        config.expand(init_scripts("demo"))
         template=config.spawn_template()
         template.init_implied_parameters()
         print (template.render())

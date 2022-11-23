@@ -167,7 +167,7 @@ class Scripts(list):
                     return fn(apiname)
             raise RuntimeError("no api initialiser for '%s'" % apiname)
         apis={}
-        for _, script in self:
+        for script in self:
             if "endpoint" in script.infra:
                 endpoint=script.infra["endpoint"]
                 apiname=endpoint["api"]
@@ -177,7 +177,7 @@ class Scripts(list):
     @property
     def buckets(self):
         buckets={}
-        for _, script in self:
+        for script in self:
             buckets.update({bucket["name"]:bucket
                            for bucket in script.buckets})
         return list(buckets.values())
@@ -185,7 +185,7 @@ class Scripts(list):
     @property
     def secrets(self):
         secrets={}
-        for _, script in self:
+        for script in self:
             secrets.update({secret["name"]:secret
                            for secret in script.secrets})
         return list(secrets.values())
@@ -193,7 +193,7 @@ class Scripts(list):
     @property
     def tables(self):
         tables={}
-        for _, script in self:
+        for script in self:
             tables.update({table["name"]:table
                            for table in script.tables})
         return list(tables.values())
@@ -201,14 +201,14 @@ class Scripts(list):
     @property
     def topics(self):
         topics={}
-        for _, script in self:
+        for _script in self:
             topics.update({topic["name"]:topic
                            for topic in script.topics})
         return list(topics.values())
 
     @property
     def userpools(self):
-        for _, script in self:
+        for script in self:
             if "endpoint" in script.infra:
                 endpoint=script.infra["endpoint"]
                 apiname=endpoint["api"]
@@ -220,7 +220,7 @@ class Scripts(list):
     @property
     def callbacks(self):
         callbacks=[]
-        for _, script in self:
+        for script in self:
             actionname=script.action_name
             if "callbacks" in script.infra:                
                 for callback in script.infra["callbacks"]:
