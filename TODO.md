@@ -1,24 +1,11 @@
 ### short
 
+- democratise expand so it takes a list of (path, text) pairs
+- iterate over extensions directory and include in config
+
 ### medium
 
 - should config really be allowed to create multiple callbacks with the same type ?
-
-### paretocli -> push_artifacts
-
-- remove action env variables
-- remove permissson inference
-- [remove schema validation?]
-- add layer parameter lookup
-- add ext components insertion
-
-### expander
-
-- remove preprocessor schema validation
-- remove templater action env variables
-- remove templater permisison inference
-- add layer parameter lookup
-- add ext component insertion
 
 ### tiriac
 
