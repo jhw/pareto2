@@ -1,5 +1,7 @@
 ### short
 
+- expand to initialise scripts
+
 - iterate over extensions directory and include in config
 
 ### medium

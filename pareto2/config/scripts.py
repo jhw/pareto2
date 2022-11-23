@@ -173,38 +173,29 @@ class Scripts(list):
                 apiname=endpoint["api"]
                 apis[apiname]=init_api(apiname)
         return list(apis.values())
-                
-    @property
-    def buckets(self):
-        buckets={}
+
+    def aggregate(self, attr):
+        items={}
         for script in self:
-            buckets.update({bucket["name"]:bucket
-                           for bucket in script.buckets})
-        return list(buckets.values())
+            items.update({item["name"]:item
+                          for item in getattr(script, attr)})
+        return (list(items.values()))
+        
+    @property    
+    def buckets(self):
+        return self.aggregate("buckets")
         
     @property
     def secrets(self):
-        secrets={}
-        for script in self:
-            secrets.update({secret["name"]:secret
-                           for secret in script.secrets})
-        return list(secrets.values())
+        return self.aggregate("secrets")
 
     @property
     def tables(self):
-        tables={}
-        for script in self:
-            tables.update({table["name"]:table
-                           for table in script.tables})
-        return list(tables.values())
+        return self.aggregate("tables")
 
     @property
     def topics(self):
-        topics={}
-        for _script in self:
-            topics.update({topic["name"]:topic
-                           for topic in script.topics})
-        return list(topics.values())
+        return self.aggregate("topics")
 
     @property
     def userpools(self):
