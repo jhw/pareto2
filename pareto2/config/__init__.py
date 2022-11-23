@@ -2,6 +2,7 @@
 from pareto2.config.callbacks import Callbacks
 from pareto2.config.components import Components
 from pareto2.config.parameters import Parameters
+from pareto2.config.scripts import Scripts, Script
 
 from pareto2.template import Template
 
@@ -17,7 +18,7 @@ import pareto2.components.userpool
 
 import pareto2.dashboard
 
-import yaml
+import os, yaml
 
 ComponentModules={"action": pareto2.components.action,
                   "api": pareto2.components.api,
@@ -122,22 +123,21 @@ class Config(dict):
             template.outputs.update(outputfn(component))
         return template
 
-if __name__=="__main__":
+def load_files(root):
+    items=[]
+    for localroot, dirs, files in os.walk(root):
+        for _filename in files:
+            filename=os.path.join(localroot, _filename)
+            body=open(filename).read()
+            item=(filename, body)
+            items.append(item)
+    return items
+    
+if __name__=="__main__":    
     try:
-        from pareto2.config.scripts import Script, Scripts
-        import os
-        def init_scripts(root):
-            scripts=[]
-            for localroot, dirs, files in os.walk(root):
-                for _filename in files:
-                    if _filename.endswith("index.py"):
-                        filename=os.path.join(localroot, _filename)
-                        body=open(filename).read()
-                        script=Script(filename, body)
-                        scripts.append(script)
-            return Scripts(scripts)            
         config=Config()
-        config.expand(init_scripts("demo"))
+        scripts=Scripts.initialise(load_files("demo"))
+        config.expand(scripts)
         template=config.spawn_template()
         template.init_implied_parameters()
         print (template.render())

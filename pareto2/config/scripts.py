@@ -141,6 +141,11 @@ additionalProperties: false
 """)
 
 class Scripts(list):
+
+    @classmethod
+    def initialise(self, assets):
+        return Scripts([Script(*asset)
+                        for asset in assets])
     
     def __init__(self, items=[]):
         list.__init__(self, items)

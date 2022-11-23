@@ -1,8 +1,9 @@
 ### short
 
-- expand to initialise scripts
-
-- iterate over extensions directory and include in config
+- convert demo to use hello/world
+- load_files to be able to switch directory
+- add ext to demo
+- pass ext files to expand()
 
 ### medium
 
@@ -33,6 +34,7 @@
 
 ### done
 
+- expand to initialise scripts
 - democratise expand so it takes a list of (path, text) pairs
 - render callbacks to config
 - aggregate callbacks
