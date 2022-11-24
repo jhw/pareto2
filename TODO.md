@@ -1,8 +1,5 @@
 ### short
 
-- convert demo to use hello/world
-- load_files to be able to switch directory
-
 ### medium
 
 - should config really be allowed to create multiple callbacks with the same type ?
@@ -32,6 +29,8 @@
 
 ### done
 
+- convert demo to use hello/world
+- load_files to be able to switch directory
 - add ext to demo
 - pass ext files to expand()
 - expand to initialise scripts

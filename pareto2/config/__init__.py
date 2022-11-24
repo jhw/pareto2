@@ -123,23 +123,31 @@ class Config(dict):
             template.outputs.update(outputfn(component))
         return template
 
+"""
+- load_files is separate from scripts as is implementation detail
+- important that it can effectively switch directory
+- files may be part of s3 or zip archive rather than local file system
+- assumes the tail slug of the root path is the name of the python package
+"""
+    
 def load_files(root):
-    items=[]
+    roottokens, items = root.split("/"), []
     for localroot, dirs, files in os.walk(root):
         for _filename in files:
             filename=os.path.join(localroot, _filename)
             body=open(filename).read()
-            item=(filename, body)
+            key="/".join(filename.split("/")[len(roottokens)-1:])
+            item=(key, body)
             items.append(item)
     return items
-    
+
 if __name__=="__main__":    
     try:
         config=Config()
-        scripts=Scripts.initialise(load_files("demo"))
+        scripts=Scripts.initialise(load_files("demo/hello"))
         config.expand(scripts)
         template=config.spawn_template()
         template.init_implied_parameters()
-        print (template.render())
+        # print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))
