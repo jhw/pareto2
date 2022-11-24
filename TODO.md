@@ -2,8 +2,6 @@
 
 - convert demo to use hello/world
 - load_files to be able to switch directory
-- add ext to demo
-- pass ext files to expand()
 
 ### medium
 
@@ -34,6 +32,8 @@
 
 ### done
 
+- add ext to demo
+- pass ext files to expand()
 - expand to initialise scripts
 - democratise expand so it takes a list of (path, text) pairs
 - render callbacks to config
