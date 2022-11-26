@@ -1,4 +1,3 @@
-
 from pareto2.config.callbacks import Callbacks
 from pareto2.config.components import Components
 from pareto2.config.parameters import Parameters
@@ -148,6 +147,6 @@ if __name__=="__main__":
         config.expand(scripts)
         template=config.spawn_template()
         template.init_implied_parameters()
-        # print (template.render())
+        print (template.render())
     except RuntimeError as error:
         print ("Error: %s" % str(error))

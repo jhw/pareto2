@@ -1,3 +1,5 @@
+from pareto2.components import hungarorise
+
 class Parameters(dict):
 
     def __init__(self, struct={}):

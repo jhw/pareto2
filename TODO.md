@@ -1,18 +1,5 @@
 ### short
 
-```
-Traceback (most recent call last):
-  File "/Users/jhw/work/expander/expander/pipeline/templater/index.py", line 156, in spawn_template
-    template.parameters.update_defaults(self.config.parameters)
-  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/__init__.py", line 53, in parameters
-    params.update(self[attr].parameters)
-  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/parameters.py", line 8, in parameters
-    return {hungarorise(k):v
-  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/parameters.py", line 8, in <dictcomp>
-    return {hungarorise(k):v
-NameError: name 'hungarorise' is not defined
-```
-
 - Config.initialise
 - add checks for mis-specified infra yaml
 - add handler for blank infra (or exception)
@@ -47,6 +34,19 @@ NameError: name 'hungarorise' is not defined
   - think topic, pattern probably more naturalg
 
 ### done
+
+```
+Traceback (most recent call last):
+  File "/Users/jhw/work/expander/expander/pipeline/templater/index.py", line 156, in spawn_template
+    template.parameters.update_defaults(self.config.parameters)
+  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/__init__.py", line 53, in parameters
+    params.update(self[attr].parameters)
+  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/parameters.py", line 8, in parameters
+    return {hungarorise(k):v
+  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/parameters.py", line 8, in <dictcomp>
+    return {hungarorise(k):v
+NameError: name 'hungarorise' is not defined
+```
 
 - convert demo to use hello/world
 - load_files to be able to switch directory
