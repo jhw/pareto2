@@ -75,7 +75,7 @@ class Config(dict):
     """
                 
     def attach_indexes(self, scripts):
-        tables={table["name"]:table
+        tables={"%s-table" % table["name"]:table
                 for table in self["components"].tables}
         for script in scripts:
             if "indexes" in script.infra:

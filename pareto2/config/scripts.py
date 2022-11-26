@@ -225,10 +225,6 @@ class Scripts(list):
                     callbacks.append(callback)
         return callbacks
 
-def dehungarorise(text):
-    return "-".join([tok.lower()
-                     for tok in text.split("_")])
-    
 class Script:
 
     def __init__(self, filename, body):
@@ -315,7 +311,8 @@ class Script:
 
     @property
     def buckets(self):
-        return [{"name": dehungarorise(varname),
+        return [{"name": "-".join([tok.lower()
+                                   for tok in varname.split("_")[:-1]]), # [NB :-1]
                  "type": "bucket"}
                 for varname in self.envvars
                 if varname.endswith("_BUCKET")]
@@ -329,7 +326,8 @@ class Script:
     
     @property
     def tables(self):
-        return [{"name": dehungarorise(varname),
+        return [{"name": "-".join([tok.lower()
+                                   for tok in varname.split("_")[:-1]]), # [NB :-1]
                  "streaming": {},
                  "indexes": [],
                  "type": "table"}
@@ -338,7 +336,8 @@ class Script:
 
     @property
     def topics(self):
-        return [{"name": dehungarorise(varname),
+        return [{"name": "-".join([tok.lower()
+                                   for tok in varname.split("_")[:-1]]), # [NB :-1]
                  "type": "topic"}
                 for varname in self.envvars
                 if varname.endswith("_TOPIC")]

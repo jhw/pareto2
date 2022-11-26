@@ -34,6 +34,7 @@
 
 ### done
 
+- dehungarorise is messing up bucket/table/topic names
 - add checks for mis-specified infra yaml
 - Config.initialise
 
