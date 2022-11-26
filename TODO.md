@@ -1,7 +1,5 @@
 ### short
 
-- add checks for mis-specified infra yaml
-- add handler for blank infra (or exception)
 - shouldn't need to define endpoint name in infra
 - need to check event sources for alternative source of buckets, tables
 
@@ -23,6 +21,8 @@
 
 ### thoughts
 
+- add handler for blank infra (or exception) ?
+  - not sure
 - validate schema format ?
   - leave as free- form
 - infer GET/POST from parameters/schema?
@@ -34,6 +34,7 @@
 
 ### done
 
+- add checks for mis-specified infra yaml
 - Config.initialise
 
 ```

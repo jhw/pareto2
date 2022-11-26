@@ -261,26 +261,22 @@ class Script:
             raise RuntimeError("error validating infra schema: %s" % str(error))
         
     def filter_infra(self, text):
-        def parse_yaml(text):
-            return yaml.safe_load(text)
-        def is_yaml_dict(text):
-            try:
-                struct=parse_yaml(text)
-                return isinstance(struct, dict)
-            except:
-                return False
-        def is_infra(struct):
-            return "infra" in struct
         block, inblock = [], False
         for row in text.split("\n"):
             if row.startswith('"""'):
                 inblock=not inblock
                 if not inblock:
                     chunk="\n".join(block)
-                    if is_yaml_dict(chunk):
-                        struct=parse_yaml(chunk)
-                        if is_infra(struct):
-                            return struct["infra"]
+                    struct=None
+                    try:
+                        struct=yaml.safe_load(chunk)
+                    except:
+                        pass
+                    if (isinstance(struct, dict) and
+                        "infra" in struct):
+                        return struct["infra"]
+                    elif "infra" in chunk:
+                        raise RuntimeError("mis- specified infra block")
                 else:
                     block=[]                        
             elif inblock:
