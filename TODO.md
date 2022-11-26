@@ -1,5 +1,24 @@
 ### short
 
+```
+Traceback (most recent call last):
+  File "/Users/jhw/work/expander/expander/pipeline/templater/index.py", line 156, in spawn_template
+    template.parameters.update_defaults(self.config.parameters)
+  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/__init__.py", line 53, in parameters
+    params.update(self[attr].parameters)
+  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/parameters.py", line 8, in parameters
+    return {hungarorise(k):v
+  File "/Users/jhw/work/expander/env/lib/python3.8/site-packages/pareto2/config/parameters.py", line 8, in <dictcomp>
+    return {hungarorise(k):v
+NameError: name 'hungarorise' is not defined
+```
+
+- Config.initialise
+- add checks for mis-specified infra yaml
+- add handler for blank infra (or exception)
+- shouldn't need to define endpoint name in infra
+- need to check event sources for alternative source of buckets, tables
+
 ### medium
 
 - should config really be allowed to create multiple callbacks with the same type ?
