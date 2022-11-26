@@ -1,6 +1,5 @@
 ### short
 
-- Config.initialise
 - add checks for mis-specified infra yaml
 - add handler for blank infra (or exception)
 - shouldn't need to define endpoint name in infra
@@ -34,6 +33,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- Config.initialise
 
 ```
 Traceback (most recent call last):

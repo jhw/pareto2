@@ -39,12 +39,15 @@ timeout-medium: 15
 
 class Config(dict):
 
-    def __init__(self):
+    def __init__(self,
+                 parameters=ParameterDefaults,
+                 components=[],
+                 callbacks=[]):
         dict.__init__(self,
-                      {"parameters": Parameters(ParameterDefaults),
-                       "components": Components(),
-                       "callbacks": Callbacks()})
-
+                      {"parameters": Parameters(parameters),
+                       "components": Components(components),
+                       "callbacks": Callbacks(callbacks)})
+        
     @property
     def parameters(self):
         params={}
