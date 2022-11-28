@@ -1,9 +1,11 @@
 ### short
 
-- shouldn't need to define endpoint name in infra
-- need to check event sources for alternative source of buckets, tables
+- global defaults support
+- endpoint should use path as name
 
 ### medium
+
+- look in event sources when generating tables, buckets
 
 - should config really be allowed to create multiple callbacks with the same type ?
 
@@ -21,6 +23,8 @@
 
 ### thoughts
 
+- GET endpoint should allow blank parameters ?
+  - better to be explicit
 - add handler for blank infra (or exception) ?
   - not sure
 - validate schema format ?
