@@ -12,7 +12,6 @@ infra:
       name: demo
       type: bucket
   endpoint: 
-    name: hello
     api: public
     path: hello-world
     method: GET

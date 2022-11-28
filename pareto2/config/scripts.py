@@ -79,8 +79,6 @@ properties:
   endpoint:
     type: object
     properties: 
-      name:
-        type: string    
       api:
         type: string
       method:
@@ -95,7 +93,6 @@ properties:
       schema:
         type: object
     required:
-    - name
     - api
     - method
     - path
@@ -175,6 +172,9 @@ class Scripts(list):
         for script in self:
             if "endpoint" in script.infra:
                 endpoint=script.infra["endpoint"]
+                endpoint["name"]="-".join([tok
+                                           for tok in endpoint["path"].split("/")
+                                           if tok!=''])
                 apiname=endpoint["api"]
                 apis[apiname]=init_api(apiname)
         return list(apis.values())

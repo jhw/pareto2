@@ -1,7 +1,6 @@
 ### short
 
 - global defaults support
-- endpoint should use path as name
 
 ### medium
 
@@ -38,6 +37,7 @@
 
 ### done
 
+- endpoint should use path as name
 - dehungarorise is messing up bucket/table/topic names
 - add checks for mis-specified infra yaml
 - Config.initialise
