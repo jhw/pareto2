@@ -87,7 +87,8 @@ class Config(dict):
                     table=tables[tablename]
                     table["indexes"].append(index)
                 
-    def expand(self, scripts):
+    def expand(self, scripts, globals={}):
+        self["parameters"].update(globals)
         for attr in ["apis",
                      "buckets",
                      "secrets",

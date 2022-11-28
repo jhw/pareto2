@@ -1,7 +1,5 @@
 ### short
 
-- global defaults support
-
 ### medium
 
 - look in event sources when generating tables, buckets
@@ -37,6 +35,7 @@
 
 ### done
 
+- global defaults support
 - endpoint should use path as name
 - dehungarorise is messing up bucket/table/topic names
 - add checks for mis-specified infra yaml
