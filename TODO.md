@@ -1,5 +1,8 @@
 ### short
 
+- queue
+  - follow topic binding model
+
 ### medium
 
 - look in event sources when generating tables, buckets
