@@ -28,6 +28,7 @@ infra:
   secrets:
   - name: whatevs
     value: stuff
+  topic: {}
   size: medium
   timeout: medium
 """

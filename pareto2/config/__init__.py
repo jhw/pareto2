@@ -93,6 +93,7 @@ class Config(dict):
                      "buckets",
                      "secrets",
                      "tables",
+                     "topics",
                      "userpools"]:
             self["components"]+=getattr(scripts, attr)
         for script in scripts:

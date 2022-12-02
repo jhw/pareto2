@@ -133,6 +133,9 @@ properties:
     - default
     - medium
     - long
+  topic:
+    type: object
+    additionProperties: false
 required: []
 additionalProperties: false
 """)
@@ -336,11 +339,9 @@ class Script:
 
     @property
     def topics(self):
-        return [{"name": "-".join([tok.lower()
-                                   for tok in varname.split("_")[:-1]]), # [NB :-1]
-                 "type": "topic"}
-                for varname in self.envvars
-                if varname.endswith("_TOPIC")]
+        return [{"name": self.action_name,
+                 "type": "topic",
+                 "action": self.action_name}] if "topic" in self.infra else []
     
 if __name__=="__main__":
     pass
