@@ -288,9 +288,14 @@ class Script:
                                       re.sub("\\s", "", text))
                 if tok.upper()==tok]
 
+    """
+    - have experimented with `action-name` being [1:-1] but this tends to obscure topic names [which must be bound to actions]
+    """
+    
     @property
     def action_name(self):
-        return "-".join(self.filename.split("/")[1:-1])
+        # return "-".join(self.filename.split("/")[1:-1])
+        return "-".join(self.filename.split("/")[:-1])
     
     @property
     def action_path(self):
