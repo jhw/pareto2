@@ -38,6 +38,8 @@
 
 ### done
 
+- all script errors to raise exceptions
+- add exception if no infra found
 - global defaults support
 - endpoint should use path as name
 - dehungarorise is messing up bucket/table/topic names

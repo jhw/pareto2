@@ -257,7 +257,7 @@ class Script:
             jsonschema.validate(instance=self.infra,
                                 schema=schema)
         except jsonschema.exceptions.ValidationError as error:
-            raise RuntimeError("error validating infra schema: %s" % str(error))
+            raise RuntimeError("%s error validating infra schema: %s" % (self.filename, str(error)))
         
     def filter_infra(self, text):
         block, inblock = [], False
@@ -275,12 +275,12 @@ class Script:
                         "infra" in struct):
                         return struct["infra"]
                     elif "infra" in chunk:
-                        raise RuntimeError("mis- specified infra block")
+                        raise RuntimeError("%s - mis- specified infra block" % self.filename)
                 else:
                     block=[]                        
             elif inblock:
                 block.append(row)
-        return None
+        raise RuntimeError("%s infra block not found" % self.filename)
 
     def filter_envvars(self, text):
         return [tok[1:-1]
