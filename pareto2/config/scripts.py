@@ -63,7 +63,7 @@ definitions:
     type: string
   permission:
     type: string
-    pattern: "^\\\\w+\\\\:(\\\\w+|\\\\*)$"
+    pattern: "^(\\\\w+\\\\-)*\\\\w+\\\\:(\\\\w+|\\\\*)$"
   secret:
     type: object
     properties:
