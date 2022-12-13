@@ -1,13 +1,13 @@
 ### short
 
-- queue
-  - follow topic binding model
+- http GET parameter model validation
+- events rule target ids can be local
+- look in event sources for bucket, table definitions
+- stop empty bucket, table dashboards from being deployed
 
 ### medium
 
-- look in event sources when generating tables, buckets
-
-- should config really be allowed to create multiple callbacks with the same type ?
+- queue
 
 ### tiriac
 
