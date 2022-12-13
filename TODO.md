@@ -1,7 +1,6 @@
 ### short
 
 - http GET parameter model validation
-- events rule target ids can be local
 - look in event sources for bucket, table definitions
 - stop empty bucket, table dashboards from being deployed
 
@@ -38,6 +37,7 @@
 
 ### done
 
+- events rule target ids can be local
 - all script errors to raise exceptions
 - add exception if no infra found
 - global defaults support
