@@ -1,7 +1,6 @@
 ### short
 
 - http GET parameter model validation
-- look in event sources for bucket, table definitions
 
 ### medium
 
@@ -36,6 +35,7 @@
 
 ### done
 
+- look in event sources for bucket, table definitions
 - stop empty bucket, table dashboards from being deployed
 - events rule target ids can be local
 - all script errors to raise exceptions

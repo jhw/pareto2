@@ -318,13 +318,29 @@ class Script:
         return action
 
     @property
-    def buckets(self):
-        return [{"name": "-".join([tok.lower()
-                                   for tok in varname.split("_")[:-1]]), # [NB :-1]
-                 "type": "bucket"}
+    def bucket_names_env(self):
+        return ["-".join([tok.lower()
+                          for tok in varname.split("_")[:-1]]) # [NB :-1]
                 for varname in self.envvars
                 if varname.endswith("_BUCKET")]
 
+    @property
+    def bucket_names_event(self):
+        names=set()
+        if "events" in self.infra:
+            for event in self.infra["events"]:
+                if event["source"]["type"]=="bucket":
+                    names.add(event["source"]["name"])                    
+        return names
+    
+    @property
+    def buckets(self):
+        bucketnames=set(self.bucket_names_env)
+        bucketnames.update(set(self.bucket_names_event))
+        return [{"name": bucketname,
+                "type": "bucket"}
+                for bucketname in list(bucketnames)]
+    
     @property
     def secrets(self):
         return [{"name": secret["name"],
@@ -333,15 +349,31 @@ class Script:
                 for secret in self.infra["secrets"]] if "secrets" in self.infra else []
     
     @property
-    def tables(self):
-        return [{"name": "-".join([tok.lower()
-                                   for tok in varname.split("_")[:-1]]), # [NB :-1]
-                 "streaming": {},
-                 "indexes": [],
-                 "type": "table"}
+    def table_names_env(self):
+        return ["-".join([tok.lower()
+                          for tok in varname.split("_")[:-1]]) # [NB :-1]
                 for varname in self.envvars
                 if varname.endswith("_TABLE")]
 
+    @property
+    def table_names_event(self):
+        names=set()
+        if "events" in self.infra:
+            for event in self.infra["events"]:
+                if event["source"]["type"]=="table":
+                    names.add(event["source"]["name"])
+        return names
+    
+    @property
+    def tables(self):
+        tablenames=set(self.table_names_env)
+        tablenames.update(set(self.table_names_event))
+        return [{"name": tablename,
+                 "streaming": {},
+                 "indexes": [],
+                 "type": "table"}
+                for tablename in list(tablenames)]
+        
     @property
     def topics(self):
         return [{"name": self.action_name,
