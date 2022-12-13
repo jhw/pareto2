@@ -82,40 +82,39 @@ def render_dash(fn):
     return wrapped
 
 @render_dash
-def init_actions(config):
+def init_actions(actions):
     resourcename=H("dash-actions")
     widgets=[Widget.initialise("function",
                                {"Title": action["name"],
                                 "ResourceName": "${%s}" % H("%s-function" % action["name"])})
-                for action in sorted(config["components"].actions,
-                                     key=lambda x: x["name"])]    
+                for action in actions]
     return (resourcename, "actions", Widgets(widgets))
 
 @render_dash
-def init_buckets(config):
+def init_buckets(buckets):
     resourcename=H("dash-buckets")
     widgets=[Widget.initialise("function",
                                {"Title": bucket["name"],
                                 "ResourceName": "${%s}" % H("%s-bucket" % bucket["name"])})
-                for bucket in sorted(config["components"].buckets,
-                                     key=lambda x: x["name"])]    
+                for bucket in buckets]
     return (resourcename, "buckets", Widgets(widgets))
 
 @render_dash
-def init_tables(config):
+def init_tables(tables):
     resourcename=H("dash-tables")
     widgets=[Widget.initialise("function",
                                {"Title": table["name"],
                                 "ResourceName": "${%s}" % H("%s-table" % table["name"])})
-                for table in sorted(config["components"].tables,
-                                     key=lambda x: x["name"])]    
+                for table in tables]
     return (resourcename, "tables", Widgets(widgets))
 
 def render_resources(config):
-    return dict([fn(config)
-                 for fn in [init_actions,
-                            init_buckets,
-                            init_tables]])
+    return dict([fn(sorted(components,
+                           key=lambda x: x["name"]))
+                 for fn, components in [(init_actions, config["components"].actions),
+                                        (init_buckets, config["components"].buckets),
+                                        (init_tables, config["components"].tables)]
+                 if components!=[]])
 
 if __name__=="__main__":
     try:
