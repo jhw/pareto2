@@ -1,10 +1,13 @@
 ### short
 
-- http GET parameter model validation
-
 ### medium
 
 - queue
+
+### wishlist
+
+- http GET parameter model validation
+  - https://twitter.com/alexbdebrie/status/1603059764489252864?s=20&t=LI7OUEw9b5qxCIvkeP4AYQ
 
 ### tiriac
 
