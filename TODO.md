@@ -1,18 +1,16 @@
 ### short
 
-### medium
+- add queue, timer components
+- add queue, timer to list of imports
+- add queue, timer to schema options
+- add queue, timer to demos
 
-- queue
+### medium
 
 ### wishlist
 
 - http GET parameter model validation
   - https://twitter.com/alexbdebrie/status/1603059764489252864?s=20&t=LI7OUEw9b5qxCIvkeP4AYQ
-
-### tiriac
-
-- remove skel stuff
-- bundle github src credential code
 
 ### long
 
@@ -38,6 +36,7 @@
 
 ### done
 
+- add queue, timer components
 - look in event sources for bucket, table definitions
 - stop empty bucket, table dashboards from being deployed
 - events rule target ids can be local
