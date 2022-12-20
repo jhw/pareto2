@@ -1,7 +1,5 @@
 ### short
 
-- add queue, timer components
-- add queue, timer to list of imports
 - add queue, timer to schema options
 - add queue, timer to demos
 
@@ -37,6 +35,7 @@
 ### done
 
 - add queue, timer components
+- add queue, timer to list of imports
 - look in event sources for bucket, table definitions
 - stop empty bucket, table dashboards from being deployed
 - events rule target ids can be local
