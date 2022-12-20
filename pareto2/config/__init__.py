@@ -95,8 +95,10 @@ class Config(dict):
         self["parameters"].update(globals)
         for attr in ["apis",
                      "buckets",
+                     "queues",
                      "secrets",
                      "tables",
+                     "timers",
                      "topics",
                      "userpools"]:
             self["components"]+=getattr(scripts, attr)

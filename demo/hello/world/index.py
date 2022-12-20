@@ -32,6 +32,8 @@ infra:
   topic: {}
   timer: 
     rate: "1 minute"
+    body:
+      hello: world   
   size: medium
   timeout: medium
 """

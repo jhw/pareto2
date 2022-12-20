@@ -88,8 +88,11 @@ definitions:
     properties:
       rate:
         type: string
+      body:
+        type: object
     required:
     - rate
+    - body
     additionalProperties: false
 properties:
   endpoint:
@@ -214,7 +217,11 @@ class Scripts(list):
     @property    
     def buckets(self):
         return self.aggregate("buckets")
-        
+
+    @property
+    def queues(self):
+        return self.aggregate("queues")
+    
     @property
     def secrets(self):
         return self.aggregate("secrets")
@@ -223,6 +230,10 @@ class Scripts(list):
     def tables(self):
         return self.aggregate("tables")
 
+    @property
+    def timers(self):
+        return self.aggregate("timers")
+    
     @property
     def topics(self):
         return self.aggregate("topics")
@@ -362,6 +373,13 @@ class Script:
         return [{"name": bucketname,
                 "type": "bucket"}
                 for bucketname in list(bucketnames)]
+
+    @property
+    def queues(self, batchsize=1):
+        return [{"name": self.action_name,
+                 "type": "queue",
+                 "batch": self.infra["queue"]["batch"] if "batch" in self.infra["queue"] else batchsize,
+                 "action": self.action_name}] if "queue" in self.infra else []
     
     @property
     def secrets(self):
@@ -395,7 +413,15 @@ class Script:
                  "indexes": [],
                  "type": "table"}
                 for tablename in list(tablenames)]
-        
+
+    @property
+    def timers(self):
+        return [{"name": self.action_name,
+                 "type": "timer",
+                 "rate": self.infra["timer"]["rate"],
+                 "body": self.infra["timer"]["body"],
+                 "action": self.action_name}] if "timer" in self.infra else []
+    
     @property
     def topics(self):
         return [{"name": self.action_name,

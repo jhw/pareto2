@@ -1,7 +1,5 @@
 ### short
 
-- script code to bind queue, timer
-
 - auto handling of queue permissions
 
 ### medium
@@ -35,6 +33,7 @@
 
 ### done
 
+- script code to bind queue, timer
 - add queue, timer to schema options
 - add queue, timer to demos
 - add queue, timer components
