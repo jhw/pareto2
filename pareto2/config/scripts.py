@@ -64,6 +64,14 @@ definitions:
   permission:
     type: string
     pattern: "^(\\\\w+\\\\-)*\\\\w+\\\\:(\\\\w+|\\\\*)$"
+  queue:
+    type: object
+    properties:
+      batch:
+        type: integer
+    required:
+    - name
+    additionalProperties: false
   secret:
     type: object
     properties:
@@ -74,6 +82,14 @@ definitions:
     required:
     - name
     - value
+    additionalProperties: false
+  timer:
+    type: object
+    properties:
+      rate:
+        type: string
+    required:
+    - rate
     additionalProperties: false
 properties:
   endpoint:
@@ -117,6 +133,9 @@ properties:
     type: array
     items:
       "$ref": "#/definitions/permission"
+  queue:
+    type: object
+    additionProperties: false
   secrets:
     type: array
     items:
@@ -133,6 +152,9 @@ properties:
     - default
     - medium
     - long
+  timer:
+    type: object
+    additionProperties: false
   topic:
     type: object
     additionProperties: false

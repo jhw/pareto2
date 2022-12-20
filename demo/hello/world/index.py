@@ -23,12 +23,15 @@ infra:
     table: demo
   layers:
   - pyyaml
+  queue: {}
   permissions:
   - foo:bar
   secrets:
   - name: whatevs
     value: stuff
   topic: {}
+  timer: 
+    rate: "1 minute"
   size: medium
   timeout: medium
 """
@@ -36,7 +39,6 @@ infra:
 import os
 
 def handler(event, context,
-            topicname=os.environ["DEMO_TOPIC"],
             tablename=os.environ["DEMO_TABLE"],
             bucketname=os.environ["DEMO_BUCKET"]):
     print (event)

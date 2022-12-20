@@ -1,7 +1,8 @@
 ### short
 
-- add queue, timer to schema options
-- add queue, timer to demos
+- script code to bind queue, timer
+
+- auto handling of queue permissions
 
 ### medium
 
@@ -34,6 +35,8 @@
 
 ### done
 
+- add queue, timer to schema options
+- add queue, timer to demos
 - add queue, timer components
 - add queue, timer to list of imports
 - look in event sources for bucket, table definitions
