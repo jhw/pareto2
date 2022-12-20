@@ -1,6 +1,7 @@
 ### short
 
-- auto handling of queue permissions
+- remove action async/queue/apigw types
+- scripts to insert sqs permissions if queue detected
 
 ### medium
 
