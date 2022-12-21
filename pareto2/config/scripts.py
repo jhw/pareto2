@@ -290,16 +290,16 @@ class Script:
             raise RuntimeError("%s error validating infra schema: %s" % (self.filename, str(error)))
 
     def validate_bindings(self):
-        count=1
+        bindings=[]
         for attr in ["endpoint",
                      "events",
                      "queue",
                      "timer",
                      "topic"]:
             if attr in self.infra:
-                count+=1
-        if count > 1:
-            raise RuntimeError("%s action can only be bound to one of endpoint/events/queue/timer/topic" % self.filename)
+                bindings.append(attr)
+        if len(bindings) > 1:
+            raise RuntimeError("%s action cannot be bound to %s" % (self.filename, ", ".join(sorted(bindings))))
         
     def validate_endpoint(self):
         endpoint=self.infra["endpoint"]
