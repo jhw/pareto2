@@ -165,6 +165,12 @@ required: []
 additionalProperties: false
 """)
 
+SQSLookbackPermissions=yaml.safe_load("""
+- sqs:DeleteMessage
+- sqs:GetQueueAttributes
+- sqs:ReceiveMessage
+""")
+
 class Scripts(list):
 
     @classmethod
@@ -322,7 +328,7 @@ class Script:
                 if tok.upper()==tok]
 
     """
-    - have experimented with `action-name` being [1:-1] but this tends to obscure topic names [which must be bound to actions]
+    - have experimented with `action-name` being [1:-1] but this tends to obscure topic/queue/timer names [which must be bound to actions]
     """
     
     @property
@@ -335,7 +341,7 @@ class Script:
         return "-".join(self.filename.split("/")[:-1])
 
     @property
-    def action(self):
+    def action(self, sqspermissions=SQSLookbackPermissions):
         action={"name": self.action_name,
                 "path": self.action_path,            
                 "type": "action"}
@@ -346,8 +352,11 @@ class Script:
                      "timeout"]:
             if attr in self.infra:
                 action[attr]=self.infra[attr]
+        if "queue" in self.infra:
+            action.setdefault("permissions", [])
+            action["permissions"]+=sqspermissions
         if "endpoint" in self.infra:
-            action["invocation-type"]="apigw"
+            action["invocation-type"]="sync"
         return action
 
     @property

@@ -4,16 +4,9 @@ from pareto2.components import resource
 
 import re
 
-AsyncPermissions=ApigwPermissions={"logs:CreateLogGroup",
-                                   "logs:CreateLogStream",
-                                   "logs:PutLogEvents"}
-
-QueuePermissions={"logs:CreateLogGroup",
-                  "logs:CreateLogStream",
-                  "logs:PutLogEvents",                 
-                  "sqs:DeleteMessage",
-                  "sqs:GetQueueAttributes",
-                  "sqs:ReceiveMessage"}
+BasePermissions={"logs:CreateLogGroup",
+                 "logs:CreateLogStream",
+                 "logs:PutLogEvents"}
 
 ActionDefaults={"size": "default",
                 "timeout": "default",
@@ -47,7 +40,7 @@ def init_function(action):
             props)
 
 @resource
-def init_function_role(action, basepermissions):
+def init_function_role(action, basepermissions=BasePermissions):
     def init_permissions(action, basepermissions):
         permissions=set(basepermissions)
         if "permissions" in action:
@@ -87,17 +80,8 @@ def init_function_role(action, basepermissions):
             "AWS::IAM::Role",
             props)
 
-def init_async_function_role(action, permissions=AsyncPermissions):
-    return init_function_role(action, basepermissions=permissions)
-
-def init_queue_function_role(action, permissions=QueuePermissions):
-    return init_function_role(action, basepermissions=permissions)
-
-def init_apigw_function_role(action, permissions=ApigwPermissions):
-    return init_function_role(action, basepermissions=permissions)
-
 @resource
-def init_async_function_event_config(action, retries=0):
+def init_function_event_config(action, retries=0):
     resourcename=H("%s-function-event-config" % action["name"])
     funcname=H("%s-function" % action["name"])
     props={"MaximumRetryAttempts": retries,
@@ -198,8 +182,8 @@ def init_event_rule_permission(action, event):
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
-               init_async_function_role,
-               init_async_function_event_config]:
+               init_function_role,
+               init_function_event_config]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
@@ -210,18 +194,10 @@ def init_async_component(action):
                 resources.append(resource)
     return resources
 
-def init_queue_component(action):
+def init_sync_component(action):
     resources=[]
     for fn in [init_function,
-               init_queue_function_role]:
-        resource=fn(action)
-        resources.append(resource)
-    return resources
-
-def init_apigw_component(action):
-    resources=[]
-    for fn in [init_function,
-               init_apigw_function_role]:
+               init_function_role]:
         resource=fn(action)
         resources.append(resource)
     return resources
