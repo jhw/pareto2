@@ -1,5 +1,9 @@
 ### short
 
+- see invocation type to sync if queue is present as well as endpoint
+- then really need check that only one of events endpoint topic queue timer can be set for a specific infra
+- which in turn means you need to expand demo 
+
 ### medium
 
 ### wishlist
