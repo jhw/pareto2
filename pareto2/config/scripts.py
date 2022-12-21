@@ -278,9 +278,29 @@ class Script:
 
     def validate(self):
         self.validate_infra()
+        self.validate_bindings()
         if "endpoint" in self.infra:
             self.validate_endpoint()
 
+    def validate_infra(self, schema=InfraSchema):
+        try:
+            jsonschema.validate(instance=self.infra,
+                                schema=schema)
+        except jsonschema.exceptions.ValidationError as error:
+            raise RuntimeError("%s error validating infra schema: %s" % (self.filename, str(error)))
+
+    def validate_bindings(self):
+        count=1
+        for attr in ["endpoint",
+                     "events",
+                     "queue",
+                     "timer",
+                     "topic"]:
+            if attr in self.infra:
+                count+=1
+        if count > 1:
+            raise RuntimeError("%s action can only be bound to one of endpoint/events/queue/timer/topic" % self.filename)
+        
     def validate_endpoint(self):
         endpoint=self.infra["endpoint"]
         if (("parameters" in endpoint and
@@ -291,13 +311,6 @@ class Script:
              "schema" not in endpoint)):
             raise RuntimeError("%s endpoint is mis- configured" % self.filename)
 
-    def validate_infra(self, schema=InfraSchema):
-        try:
-            jsonschema.validate(instance=self.infra,
-                                schema=schema)
-        except jsonschema.exceptions.ValidationError as error:
-            raise RuntimeError("%s error validating infra schema: %s" % (self.filename, str(error)))
-        
     def filter_infra(self, text):
         block, inblock = [], False
         for row in text.split("\n"):
@@ -355,7 +368,8 @@ class Script:
         if "queue" in self.infra:
             action.setdefault("permissions", [])
             action["permissions"]+=sqspermissions
-        if "endpoint" in self.infra:
+        if ("endpoint" in self.infra or
+            "queue" in self.infra):
             action["invocation-type"]="sync"
         return action
 
