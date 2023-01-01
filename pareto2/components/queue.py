@@ -10,15 +10,14 @@ def init_queue(queue):
             props)
 
 @resource
-def init_binding(queue, retries=0):
+def init_binding(queue):
     resourcename=H("%s-queue-binding" % queue["name"])
     funcname={"Ref": H("%s-function" % queue["action"])}
     sourcearn={"Fn::GetAtt": [H("%s-queue" % queue["name"]), "Arn"]}
     batchsize = 1 if "batch" not in queue else queue["batch"]    
     props={"FunctionName": funcname,
            "EventSourceArn": sourcearn,
-           "BatchSize": batchsize,
-           "MaximumRetryAttempts": retries}
+           "BatchSize": batchsize}
     return (resourcename,
             "AWS::Lambda::EventSourceMapping",
             props)
