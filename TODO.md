@@ -1,5 +1,13 @@
 ### short
 
+- fix dashboards 
+- remove user pools in favour of external pool ref
+- check for duplicate event names
+- check for no additional properties at root infra level
+  - currently silently permits permissions, layers etc to be improperly defined at the root level
+- check for empty model schema
+- apigw to output all endpoints, not just root
+
 ### medium
 
 ### wishlist
