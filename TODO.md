@@ -1,5 +1,8 @@
 ### short
 
+- separate test class into per- service modules
+- remove callbacks support
+- apigw domain name
 - fix dashboards 
 - remove user pools in favour of external pool ref
 - check for duplicate event names
