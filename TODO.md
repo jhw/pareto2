@@ -1,6 +1,5 @@
 ### short
 
-- test for inheriting from multiple test classes
 - separate test class into per- service modules
 
 ### spaas
@@ -46,6 +45,7 @@
 
 ### done
 
+- test for inheriting from multiple test classes
 - remove callbacks support
 - remove dash random components
 - which in turn means you need to expand demo 
