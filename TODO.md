@@ -1,17 +1,18 @@
 ### short
 
-- separate test class into per- service modules
 - remove callbacks support
-- apigw domain name
-- fix dashboards 
-- remove user pools in favour of external pool ref
+- separate test class into per- service modules
 - check for duplicate event names
-- check for no additional properties at root infra level
-  - currently silently permits permissions, layers etc to be improperly defined at the root level
-- check for empty model schema
-- apigw to output all endpoints, not just root
+
+### spaas
+
+- expander needs to modify dash names
 
 ### medium
+
+- apigw to output all endpoints, not just root
+- apigw domain name
+- remove user pools in favour of external pool ref
 
 ### wishlist
 
@@ -27,6 +28,8 @@
 
 ### thoughts
 
+- check for empty model schema ?
+  - not worth it
 - GET endpoint should allow blank parameters ?
   - better to be explicit
 - add handler for blank infra (or exception) ?
@@ -42,6 +45,7 @@
 
 ### done
 
+- remove dash random components
 - which in turn means you need to expand demo 
 - then really need check that only one of events endpoint topic queue timer can be set for a specific infra
 - see invocation type to sync if queue is present as well as endpoint

@@ -1,6 +1,6 @@
 from pareto2.components import hungarorise as H
 
-import json, random, yaml
+import json, yaml
 
 PageWidth=24
 
@@ -67,13 +67,10 @@ class Widgets(list):
         return {"widgets": widgets}
 
 def render_dash(fn):
-    def random_id(n=16):
-        return "".join([chr(65+int(26*random.random()))
-                        for i in range(n)])
     def wrapped(md):        
         resourcename, dashprefix, widgets = fn(md)
         dashbody={"Fn::Sub": json.dumps(widgets.render())}
-        dashname="%s-%s" % (dashprefix, random_id())
+        dashname="%s" % dashprefix
         props={"DashboardBody":  dashbody,
                "DashboardName": dashname}
         struct={"Type": "AWS::CloudWatch::Dashboard",
