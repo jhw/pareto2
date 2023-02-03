@@ -1,9 +1,8 @@
 ### short
 
-- separate test class into per- service modules
-
 ### spaas
 
+- ensure tests are consistent with new disaggregated test class structure
 - expander needs to modify dash names
 
 ### medium
@@ -45,6 +44,7 @@
 
 ### done
 
+- separate test class into per- service modules
 - test for inheriting from multiple test classes
 - remove callbacks support
 - remove dash random components
