@@ -4,19 +4,6 @@ InfraSchema=yaml.safe_load("""
 "$schema": "http://json-schema.org/draft-07/schema#"
 type: object
 definitions:
-  callback:
-    type: object
-    properties:
-      type:
-        type: string
-        enum:
-        - oncreate
-      body:
-        type: object
-    required:
-    - type
-    - body
-    additionalProperties: false
   event:
     type: object
     properties: 
@@ -116,10 +103,6 @@ properties:
     - method
     - path
     additionalProperties: false
-  callbacks:
-    type: array
-    items:
-      "$ref": "#/definitions/callback"
   events:
     type: array
     items:
@@ -254,18 +237,6 @@ class Scripts(list):
                     return [{"name": "api",
                              "type": "userpool"}]
         return []
-
-    @property
-    def callbacks(self):
-        callbacks=[]
-        for script in self:
-            actionname=script.action_name
-            if "callbacks" in script.infra:                
-                for callback in script.infra["callbacks"]:
-                    callback["name"]="%s-cb" % script.action_name
-                    callback["action"]=script.action_name
-                    callbacks.append(callback)
-        return callbacks
 
 class Script:
 

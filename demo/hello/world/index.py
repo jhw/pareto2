@@ -1,9 +1,5 @@
 """
 infra:
-  callbacks:
-  - type: oncreate
-    body:
-      hello: world
   indexes: 
   - name: hello-index
     type: S

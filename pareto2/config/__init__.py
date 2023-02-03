@@ -1,4 +1,3 @@
-from pareto2.config.callbacks import Callbacks
 from pareto2.config.components import Components
 from pareto2.config.parameters import Parameters
 from pareto2.config.scripts import Scripts, Script
@@ -45,12 +44,10 @@ class Config(dict):
 
     def __init__(self,
                  parameters=ParameterDefaults,
-                 components=[],
-                 callbacks=[]):
+                 components=[]):
         dict.__init__(self,
                       {"parameters": Parameters(parameters),
-                       "components": Components(components),
-                       "callbacks": Callbacks(callbacks)})
+                       "components": Components(components)})
         
     @property
     def parameters(self):
@@ -109,7 +106,6 @@ class Config(dict):
             self["components"].append(action)
         self.attach_endpoints(scripts)
         self.attach_indexes(scripts)
-        self["callbacks"]+=scripts.callbacks
         return self
     
     def add_dashboard(fn):

@@ -1,8 +1,8 @@
 ### short
 
-- remove callbacks support
-- separate test class into per- service modules
 - check for duplicate event names
+- test for inheriting from multiple test classes
+- separate test class into per- service modules
 
 ### spaas
 
@@ -45,6 +45,7 @@
 
 ### done
 
+- remove callbacks support
 - remove dash random components
 - which in turn means you need to expand demo 
 - then really need check that only one of events endpoint topic queue timer can be set for a specific infra
