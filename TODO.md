@@ -1,6 +1,5 @@
 ### short
 
-- check for duplicate event names
 - test for inheriting from multiple test classes
 - separate test class into per- service modules
 
@@ -28,6 +27,8 @@
 
 ### thoughts
 
+- check for duplicate event names ?
+  - probably not much necessary
 - check for empty model schema ?
   - not worth it
 - GET endpoint should allow blank parameters ?
