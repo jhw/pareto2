@@ -13,15 +13,15 @@ class Pareto2LambdaTestMixin:
                      funcname=FunctionName,
                      rolename=RoleName,
                      policydoc=PolicyDocument):
-        self.iam, self.L = boto3.client("iam"), boto3.client("lambda")
+        self.iam, self.lambdas = boto3.client("iam"), boto3.client("lambda")
         self.funcrole=self.iam.create_role(RoleName=rolename,
                                            AssumeRolePolicyDocument=json.dumps(policydoc))["Role"]
-        self.function=self.L.create_function(FunctionName=funcname,
-                                             Role=self.funcrole["Arn"],
-                                             Code={"ZipFile": "def handler(event, context):\n  print(\"event\")"})
+        self.function=self.lambdas.create_function(FunctionName=funcname,
+                                                   Role=self.funcrole["Arn"],
+                                                   Code={"ZipFile": "def handler(event, context):\n  print(\"event\")"})
                 
     def teardown_lambda(self):
-        self.L.delete_function(FunctionName=self.function["FunctionName"])
+        self.lambdas.delete_function(FunctionName=self.function["FunctionName"])
         self.iam.delete_role(RoleName=self.funcrole["RoleName"])
 
 if __name__=="___main__":
