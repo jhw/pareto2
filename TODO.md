@@ -1,20 +1,13 @@
 ### short
 
-### spaas
-
-- ensure tests are consistent with new disaggregated test class structure
-- expander needs to modify dash names
+- better way of testing than pareto2/config/__init__.py
+  - include coverage of pareto2/test/*
 
 ### medium
 
 - apigw to output all endpoints, not just root
 - apigw domain name
 - remove user pools in favour of external pool ref
-
-### wishlist
-
-- http GET parameter model validation
-  - https://twitter.com/alexbdebrie/status/1603059764489252864?s=20&t=LI7OUEw9b5qxCIvkeP4AYQ
 
 ### long
 
