@@ -1,17 +1,17 @@
 ### short
 
-- dump output to tmp
 - don't think users stuff is being created
-- include identity pool output
+- include identity pool output value
+- complete identity pool componets
 
 ### medium
 
-- identity pool for amplify
 - include ext/test/sqs
-- ability to validate publishing of sns message
-- feels like userpool should be named private-api not api
 - add cognito create/delete user callbacks
 - apigw static endpoint
+
+- ability to validate publishing of sns message
+- feels like userpool should be named private-api not api
 - seems inconsistent that table has an appname prefix but api does not
 - push_artifacts.py didn't seem to throw exception on bad POST schema in infa
   - problem is that endpoint schema is only required to be an object with no validation
@@ -44,6 +44,7 @@
 
 ### done
 
+- dump output to tmp
 - create skeleton identity stuff
 - separate test class into per- service modules
 - test for inheriting from multiple test classes

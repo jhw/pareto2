@@ -154,8 +154,11 @@ if __name__=="__main__":
         config.expand(scripts)
         template=config.spawn_template()
         template.init_implied_parameters()
+        if not os.path.exists("tmp"):
+            os.mkdir("tmp")
         import json
-        print (json.dumps(template.render(),
-                          indent=2))
+        with open("tmp/template.json", 'w') as f:
+            f.write(json.dumps(template.render(),                               
+                               indent=2))
     except RuntimeError as error:
         print ("Error: %s" % str(error))
