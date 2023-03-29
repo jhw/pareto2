@@ -1,5 +1,7 @@
 ### short
 
+- create skeleton identity stuff
+
 ### medium
 
 - identity pool for amplify

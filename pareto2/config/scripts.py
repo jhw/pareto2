@@ -177,7 +177,7 @@ class Scripts(list):
                     "type": "api",
                     "endpoints": [],
                     "stage": {"name": stagename},
-                    "userpool": "api",
+                    "users": "api",
                     "auth-type": "cognito"}
         def init_api(apiname):
             for pat, fn in [("public", init_public),
@@ -228,14 +228,14 @@ class Scripts(list):
         return self.aggregate("topics")
 
     @property
-    def userpools(self):
+    def userss(self):
         for script in self:
             if "endpoint" in script.infra:
                 endpoint=script.infra["endpoint"]
                 apiname=endpoint["api"]
                 if "private" in apiname:
                     return [{"name": "api",
-                             "type": "userpool"}]
+                             "type": "users"}]
         return []
 
 class Script:

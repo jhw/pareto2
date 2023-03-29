@@ -2,8 +2,8 @@ from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
 @resource
-def init_userpool(userpool):
-    resourcename=H("%s-userpool" % userpool["name"])
+def init_userpool(users):
+    resourcename=H("%s-users-userpool" % users["name"])
     passwordpolicy={"MinimumLength": 8,
                     "RequireLowercase": True,
                     "RequireNumbers": True,
@@ -23,9 +23,9 @@ def init_userpool(userpool):
             props)
 
 @resource
-def init_admin_client(userpool):
-    resourcename=H("%s-userpool-admin-client" % userpool["name"])
-    props={"UserPoolId": {"Ref": H("%s-userpool" % userpool["name"])},
+def init_userpool_admin_client(users):
+    resourcename=H("%s-users-userpool-admin-client" % users["name"])
+    props={"UserPoolId": {"Ref": H("%s-users-userpool" % users["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_ADMIN_USER_PASSWORD_AUTH",
                                  "ALLOW_REFRESH_TOKEN_AUTH"]}
@@ -34,9 +34,9 @@ def init_admin_client(userpool):
             props)
 
 @resource
-def init_web_client(userpool):
-    resourcename=H("%s-userpool-web-client" % userpool["name"])
-    props={"UserPoolId": {"Ref": H("%s-userpool" % userpool["name"])},
+def init_userpool_web_client(users):
+    resourcename=H("%s-users-userpool-web-client" % users["name"])
+    props={"UserPoolId": {"Ref": H("%s-users-userpool" % users["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_USER_SRP_AUTH",
                                  "ALLOW_REFRESH_TOKEN_AUTH"]}
@@ -44,23 +44,23 @@ def init_web_client(userpool):
             "AWS::Cognito::UserPoolClient",
             props)
 
-def render_resources(userpool):
+def render_resources(users):
     resources=[]
     for fn in [init_userpool,
-               init_admin_client,
-               init_web_client]:
-        resource=fn(userpool)
+               init_userpool_admin_client,
+               init_userpool_web_client]:
+        resource=fn(users)
         resources.append(resource)
     return dict(resources)
 
-def render_outputs(userpool):
-    userpool_={"Ref": H("%s-userpool" % userpool["name"])}
-    adminclient={"Ref": H("%s-userpool-admin-client" % userpool["name"])}
-    webclient={"Ref": H("%s-userpool-web-client" % userpool["name"])}
+def render_outputs(users):
+    users_={"Ref": H("%s-users-userpool" % users["name"])}
+    adminclient={"Ref": H("%s-users-userpool-admin-client" % users["name"])}
+    webclient={"Ref": H("%s-users-userpool-web-client" % users["name"])}
     outputs={}
-    outputs[H("%s-userpool" % userpool["name"])]={"Value": userpool_}
-    outputs[H("%s-userpool-admin-client" % userpool["name"])]={"Value": adminclient}
-    outputs[H("%s-userpool-web-client" % userpool["name"])]={"Value": webclient}
+    outputs[H("%s-users-userpool" % users["name"])]={"Value": users_}
+    outputs[H("%s-users-userpool-admin-client" % users["name"])]={"Value": adminclient}
+    outputs[H("%s-users-userpool-web-client" % users["name"])]={"Value": webclient}
     return outputs
             
 if __name__=="__main__":

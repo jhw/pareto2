@@ -1,3 +1,7 @@
+### identity pools 29/03/23
+
+- https://gist.github.com/singledigit/2c4d7232fa96d9e98a3de89cf6ebe7a5
+
 ### continuous deploymnt 03/09/22
 
 - what is you had a cloudformation watcher that watched your code, continually tried to generate a template ?

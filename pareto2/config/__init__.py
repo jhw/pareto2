@@ -14,7 +14,7 @@ import pareto2.components.secret
 import pareto2.components.table
 import pareto2.components.timer
 import pareto2.components.topic
-import pareto2.components.userpool
+import pareto2.components.users
 
 import pareto2.dashboard
 
@@ -28,7 +28,7 @@ ComponentModules={"action": pareto2.components.action,
                   "table": pareto2.components.table,
                   "timer": pareto2.components.timer,
                   "topic": pareto2.components.topic,
-                  "userpool": pareto2.components.userpool}
+                  "users": pareto2.components.users}
 
 ParameterDefaults=yaml.safe_load("""
 memory-size-default: 512
@@ -97,7 +97,7 @@ class Config(dict):
                      "tables",
                      "timers",
                      "topics",
-                     "userpools"]:
+                     "userss"]:
             self["components"]+=getattr(scripts, attr)
         for script in scripts:
             action, envvars, = script.action, script.envvars
@@ -154,6 +154,8 @@ if __name__=="__main__":
         config.expand(scripts)
         template=config.spawn_template()
         template.init_implied_parameters()
-        print (template.render())
+        import json
+        print (json.dumps(template.render(),
+                          indent=2))
     except RuntimeError as error:
         print ("Error: %s" % str(error))

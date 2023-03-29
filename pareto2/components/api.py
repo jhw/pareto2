@@ -72,7 +72,7 @@ def init_stage(api):
 def init_cognito_authorizer(api):
     resourcename=H("%s-api-authorizer" % api["name"])
     name={"Fn::Sub": "%s-api-authorizer-${AWS::StackName}" % api["name"]}
-    providerarn={"Fn::GetAtt": [H("%s-userpool" % api["userpool"]), "Arn"]}
+    providerarn={"Fn::GetAtt": [H("%s-users-userpool" % api["users"]), "Arn"]}
     props={"IdentitySource": "method.request.header.Authorization",
            "Name": name,
            "ProviderARNs": [providerarn],
