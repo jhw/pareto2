@@ -92,7 +92,7 @@ def init_unauthorized_role(user,
     policydoc=init_policy_document(groups)
     policy=[{"PolicyName": policyname,
              "PolicyDocument": policydoc}]    
-    props={"AssumeRolePolicyDoc": assumerolepolicydoc,
+    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
            "Policies": [policy]}
     return (resourcename, 
             "AWS::IAM::Role",
@@ -110,7 +110,7 @@ def init_authorized_role(user,
     policydoc=init_policy_document(groups)
     policy={"PolicyName": policyname,
             "PolicyDocument": policydoc}
-    props={"AssumeRolePolicyDoc": assumerolepolicydoc,
+    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
            "Policies": [policy]}
     return (resourcename, 
             "AWS::IAM::Role",
