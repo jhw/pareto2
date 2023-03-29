@@ -44,37 +44,25 @@ def init_userpool_web_client(user):
             "AWS::Cognito::UserPoolClient",
             props)
 
+"""
+- an identity pool shouldn't really be required; however
+  - https://github.com/aws-amplify/amplify-flutter/issues/431
+  - https://github.com/aws-amplify/amplify-flutter/issues/2779
+"""
+
 @resource
 def init_identitypool(user):
     resourcename=H("%s-user-identitypool" % user["name"])
-    props={}
+    clientid={"Ref": H("%s-user-userpool-web-client" % user["name"])}
+    providername={"Fn::GetAtt": [H("%s-user-userpool" % user["name"]),
+                                 "ProviderName"]}
+    provider={"ClientId": clientid,
+              "ProviderName": providername}
+    props={"AllowUnauthenticatedIdentities": True,
+           "CognitoIdentityProviders": [provider]}
     return (resourcename,
             "AWS::Cognito::IdentityPool",
             props)
-
-"""
-@resource
-def init_function_role(action, basepermissions=BasePermissions):
-    resourcename=H("%s-function-role" % action["name"])
-    assumerolepolicydoc={"Version": "2012-10-17",
-                         "Statement": [{"Action": "sts:AssumeRole",
-                                        "Effect": "Allow",
-                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    permissions=basepermissions
-    policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : group,
-                              "Effect": "Allow",
-                              "Resource": "*"}
-                             for group in group_permissions(permissions)]}
-    policyname={"Fn::Sub": "%s-function-role-policy-${AWS::StackName}" % action["name"]}
-    policies=[{"PolicyDocument": policydoc,
-               "PolicyName": policyname}]
-    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
-           "Policies": policies}
-    return (resourcename,
-            "AWS::IAM::Role",
-            props)
-"""
 
 def init_assume_role_policy_doc(user, typestr):
     condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H("%s-user-identitypool" % user["name"])}},
