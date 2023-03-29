@@ -1,6 +1,5 @@
 ### short
 
-- identity pool role mapping
 - compare output with gist
   - https://gist.github.com/singledigit/2c4d7232fa96d9e98a3de89cf6ebe7a5
 - compare output with amplify flutter issue
@@ -47,6 +46,7 @@
 
 ### done
 
+- identity pool role mapping
 - identity pool
 - add role names
 - merge unauthorized/authorized role code

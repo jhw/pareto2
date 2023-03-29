@@ -119,7 +119,15 @@ def init_authorized_role(user,
 @resource
 def init_identitypool_mapping(user):
     resourcename=H("%s-user-identitypool-mapping" % user["name"])
-    props={}
+    identitypoolid={"Ref": H("%s-user-identitypool" % user["name"])}
+    authrole={"Fn::GetAtt": [H("%s-user-authorized-role" % user["name"]),
+                             "Arn"]}
+    unauthrole={"Fn::GetAtt": [H("%s-user-unauthorized-role" % user["name"]),
+                               "Arn"]}
+    roles={"authenticated": authrole,
+           "unauthenticated": unauthrole}
+    props={"Roles": roles,
+           "IdentityPoolId": identitypoolid}
     return (resourcename,
             "AWS::Cognito::IdentityPoolRoleAttachment",
             props)
