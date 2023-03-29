@@ -1,6 +1,8 @@
 ### short
 
-- create skeleton identity stuff
+- dump output to tmp
+- don't think users stuff is being created
+- include identity pool output
 
 ### medium
 
@@ -42,6 +44,7 @@
 
 ### done
 
+- create skeleton identity stuff
 - separate test class into per- service modules
 - test for inheriting from multiple test classes
 - remove callbacks support

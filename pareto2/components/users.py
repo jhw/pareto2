@@ -44,11 +44,47 @@ def init_userpool_web_client(users):
             "AWS::Cognito::UserPoolClient",
             props)
 
+@resource
+def init_identitypool(users):
+    resourcename=H("%s-users-identitypool" % users["name"])
+    props={}
+    return (resourcename,
+            "AWS::Cognito::IdentityPool",
+            props)
+
+@resource
+def init_unauthorized_role(users):
+    resourcename=H("%s-users-unauthorized-role" % users["name"])
+    props={}
+    return (resourcename, 
+            "AWS::IAM::Role",
+            props)
+
+@resource
+def init_authorized_role(users):
+    resourcename=H("%s-users-authorized-role" % users["name"])
+    props={}
+    return (resourcename, 
+            "AWS::IAM::Role",
+            props)
+
+@resource
+def init_identitypool_mapping(users):
+    resourcename=H("%s-users-identitypool-mapping" % users["name"])
+    props={}
+    return (resourcename,
+            "AWS::Cognito::IdentityPoolRoleAttachment",
+            props)
+
 def render_resources(users):
     resources=[]
     for fn in [init_userpool,
                init_userpool_admin_client,
-               init_userpool_web_client]:
+               init_userpool_web_client,
+               init_identitypool,
+               init_unauthorized_role,
+               init_authorized_role,
+               init_identitypool_mapping]:
         resource=fn(users)
         resources.append(resource)
     return dict(resources)
