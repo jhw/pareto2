@@ -90,8 +90,8 @@ def init_unauthorized_role(user,
     assumerolepolicydoc=init_assume_role_policy_doc(user, "unauthenticated")
     policyname=H("%s-user-unauthorized-role-policy" % user["name"])
     policydoc=init_policy_document(groups)
-    policy=[{"PolicyName": policyname,
-             "PolicyDocument": policydoc}]    
+    policy={"PolicyName": policyname,
+            "PolicyDocument": policydoc}
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,
            "Policies": [policy]}
     return (resourcename, 
