@@ -55,31 +55,12 @@ def init_identitypool(user):
 """
 @resource
 def init_function_role(action, basepermissions=BasePermissions):
-    def init_permissions(action, basepermissions):
-        permissions=set(basepermissions)
-        if "permissions" in action:
-            permissions.update(set(action["permissions"]))
-        return sorted(list(permissions))
-    class Group(list):
-        def __init__(self, key, item=[]):
-            list.__init__(item)
-            self.key=key
-        def render(self):
-            return ["%s:*" % self.key] if "*" in self else ["%s:%s" % (self.key, value) for value in self]
-    def group_permissions(permissions):
-        groups={}
-        for permission in permissions:
-            prefix, suffix = permission.split(":")
-            groups.setdefault(prefix, Group(prefix))
-            groups[prefix].append(suffix)
-        return [group.render()
-                for group in list(groups.values())]
     resourcename=H("%s-function-role" % action["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
                                         "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    permissions=init_permissions(action, basepermissions)
+    permissions=basepermissions
     policydoc={"Version": "2012-10-17",
                "Statement": [{"Action" : group,
                               "Effect": "Allow",
@@ -95,10 +76,34 @@ def init_function_role(action, basepermissions=BasePermissions):
             props)
 """
 
+def init_assume_role_policy_doc(user, typestr):
+    condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H("%s-user-identitypool" % user["name"])}},
+               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
+    statement={"Effect": "Allow",
+               "Principal": {"Federated": "cognito-identity.amazonaws.com"},
+               "Action": ["sts:AssumeRoleWithWebIdentity"],
+               "Condition": condition}
+    return {"Version": "2012-10-17",
+            "Statement": [statement]}
+
+def init_policy_document(groups):
+    statement=[{"Effect": "Allow",
+                "Action": actions,
+                "Resource": "*"}
+               for actions in groups]
+    return {"Version": "2012-10-17",
+            "Statement": [statement]}
+
 @resource
 def init_unauthorized_role(user):
     resourcename=H("%s-user-unauthorized-role" % user["name"])
-    props={}
+    assumerolepolicydoc=init_assume_role_policy_doc(user, "unauthenticated")
+    policydoc=init_policy_document([["mobileanalytics:PutEvents",
+                                     "cognito-sync:*"]])
+    policy=[{"PolicyName": None,
+             "PolicyDocument": policydoc}]    
+    props={"AssumeRolePolicyDoc": assumerolepolicydoc,
+           "Policies": [policy]}
     return (resourcename, 
             "AWS::IAM::Role",
             props)
@@ -106,7 +111,15 @@ def init_unauthorized_role(user):
 @resource
 def init_authorized_role(user):
     resourcename=H("%s-user-authorized-role" % user["name"])
-    props={}
+    assumerolepolicydoc=init_assume_role_policy_doc(user, "authenticated")
+    policydoc=init_policy_document([["mobileanalytics:PutEvents",
+                                     "cognito-sync:*",
+                                     "cognito-identity:*"],
+                                    ["lambda:InvokeFunction"]])
+    policy={"PolicyName": None,
+            "PolicyDocument": policydoc}
+    props={"AssumeRolePolicyDoc": assumerolepolicydoc,
+           "Policies": [policy]}
     return (resourcename, 
             "AWS::IAM::Role",
             props)

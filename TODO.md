@@ -1,7 +1,13 @@
 ### short
 
-- complete identity pool componets
-- merge unauthorized/authorized role code
+- add role names
+- identity pool
+- identity pool role mapping
+- compare output with gist
+  - https://gist.github.com/singledigit/2c4d7232fa96d9e98a3de89cf6ebe7a5
+- compare output with amplify flutter issue
+  - https://github.com/aws-amplify/amplify-flutter/issues/431
+- create tagged version
 
 ### medium
 
@@ -43,6 +49,7 @@
 
 ### done
 
+- merge unauthorized/authorized role code
 - borrow role creation code from action
 - include identity pool output value
 - don't think users stuff is being created
