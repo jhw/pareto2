@@ -52,6 +52,49 @@ def init_identitypool(user):
             "AWS::Cognito::IdentityPool",
             props)
 
+"""
+@resource
+def init_function_role(action, basepermissions=BasePermissions):
+    def init_permissions(action, basepermissions):
+        permissions=set(basepermissions)
+        if "permissions" in action:
+            permissions.update(set(action["permissions"]))
+        return sorted(list(permissions))
+    class Group(list):
+        def __init__(self, key, item=[]):
+            list.__init__(item)
+            self.key=key
+        def render(self):
+            return ["%s:*" % self.key] if "*" in self else ["%s:%s" % (self.key, value) for value in self]
+    def group_permissions(permissions):
+        groups={}
+        for permission in permissions:
+            prefix, suffix = permission.split(":")
+            groups.setdefault(prefix, Group(prefix))
+            groups[prefix].append(suffix)
+        return [group.render()
+                for group in list(groups.values())]
+    resourcename=H("%s-function-role" % action["name"])
+    assumerolepolicydoc={"Version": "2012-10-17",
+                         "Statement": [{"Action": "sts:AssumeRole",
+                                        "Effect": "Allow",
+                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
+    permissions=init_permissions(action, basepermissions)
+    policydoc={"Version": "2012-10-17",
+               "Statement": [{"Action" : group,
+                              "Effect": "Allow",
+                              "Resource": "*"}
+                             for group in group_permissions(permissions)]}
+    policyname={"Fn::Sub": "%s-function-role-policy-${AWS::StackName}" % action["name"]}
+    policies=[{"PolicyDocument": policydoc,
+               "PolicyName": policyname}]
+    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+           "Policies": policies}
+    return (resourcename,
+            "AWS::IAM::Role",
+            props)
+"""
+
 @resource
 def init_unauthorized_role(user):
     resourcename=H("%s-user-unauthorized-role" % user["name"])
@@ -90,13 +133,13 @@ def render_resources(user):
     return dict(resources)
 
 def render_outputs(user):
-    user_={"Ref": H("%s-user-userpool" % user["name"])}
-    adminclient={"Ref": H("%s-user-userpool-admin-client" % user["name"])}
-    webclient={"Ref": H("%s-user-userpool-web-client" % user["name"])}
     outputs={}
-    outputs[H("%s-user-userpool" % user["name"])]={"Value": user_}
-    outputs[H("%s-user-userpool-admin-client" % user["name"])]={"Value": adminclient}
-    outputs[H("%s-user-userpool-web-client" % user["name"])]={"Value": webclient}
+    for suffix in ["userpool",
+                   "userpool-admin-client",
+                   "userpool-web-client",
+                   "identitypool"]:
+        attr=H("%s-user-%s" % (user["name"], suffix))
+        outputs[attr]={"Value": {"Ref": attr}}
     return outputs
             
 if __name__=="__main__":

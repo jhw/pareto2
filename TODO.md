@@ -1,7 +1,7 @@
 ### short
 
-- include identity pool output value
 - complete identity pool componets
+- merge unauthorized/authorized role code
 
 ### medium
 
@@ -43,6 +43,8 @@
 
 ### done
 
+- borrow role creation code from action
+- include identity pool output value
 - don't think users stuff is being created
 - dump output to tmp
 - create skeleton identity stuff
