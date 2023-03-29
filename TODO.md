@@ -1,13 +1,17 @@
 ### short
 
-- better way of testing than pareto2/config/__init__.py
-  - include coverage of pareto2/test/*
 
 ### medium
 
-- apigw to output all endpoints, not just root
-- apigw domain name
-- remove user pools in favour of external pool ref
+- identity pool for amplify
+- include ext/test/sqs
+- ability to validate publishing of sns message
+- feels like userpool should be named private-api not api
+- add cognito create/delete user callbacks
+- apigw static endpoint
+- seems inconsistent that table has an appname prefix but api does not
+- push_artifacts.py didn't seem to throw exception on bad POST schema in infa
+  - problem is that endpoint schema is only required to be an object with no validation
 
 ### long
 
