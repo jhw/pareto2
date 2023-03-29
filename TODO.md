@@ -1,9 +1,5 @@
 ### short
 
-- compare output with gist
-  - https://gist.github.com/singledigit/2c4d7232fa96d9e98a3de89cf6ebe7a5
-- compare output with amplify flutter issue
-  - https://github.com/aws-amplify/amplify-flutter/issues/431
 - create tagged version
 
 ### medium
@@ -45,6 +41,12 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- compare output with amplify flutter issue
+  - https://github.com/aws-amplify/amplify-flutter/issues/431
+
+- compare output with gist
+  - https://gist.github.com/singledigit/2c4d7232fa96d9e98a3de89cf6ebe7a5
 
 - identity pool role mapping
 - identity pool
