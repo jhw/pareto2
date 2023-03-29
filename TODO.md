@@ -1,6 +1,5 @@
 ### short
 
-- add role names
 - identity pool
 - identity pool role mapping
 - compare output with gist
@@ -49,6 +48,7 @@
 
 ### done
 
+- add role names
 - merge unauthorized/authorized role code
 - borrow role creation code from action
 - include identity pool output value

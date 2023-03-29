@@ -95,12 +95,14 @@ def init_policy_document(groups):
             "Statement": [statement]}
 
 @resource
-def init_unauthorized_role(user):
+def init_unauthorized_role(user,
+                           groups=[["mobileanalytics:PutEvents",
+                                    "cognito-sync:*"]]):
     resourcename=H("%s-user-unauthorized-role" % user["name"])
     assumerolepolicydoc=init_assume_role_policy_doc(user, "unauthenticated")
-    policydoc=init_policy_document([["mobileanalytics:PutEvents",
-                                     "cognito-sync:*"]])
-    policy=[{"PolicyName": None,
+    policyname=H("%s-user-unauthorized-role-policy" % user["name"])
+    policydoc=init_policy_document(groups)
+    policy=[{"PolicyName": policyname,
              "PolicyDocument": policydoc}]    
     props={"AssumeRolePolicyDoc": assumerolepolicydoc,
            "Policies": [policy]}
@@ -109,14 +111,16 @@ def init_unauthorized_role(user):
             props)
 
 @resource
-def init_authorized_role(user):
+def init_authorized_role(user,
+                         groups=[["mobileanalytics:PutEvents",
+                                  "cognito-sync:*",
+                                  "cognito-identity:*"],
+                                 ["lambda:InvokeFunction"]]):
     resourcename=H("%s-user-authorized-role" % user["name"])
     assumerolepolicydoc=init_assume_role_policy_doc(user, "authenticated")
-    policydoc=init_policy_document([["mobileanalytics:PutEvents",
-                                     "cognito-sync:*",
-                                     "cognito-identity:*"],
-                                    ["lambda:InvokeFunction"]])
-    policy={"PolicyName": None,
+    policyname=H("%s-user-authorized-role-policy" % user["name"])
+    policydoc=init_policy_document(groups)
+    policy={"PolicyName": policyname,
             "PolicyDocument": policydoc}
     props={"AssumeRolePolicyDoc": assumerolepolicydoc,
            "Policies": [policy]}
