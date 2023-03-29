@@ -56,10 +56,10 @@ class Components(list):
                 if component["type"]=="topic"]
 
     @property
-    def userss(self):
+    def users(self):
         return [component
                 for component in self
-                if component["type"]=="users"]
+                if component["type"]=="user"]
 
 if __name__=="__main__":
     pass

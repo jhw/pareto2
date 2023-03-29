@@ -1,6 +1,5 @@
 ### short
 
-- don't think users stuff is being created
 - include identity pool output value
 - complete identity pool componets
 
@@ -44,6 +43,7 @@
 
 ### done
 
+- don't think users stuff is being created
 - dump output to tmp
 - create skeleton identity stuff
 - separate test class into per- service modules
