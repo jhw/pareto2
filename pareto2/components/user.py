@@ -67,20 +67,20 @@ def init_identitypool(user):
 def init_assume_role_policy_doc(user, typestr):
     condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H("%s-user-identitypool" % user["name"])}},
                "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
-    statement={"Effect": "Allow",
-               "Principal": {"Federated": "cognito-identity.amazonaws.com"},
-               "Action": ["sts:AssumeRoleWithWebIdentity"],
-               "Condition": condition}
+    statement=[{"Effect": "Allow",
+                "Principal": {"Federated": "cognito-identity.amazonaws.com"},
+                "Action": ["sts:AssumeRoleWithWebIdentity"],
+                "Condition": condition}]
     return {"Version": "2012-10-17",
-            "Statement": [statement]}
+            "Statement": statement}
 
 def init_policy_document(groups):
     statement=[{"Effect": "Allow",
-                "Action": actions,
+                "Action": group,
                 "Resource": "*"}
-               for actions in groups]
+               for group in groups]
     return {"Version": "2012-10-17",
-            "Statement": [statement]}
+            "Statement": statement}
 
 @resource
 def init_unauthorized_role(user,
