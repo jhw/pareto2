@@ -1,11 +1,10 @@
 ### short
 
-- create tagged version
+- add cognito create/delete user callbacks
 
 ### medium
 
 - include ext/test/sqs
-- add cognito create/delete user callbacks
 - apigw static endpoint
 
 - ability to validate publishing of sns message
@@ -41,6 +40,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- create tagged version
 
 - compare output with amplify flutter issue
   - https://github.com/aws-amplify/amplify-flutter/issues/431
