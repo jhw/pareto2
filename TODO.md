@@ -1,6 +1,5 @@
 ### short
 
-- include ext/test/sqs
 - :64 length check for event rule names
 - check allow extra parameters at root level in scripts schema
 
@@ -41,6 +40,7 @@
 
 ### done
 
+- include ext/test/sqs
 - create tagged version
 
 - compare output with amplify flutter issue
