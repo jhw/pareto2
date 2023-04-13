@@ -95,16 +95,13 @@ def init_function_event_config(action, retries=0):
 - event rule target id max length 64
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
 - don't introduce random elements in ids because this means rules will be deleted and recreated every time a stack deploys!
-- unfortunately there is no instrinsic Fn::Substring function
-- for the moment have removed AWS::StackName from target ids in the hope that they are local to the specific AWS account (they almost certainly are)
-- could probably remove the action name prefix also as targets are almost certainly local to a rule, but leave it in for the time being
 """
 
 @resource
-def _init_event_rule(action, event, pattern):
+def _init_event_rule(action, event, pattern, nmax=64):
     def init_target(action, event):
         id="%s-%s-target" % (action["name"],
-                             event["name"])
+                             event["name"])[:nmax] # NB
         arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
         return {"Id": id,
                 "Arn": arn}

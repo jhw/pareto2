@@ -1,6 +1,5 @@
 ### short
 
-- :64 length check for event rule names
 - check allow extra parameters at root level in scripts schema
 
 ### medium
@@ -40,6 +39,7 @@
 
 ### done
 
+- :64 length check for event rule names
 - include ext/test/sqs
 - create tagged version
 
