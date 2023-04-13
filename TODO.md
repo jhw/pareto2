@@ -1,12 +1,12 @@
 ### short
 
-- add cognito create/delete user callbacks
+- include ext/test/sqs
+- :64 length check for event rule names
+- check allow extra parameters at root level in scripts schema
 
 ### medium
 
-- include ext/test/sqs
 - apigw static endpoint
-
 - ability to validate publishing of sns message
 - feels like userpool should be named private-api not api
 - seems inconsistent that table has an appname prefix but api does not
