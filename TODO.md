@@ -1,12 +1,11 @@
 ### short
 
-- check allow extra parameters at root level in scripts schema
-
 ### medium
 
+- userpool should be private-api not api
 - apigw static endpoint
 - ability to validate publishing of sns message
-- feels like userpool should be named private-api not api
+
 - seems inconsistent that table has an appname prefix but api does not
 - push_artifacts.py didn't seem to throw exception on bad POST schema in infa
   - problem is that endpoint schema is only required to be an object with no validation
@@ -20,6 +19,8 @@
 
 ### thoughts
 
+- why do I get occasional permissions problems because schema seems to allow (incorrect) attributes at root level ?
+  - unclear :(
 - check for duplicate event names ?
   - probably not much necessary
 - check for empty model schema ?
