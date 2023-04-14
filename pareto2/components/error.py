@@ -20,7 +20,7 @@ def post_webhook(struct, url):
     req.add_header("Content-Type", "application/json")
     data=json.dumps(struct).encode()
     resp=request.urlopen(req, data=data)
-return resp.read()
+    return resp.read()
 
 def handler(event, context=None,
             levels=Levels,
