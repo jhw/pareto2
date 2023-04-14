@@ -3,7 +3,7 @@
 - log subscriptions
 - slack error webhook env variable
 - ensure errors is called by config initialisation
-- slack webhook as os variable
+- push_artifacts to insert slack_error_webhook
 - test by pinging polyreader /show-assets with invalid chunk index
 
 ### medium
