@@ -46,8 +46,8 @@ ErrorConfig=yaml.safe_load("""
 name: error
 type: error
 function:
-  size: small
-  timeout: short  
+  size: default
+  timeout: default
 """)
 
 class Config(dict):
