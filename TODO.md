@@ -1,10 +1,10 @@
 ### short [errors]
 
-- new errors component
-- inline function and role singletons borrowed from table
+- function size and timeout (small, short)
+- slack handling inline code
 - per-  action susbscription and permissions 
+
 - ensure errors is called by config initialisation
-- complete slack handling inline code
 - slack webhook as os variable
 - test by pinging polyreader /show-assets with invalid chunk index
 
@@ -48,6 +48,8 @@
 
 ### done
 
+- inline function and role singletons borrowed from table
+- new errors component
 - :64 length check for event rule names
 - include ext/test/sqs
 - create tagged version
