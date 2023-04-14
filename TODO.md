@@ -1,7 +1,7 @@
-### short [polyreader error testing]
+### short 
 
-- push_artifacts to insert slack_error_webhook
-- test by pinging polyreader /show-assets with invalid chunk index
+- log subscriptions to depend on error permission
+- logs event needs unpacking
 
 ### medium
 
@@ -42,6 +42,8 @@
 
 ### done
 
+- push_artifacts to insert slack_error_webhook
+- test by pinging polyreader /show-assets with invalid chunk index
 - check that errors function, role, permission exist and are correct
 - scripts to add dsl config errors entry
 - generate template
