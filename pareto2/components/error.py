@@ -1,4 +1,5 @@
 from pareto2.components import hungarorise as H
+from pareto2.components import uppercase as U
 from pareto2.components import resource
 
 EnvironmentVariables=["slack-error-webhook"]
@@ -88,6 +89,7 @@ def init_function_role(error,
 
 @resource
 def init_log_permission(error):
+    resourcename=H("%s-log-permission" % error["name"])
     funcname={"Ref": H("%s-function" % error["name"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "logs.amazonaws.com",

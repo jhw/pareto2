@@ -42,6 +42,14 @@ timeout-long: 30
 timeout-medium: 15
 """)
 
+ErrorConfig=yaml.safe_load("""
+name: error
+type: error
+function:
+  size: small
+  timeout: short  
+""")
+
 class Config(dict):
 
     def __init__(self,
@@ -90,8 +98,12 @@ class Config(dict):
                     table=tables[tablename]
                     table["indexes"].append(index)
                 
-    def expand(self, scripts, globals={}):
-        self["parameters"].update(globals)
+    def expand(self,
+               scripts,
+               globals={},
+               error=ErrorConfig):
+        self["parameters"].update(globals)                
+        self["components"].append(error)
         for attr in ["apis",
                      "buckets",
                      "queues",

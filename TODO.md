@@ -1,31 +1,26 @@
-### short [errors]
-
-- scripts to add dsl config errors entry
-- generate template
-- check that errors function, role, permission exist and are correct
+### short [polyreader error testing]
 
 - push_artifacts to insert slack_error_webhook
 - test by pinging polyreader /show-assets with invalid chunk index
 
 ### medium
 
-- userpool should be private-api not api
+- scripts
+- apigw logging
+- userpool should be named private-api
 - apigw static endpoint
 - ability to validate publishing of sns message
-
-- seems inconsistent that table has an appname prefix but api does not
-- push_artifacts.py didn't seem to throw exception on bad POST schema in infa
-  - problem is that endpoint schema is only required to be an object with no validation
 
 ### long
 
 - wheel package
-- apigw api keys
 - lambda alarms
-- apigw logging
 
 ### thoughts
 
+- seems inconsistent that table has an appname prefix but api does not
+- push_artifacts.py didn't seem to throw exception on bad POST schema in infa
+  - problem is that endpoint schema is only required to be an object with no validation
 - why do I get occasional permissions problems because schema seems to allow (incorrect) attributes at root level ?
   - unclear :(
 - check for duplicate event names ?
@@ -47,6 +42,9 @@
 
 ### done
 
+- check that errors function, role, permission exist and are correct
+- scripts to add dsl config errors entry
+- generate template
 - check that each action has a logs subscription
 - errors to be loaded by config initialisation
 - slack error webhook env variable
