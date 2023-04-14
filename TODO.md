@@ -1,8 +1,7 @@
 ### short [errors]
 
+- log subscriptions
 - slack error webhook env variable
-- per-  action susbscription and permissions 
-
 - ensure errors is called by config initialisation
 - slack webhook as os variable
 - test by pinging polyreader /show-assets with invalid chunk index
@@ -47,6 +46,8 @@
 
 ### done
 
+- log permission
+- per-  action susbscription and permissions 
 - function size and timeout (small, short)
 - slack handling inline code
 - inline function and role singletons borrowed from table

@@ -176,11 +176,28 @@ def init_event_rule_permission(action, event):
             "AWS::Lambda::Permission",
             props)
 
+"""
+  ErrorsSubscriptionFilter:
+    Properties:
+      DestinationArn:
+        Fn::GetAtt:
+          - ErrorsFunction
+          - Arn
+      FilterPattern:
+        Ref: FilterPattern
+      LogGroupName:
+        Fn::Sub:
+          - "/aws/lambda/${AddFunction}"
+          - {}
+    Type: AWS::Logs::SubscriptionFilter
+"""
+
 def init_async_component(action):
     resources=[]
     for fn in [init_function,
                init_function_role,
-               init_function_event_config]:
+               init_function_event_config,
+               init_log_subscription]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
@@ -194,7 +211,8 @@ def init_async_component(action):
 def init_sync_component(action):
     resources=[]
     for fn in [init_function,
-               init_function_role]:
+               init_function_role,
+               init_log_subscription]:
         resource=fn(action)
         resources.append(resource)
     return resources

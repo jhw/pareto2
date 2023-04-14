@@ -38,7 +38,7 @@ def init_function(error,
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % error["function"]["size"])
     timeout=H("timeout-%s" % error["function"]["timeout"])
-    variables={}
+    variables={} # include SLACK_ERROR_WEBHOOK
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},
@@ -82,10 +82,21 @@ def init_function_role(error,
             "AWS::IAM::Role",
             props)
 
+@resource
+def init_log_permission(error):
+    funcname={"Ref": H("%s-function" % error["name"])}
+    props={"Action": "lambda:InvokeFunction",
+           "Principal": "logs.amazonaws.com",
+           "FunctionName": funcname}
+    return (resourcename,
+            "AWS::Lambda::Permission",
+            props)
+
 def render_resources(error):
     resources=[]
     for fn in [init_function,
-               init_function_role]:
+               init_function_role,
+               init_log_permission]:
         resource=fn(error)
         resources.append(resource)
     return dict(resources)
