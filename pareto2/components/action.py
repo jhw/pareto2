@@ -183,9 +183,10 @@ def init_event_rule_permission(action, event):
             props)
 
 @resource
-def init_log_subscription(action,
+def init_error_log_subscription(action,
                           error=ErrorConfig,
                           filterpattern=ErrorFilterPattern):
+    resourcename=H("%s-error-log-subscription" % action["name"])
     destinationarn={"Fn::GetAtt": [H("%s-function" % error["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
     props={"DestinationArn": destinationarn,
@@ -200,7 +201,7 @@ def init_async_component(action):
     for fn in [init_function,
                init_function_role,
                init_function_event_config,
-               init_log_subscription]:
+               init_error_log_subscription]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
@@ -215,7 +216,7 @@ def init_sync_component(action):
     resources=[]
     for fn in [init_function,
                init_function_role,
-               init_log_subscription]:
+               init_error_log_subscription]:
         resource=fn(action)
         resources.append(resource)
     return resources

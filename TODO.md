@@ -1,10 +1,8 @@
 ### short [errors]
 
-- errors to be loaded by config initialisation
 - scripts to add dsl config errors entry
 - generate template
 - check that errors function, role, permission exist and are correct
-- check that each action has a logs subscription
 
 - push_artifacts to insert slack_error_webhook
 - test by pinging polyreader /show-assets with invalid chunk index
@@ -49,6 +47,8 @@
 
 ### done
 
+- check that each action has a logs subscription
+- errors to be loaded by config initialisation
 - slack error webhook env variable
 - check fn::sub will insert default second arg {}
 - error filter pattern

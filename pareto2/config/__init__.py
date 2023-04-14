@@ -9,6 +9,7 @@ from pareto2.components import hungarorise
 import pareto2.components.action
 import pareto2.components.api
 import pareto2.components.bucket
+import pareto2.components.error
 import pareto2.components.queue
 import pareto2.components.secret
 import pareto2.components.table
@@ -23,6 +24,7 @@ import os, yaml
 ComponentModules={"action": pareto2.components.action,
                   "api": pareto2.components.api,
                   "bucket": pareto2.components.bucket,
+                  "error": pareto2.components.error,
                   "queue": pareto2.components.queue,
                   "secret": pareto2.components.secret,
                   "table": pareto2.components.table,
