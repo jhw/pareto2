@@ -1,6 +1,6 @@
 ### short [errors]
 
-- function size and timeout (small, short)
+- slack error webhook env variable
 - per-  action susbscription and permissions 
 
 - ensure errors is called by config initialisation
@@ -47,6 +47,7 @@
 
 ### done
 
+- function size and timeout (small, short)
 - slack handling inline code
 - inline function and role singletons borrowed from table
 - new errors component

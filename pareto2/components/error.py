@@ -36,10 +36,8 @@ def init_function(error,
     rolename=H("%s-function-role" % error["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
-    """
-    memorysize=H("memory-size-%s" % error["streaming"]["size"])
-    timeout=H("timeout-%s" % error["streaming"]["timeout"])
-    """
+    memorysize=H("memory-size-%s" % error["function"]["size"])
+    timeout=H("timeout-%s" % error["function"]["timeout"])
     variables={}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
