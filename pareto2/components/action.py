@@ -12,6 +12,12 @@ ActionDefaults={"size": "default",
                 "timeout": "default",
                 "invocation-type": "async"}
 
+LogGroupPattern="/aws/lambda/%s"
+
+ErrorConfig={"name": "error"}
+
+ErrorFilterPattern="ERROR"
+
 @resource            
 def init_function(action):    
     resourcename=H("%s-function" % action["name"])
@@ -176,21 +182,18 @@ def init_event_rule_permission(action, event):
             "AWS::Lambda::Permission",
             props)
 
-"""
-  ErrorsSubscriptionFilter:
-    Properties:
-      DestinationArn:
-        Fn::GetAtt:
-          - ErrorsFunction
-          - Arn
-      FilterPattern:
-        Ref: FilterPattern
-      LogGroupName:
-        Fn::Sub:
-          - "/aws/lambda/${AddFunction}"
-          - {}
-    Type: AWS::Logs::SubscriptionFilter
-"""
+@resource
+def init_log_subscription(action,
+                          error=ErrorConfig,
+                          filterpattern=ErrorFilterPattern):
+    destinationarn={"Fn::GetAtt": [H("%s-function" % error["name"]), "Arn"]}
+    loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
+    props={"DestinationArn": destinationarn,
+           "FilterPattern": filterpattern,
+           "LogGroupName": loggroupname}
+    return (resourcename,
+            "AWS::Logs::SubscriptionFilter",
+            props)
 
 def init_async_component(action):
     resources=[]
