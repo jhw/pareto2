@@ -184,17 +184,19 @@ def init_event_rule_permission(action, event):
 
 @resource
 def init_error_log_subscription(action,
-                          error=ErrorConfig,
-                          filterpattern=ErrorFilterPattern):
+                                error=ErrorConfig,
+                                filterpattern=ErrorFilterPattern):
     resourcename=H("%s-error-log-subscription" % action["name"])
     destinationarn={"Fn::GetAtt": [H("%s-function" % error["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
     props={"DestinationArn": destinationarn,
            "FilterPattern": filterpattern,
            "LogGroupName": loggroupname}
+    depends=[H("%s-log-permission" % error["name"])]
     return (resourcename,
             "AWS::Logs::SubscriptionFilter",
-            props)
+            props,
+            depends)
 
 def init_async_component(action):
     resources=[]

@@ -1,7 +1,6 @@
 ### short 
 
-- log subscriptions to depend on error permission
-- logs event needs unpacking
+ logs event needs unpacking
 
 ### medium
 
@@ -42,6 +41,7 @@
 
 ### done
 
+- log subscriptions to depend on error permission
 - push_artifacts to insert slack_error_webhook
 - test by pinging polyreader /show-assets with invalid chunk index
 - check that errors function, role, permission exist and are correct
