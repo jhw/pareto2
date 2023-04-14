@@ -1,8 +1,9 @@
 ### short [errors]
 
-- slack error webhook env variable
-- ensure errors is called by config initialisation
+- ensure errors is loaded by config initialision
+- ensure error item is created by script initialisation
 - push_artifacts to insert slack_error_webhook
+
 - test by pinging polyreader /show-assets with invalid chunk index
 
 ### medium
@@ -45,6 +46,7 @@
 
 ### done
 
+- slack error webhook env variable
 - check fn::sub will insert default second arg {}
 - error filter pattern
 - log subscriptions

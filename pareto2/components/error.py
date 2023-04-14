@@ -1,6 +1,8 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
+EnvironmentVariables=["slack-error-webhook"]
+
 FunctionCode="""
 from urllib import request
 
@@ -31,6 +33,7 @@ def handler(event, context=None,
 
 @resource            
 def init_function(error,
+                  envvars=EnvironmentVariables,
                   code=FunctionCode):
     resourcename=H("%s-function" % error["name"])
     rolename=H("%s-function-role" % error["name"])
@@ -38,7 +41,8 @@ def init_function(error,
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % error["function"]["size"])
     timeout=H("timeout-%s" % error["function"]["timeout"])
-    variables={} # include SLACK_ERROR_WEBHOOK
+    variables={U(k): {"Ref": H(k)}
+               for k in envvars}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},
