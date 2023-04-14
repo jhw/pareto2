@@ -25,9 +25,10 @@ def post_webhook(struct, url):
 def handler(event, context=None,
             levels=Levels,
             webhookurl=os.environ["SLACK_ERROR_WEBHOOK"]):
-    message=gzip.decompress(base64.b64decode(event["awslogs"]["data"]))
+    struct=json.loads(gzip.decompress(base64.b64decode(event["awslogs"]["data"])))
+    text=json.dumps(struct)
     color=levels["error"]
-    struct={"attachments": [{"text": message,
+    struct={"attachments": [{"text": text,
                              "color": color}]}
     post_webhook(struct, webhookurl)
 """
