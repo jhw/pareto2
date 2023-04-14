@@ -1,7 +1,6 @@
 ### short [errors]
 
 - function size and timeout (small, short)
-- slack handling inline code
 - per-  action susbscription and permissions 
 
 - ensure errors is called by config initialisation
@@ -48,6 +47,7 @@
 
 ### done
 
+- slack handling inline code
 - inline function and role singletons borrowed from table
 - new errors component
 - :64 length check for event rule names

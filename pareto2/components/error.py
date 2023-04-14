@@ -2,6 +2,31 @@ from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
 FunctionCode="""
+from urllib import request
+
+import boto3, json, os
+
+# https://colorswall.com/palette/3
+
+Levels={"info":  "#5bc0de",
+        "warning": "#f0ad4e",
+        "error": "#d9534f"}
+
+def post_webhook(struct, url):
+    req=request.Request(url, method="POST")
+    req.add_header("Content-Type", "application/json")
+    data=json.dumps(struct).encode()
+    resp=request.urlopen(req, data=data)
+    return resp.read()
+
+def handler(event, context=None,
+            levels=Levels,
+            webhookurl=os.environ["SLACK_ERROR_WEBHOOK"]):
+    text=json.dumps(event)
+    color=levels["error"]
+    struct={"attachments": [{"text": text,
+                             "color": color}]}
+    post_webhook(struct, webhookurl)
 """
 
 @resource            
