@@ -7,7 +7,7 @@ EnvironmentVariables=["slack-error-webhook"]
 FunctionCode="""
 from urllib import request
 
-import boto3, json, os
+import base64, gzip, json, os
 
 # https://colorswall.com/palette/3
 
@@ -20,14 +20,14 @@ def post_webhook(struct, url):
     req.add_header("Content-Type", "application/json")
     data=json.dumps(struct).encode()
     resp=request.urlopen(req, data=data)
-    return resp.read()
+return resp.read()
 
 def handler(event, context=None,
             levels=Levels,
             webhookurl=os.environ["SLACK_ERROR_WEBHOOK"]):
-    text=json.dumps(event)
+    message=gzip.decompress(base64.b64decode(event["awslogs"]["data"]))
     color=levels["error"]
-    struct={"attachments": [{"text": text,
+    struct={"attachments": [{"text": message,
                              "color": color}]}
     post_webhook(struct, webhookurl)
 """

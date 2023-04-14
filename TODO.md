@@ -1,7 +1,5 @@
 ### short 
 
- logs event needs unpacking
-
 ### medium
 
 - scripts
@@ -41,6 +39,7 @@
 
 ### done
 
+- logs event needs unpacking
 - log subscriptions to depend on error permission
 - push_artifacts to insert slack_error_webhook
 - test by pinging polyreader /show-assets with invalid chunk index
