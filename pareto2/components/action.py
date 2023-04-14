@@ -12,7 +12,7 @@ ActionDefaults={"size": "default",
                 "timeout": "default",
                 "invocation-type": "async"}
 
-LogGroupPattern="/aws/lambda/%s"
+LogGroupPattern="/aws/lambda/${%s}" # note preceeding slash
 
 ErrorConfig={"name": "error"}
 

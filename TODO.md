@@ -1,6 +1,5 @@
 ### short [errors]
 
-- check fn::sub will insert default second arg {}
 - slack error webhook env variable
 - ensure errors is called by config initialisation
 - push_artifacts to insert slack_error_webhook
@@ -46,6 +45,7 @@
 
 ### done
 
+- check fn::sub will insert default second arg {}
 - error filter pattern
 - log subscriptions
 - log permission
