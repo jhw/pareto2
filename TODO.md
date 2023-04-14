@@ -1,4 +1,12 @@
-### short
+### short [errors]
+
+- new errors component
+- inline function and role singletons borrowed from table
+- per-  action susbscription and permissions 
+- ensure errors is called by config initialisation
+- complete slack handling inline code
+- slack webhook as os variable
+- test by pinging polyreader /show-assets with invalid chunk index
 
 ### medium
 
