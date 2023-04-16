@@ -1,8 +1,11 @@
 ### short 
 
+- log groups
+
 ### medium
 
-- scripts
+- add scripts from polyreader2-server
+- make database and bucket fixed assets, like errors
 - apigw logging
 - userpool should be named private-api
 - apigw static endpoint

@@ -97,6 +97,16 @@ def init_function_event_config(action, retries=0):
             "AWS::Lambda::EventInvokeConfig",
             props)
 
+@resource
+def init_function_log_group(action, retentiondays=3):
+    resourcename=H("%s-function-log-group" % action["name"])
+    loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
+    props={"LogGroupName": loggroupname,
+           "RetentionInDays": retentiondays}
+    return (resourcename,
+            "AWS::Logs::LogGroup",
+            props)
+
 """
 - event rule target id max length 64
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
@@ -181,7 +191,7 @@ def init_event_rule_permission(action, event):
     return (resourcename,
             "AWS::Lambda::Permission",
             props)
-
+            
 @resource
 def init_error_log_subscription(action,
                                 error=ErrorConfig,
@@ -192,7 +202,8 @@ def init_error_log_subscription(action,
     props={"DestinationArn": destinationarn,
            "FilterPattern": filterpattern,
            "LogGroupName": loggroupname}
-    depends=[H("%s-log-permission" % error["name"])]
+    depends=[H("%s-function-log-group" % action["name"]),
+             H("%s-log-permission" % error["name"])]             
     return (resourcename,
             "AWS::Logs::SubscriptionFilter",
             props,
@@ -203,6 +214,7 @@ def init_async_component(action):
     for fn in [init_function,
                init_function_role,
                init_function_event_config,
+               init_function_log_group,
                init_error_log_subscription]:
         resource=fn(action)
         resources.append(resource)
@@ -218,6 +230,7 @@ def init_sync_component(action):
     resources=[]
     for fn in [init_function,
                init_function_role,
+               init_function_log_group,
                init_error_log_subscription]:
         resource=fn(action)
         resources.append(resource)
