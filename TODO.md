@@ -4,7 +4,6 @@
 
 ### medium
 
-- simplify errors function/role code
 - add scripts from polyreader2-server
 - make database and bucket fixed assets, like errors
 - apigw logging
@@ -43,6 +42,7 @@
 
 ### done
 
+- simplify errors function/role code
 - check custom resource depends
 - new custom resource
 - new logstream function and role
