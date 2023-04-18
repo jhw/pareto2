@@ -1,11 +1,11 @@
 ### short 
 
-- new logstream function and role
 - new custom resource
 - make subscription filters depend on custom resource
 
 ### medium
 
+- simplify errors function/role code
 - add scripts from polyreader2-server
 - make database and bucket fixed assets, like errors
 - apigw logging
@@ -44,6 +44,7 @@
 
 ### done
 
+- new logstream function and role
 - add slack- prefix to existing errors function
 - logs event needs unpacking
 - log subscriptions to depend on error permission
