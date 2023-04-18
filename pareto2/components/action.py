@@ -97,16 +97,6 @@ def init_function_event_config(action, retries=0):
             "AWS::Lambda::EventInvokeConfig",
             props)
 
-@resource
-def init_function_log_group(action, retentiondays=3):
-    resourcename=H("%s-function-log-group" % action["name"])
-    loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
-    props={"LogGroupName": loggroupname,
-           "RetentionInDays": retentiondays}
-    return (resourcename,
-            "AWS::Logs::LogGroup",
-            props)
-
 """
 - event rule target id max length 64
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
@@ -192,17 +182,26 @@ def init_event_rule_permission(action, event):
             "AWS::Lambda::Permission",
             props)
 
-@resource            
-def init_logs_initialiser(action,
-                          error=ErrorConfig):
-    resourcename=H("%s-logs-initialiser" % action["name"])
-    servicetoken={"Fn::GetAtt": [H("%s-logstream-function" % error["name"]), "Arn"]}
+@resource
+def init_log_group(action, retentiondays=3):
+    resourcename=H("%s-log-group" % action["name"])
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
-    props={"ServiceToken": servicetoken,
-           "LogGroupName": loggroupname}
+    props={"LogGroupName": loggroupname,
+           "RetentionInDays": retentiondays}
     return (resourcename,
-            "Custom::LogStreamInitialiser",
+            "AWS::Logs::LogGroup",
             props)
+
+@resource
+def init_log_stream(action, retentiondays=3):
+    resourcename=H("%s-log-stream" % action["name"])
+    loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
+    props={"LogGroupName": loggroupname}
+    depends=[H("%s-log-group" % action["name"])]
+    return (resourcename,
+            "AWS::Logs::LogStream",
+            props,
+            depends)
 
 @resource
 def init_logs_subscription(action,
@@ -214,7 +213,7 @@ def init_logs_subscription(action,
     props={"DestinationArn": destinationarn,
            "FilterPattern": filterpattern,
            "LogGroupName": loggroupname}
-    depends=[H("%s-logs-initialiser" % action["name"]),
+    depends=[H("%s-log-stream" % action["name"]),
              H("%s-slack-logs-permission" % error["name"])]             
     return (resourcename,
             "AWS::Logs::SubscriptionFilter",
@@ -226,8 +225,8 @@ def init_async_component(action):
     for fn in [init_function,
                init_function_role,
                init_function_event_config,
-               init_function_log_group,
-               init_logs_initialiser,
+               init_log_group,
+               init_log_stream,
                init_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
@@ -243,8 +242,8 @@ def init_sync_component(action):
     resources=[]
     for fn in [init_function,
                init_function_role,
-               init_function_log_group,
-               init_logs_initialiser,
+               init_log_group,
+               init_log_stream,
                init_logs_subscription]:
         resource=fn(action)
         resources.append(resource)

@@ -31,16 +31,6 @@ def handler(event, context=None,
     post_webhook(struct, webhookurl)
 """
 
-LogstreamFunctionCode="""
-import boto3, cfnresponse
-
-def lambda_handler(event, context):
-    logs=boto3.client("logs")
-    response=logs.create_log_stream(logGroupName=event["ResourceProperties"]["LogGroupName"],
-                                    logStreamName="InitialLogStream")
-    cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
-"""
-
 @resource            
 def init_slack_function(error,
                         envvars=["slack-error-webhook"],
@@ -107,74 +97,11 @@ def init_slack_logs_permission(error):
             "AWS::Lambda::Permission",
             props)
 
-"""
-- you can't create a subscription filter unless both a log group and a log stream exist
-- you can use AWS::Logs::LogGroup for the former, but there is no equivalent Cloudformation resource for the latter
-- solution is a custom resource which is callback'ed on log group creation
-"""
-
-@resource            
-def init_logstream_function(error,
-                            envvars=[],
-                            code=LogstreamFunctionCode):
-    resourcename=H("%s-logstream-function" % error["name"])
-    rolename=H("%s-logstream-function-role" % error["name"])
-    code={"ZipFile": code}
-    runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
-    memorysize=H("memory-size-%s" % error["function"]["size"])
-    timeout=H("timeout-%s" % error["function"]["timeout"])
-    variables={U(k): {"Ref": H(k)}
-               for k in envvars}
-    props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
-           "MemorySize": {"Ref": memorysize},
-           "Timeout": {"Ref": timeout},
-           "Code": code,
-           "Handler": "index.handler",
-           "Runtime": runtime,
-           "Environment": {"Variables": variables}}
-    return (resourcename, 
-            "AWS::Lambda::Function",
-            props)
-
-@resource
-def init_logstream_function_role(error,
-                             permissions=["logs:CreateLogGroup",
-                                          "logs:CreateLogStream",
-                                          "logs:PutLogEvents"]):
-    def group_permissions(permissions):
-        groups={}
-        for permission in permissions:
-            prefix=permission.split(":")[0]
-            groups.setdefault(prefix, [])
-            groups[prefix].append(permission)
-        return [sorted(group)
-                for group in list(groups.values())]
-    resourcename=H("%s-logstream-function-role" % error["name"])
-    assumerolepolicydoc={"Version": "2012-10-17",
-                         "Statement": [{"Action": "sts:AssumeRole",
-                                        "Effect": "Allow",
-                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : group,
-                              "Effect": "Allow",
-                              "Resource": "*"}
-                             for group in group_permissions(permissions)]}
-    policyname={"Fn::Sub": "%s-logstream-function-role-policy-${AWS::StackName}" % error["name"]}
-    policies=[{"PolicyDocument": policydoc,
-               "PolicyName": policyname}]
-    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
-           "Policies": policies}
-    return (resourcename,
-            "AWS::IAM::Role",
-            props)
-
 def render_resources(error):
     resources=[]
     for fn in [init_slack_function,
                init_slack_function_role,
-               init_slack_logs_permission,
-               init_logstream_function,
-               init_logstream_function_role]:
+               init_slack_logs_permission]:
         resource=fn(error)
         resources.append(resource)
     return dict(resources)
