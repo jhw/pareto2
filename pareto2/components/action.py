@@ -191,11 +191,23 @@ def init_event_rule_permission(action, event):
     return (resourcename,
             "AWS::Lambda::Permission",
             props)
-            
+
+@resource            
+def init_error_logs_initialiser(action,
+                                error=ErrorConfig):
+    resourcename=H("%s-error-logstream-initialiser" % action["name"])
+    servicetoken={"Fn::GetAtt": [H("%s-logstream-function" % error["name"]), "Arn"]}
+    loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
+    props={"ServiceToken": servicetoken,
+           "LogGroupName": loggroupname}
+    return (resourcename,
+            "Custom::ErrorLogStreamInitialiser",
+            props)
+
 @resource
-def init_error_log_subscription(action,
-                                error=ErrorConfig,
-                                filterpattern=ErrorFilterPattern):
+def init_error_logs_subscription(action,
+                                 error=ErrorConfig,
+                                 filterpattern=ErrorFilterPattern):
     resourcename=H("%s-error-log-subscription" % action["name"])
     destinationarn={"Fn::GetAtt": [H("%s-function" % error["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
@@ -215,7 +227,8 @@ def init_async_component(action):
                init_function_role,
                init_function_event_config,
                init_function_log_group,
-               init_error_log_subscription]:
+               init_error_logs_initialiser,
+               init_error_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
@@ -231,7 +244,8 @@ def init_sync_component(action):
     for fn in [init_function,
                init_function_role,
                init_function_log_group,
-               init_error_log_subscription]:
+               init_error_logs_initialiser,
+               init_error_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
     return resources

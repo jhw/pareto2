@@ -18,8 +18,10 @@ def uppercase(text):
 def resource(fn):
     def assert_type(type):
         tokens=type.split("::")
-        if (len(tokens)!=3 or
-            tokens[0]!="AWS"):
+        if not ((len(tokens)==3 and
+                 tokens[0]=="AWS") or
+                (len(tokens)==2 and
+                 tokens[0]=="Custom")):
             raise RuntimeError("invalid type %s" % type)
     def assert_props(type, props):
         if not isinstance(props, dict):

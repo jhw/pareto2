@@ -1,7 +1,6 @@
 ### short 
 
-- new custom resource
-- make subscription filters depend on custom resource
+- check custom resource depends
 
 ### medium
 
@@ -44,6 +43,7 @@
 
 ### done
 
+- new custom resource
 - new logstream function and role
 - add slack- prefix to existing errors function
 - logs event needs unpacking
