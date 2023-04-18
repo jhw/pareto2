@@ -1,6 +1,8 @@
 ### short 
 
-- log groups
+- new logstream function and role
+- new custom resource
+- make subscription filters depend on custom resource
 
 ### medium
 
@@ -42,6 +44,7 @@
 
 ### done
 
+- add slack- prefix to existing errors function
 - logs event needs unpacking
 - log subscriptions to depend on error permission
 - push_artifacts to insert slack_error_webhook
