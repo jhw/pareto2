@@ -1,6 +1,6 @@
 ### short 
 
-- check custom resource depends
+- bad resourcename/depends combo doesn't appear to be being caught
 
 ### medium
 
@@ -43,6 +43,7 @@
 
 ### done
 
+- check custom resource depends
 - new custom resource
 - new logstream function and role
 - add slack- prefix to existing errors function

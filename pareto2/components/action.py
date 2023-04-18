@@ -193,29 +193,29 @@ def init_event_rule_permission(action, event):
             props)
 
 @resource            
-def init_error_logs_initialiser(action,
-                                error=ErrorConfig):
-    resourcename=H("%s-error-logstream-initialiser" % action["name"])
+def init_logs_initialiser(action,
+                          error=ErrorConfig):
+    resourcename=H("%s-logs-initialiser" % action["name"])
     servicetoken={"Fn::GetAtt": [H("%s-logstream-function" % error["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
     props={"ServiceToken": servicetoken,
            "LogGroupName": loggroupname}
     return (resourcename,
-            "Custom::ErrorLogStreamInitialiser",
+            "Custom::LogStreamInitialiser",
             props)
 
 @resource
-def init_error_logs_subscription(action,
-                                 error=ErrorConfig,
-                                 filterpattern=ErrorFilterPattern):
-    resourcename=H("%s-error-log-subscription" % action["name"])
+def init_logs_subscription(action,
+                           error=ErrorConfig,
+                           filterpattern=ErrorFilterPattern):
+    resourcename=H("%s-logs-subscription" % action["name"])
     destinationarn={"Fn::GetAtt": [H("%s-function" % error["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
     props={"DestinationArn": destinationarn,
            "FilterPattern": filterpattern,
            "LogGroupName": loggroupname}
-    depends=[H("%s-function-log-group" % action["name"]),
-             H("%s-log-permission" % error["name"])]             
+    depends=[H("%s-logs-initialiser" % action["name"]),
+             H("%s-slack-logs-permission" % error["name"])]             
     return (resourcename,
             "AWS::Logs::SubscriptionFilter",
             props,
@@ -227,8 +227,8 @@ def init_async_component(action):
                init_function_role,
                init_function_event_config,
                init_function_log_group,
-               init_error_logs_initialiser,
-               init_error_logs_subscription]:
+               init_logs_initialiser,
+               init_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
@@ -244,8 +244,8 @@ def init_sync_component(action):
     for fn in [init_function,
                init_function_role,
                init_function_log_group,
-               init_error_logs_initialiser,
-               init_error_logs_subscription]:
+               init_logs_initialiser,
+               init_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
     return resources
