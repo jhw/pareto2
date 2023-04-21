@@ -1,5 +1,8 @@
 ### short 
 
+- apigw static endpoint
+- dlq to stop sqs errors being repeatedly retried
+
 - bad resourcename/depends combo doesn't appear to be being caught
 
 ### medium
@@ -8,7 +11,6 @@
 - make database and bucket fixed assets, like errors
 - apigw logging
 - userpool should be named private-api
-- apigw static endpoint
 - ability to validate publishing of sns message
 
 ### long
