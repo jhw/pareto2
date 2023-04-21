@@ -1,14 +1,13 @@
 ### short 
 
 - apigw static endpoint
-- dlq to stop sqs errors being repeatedly retried
-
-- bad resourcename/depends combo doesn't appear to be being caught
+- sqs error retries
 
 ### medium
 
+- bad resourcename/depends combo doesn't appear to be being caught
 - add scripts from polyreader2-server
-- make database and bucket fixed assets, like errors
+- make database and bucket fixed assets, like errors?
 - apigw logging
 - userpool should be named private-api
 - ability to validate publishing of sns message
