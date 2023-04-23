@@ -1,12 +1,15 @@
-### short 
+### short [domains]
 
-- apigw static endpoint
-- sqs error retries
+- script to create a cert
+- script to list cert validation options
+- script to create CNAME record
+- script to delete cert + CNAME
 
 ### medium
 
+- apigw static endpoint
+- sqs error retries
 - bad resourcename/depends combo doesn't appear to be being caught
-- add scripts from polyreader2-server
 - make database and bucket fixed assets, like errors?
 - apigw logging
 - userpool should be named private-api
@@ -43,6 +46,7 @@
 
 ### done
 
+- add scripts from polyreader2-server
 - simplify errors function/role code
 - check custom resource depends
 - new custom resource
