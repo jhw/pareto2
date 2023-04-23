@@ -1,9 +1,10 @@
 ### short [domains]
 
-- script to create a cert
-- script to list cert validation options
-- script to create CNAME record
-- script to delete cert + CNAME
+- create certificate
+- access CNAME data
+- create CNAME record
+
+- script to delete cert + CNAME record
 
 ### medium
 
