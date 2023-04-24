@@ -9,7 +9,7 @@ def list_hosted_zones(route53):
 def list_record_sets(route53, hostedzoneid):
     return route53.list_resource_record_sets(HostedZoneId=hostedzoneid)["ResourceRecordSets"]
 
-def list_certificates(acm, region="us-east-1"):
+def list_certificates(acm):
     return {cert["DomainName"]:cert["CertificateArn"]
             for cert in acm.list_certificates()["CertificateSummaryList"]}
 
