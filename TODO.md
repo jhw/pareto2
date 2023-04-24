@@ -1,8 +1,6 @@
 ### short [domains]
 
-- script to delete certificate
-- list domain validation options for certificate
-- create record set for certificate
+- create CNAME record set for certificate
 - check certificate status
 - delete to remove CNAME record set
 
