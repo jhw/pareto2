@@ -38,6 +38,10 @@ if __name__=="__main__":
         certname="*.%s" % hostname
         if certname in certificates:
             raise RuntimeError("cert %s already exists" % certname)
+        resp=acm.request_certificate(DomainName=certname,
+                                     ValidationMethod='DNS',
+                                     SubjectAlternativeNames=[certname])
+        print (resp)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:

@@ -1,10 +1,10 @@
 ### short [domains]
 
-- create certificate
-- access CNAME data
-- create CNAME record
-
-- script to delete cert + CNAME record
+- script to delete certificate
+- list domain validation options for certificate
+- create record set for certificate
+- check certificate status
+- delete to remove CNAME record set
 
 ### medium
 
@@ -47,6 +47,7 @@
 
 ### done
 
+- list_certificate to show status
 - add scripts from polyreader2-server
 - simplify errors function/role code
 - check custom resource depends
