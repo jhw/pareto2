@@ -1,8 +1,9 @@
 ### short [domains]
 
+- delete_certificate to remove cname record
 - add print statements to create_certificate
 - poll for issued status
-- delete_certificate to remove cname record
+
 - add _and_cname_record_set suffix to create|delete_certificate.py
 
 ### medium
