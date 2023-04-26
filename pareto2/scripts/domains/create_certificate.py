@@ -1,4 +1,4 @@
-import boto3, sys
+import boto3, sys, time
 
 def list_hosted_zones(route53):
     return {zone["Name"]: zone["Id"]
@@ -11,6 +11,19 @@ def list_certificates(acm):
     return {cert["DomainName"]:cert["CertificateArn"]
             for cert in acm.list_certificates()["CertificateSummaryList"]}
 
+"""
+- https://github.com/aws/aws-sdk-js/issues/2133
+- https://www.2ndwatch.com/blog/use-waiters-boto3-write/
+"""
+
+def fetch_resource_record(acm, certarn, maxtries=30, wait=2):
+    for i in range(maxtries):
+        cert=acm.describe_certificate(CertificateArn=resp["CertificateArn"])["Certificate"]
+        if "ResourceRecord" in cert["DomainValidationOptions"][0]:
+            return cert["DomainValidationOptions"][0]["ResourceRecord"]
+        time.sleep(wait)
+    raise RuntimeError("no resource record found for %s" % certarn)
+ 
 if __name__=="__main__":
     try:
         if len(sys.argv) < 2:
@@ -37,8 +50,9 @@ if __name__=="__main__":
         if certname in certificates:
             raise RuntimeError("cert %s already exists" % certname)
         resp=acm.request_certificate(DomainName=certname,
-                                     ValidationMethod='DNS',
+                                     ValidationMethod="DNS",
                                      SubjectAlternativeNames=[certname])
-        print (resp)
+        resourcerecord=fetch_resource_record(acm, resp["CertificateArn"])
+        print (resourcerecord)
     except RuntimeError as error:
         print ("Error: %s" % str(error))

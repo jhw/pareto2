@@ -1,6 +1,5 @@
 ### short [domains]
 
-- create_certificate.py to print record set details
 - create_certificate.py to create cname record
 - check certificate status 
 - delete_certificate to remove cname record
@@ -48,6 +47,7 @@
 
 ### done
 
+- create_certificate.py to print record set details
 - list_certificate to show status
 - add scripts from polyreader2-server
 - simplify errors function/role code
