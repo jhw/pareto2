@@ -1,5 +1,3 @@
-from botocore.exceptions import ClientError
-
 import boto3, sys
 
 def list_hosted_zones(route53):
@@ -34,6 +32,4 @@ if __name__=="__main__":
         certarn=certificates[certname]
         print (acm.delete_certificate(CertificateArn=certificates[certname]))
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
-    except ClientError as error:
         print ("Error: %s" % str(error))
