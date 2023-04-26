@@ -1,23 +1,24 @@
 import boto3, sys, time
 
 def list_hosted_zones(route53):
+    print ("fetching hosted zones")
     return {zone["Name"]: zone["Id"]
             for zone in (route53.list_hosted_zones_by_name()["HostedZones"])}
 
 def list_record_sets(route53, hostedzoneid):
+    print ("fetching record sets for %s" % hostedzoneid)
     return route53.list_resource_record_sets(HostedZoneId=hostedzoneid)["ResourceRecordSets"]
 
 def list_certificates(acm):
+    print ("fetching certificates")
     return {cert["DomainName"]:cert["CertificateArn"]
             for cert in acm.list_certificates()["CertificateSummaryList"]}
 
-"""
-- https://github.com/aws/aws-sdk-js/issues/2133
-- https://www.2ndwatch.com/blog/use-waiters-boto3-write/
-"""
-
 def fetch_resource_record(acm, certarn, maxtries=30, wait=2):
     for i in range(maxtries):
+        print ("fetching resource record for %s [%i/%i]" % (certarn,
+                                                            i+1,
+                                                            maxtries))
         cert=acm.describe_certificate(CertificateArn=resp["CertificateArn"])["Certificate"]
         if ("DomainValidationOptions" in cert and
             cert["DomainValidationOptions"]!=[] and
@@ -52,21 +53,18 @@ if __name__=="__main__":
         certdomainname="*.%s" % hostname
         if certdomainname in certificates:
             raise RuntimeError("cert %s already exists" % certdomainname)
-        """
-        certvalidationdomainname='_{0}._{1}.{2}'.format('_acme-challenge',
-                                                        'dns',
-                                                        certdomainname)        
-        """        
+        print ("fetching certificate for %s" % certdomainname)
         resp=acm.request_certificate(DomainName=certdomainname,
                                      ValidationMethod="DNS",
                                      SubjectAlternativeNames=[certdomainname])
         resourcerecord=fetch_resource_record(acm, resp["CertificateArn"])
-        resourcerecordset={"Name": resourcerecord["Name"], # certvalidationdomainname,
+        resourcerecordset={"Name": resourcerecord["Name"],
                            "Type": "CNAME",
                            "TTL": 300,
                            "ResourceRecords": [{"Value": resourcerecord["Value"]}]}
         changebatch={"Changes": [{'Action': 'CREATE',
                                   'ResourceRecordSet': resourcerecordset}]}
+        print ("creating CNAME record for %s" % hostedzoneid)
         print (route53.change_resource_record_sets(HostedZoneId=hostedzoneid,
                                                    ChangeBatch=changebatch))
     except RuntimeError as error:

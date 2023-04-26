@@ -1,10 +1,11 @@
 ### short [domains]
 
-- delete_certificate to remove cname record
-- add print statements to create_certificate
 - poll for issued status
 
-- add _and_cname_record_set suffix to create|delete_certificate.py
+- delete_certificate fails to remove record set (missing TTL?)
+
+- delete_record_set.py fails
+
 
 ### medium
 
@@ -47,6 +48,7 @@
 
 ### done
 
+- add print statements to create_certificate
 - delete stray CNAME
 - try creating CNAME with name provided from
 - create_certificate.py to create cname record
