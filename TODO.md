@@ -2,11 +2,6 @@
 
 - poll for issued status
 
-- delete_certificate fails to remove record set (missing TTL?)
-
-- delete_record_set.py fails
-
-
 ### medium
 
 - apigw static endpoint
@@ -48,6 +43,8 @@
 
 ### done
 
+- delete_certificate fails to remove record set (missing TTL?)
+- delete_record_set.py fails
 - add print statements to create_certificate
 - delete stray CNAME
 - try creating CNAME with name provided from

@@ -1,14 +1,17 @@
 import boto3, sys
 
 def list_hosted_zones(route53):
+    print ("fetching hosted zones")
     return {zone["Name"]: zone["Id"]
             for zone in (route53.list_hosted_zones_by_name()["HostedZones"])}
 
 def list_certificates(acm):
+    print ("fetching certificates")
     return {cert["DomainName"]:cert["CertificateArn"]
             for cert in acm.list_certificates()["CertificateSummaryList"]}
 
 def list_record_sets(route53, hostedzoneid):
+    print ("fetching record sets for %s" % hostedzoneid)
     return route53.list_resource_record_sets(HostedZoneId=hostedzoneid)["ResourceRecordSets"]
 
 if __name__=="__main__":
@@ -34,7 +37,8 @@ if __name__=="__main__":
         if certname not in certificates:
             raise RuntimeError("cert %s does not exists" % certname)
         certarn=certificates[certname]
-        # print (acm.delete_certificate(CertificateArn=certificates[certname]))
+        print ("deleting certificate %s" % certarn)
+        print (acm.delete_certificate(CertificateArn=certarn))
         recordsets=list_record_sets(route53, hostedzoneid)
         recordsettypes=[recordset["Type"] for recordset in recordsets]
         recordsettype="CNAME"
@@ -45,12 +49,10 @@ if __name__=="__main__":
         if len(matchingrecordsets)!=1:
             raise RuntimeError("multiple %s record sets in hosted zone %s" % (recordsettype, hostedzonename))
         recordset=matchingrecordsets[0]
-        recordset.pop("ResourceRecords")
         changebatch={"Changes": [{'Action': 'DELETE',
                                   'ResourceRecordSet': recordset}]}
-        """
+        print ("deleting CNAME record for %s" % hostedzoneid)
         print (route53.change_resource_record_sets(HostedZoneId=hostedzoneid,
                                                    ChangeBatch=changebatch))
-        """
     except RuntimeError as error:
         print ("Error: %s" % str(error))
