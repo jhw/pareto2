@@ -27,7 +27,8 @@ if __name__=="__main__":
         hostedzonename="%s." % hostname        
         if hostedzonename not in hostedzones:
             raise RuntimeError("hosted zone %s not found" % hostedzonename)
-        recordsets=list_record_sets(route53, hostedzones[hostedzonename])
+        hostedzoneid=hostedzones[hostedzonename]
+        recordsets=list_record_sets(route53, hostedzoneid)
         recordsettypes=[recordset["Type"] for recordset in recordsets]
         if recordsettype not in set(recordsettypes):
             raise RuntimeError("%s record set not found in hosted zone %s" % (recordsettype, hostedzonename))
@@ -36,6 +37,12 @@ if __name__=="__main__":
         if len(matchingrecordsets)!=1:
             raise RuntimeError("multiple %s record sets in hosted zone %s" % (recordsettype, hostedzonename))
         recordset=matchingrecordsets[0]
-        print (recordset)
+        recordset.pop("ResourceRecords")
+        changebatch={"Changes": [{'Action': 'DELETE',
+                                  'ResourceRecordSet': recordset}]}
+        """
+        print (route53.change_resource_record_set(HostedZoneId=hostedzoneid,
+                                                  ChangeBatch=changebatch))
+        """
     except RuntimeError as error:
         print ("Error: %s" % str(error))
