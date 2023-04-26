@@ -1,8 +1,11 @@
 ### short [domains]
 
-- create CNAME record set for certificate
-- check certificate status
-- delete to remove CNAME record set
+- create_certificate.py to print record set details
+- create_certificate.py to create cname record
+- check certificate status 
+- delete_certificate to remove cname record
+
+- add _and_cname_record_set suffix to create|delete_certificate.py
 
 ### medium
 
