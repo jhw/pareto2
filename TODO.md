@@ -1,9 +1,8 @@
 ### short [domains]
 
-- create_certificate.py to create cname record
-- check certificate status 
+- add print statements to create_certificate
+- poll for issued status
 - delete_certificate to remove cname record
-
 - add _and_cname_record_set suffix to create|delete_certificate.py
 
 ### medium
@@ -47,6 +46,10 @@
 
 ### done
 
+- delete stray CNAME
+- try creating CNAME with name provided from
+- create_certificate.py to create cname record
+- check certificate status 
 - create_certificate.py to print record set details
 - list_certificate to show status
 - add scripts from polyreader2-server

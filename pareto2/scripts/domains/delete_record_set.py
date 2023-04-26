@@ -41,8 +41,8 @@ if __name__=="__main__":
         changebatch={"Changes": [{'Action': 'DELETE',
                                   'ResourceRecordSet': recordset}]}
         """
-        print (route53.change_resource_record_set(HostedZoneId=hostedzoneid,
-                                                  ChangeBatch=changebatch))
+        print (route53.change_resource_record_sets(HostedZoneId=hostedzoneid,
+                                                   ChangeBatch=changebatch))
         """
     except RuntimeError as error:
         print ("Error: %s" % str(error))
