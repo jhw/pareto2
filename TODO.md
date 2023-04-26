@@ -1,16 +1,13 @@
 ### short [domains]
 
-- poll for issued status
+- apigw static endpoint
 
 ### medium
 
-- apigw static endpoint
-- sqs error retries
-- bad resourcename/depends combo doesn't appear to be being caught
-- make database and bucket fixed assets, like errors?
-- apigw logging
 - userpool should be named private-api
 - ability to validate publishing of sns message
+- handle sqs error retries with dlq
+- apigw logging
 
 ### long
 
@@ -19,6 +16,7 @@
 
 ### thoughts
 
+- make database and bucket fixed assets, like errors?
 - seems inconsistent that table has an appname prefix but api does not
 - push_artifacts.py didn't seem to throw exception on bad POST schema in infa
   - problem is that endpoint schema is only required to be an object with no validation
@@ -43,6 +41,7 @@
 
 ### done
 
+- poll for issued status
 - delete_certificate fails to remove record set (missing TTL?)
 - delete_record_set.py fails
 - add print statements to create_certificate

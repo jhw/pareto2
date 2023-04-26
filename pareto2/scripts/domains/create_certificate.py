@@ -26,7 +26,18 @@ def fetch_resource_record(acm, certarn, maxtries=30, wait=2):
             return cert["DomainValidationOptions"][0]["ResourceRecord"]
         time.sleep(wait)
     raise RuntimeError("no resource record found for %s" % certarn)
- 
+
+def check_certificate_status(acm, certarn, maxtries=40, wait=2, targetstatus="ISSUED"):
+    for i in range(maxtries):
+        cert=acm.describe_certificate(CertificateArn=certarn)["Certificate"]
+        print ("certificate status %s [%i/%i]" % (cert["Status"],
+                                                  i+1,
+                                                  maxtries))
+        if cert["Status"]==targetstatus:
+            return
+        time.sleep(wait)
+    raise RuntimeError("certificate status of %s not realised" % targetstatus)
+
 if __name__=="__main__":
     try:
         if len(sys.argv) < 2:
@@ -57,7 +68,8 @@ if __name__=="__main__":
         resp=acm.request_certificate(DomainName=certdomainname,
                                      ValidationMethod="DNS",
                                      SubjectAlternativeNames=[certdomainname])
-        resourcerecord=fetch_resource_record(acm, resp["CertificateArn"])
+        certarn=resp["CertificateArn"]
+        resourcerecord=fetch_resource_record(acm, certarn)
         resourcerecordset={"Name": resourcerecord["Name"],
                            "Type": "CNAME",
                            "TTL": 300,
@@ -67,5 +79,7 @@ if __name__=="__main__":
         print ("creating CNAME record for %s" % hostedzoneid)
         print (route53.change_resource_record_sets(HostedZoneId=hostedzoneid,
                                                    ChangeBatch=changebatch))
+        print ("checking certificate status")
+        check_certificate_status(acm, certarn)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
