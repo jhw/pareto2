@@ -1,7 +1,5 @@
 ### short
 
-- ability to validate publishing of sns message
-
 - apigw static endpoint
 
 ### medium
@@ -42,6 +40,7 @@
 
 ### done
 
+- ability to validate publishing of sns message
 - poll for issued status
 - delete_certificate fails to remove record set (missing TTL?)
 - delete_record_set.py fails
