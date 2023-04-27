@@ -1,11 +1,12 @@
-### short [domains]
+### short
+
+- ability to validate publishing of sns message
 
 - apigw static endpoint
 
 ### medium
 
 - userpool should be named private-api
-- ability to validate publishing of sns message
 - handle sqs error retries with dlq
 - apigw logging
 
