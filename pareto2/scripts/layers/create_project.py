@@ -2,6 +2,23 @@ from botocore.exceptions import ClientError
 
 import boto3, json, os, time, yaml
 
+BuildSpec=yaml.safe_load("""
+artifacts:
+  base-directory: build
+  files:
+  - '**/*'
+  name: $S3_KEY
+phases:
+  install:
+    commands:
+    - pip install --upgrade pip
+    - mkdir -p build/python
+    - pip install --upgrade --target build/python $PIP_TARGET
+    runtime-versions:
+      python: $PYTHON_RUNTIME
+version: '0.2'
+""")
+
 RolePolicyDoc=yaml.safe_load("""
 Statement:
   - Action: sts:AssumeRole
@@ -10,8 +27,6 @@ Statement:
       Service: codebuild.amazonaws.com
 Version: '2012-10-17'
 """)
-
-BuildSpec=open("pareto2/scripts/layers/buildspec.yaml").read()
 
 DockerImage="aws/codebuild/standard:4.0"
 
