@@ -74,7 +74,8 @@ def assert_role(fn):
 
 @assert_role
 def init_project(cb, iam, config, rolearn,
-                 buildspec=BuildSpec,
+                 buildspec=yaml.safe_dump(BuildSpec,
+                                          default_flow_style=False), # NB
                  maxtries=20,
                  wait=5):
     projectname="%s-layers" % config["AppName"]
