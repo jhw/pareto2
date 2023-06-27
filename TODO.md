@@ -4,6 +4,7 @@
 
 ### medium
 
+- replace custom ddb/eventbridge streaming code with eventbridge pipes
 - apigw static endpoint
 - dlqs to capture error- generating requests
 - userpool should be named private-api
