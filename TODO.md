@@ -4,6 +4,7 @@
 
 ### medium
 
+- website [cloudfront] pattern for static assets
 - replace custom ddb/eventbridge streaming code with eventbridge pipes
 - apigw static endpoint
 - dlqs to capture error- generating requests
