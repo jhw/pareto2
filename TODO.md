@@ -1,11 +1,12 @@
 ### short
 
-- apigw static endpoint
+- harmonise use of drain_queue in tests
 
 ### medium
 
+- apigw static endpoint
+- dlqs to capture error- generating requests
 - userpool should be named private-api
-- handle sqs error retries with dlq
 - apigw logging
 
 ### long
