@@ -229,6 +229,69 @@ def init_model(api, endpoint, schematype=EndpointSchemaVersion):
             props)    
 
 """
+  PublicApiCustomDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      DomainName: !Sub "${DomainPrefix}.${DomainName}"
+      CertificateArn:
+        Ref: CertArn
+"""
+
+@resource
+def init_domain():
+    resourcename=H("%s-api-domain" % api["name"])
+    props={}
+    return (resourcename,
+            "AWS::ApiGateway::DomainName",
+            props)
+
+"""
+  PublicApiCustomDomainMapping:
+    DependsOn:
+      - PublicApiCustomDomain
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Sub "${DomainPrefix}.${DomainName}"
+      RestApiId:
+        Ref: PublicApiRestApi
+      Stage:
+        Ref: StageName
+"""
+
+@resource
+def init_domain_path_mapping():
+    resourcename=H("%s-api-domain-path-mapping" % api["name"])
+    props={}
+    depends=[]
+    return (resourcename,
+            "AWS::ApiGateway::BasePathMapping",
+            props,
+            depends)
+
+"""
+  Route53ARecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Sub '${DomainName}.'
+      Name: !Sub '${DomainPrefix}.${DomainName}'
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt PublicApiCustomDomain.DistributionDomainName
+        EvaluateTargetHealth: false
+        HostedZoneId: !GetAtt PublicApiCustomDomain.DistributionHostedZoneId
+"""
+
+@resource
+def init_domain_record_set():
+    resourcename=H("%s-api-domain-record-set" % api["name"])
+    aliastarget={}
+    props={"Type": "A",
+           "AliasTarget": aliastarget}
+    return (resourcename,
+            "AWS::Route53::RecordSet",
+            props)
+
+"""
 - NB an open API is still CORS- enabled
 """
 
