@@ -232,31 +232,20 @@ def init_model(api, endpoint, schematype=EndpointSchemaVersion):
 def init_domain():
     resourcename=H("%s-api-domain" % api["name"])
     domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("domain-prefix")}, "name": {"Ref": H("domain-name")}}]}
-    certarn={"Ref": H("certificate-arn")}
     props={"DomainName": domainname,
-           "CertificateArn": certarn}
+           "CertificateArn": {"Ref": H("certificate-arn")}}
     return (resourcename,
             "AWS::ApiGateway::DomainName",
             props)
 
-"""
-  PublicApiCustomDomainMapping:
-    DependsOn:
-      - PublicApiCustomDomain
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties:
-      DomainName: !Sub "${DomainPrefix}.${DomainName}"
-      RestApiId:
-        Ref: PublicApiRestApi
-      Stage:
-        Ref: StageName
-"""
-
 @resource
 def init_domain_path_mapping():
     resourcename=H("%s-api-domain-path-mapping" % api["name"])
-    props={}
-    depends=[]
+    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("domain-prefix")}, "name": {"Ref": H("domain-name")}}]}
+    props={"DomainName": domainname,
+           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
+           "Stage": api["stage"]["name"]}
+    depends=[H("%s-api-domain" % api["name"])]
     return (resourcename,
             "AWS::ApiGateway::BasePathMapping",
             props,
