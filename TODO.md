@@ -1,12 +1,15 @@
-### short
+### short [apigw domain name]
 
-- harmonise use of drain_queue in tests
+- complete components
+- add components into apigw resource configuration
+- ensure push_artifacts looks us DOMAIN_XXX, CERTIFICATE_ARN
+  - should probably expose all os variables to the build
 
 ### medium
 
+- rationalise use of drain_queue in tests
 - website [cloudfront] pattern for static assets
 - replace custom ddb/eventbridge streaming code with eventbridge pipes
-- apigw static endpoint
 - dlqs to capture error- generating requests
 - userpool should be named private-api
 - apigw logging

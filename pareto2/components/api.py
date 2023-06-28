@@ -228,19 +228,13 @@ def init_model(api, endpoint, schematype=EndpointSchemaVersion):
             "AWS::ApiGateway::Model",
             props)    
 
-"""
-  PublicApiCustomDomain:
-    Type: AWS::ApiGateway::DomainName
-    Properties:
-      DomainName: !Sub "${DomainPrefix}.${DomainName}"
-      CertificateArn:
-        Ref: CertArn
-"""
-
 @resource
 def init_domain():
     resourcename=H("%s-api-domain" % api["name"])
-    props={}
+    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("domain-prefix")}, "name": {"Ref": H("domain-name")}}]}
+    certarn={"Ref": H("certificate-arn")}
+    props={"DomainName": domainname,
+           "CertificateArn": certarn}
     return (resourcename,
             "AWS::ApiGateway::DomainName",
             props)
