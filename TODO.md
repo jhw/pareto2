@@ -1,9 +1,10 @@
 ### short [apigw domain name]
 
-- complete components
-- add components into apigw resource configuration
 - ensure push_artifacts looks us DOMAIN_XXX, CERTIFICATE_ARN
   - should probably expose all os variables to the build
+  
+- check to ensure only only api can be created per app
+  - or different apis with different prefixes?
 
 ### medium
 
@@ -46,6 +47,9 @@
 
 ### done
 
+- check outputs configuration
+- complete components
+- add components into apigw resource configuration
 - ability to validate publishing of sns message
 - poll for issued status
 - delete_certificate fails to remove record set (missing TTL?)

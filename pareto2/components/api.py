@@ -251,24 +251,19 @@ def init_domain_path_mapping():
             props,
             depends)
 
-"""
-  Route53ARecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneName: !Sub '${DomainName}.'
-      Name: !Sub '${DomainPrefix}.${DomainName}'
-      Type: A
-      AliasTarget:
-        DNSName: !GetAtt PublicApiCustomDomain.DistributionDomainName
-        EvaluateTargetHealth: false
-        HostedZoneId: !GetAtt PublicApiCustomDomain.DistributionHostedZoneId
-"""
-
 @resource
 def init_domain_record_set():
     resourcename=H("%s-api-domain-record-set" % api["name"])
-    aliastarget={}
-    props={"Type": "A",
+    hzname={"Fn::Sub": ["${name}.", {"name": {"Ref": H("domain-name")}}]} # NB note trailing period
+    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("domain-prefix")}, "name": {"Ref": H("domain-name")}}]}
+    dnsname={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionDomainName"]}
+    hzid={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionHostedZoneId"]}
+    aliastarget={"DNSName": dnsname,
+                 "EvaluateTargetHealth": False,
+                 "HostedZoneId": hzid}
+    props={"HostedZoneName": hzname,
+           "Name": domainname, # NB `Name` key
+           "Type": "A",
            "AliasTarget": aliastarget}
     return (resourcename,
             "AWS::Route53::RecordSet",
@@ -279,9 +274,13 @@ def init_domain_record_set():
 """
 
 def init_open_resources(api, resources):
-    resources.append(init_rest_api(api))
-    resources.append(init_deployment(api))
-    resources.append(init_stage(api))
+    for fn in [init_rest_api,
+               init_deployment,
+               init_stage,
+               init_domain,
+               init_domain_path_mapping,
+               init_domain_record_set]:
+        resources.append(fn(api))
     for code in "4XX|5XX".split("|"):
         resources.append(init_cors_default_response(api, code))
     for endpoint in api["endpoints"]:
@@ -298,10 +297,14 @@ def init_open_resources(api, resources):
             resources.append(init_model(api, endpoint))
 
 def init_cognito_resources(api, resources):
-    resources.append(init_rest_api(api))
-    resources.append(init_deployment(api))
-    resources.append(init_stage(api))
-    resources.append(init_cognito_authorizer(api))    
+    for fn in [init_rest_api,
+               init_deployment,
+               init_stage,
+               init_cognito_authorizer,
+               init_domain,
+               init_domain_path_mapping,
+               init_domain_record_set]:
+        resources.append(fn(api))
     for code in "4XX|5XX".split("|"):
         resources.append(init_cors_default_response(api, code))
     for endpoint in api["endpoints"]:
@@ -337,10 +340,15 @@ def render_outputs(api):
                                         H("%s-api-stage" % api["name"]))}
     restapi={"Ref": H("%s-api-rest-api" % api["name"])}
     stage={"Ref": H("%s-api-stage" % api["name"])}
+    dnsname={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionDomainName"]}
+    hzid={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionHostedZoneId"]}
     outputs={}
-    outputs[H("%s-api-endpoint" % api["name"])]={"Value": endpoint}
-    outputs[H("%s-api-rest-api" % api["name"])]={"Value": restapi}
-    outputs[H("%s-api-stage" % api["name"])]={"Value": stage}
+    for k, v in {"endpoint",:endpoint,
+                 "rest-api": restapi,
+                 "stage": stage,
+                 "dns-name": dnsname,
+                 "hosted-zone-id": hzid}.items():
+        outputs[H("%s-%s" % (api["name"], k))]={"Value": v}
     return outputs
 
 if __name__=="__main__":
