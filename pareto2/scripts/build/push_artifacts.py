@@ -108,7 +108,9 @@ class Assets:
         config.expand(scripts)
         self.config=config
 
-    def lookup_env_variables(self, suffixes=["_LAYER_ARN",
+    def lookup_env_variables(self, suffixes=["_ARN",
+                                             "_DOMAIN_NAME",
+                                             "_DOMAIN_PREFIX",
                                              "_WEBHOOK"]):
         variables={}
         for key, value in os.environ.items():

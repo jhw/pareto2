@@ -1,8 +1,5 @@
 ### short [apigw domain name]
 
-- ensure push_artifacts looks us DOMAIN_XXX, CERTIFICATE_ARN
-  - should probably expose all os variables to the build
-  
 - check to ensure only only api can be created per app
   - or different apis with different prefixes?
 
@@ -47,6 +44,8 @@
 
 ### done
 
+- ensure push_artifacts looks us DOMAIN_XXX, CERTIFICATE_ARN
+  - should probably expose all os variables to the build
 - check outputs configuration
 - complete components
 - add components into apigw resource configuration
