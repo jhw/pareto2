@@ -1,7 +1,4 @@
-### short [apigw domain name]
-
-- check to ensure only only api can be created per app
-  - or different apis with different prefixes?
+### short
 
 ### medium
 
@@ -44,6 +41,9 @@
 
 ### done
 
+- add api["name"] to domain prefixes
+- check to ensure only only api can be created per app
+  - or different apis with different prefixes?
 - ensure push_artifacts looks us DOMAIN_XXX, CERTIFICATE_ARN
   - should probably expose all os variables to the build
 - check outputs configuration
