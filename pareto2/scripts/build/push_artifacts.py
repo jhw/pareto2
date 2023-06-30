@@ -109,7 +109,7 @@ class Assets:
         self.config=config
 
     def lookup_env_variables(self, suffixes=["_ARN",
-                                             "_DOMAIN_NAME",
+                                             "DOMAIN_NAME", # NB no underscore prefix
                                              "_DOMAIN_PREFIX",
                                              "_WEBHOOK"]):
         variables={}
