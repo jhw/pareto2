@@ -343,7 +343,7 @@ def render_outputs(api):
     dnsname={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionDomainName"]}
     hzid={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionHostedZoneId"]}
     outputs={}
-    for k, v in {"endpoint",:endpoint,
+    for k, v in {"endpoint":endpoint,
                  "rest-api": restapi,
                  "stage": stage,
                  "dns-name": dnsname,
