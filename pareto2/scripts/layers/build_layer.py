@@ -4,7 +4,7 @@ import boto3, os, sys, time
 
 Pip, Git = "pip", "git"
 
-PythonRuntime="3.8"
+PythonRuntime="3.10"
 
 def build_layer(cb, config, pkg,
                 wait=3,

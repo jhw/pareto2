@@ -36,7 +36,7 @@ ParameterDefaults=yaml.safe_load("""
 memory-size-default: 512
 memory-size-large: 2048
 memory-size-medium: 1024
-runtime-version: '3.8'
+runtime-version: '3.10'
 timeout-default: 5
 timeout-long: 30
 timeout-medium: 15
