@@ -28,7 +28,7 @@ Statement:
 Version: '2012-10-17'
 """)
 
-DockerImage="aws/codebuild/standard:4.0"
+DockerImage="aws/codebuild/standard:6.0"
 
 def assert_role(fn):
     def role_name(config):
