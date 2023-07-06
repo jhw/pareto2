@@ -108,7 +108,8 @@ class Assets:
         config.expand(scripts)
         self.config=config
 
-    def lookup_env_variables(self, suffixes=["_ARN",
+    def lookup_env_variables(self, suffixes=["_API_KEY",
+                                             "_ARN",
                                              "DOMAIN_NAME", # NB no underscore prefix
                                              "_DOMAIN_PREFIX",
                                              "_WEBHOOK"]):
