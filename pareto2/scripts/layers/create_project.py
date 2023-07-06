@@ -2,6 +2,14 @@ from botocore.exceptions import ClientError
 
 import boto3, json, os, time, yaml
 
+"""
+- https://urllib3.readthedocs.io/en/stable/v2-migration-guide.html#importerror-cannot-import-name-default-ciphers-from-urllib3-util-ssl
+"""
+
+"""
+If you’re deploying to an AWS environment such as Lambda or a host using Amazon Linux 2, you’ll need to explicitly pin to urllib3<2 in your project to ensure urllib3 2.0 isn’t brought into your environment. Otherwise, this may result in unintended side effects with the default boto3 installation.
+"""
+
 BuildSpec=yaml.safe_load("""
 artifacts:
   base-directory: build
@@ -13,7 +21,7 @@ phases:
     commands:
     - pip install --upgrade pip
     - mkdir -p build/python
-    - pip install --upgrade --target build/python $PIP_TARGET
+    - pip install --upgrade --target build/python $PIP_TARGET 'urllib3<2'
     runtime-versions:
       python: $PYTHON_RUNTIME
 version: '0.2'
