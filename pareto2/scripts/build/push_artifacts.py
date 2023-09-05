@@ -19,7 +19,7 @@ class Lambdas(list):
 
     @classmethod
     def initialise(self, appname, timestamp, filterfn=FilterFn):
-        root, assets = appname, []
+        root, assets = appname.replace("-", ""), []
         for localroot, _, files in os.walk(root):
             for filename in files:
                 if filterfn(filename):

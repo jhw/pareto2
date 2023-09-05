@@ -29,7 +29,7 @@ if __name__=="__main__":
         appname=os.environ["APP_NAME"]
         if appname in ["", None]:
             raise RuntimeError("app package not found")
-        tests=filter_tests(appname)
+        tests=filter_tests(appname.replace("-", ""))
         run_tests(tests)
     except RuntimeError as error:
         print ("Error: %s" % error)
