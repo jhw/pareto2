@@ -53,7 +53,7 @@ def format_dependencies(root="requirements.txt"):
 
 setuptools.setup(
     name="pareto2",
-    version="0.6.16",
+    version="0.6.17",
     author="jhw",
     author_email="justin.worrall@gmail.com",
     description="An SDK for serverless apps",
