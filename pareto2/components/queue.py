@@ -4,6 +4,17 @@ from pareto2.components import resource
 @resource
 def init_queue(queue):
     resourcename=H("%s-queue" % queue["name"])
+    dlqarn={"Fn::GetAtt": [H("%s-dead-letter-queue" % queue["name"]), "Arn"]}
+    redrivepolicy={"deadLetterTargetArn": dlqarn,
+                   "maxReceiveCount": 1}
+    props={"RedrivePolicy": redrivepolicy}    
+    return (resourcename,
+            "AWS::SQS::Queue",
+            props)
+
+@resource
+def init_dead_letter_queue(queue):
+    resourcename=H("%s-dead-letter-queue" % queue["name"])
     props={}
     return (resourcename,
             "AWS::SQS::Queue",
@@ -25,6 +36,7 @@ def init_binding(queue):
 def render_resources(queue):
     resources=[]
     for fn in [init_queue,
+               init_dead_letter_queue,
                init_binding]:
         resource=fn(queue)
         resources.append(resource)
