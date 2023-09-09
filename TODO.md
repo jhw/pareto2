@@ -1,6 +1,7 @@
 ### short
 
-- MemorySizeSmall has no default value; SlackWebhookUrl has no default value; TimeoutShort has no default value
+- rename error as logs
+- add level to to logs and create error, warn levels
 
 ### medium
 
@@ -42,6 +43,7 @@
 
 ### done
 
+- MemorySizeSmall has no default value; SlackWebhookUrl has no default value; TimeoutShort has no default value
 - allow WEBHOOK_URL as env variable
 - dlqs to capture error- generating requests
 - add api["name"] to domain prefixes
