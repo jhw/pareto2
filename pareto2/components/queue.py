@@ -24,7 +24,7 @@ def handler(event, context=None,
                              "color": colour}]}
     post_webhook(struct, webhookurl)"""
 
-SlackSize, SlackTimeout = "small", "short"
+SlackSize, SlackTimeout = "default", "default"
 
 @resource            
 def init_dlq_function(queue,
