@@ -42,6 +42,7 @@
 
 ### done
 
+- replace ref to error-logs with simply logs
 - pass level into logs as env variable
 - rename error as logs
 - MemorySizeSmall has no default value; SlackWebhookUrl has no default value; TimeoutShort has no default value
