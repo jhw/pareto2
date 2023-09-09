@@ -218,7 +218,7 @@ def init_logs_subscription(action, logs):
 def init_warn_logs_subscription(action):
     return init_logs_subscription(action, 
                                   logs={"name": "warn",
-                                        "pattern": "WARN"})
+                                        "pattern": "WARNING"})
 
 def init_error_logs_subscription(action):
     return init_logs_subscription(action, 
@@ -250,7 +250,8 @@ def init_sync_component(action):
                init_function_role,
                init_log_group,
                init_log_stream,
-               init_logs_subscription]:
+               init_warn_logs_subscription,
+               init_error_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
     return resources

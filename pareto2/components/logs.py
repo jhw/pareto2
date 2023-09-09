@@ -35,7 +35,7 @@ def init_function(logs,
     memorysize=H("memory-size-%s" % logs["function"]["size"])
     timeout=H("timeout-%s" % logs["function"]["timeout"])
     variables={U("slack-webhook-url"): {"Ref": H("slack-webhook-url")},
-               U("slack-logging-level"): logs["level"}}
+               U("slack-logging-level"): logs["level"]}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},

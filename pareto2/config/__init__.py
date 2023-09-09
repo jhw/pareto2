@@ -9,7 +9,7 @@ from pareto2.components import hungarorise
 import pareto2.components.action
 import pareto2.components.api
 import pareto2.components.bucket
-import pareto2.components.error
+import pareto2.components.logs
 import pareto2.components.queue
 import pareto2.components.secret
 import pareto2.components.table
@@ -24,7 +24,7 @@ import os, yaml
 ComponentModules={"action": pareto2.components.action,
                   "api": pareto2.components.api,
                   "bucket": pareto2.components.bucket,
-                  "error": pareto2.components.error,
+                  "logs": pareto2.components.logs,
                   "queue": pareto2.components.queue,
                   "secret": pareto2.components.secret,
                   "table": pareto2.components.table,
@@ -42,12 +42,19 @@ timeout-long: 30
 timeout-medium: 15
 """)
 
-ErrorConfig=yaml.safe_load("""
-name: error
-type: error
-function:
-  size: default
-  timeout: default
+LogsConfig=yaml.safe_load("""
+- name: warn
+  level: warning
+  type: logs
+  function:
+    size: default
+    timeout: default
+- name: error
+  level: error
+  type: logs
+  function:
+    size: default
+    timeout: default
 """)
 
 class Config(dict):
@@ -101,9 +108,9 @@ class Config(dict):
     def expand(self,
                scripts,
                globals={},
-               error=ErrorConfig):
+               logs=LogsConfig):
         self["parameters"].update(globals)                
-        self["components"].append(error)
+        self["components"]+=logs
         for attr in ["apis",
                      "buckets",
                      "queues",

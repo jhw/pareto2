@@ -1,7 +1,5 @@
 ### short
 
-- ensure framework creates both warn and error logs stuff, with levels for each
-
 ### medium
 
 - rationalise use of drain_queue in tests
@@ -42,6 +40,8 @@
 
 ### done
 
+
+- ensure framework creates both warn and error logs stuff, with levels for each
 - check refs created by init_logs_subscription
   - name needs to include both action and level
 - replace refs to error with refs to logs with name and level
