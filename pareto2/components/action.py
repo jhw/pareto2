@@ -14,10 +14,6 @@ ActionDefaults={"size": "default",
 
 LogGroupPattern="/aws/lambda/${%s}" # note preceeding slash
 
-ErrorConfig={"name": "error"}
-
-ErrorFilterPattern="ERROR"
-
 @resource            
 def init_function(action):    
     resourcename=H("%s-function" % action["name"])
@@ -205,20 +201,30 @@ def init_log_stream(action, retentiondays=3):
 
 @resource
 def init_logs_subscription(action,
-                           error=ErrorConfig,
-                           filterpattern=ErrorFilterPattern):
+                           logs={"name": "error",
+                                 "pattern": "ERROR"}):
     resourcename=H("%s-logs-subscription" % action["name"])
-    destinationarn={"Fn::GetAtt": [H("%s-error-function" % error["name"]), "Arn"]}
+    destinationarn={"Fn::GetAtt": [H("%s-error-function" % logs["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
     props={"DestinationArn": destinationarn,
-           "FilterPattern": filterpattern,
+           "FilterPattern": logs["pattern"],
            "LogGroupName": loggroupname}
     depends=[H("%s-log-stream" % action["name"]),
-             H("%s-logs-permission" % error["name"])]             
+             H("%s-logs-permission" % logs["name"])]             
     return (resourcename,
             "AWS::Logs::SubscriptionFilter",
             props,
             depends)
+
+def init_warn_logs_subscription(action):
+    return init_logs_subscription(action, 
+                                  logs={"name": "warn",
+                                        "pattern": "WARNING"})
+
+def init_error_logs_subscription(action):
+    return init_logs_subscription(action, 
+                                  logs={"name": "error",
+                                        "pattern": "ERROR"})
 
 def init_async_component(action):
     resources=[]
@@ -227,7 +233,8 @@ def init_async_component(action):
                init_function_event_config,
                init_log_group,
                init_log_stream,
-               init_logs_subscription]:
+               init_warn_logs_subscription,
+               init_error_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
     if "events" in action:
