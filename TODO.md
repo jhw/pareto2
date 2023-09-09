@@ -1,6 +1,8 @@
 ### short
 
-- rename error as logs
+- refactor other refs to errors
+- pass level into logs as env variable
+
 - add level to to logs and create error, warn levels
 
 ### medium
@@ -43,6 +45,7 @@
 
 ### done
 
+- rename error as logs
 - MemorySizeSmall has no default value; SlackWebhookUrl has no default value; TimeoutShort has no default value
 - allow WEBHOOK_URL as env variable
 - dlqs to capture error- generating requests
