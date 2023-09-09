@@ -33,7 +33,7 @@ def handler(event, context=None,
 
 @resource            
 def init_slack_function(error,
-                        envvars=["slack-error-webhook"],
+                        envvars=["slack-webhook-url"],
                         code=SlackFunctionCode):
     resourcename=H("%s-slack-error-function" % error["name"])
     rolename=H("%s-slack-error-function-role" % error["name"])
