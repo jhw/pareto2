@@ -26,11 +26,11 @@ def handler(event, context=None,
     post_webhook(struct, webhookurl)"""
 
 @resource            
-def init_slack_function(error,
-                        envvars=["slack-webhook-url"],
-                        code=SlackFunctionCode):
-    resourcename=H("%s-slack-error-function" % error["name"])
-    rolename=H("%s-slack-error-function-role" % error["name"])
+def init_function(error,
+                  envvars=["slack-webhook-url"],
+                  code=SlackFunctionCode):
+    resourcename=H("%s-error-function" % error["name"])
+    rolename=H("%s-error-function-role" % error["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % error["function"]["size"])
@@ -49,10 +49,10 @@ def init_slack_function(error,
             props)
 
 @resource
-def init_slack_function_role(error,
-                             permissions=["logs:CreateLogGroup",
-                                          "logs:CreateLogStream",
-                                          "logs:PutLogEvents"]):
+def init_function_role(error,
+                       permissions=["logs:CreateLogGroup",
+                                    "logs:CreateLogStream",
+                                    "logs:PutLogEvents"]):
     def group_permissions(permissions):
         groups={}
         for permission in permissions:
@@ -61,7 +61,7 @@ def init_slack_function_role(error,
             groups[prefix].append(permission)
         return [sorted(group)
                 for group in list(groups.values())]
-    resourcename=H("%s-slack-error-function-role" % error["name"])
+    resourcename=H("%s-error-function-role" % error["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
@@ -71,7 +71,7 @@ def init_slack_function_role(error,
                               "Effect": "Allow",
                               "Resource": "*"}
                              for group in group_permissions(permissions)]}
-    policyname={"Fn::Sub": "%s-slack-error-function-role-policy-${AWS::StackName}" % error["name"]}
+    policyname={"Fn::Sub": "%s-error-function-role-policy-${AWS::StackName}" % error["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,
@@ -81,9 +81,9 @@ def init_slack_function_role(error,
             props)
 
 @resource
-def init_slack_logs_permission(error):
-    resourcename=H("%s-slack-logs-permission" % error["name"])
-    funcname={"Ref": H("%s-slack-error-function" % error["name"])}
+def init_logs_permission(error):
+    resourcename=H("%s-error-logs-permission" % error["name"])
+    funcname={"Ref": H("%s-error-function" % error["name"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "logs.amazonaws.com",
            "FunctionName": funcname}
@@ -93,9 +93,9 @@ def init_slack_logs_permission(error):
 
 def render_resources(error):
     resources=[]
-    for fn in [init_slack_function,
-               init_slack_function_role,
-               init_slack_logs_permission]:
+    for fn in [init_function,
+               init_function_role,
+               init_logs_permission]:
         resource=fn(error)
         resources.append(resource)
     return dict(resources)

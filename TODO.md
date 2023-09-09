@@ -5,7 +5,6 @@
 - rationalise use of drain_queue in tests
 - website [cloudfront] pattern for static assets
 - replace custom ddb/eventbridge streaming code with eventbridge pipes
-- dlqs to capture error- generating requests
 - userpool should be named private-api
 - apigw logging
 
@@ -41,6 +40,7 @@
 
 ### done
 
+- dlqs to capture error- generating requests
 - add api["name"] to domain prefixes
 - check to ensure only only api can be created per app
   - or different apis with different prefixes?

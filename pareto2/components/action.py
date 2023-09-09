@@ -208,13 +208,13 @@ def init_logs_subscription(action,
                            error=ErrorConfig,
                            filterpattern=ErrorFilterPattern):
     resourcename=H("%s-logs-subscription" % action["name"])
-    destinationarn={"Fn::GetAtt": [H("%s-slack-error-function" % error["name"]), "Arn"]}
+    destinationarn={"Fn::GetAtt": [H("%s-error-function" % error["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
     props={"DestinationArn": destinationarn,
            "FilterPattern": filterpattern,
            "LogGroupName": loggroupname}
     depends=[H("%s-log-stream" % action["name"]),
-             H("%s-slack-logs-permission" % error["name"])]             
+             H("%s-error-logs-permission" % error["name"])]             
     return (resourcename,
             "AWS::Logs::SubscriptionFilter",
             props,
