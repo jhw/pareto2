@@ -200,11 +200,10 @@ def init_log_stream(action, retentiondays=3):
             depends)
 
 @resource
-def init_logs_subscription(action,
-                           logs={"name": "error",
-                                 "pattern": "ERROR"}):
-    resourcename=H("%s-logs-subscription" % action["name"])
-    destinationarn={"Fn::GetAtt": [H("%s-error-function" % logs["name"]), "Arn"]}
+def init_logs_subscription(action, logs):
+    resourcename=H("%s-%s-logs-subscription" % (action["name"],
+                                                logs["name"]))
+    destinationarn={"Fn::GetAtt": [H("%s-logs-function" % logs["name"]), "Arn"]}
     loggroupname={"Fn::Sub": LogGroupPattern % H("%s-function" % action["name"])}
     props={"DestinationArn": destinationarn,
            "FilterPattern": logs["pattern"],
@@ -219,7 +218,7 @@ def init_logs_subscription(action,
 def init_warn_logs_subscription(action):
     return init_logs_subscription(action, 
                                   logs={"name": "warn",
-                                        "pattern": "WARNING"})
+                                        "pattern": "WARN"})
 
 def init_error_logs_subscription(action):
     return init_logs_subscription(action, 

@@ -1,8 +1,5 @@
 ### short
 
-- check refs created by init_logs_subscription
-  - name needs to include both action and level
-  
 - ensure framework creates both warn and error logs stuff, with levels for each
 
 ### medium
@@ -45,6 +42,8 @@
 
 ### done
 
+- check refs created by init_logs_subscription
+  - name needs to include both action and level
 - replace refs to error with refs to logs with name and level
 - replace ref to error-logs with simply logs
 - pass level into logs as env variable
