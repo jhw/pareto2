@@ -112,7 +112,8 @@ class Assets:
                                              "_ARN",
                                              "DOMAIN_NAME", # NB no underscore prefix
                                              "_DOMAIN_PREFIX",
-                                             "_WEBHOOK"]):
+                                             "_WEBHOOK",
+                                             "_WEBHOOK_URL"]):
         variables={}
         for key, value in os.environ.items():
             for suffix in suffixes:
