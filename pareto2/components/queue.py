@@ -53,9 +53,12 @@ def init_dlq_function(queue,
 
 @resource
 def init_dlq_function_role(queue,
-                                 permissions=["logs:CreateLogGroup",
-                                              "logs:CreateLogStream",
-                                              "logs:PutLogEvents"]):
+                           permissions=["logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents",
+                                        "sqs:DeleteMessage",
+                                        "sqs:GetQueueAttributes",
+                                        "sqs:ReceiveMessage"]):
     def group_permissions(permissions):
         groups={}
         for permission in permissions:
