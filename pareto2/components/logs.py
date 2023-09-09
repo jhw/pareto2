@@ -17,7 +17,7 @@ def post_webhook(struct, url):
     return urllib.request.urlopen(req, data=data).read()
 
 def handler(event, context=None,
-            colour=Levels["error"],
+            colour=Levels[os.environ["SLACK_LOGGING_LEVEL"]],
             webhookurl=os.environ["SLACK_WEBHOOK_URL"]):
     struct=json.loads(gzip.decompress(base64.b64decode(event["awslogs"]["data"])))
     text=json.dumps(struct)
@@ -27,7 +27,6 @@ def handler(event, context=None,
 
 @resource            
 def init_function(logs,
-                  envvars=["slack-webhook-url"],
                   code=SlackFunctionCode):
     resourcename=H("%s-logs-function" % logs["name"])
     rolename=H("%s-logs-function-role" % logs["name"])
@@ -35,8 +34,8 @@ def init_function(logs,
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % logs["function"]["size"])
     timeout=H("timeout-%s" % logs["function"]["timeout"])
-    variables={U(k): {"Ref": H(k)}
-               for k in envvars}
+    variables={U("slack-webhook-url"): {"Ref": H("slack-webhook-url")},
+               U("slack-logging-level"): logs["level"}}
     props={"Role": {"Fn::GetAtt": [rolename, "Arn"]},
            "MemorySize": {"Ref": memorysize},
            "Timeout": {"Ref": timeout},
