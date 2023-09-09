@@ -22,7 +22,7 @@ def post_webhook(struct, url):
 
 def handler(event, context=None,
             levels=Levels,
-            webhookurl=os.environ["SLACK_ERROR_WEBHOOK"]):
+            webhookurl=os.environ["SLACK_WEBHOOK_URL"]):
     struct=json.loads(gzip.decompress(base64.b64decode(event["awslogs"]["data"])))
     text=json.dumps(struct)
     color=levels["error"]
@@ -35,8 +35,8 @@ def handler(event, context=None,
 def init_slack_function(error,
                         envvars=["slack-error-webhook"],
                         code=SlackFunctionCode):
-    resourcename=H("%s-slack-function" % error["name"])
-    rolename=H("%s-slack-function-role" % error["name"])
+    resourcename=H("%s-slack-error-function" % error["name"])
+    rolename=H("%s-slack-error-function-role" % error["name"])
     code={"ZipFile": code}
     runtime={"Fn::Sub": "python${%s}" % H("runtime-version")}
     memorysize=H("memory-size-%s" % error["function"]["size"])
@@ -67,7 +67,7 @@ def init_slack_function_role(error,
             groups[prefix].append(permission)
         return [sorted(group)
                 for group in list(groups.values())]
-    resourcename=H("%s-slack-function-role" % error["name"])
+    resourcename=H("%s-slack-error-function-role" % error["name"])
     assumerolepolicydoc={"Version": "2012-10-17",
                          "Statement": [{"Action": "sts:AssumeRole",
                                         "Effect": "Allow",
@@ -77,7 +77,7 @@ def init_slack_function_role(error,
                               "Effect": "Allow",
                               "Resource": "*"}
                              for group in group_permissions(permissions)]}
-    policyname={"Fn::Sub": "%s-slack-function-role-policy-${AWS::StackName}" % error["name"]}
+    policyname={"Fn::Sub": "%s-slack-error-function-role-policy-${AWS::StackName}" % error["name"]}
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,
@@ -89,7 +89,7 @@ def init_slack_function_role(error,
 @resource
 def init_slack_logs_permission(error):
     resourcename=H("%s-slack-logs-permission" % error["name"])
-    funcname={"Ref": H("%s-slack-function" % error["name"])}
+    funcname={"Ref": H("%s-slack-error-function" % error["name"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "logs.amazonaws.com",
            "FunctionName": funcname}
