@@ -2,10 +2,7 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
-SlackFunctionCode="""
-from urllib import request
-
-import base64, gzip, json, os
+SlackFunctionCode="""import base64, gzip, json, os, urllib.request
 
 # https://colorswall.com/palette/3
 
@@ -14,22 +11,19 @@ Levels={"info":  "#5bc0de",
         "error": "#d9534f"}
 
 def post_webhook(struct, url):
-    req=request.Request(url, method="POST")
+    req=urllib.request.Request(url, method="POST")
     req.add_header("Content-Type", "application/json")
     data=json.dumps(struct).encode()
-    resp=request.urlopen(req, data=data)
-    return resp.read()
+    return urllib.request.urlopen(req, data=data).read()
 
 def handler(event, context=None,
-            levels=Levels,
+            colour=Levels["error"],
             webhookurl=os.environ["SLACK_WEBHOOK_URL"]):
     struct=json.loads(gzip.decompress(base64.b64decode(event["awslogs"]["data"])))
     text=json.dumps(struct)
-    color=levels["error"]
     struct={"attachments": [{"text": text,
-                             "color": color}]}
-    post_webhook(struct, webhookurl)
-"""
+                             "color": colour}]}
+    post_webhook(struct, webhookurl)"""
 
 @resource            
 def init_slack_function(error,

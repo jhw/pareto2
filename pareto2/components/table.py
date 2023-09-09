@@ -90,8 +90,7 @@ def handler(event, context,
         nbatches=math.ceil(len(entries)/batchsize)
         for i in range(nbatches):
             batch=entries[i*batchsize:(i+1)*batchsize]
-            events.put_events(Entries=batch)
-"""
+            events.put_events(Entries=batch)"""
 
 StreamType="NEW_AND_OLD_IMAGES"
 StreamWindow=1
