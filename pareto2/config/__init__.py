@@ -57,6 +57,19 @@ LogsConfig=yaml.safe_load("""
     timeout: default
 """)
 
+"""
+- currently error only as it seems that when both are defined, errors are ignored
+"""
+
+LogsConfig=yaml.safe_load("""
+- name: error
+  level: error
+  type: logs
+  function:
+    size: default
+    timeout: default
+""")
+
 class Config(dict):
 
     def __init__(self,
