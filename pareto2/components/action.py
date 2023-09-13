@@ -125,7 +125,7 @@ def _init_event_rule(action, event, pattern, nmax=64):
 def init_table_event_rule(action, event):
     pattern={}
     if "topic" in event:
-        pattern["detail-type"]=event["topic"]
+        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
     if "pattern" in event:
         pattern["detail"]=event["pattern"]
     if "source" in event:
@@ -142,7 +142,7 @@ def init_table_event_rule(action, event):
 def init_bucket_event_rule(action, event):
     pattern={}
     if "topic" in event:
-        pattern["detail-type"]=event["topic"]
+        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
     if "pattern" in event:
         pattern["detail"]=event["pattern"]
     if "source" in event:
@@ -158,7 +158,7 @@ def init_bucket_event_rule(action, event):
 def init_unbound_event_rule(action, event):
     pattern={}
     if "topic" in event:
-        pattern["detail-type"]=event["topic"]
+        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
     if "pattern" in event:
         pattern["detail"]=event["pattern"]
     if pattern=={}:
