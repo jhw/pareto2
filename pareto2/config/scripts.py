@@ -356,7 +356,8 @@ class Script:
         names=set()
         if "events" in self.infra:
             for event in self.infra["events"]:
-                if event["source"]["type"]=="bucket":
+                if ("source" in event and
+                    event["source"]["type"]=="bucket"):
                     names.add(event["source"]["name"])                    
         return names
     
@@ -394,7 +395,8 @@ class Script:
         names=set()
         if "events" in self.infra:
             for event in self.infra["events"]:
-                if event["source"]["type"]=="table":
+                if ("source" in event and
+                    event["source"]["type"]=="table"):
                     names.add(event["source"]["name"])
         return names
     

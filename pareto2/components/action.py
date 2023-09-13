@@ -155,14 +155,28 @@ def init_bucket_event_rule(action, event):
                                                             event["name"]))
     return _init_event_rule(action, event, pattern)
 
-def init_event_rule(action, event):
-    if event["source"]["type"]=="bucket":
-        return init_bucket_event_rule(action, event)
-    elif event["source"]["type"]=="table":
-        return init_table_event_rule(action, event)
-    else:
-        raise RuntimeError("no event rule handler for type %s" % event["type"])
+def init_unbound_event_rule(action, event):
+    pattern={}
+    if "topic" in event:
+        pattern["detail-type"]=event["topic"]
+    if "pattern" in event:
+        pattern["detail"]=event["pattern"]
+    if pattern=={}:
+        raise RuntimeError("%s/%s event config is blank" % (action["name"],
+                                                            event["name"]))
+    return _init_event_rule(action, event, pattern)
 
+def init_event_rule(action, event):
+    if "source" in event:
+        if event["source"]["type"]=="bucket":
+            return init_bucket_event_rule(action, event)
+        elif event["source"]["type"]=="table":
+            return init_table_event_rule(action, event)
+        else:
+            raise RuntimeError("no event rule handler for type %s" % event["type"])
+    else:
+        return init_unbound_event_rule(action, event)
+    
 @resource
 def init_event_rule_permission(action, event):
     resourcename=H("%s-%s-event-rule-permission" % (action["name"],
