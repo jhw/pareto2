@@ -40,7 +40,7 @@
 
 ### done
 
-
+- builder needs to be created with bucket reference
 - ensure framework creates both warn and error logs stuff, with levels for each
 - check refs created by init_logs_subscription
   - name needs to include both action and level

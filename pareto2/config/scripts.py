@@ -82,6 +82,9 @@ definitions:
     - body
     additionalProperties: false
 properties:
+  builder:
+    type: object
+    additionalProperties: false
   endpoint:
     type: object
     properties: 
@@ -208,6 +211,10 @@ class Scripts(list):
         return self.aggregate("buckets")
 
     @property
+    def builders(self):
+        return self.aggregate("builders")
+    
+    @property
     def queues(self):
         return self.aggregate("queues")
     
@@ -262,7 +269,8 @@ class Script:
 
     def validate_bindings(self):
         bindings=[]
-        for attr in ["endpoint",
+        for attr in ["builder",
+                     "endpoint",
                      "events",
                      "queue",
                      "timer",
@@ -369,6 +377,12 @@ class Script:
                 "type": "bucket"}
                 for bucketname in list(bucketnames)]
 
+    @property
+    def builders(self):
+        return [{"name": self.action_name,
+                 "type": "builder",
+                 "action": self.action_name}] if "builder" in self.infra else []
+    
     @property
     def queues(self, batchsize=1):
         return [{"name": self.action_name,

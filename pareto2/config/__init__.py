@@ -9,6 +9,7 @@ from pareto2.components import hungarorise
 import pareto2.components.action
 import pareto2.components.api
 import pareto2.components.bucket
+import pareto2.components.builder
 import pareto2.components.logs
 import pareto2.components.queue
 import pareto2.components.secret
@@ -24,6 +25,7 @@ import os, yaml
 ComponentModules={"action": pareto2.components.action,
                   "api": pareto2.components.api,
                   "bucket": pareto2.components.bucket,
+                  "builder": pareto2.components.builder,
                   "logs": pareto2.components.logs,
                   "queue": pareto2.components.queue,
                   "secret": pareto2.components.secret,
@@ -126,6 +128,7 @@ class Config(dict):
         self["components"]+=logs
         for attr in ["apis",
                      "buckets",
+                     "builders",
                      "queues",
                      "secrets",
                      "tables",

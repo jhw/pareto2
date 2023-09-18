@@ -22,6 +22,12 @@ class Components(list):
                 if component["type"]=="bucket"]
 
     @property
+    def builders(self):
+        return [component
+                for component in self
+                if component["type"]=="builder"]
+    
+    @property
     def endpoints(self):
         endpoints=[]
         for api in self.apis:
