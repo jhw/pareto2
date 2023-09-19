@@ -269,8 +269,7 @@ class Script:
 
     def validate_bindings(self):
         bindings=[]
-        for attr in ["builder",
-                     "endpoint",
+        for attr in ["endpoint",
                      "events",
                      "queue",
                      "timer",
