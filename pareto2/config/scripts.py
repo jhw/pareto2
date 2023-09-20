@@ -389,8 +389,7 @@ class Script:
         return [{"name": self.action_name,
                  "type": "builder",
                  "bucket": self.infra["builder"]["bucket"],
-                 "notifications": self.infra["builder"]["notifications"],
-                 "action": self.action_name}] if "builder" in self.infra else []
+                 "notifications": self.infra["builder"]["notifications"]}] if "builder" in self.infra else []
     
     @property
     def queues(self, batchsize=1):

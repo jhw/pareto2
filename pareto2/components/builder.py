@@ -118,7 +118,7 @@ def init_rule(builder, pattern=RulePattern):
     resourcename=H("%s-builder-rule" % builder["name"])
     pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % builder["name"])}] # *** NB project-name part of detail! ***
     targetid={"Fn::Sub": "%s-builder-rule-${AWS::StackName}" % builder["name"]}
-    targetarn={"Fn::GetAtt": [H("%s-function" % builder["action"]), "Arn"]}
+    targetarn={"Fn::GetAtt": [H("%s-function" % builder["notifications"]), "Arn"]}
     target={"Id": targetid,
             "Arn": targetarn}
     props={"EventPattern": pattern,
@@ -132,7 +132,7 @@ def init_rule(builder, pattern=RulePattern):
 def init_rule_permission(builder):
     resourcename=H("%s-builder-rule-permission" % builder["name"])
     sourcearn={"Fn::GetAtt": [H("%s-builder-rule" % builder["name"]), "Arn"]}
-    funcname={"Ref": H("%s-function" % builder["action"])}
+    funcname={"Ref": H("%s-function" % builder["notifications"])}
     props={"Action": "lambda:InvokeFunction",
            "Principal": "events.amazonaws.com",
            "FunctionName": funcname,
