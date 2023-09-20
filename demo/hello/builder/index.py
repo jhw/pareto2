@@ -1,6 +1,7 @@
 """
 infra:
-  builder: {}
+  builder:
+    bucket: demo
 """
 
 import os

@@ -84,6 +84,11 @@ definitions:
 properties:
   builder:
     type: object
+    properties: 
+      bucket:
+        type: string
+    required:
+    - bucket
     additionalProperties: false
   endpoint:
     type: object
@@ -380,6 +385,7 @@ class Script:
     def builders(self):
         return [{"name": self.action_name,
                  "type": "builder",
+                 "bucket": self.infra["builder"]["bucket"],
                  "action": self.action_name}] if "builder" in self.infra else []
     
     @property

@@ -72,12 +72,13 @@ def init_project(builder,
     source={"Type": "NO_SOURCE",
             "BuildSpec": buildspec}
     rolename=H("%s-builder-service-role" % builder["name"])
+    bucketname=H("%s-bucket" % builder["bucket"])
     artifacts={"Type": "S3",
-               "Location": {"Ref": H("%s-builder-bucket" % builder["name"])},
+               "Location": {"Ref": bucketname},
                "Packaging": "ZIP",
                "OverrideArtifactName": True,
                "Path": buildprefix}
-    s3logspath={"Fn::Sub": "${%s}/%s" % (H("%s-builder-bucket" % builder["name"]),
+    s3logspath={"Fn::Sub": "${%s}/%s" % (bucketname,
                                          logsprefix)}
     logsconfig={"S3Logs": {"Status": "ENABLED",
                            "Location": s3logspath}}
@@ -113,14 +114,6 @@ def init_service_role(builder, permissions=Permissions):
             props)
 
 @resource
-def init_bucket(builder):
-    resourcename=H("%s-builder-bucket" % builder["name"])
-    props={}
-    return (resourcename,
-            "AWS::S3::Bucket",
-            props)
-
-@resource
 def init_rule(builder, pattern=RulePattern):
     resourcename=H("%s-builder-rule" % builder["name"])
     pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % builder["name"])}] # *** NB project-name part of detail! ***
@@ -152,7 +145,6 @@ def render_resources(builder):
     resources=[]
     for fn in [init_project,
                init_service_role,
-               init_bucket,
                init_rule,
                init_rule_permission]:
         resource=fn(builder)
