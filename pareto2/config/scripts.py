@@ -87,8 +87,11 @@ properties:
     properties: 
       bucket:
         type: string
+      notifications:
+        type: string
     required:
     - bucket
+    - notifications
     additionalProperties: false
   endpoint:
     type: object
@@ -386,6 +389,7 @@ class Script:
         return [{"name": self.action_name,
                  "type": "builder",
                  "bucket": self.infra["builder"]["bucket"],
+                 "notifications": self.infra["builder"]["notifications"],
                  "action": self.action_name}] if "builder" in self.infra else []
     
     @property

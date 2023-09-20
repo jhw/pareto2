@@ -2,6 +2,7 @@
 infra:
   builder:
     bucket: demo
+    notifications: whatevs
 """
 
 import os
