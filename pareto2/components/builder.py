@@ -7,7 +7,11 @@ Permissions=["events", "logs", "codebuild", "s3"]
 
 BuildType="LINUX_CONTAINER"
 BuildComputeType="BUILD_GENERAL1_SMALL"
-BuildImage="aws/codebuild/standard:4.0"
+BuildImage="aws/codebuild/standard:6.0"
+
+"""
+If you’re deploying to an AWS environment such as Lambda or a host using Amazon Linux 2, you’ll need to explicitly pin to urllib3<2 in your project to ensure urllib3 2.0 isn’t brought into your environment. Otherwise, this may result in unintended side effects with the default boto3 installation.
+"""
 
 BuildSpec="""
 artifacts:
@@ -20,7 +24,7 @@ phases:
     commands:
     - pip install --upgrade pip
     - mkdir -p build/python
-    - pip install --upgrade --target build/python $PIP_TARGET
+    - pip install --upgrade --target build/python $PIP_TARGET 'urllib3<2'
     runtime-versions:
       python: $PYTHON_RUNTIME
 version: '0.2'
