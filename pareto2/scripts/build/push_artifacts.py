@@ -110,6 +110,7 @@ class Assets:
 
     def lookup_env_variables(self, suffixes=["_API_KEY",
                                              "_ARN",
+                                             "APP_NAME",
                                              "DOMAIN_NAME", # NB no underscore prefix
                                              "_DOMAIN_PREFIX",
                                              "_WEBHOOK",

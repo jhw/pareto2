@@ -25,10 +25,10 @@ if __name__=="__main__":
         apiname=sys.argv[1]
         cf=boto3.client("cloudformation")
         outputs=fetch_outputs(cf, stackname=appname)
-        restapiname=hungarorise("%s-api-rest-api" % apiname)
+        restapiname=hungarorise("%s-rest-api" % apiname)
         if restapiname not in outputs:
             raise RuntimeError("%s not found" % restapiname)
-        stagename=hungarorise("%s-api-stage" % apiname)
+        stagename=hungarorise("%s-stage" % apiname)
         if stagename not in outputs:
             raise RuntimeError("%s not found" % stagename)
         apigw=boto3.client("apigateway")
