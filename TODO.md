@@ -1,5 +1,6 @@
 ### short
 
+- add builder to schema event options
 - add custom bucket back to builder
 - replace builder bucket user directive
 - new action builder event rule
