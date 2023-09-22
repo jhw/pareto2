@@ -1,9 +1,14 @@
 ### short
 
+- remove cors method from public api
+- remove builder bindings from schema
+- replace action- related builder config with global table/bucket style
+- move rule from builder to action
+  - new builder style rule
+- test adding action sub directories
+x
 ### medium
 
-- consider adding subdirectories eg actions.events
-- public api doesn't need cors method
 - rationalise use of drain_queue in tests
 - website [cloudfront] pattern for static assets
 - userpool should be named private-api
