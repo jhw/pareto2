@@ -1,6 +1,7 @@
 ### short
 
-- replace existing builder test with table/bucket like one
+- expand events demos
+
 - test adding action sub directories
 
 ### medium
