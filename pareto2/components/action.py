@@ -148,24 +148,6 @@ def _init_event_rule(action, event, pattern, nmax=64):
             props)
 
 """
-- event is custom event created by table-streaming-function
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
-"""
-
-def init_table_event_rule(action, event):
-    pattern={}
-    if "topic" in event:
-        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
-    if "pattern" in event:
-        pattern["detail"]=event["pattern"]
-    if "source" in event:
-        pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
-    if pattern=={}:
-        raise RuntimeError("%s/%s event config is blank" % (action["name"],
-                                                            event["name"]))
-    return _init_event_rule(action, event, pattern)
-
-"""
 - event is created by s3 eventbridge notification config
 """
 
@@ -185,25 +167,29 @@ def init_bucket_event_rule(action, event):
                                                             event["name"]))
     return _init_event_rule(action, event, pattern)
 
-### builder
+def init_builder_event_rule(action, event,
+                            basepattern=CodeBuildNotificationsPattern):
+    pattern=dict(basepattern)
+    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % event["name"])}]
+    return _init_event_rule(action, event, pattern)
 
 """
-@resource
-def init_rule(builder, pattern=RulePattern):
-    resourcename=H("%s-builder-rule" % builder["name"])
-    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % builder["name"])}] # *** NB project-name part of detail! ***
-    targetid={"Fn::Sub": "%s-builder-rule-${AWS::StackName}" % builder["name"]}
-    targetarn={"Fn::GetAtt": [H("%s-function" % builder["notifications"]), "Arn"]}
-    target={"Id": targetid,
-            "Arn": targetarn}
-    props={"EventPattern": pattern,
-           "Targets": [target],
-           "State": "ENABLED"}
-    return (resourcename,
-            "AWS::Events::Rule",
-            props)
+- event is custom event created by table-streaming-function
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
 """
 
+def init_table_event_rule(action, event):
+    pattern={}
+    if "topic" in event:
+        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
+    if "pattern" in event:
+        pattern["detail"]=event["pattern"]
+    if "source" in event:
+        pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
+    if pattern=={}:
+        raise RuntimeError("%s/%s event config is blank" % (action["name"],
+                                                            event["name"]))
+    return _init_event_rule(action, event, pattern)
 
 def init_unbound_event_rule(action, event):
     pattern={}
@@ -220,8 +206,10 @@ def init_event_rule(action, event):
     if "source" in event:
         if event["source"]["type"]=="bucket":
             return init_bucket_event_rule(action, event)
+        elif event["source"]["type"]=="builder":
+            return init_builder_event_rule(action, event)
         elif event["source"]["type"]=="table":
-            return init_table_event_rule(action, event)
+            return init_table_event_rule(action, event)        
         else:
             raise RuntimeError("no event rule handler for type %s" % event["type"])
     else:
