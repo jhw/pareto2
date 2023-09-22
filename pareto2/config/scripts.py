@@ -82,17 +82,6 @@ definitions:
     - body
     additionalProperties: false
 properties:
-  builder:
-    type: object
-    properties: 
-      bucket:
-        type: string
-      notifications:
-        type: string
-    required:
-    - bucket
-    - notifications
-    additionalProperties: false
   endpoint:
     type: object
     properties: 
@@ -385,11 +374,29 @@ class Script:
                 for bucketname in list(bucketnames)]
 
     @property
+    def builder_names_env(self):
+        return ["-".join([tok.lower()
+                          for tok in varname.split("_")[:-1]]) # [NB :-1]
+                for varname in self.envvars
+                if varname.endswith("_BUILDER")]
+
+    @property
+    def builder_names_event(self):
+        names=set()
+        if "events" in self.infra:
+            for event in self.infra["events"]:
+                if ("source" in event and
+                    event["source"]["type"]=="builder"):
+                    names.add(event["source"]["name"])                    
+        return names
+    
+    @property
     def builders(self):
-        return [{"name": self.action_name,
-                 "type": "builder",
-                 "bucket": self.infra["builder"]["bucket"],
-                 "notifications": self.infra["builder"]["notifications"]}] if "builder" in self.infra else []
+        buildernames=set(self.builder_names_env)
+        buildernames.update(set(self.builder_names_event))
+        return [{"name": buildername,
+                 "type": "builder"}
+                for buildername in list(buildernames)]
     
     @property
     def queues(self, batchsize=1):

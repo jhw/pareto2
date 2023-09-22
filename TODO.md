@@ -1,14 +1,17 @@
 ### short
 
-- remove cors method from public api
-- remove builder bindings from schema
-- replace action- related builder config with global table/bucket style
+- remove builder from binding restrictions
 - move rule from builder to action
   - new builder style rule
+- add custom bucket back to builder
+  - replace user bucket directive
+- replace existing builder test with table/bucket like one
 - test adding action sub directories
-x
+
 ### medium
 
+- replace action- related builder config with global table/bucket style
+- remove cors method from public api
 - rationalise use of drain_queue in tests
 - website [cloudfront] pattern for static assets
 - userpool should be named private-api
@@ -45,6 +48,7 @@ x
 
 ### done
 
+- remove builder bindings from schema
 - replace custom ddb/eventbridge streaming code with eventbridge pipes
 - builder needs to be created with bucket reference
 - ensure framework creates both warn and error logs stuff, with levels for each
