@@ -377,9 +377,9 @@ class Script:
     @property
     def builder_names_env(self):
         return ["-".join([tok.lower()
-                          for tok in varname.split("_")[:-1]]) # [NB :-1]
+                          for tok in varname.split("_")[:-2]]) # [NB :-2]
                 for varname in self.envvars
-                if varname.endswith("_BUILDER")]
+                if varname.endswith("_BUILDER_PROJECT")]
 
     @property
     def builder_names_event(self):
