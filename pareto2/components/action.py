@@ -2,7 +2,7 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
-import re
+import re, yaml
 
 BasePermissions={"logs:CreateLogGroup",
                  "logs:CreateLogStream",
@@ -13,6 +13,36 @@ ActionDefaults={"size": "default",
                 "invocation-type": "async"}
 
 LogGroupPattern="/aws/lambda/${%s}" # note preceeding slash
+
+"""
+- `COMPLETED` does not seem to be an official `completed-phase`; at least you don't seem to get a notification for it; it seems that it appears as a final entry appended to `phases` in the eventbridge FINALIZING message; it does not appear to have an associaed `completed-phase-status`
+- not clear if FINALIZING is always generated ?
+"""
+
+CodeBuildNotificationPattern=yaml.safe_load("""
+source:
+  - "aws.codebuild"
+detail-type:
+  - "CodeBuild Build Phase Change"
+detail:
+  completed-phase:
+    - SUBMITTED
+    - PROVISIONING
+    - DOWNLOAD_SOURCE
+    - INSTALL
+    - PRE_BUILD
+    - BUILD
+    - POST_BUILD
+    - UPLOAD_ARTIFACTS
+    - FINALIZING
+  completed-phase-status:
+    - TIMED_OUT
+    - STOPPED
+    - FAILED
+    - SUCCEEDED
+    - FAULT
+    - CLIENT_ERROR
+""")
 
 @resource            
 def init_function(action):    
@@ -154,6 +184,26 @@ def init_bucket_event_rule(action, event):
         raise RuntimeError("%s/%s event config is blank" % (action["name"],
                                                             event["name"]))
     return _init_event_rule(action, event, pattern)
+
+### builder
+
+"""
+@resource
+def init_rule(builder, pattern=RulePattern):
+    resourcename=H("%s-builder-rule" % builder["name"])
+    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % builder["name"])}] # *** NB project-name part of detail! ***
+    targetid={"Fn::Sub": "%s-builder-rule-${AWS::StackName}" % builder["name"]}
+    targetarn={"Fn::GetAtt": [H("%s-function" % builder["notifications"]), "Arn"]}
+    target={"Id": targetid,
+            "Arn": targetarn}
+    props={"EventPattern": pattern,
+           "Targets": [target],
+           "State": "ENABLED"}
+    return (resourcename,
+            "AWS::Events::Rule",
+            props)
+"""
+
 
 def init_unbound_event_rule(action, event):
     pattern={}

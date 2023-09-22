@@ -1,10 +1,8 @@
 ### short
 
-- remove builder from binding restrictions
-- move rule from builder to action
-  - new builder style rule
 - add custom bucket back to builder
-  - replace user bucket directive
+- replace builder bucket user directive
+- new action builder event rule
 - replace existing builder test with table/bucket like one
 - test adding action sub directories
 
@@ -48,6 +46,7 @@
 
 ### done
 
+- remove builder from binding restrictions
 - remove builder bindings from schema
 - replace custom ddb/eventbridge streaming code with eventbridge pipes
 - builder needs to be created with bucket reference

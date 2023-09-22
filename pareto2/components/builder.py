@@ -30,36 +30,6 @@ phases:
 version: '0.2'
 """
 
-"""
-- `COMPLETED` does not seem to be an official `completed-phase`; at least you don't seem to get a notification for it; it seems that it appears as a final entry appended to `phases` in the eventbridge FINALIZING message; it does not appear to have an associaed `completed-phase-status`
-- not clear if FINALIZING is always generated ?
-"""
-
-RulePattern=yaml.safe_load("""
-source:
-  - "aws.codebuild"
-detail-type:
-  - "CodeBuild Build Phase Change"
-detail:
-  completed-phase:
-    - SUBMITTED
-    - PROVISIONING
-    - DOWNLOAD_SOURCE
-    - INSTALL
-    - PRE_BUILD
-    - BUILD
-    - POST_BUILD
-    - UPLOAD_ARTIFACTS
-    - FINALIZING
-  completed-phase-status:
-    - TIMED_OUT
-    - STOPPED
-    - FAILED
-    - SUCCEEDED
-    - FAULT
-    - CLIENT_ERROR
-""")
-
 @resource
 def init_project(builder,
                  buildtype=BuildType,
@@ -117,40 +87,10 @@ def init_service_role(builder, permissions=Permissions):
             "AWS::IAM::Role",
             props)
 
-@resource
-def init_rule(builder, pattern=RulePattern):
-    resourcename=H("%s-builder-rule" % builder["name"])
-    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % builder["name"])}] # *** NB project-name part of detail! ***
-    targetid={"Fn::Sub": "%s-builder-rule-${AWS::StackName}" % builder["name"]}
-    targetarn={"Fn::GetAtt": [H("%s-function" % builder["notifications"]), "Arn"]}
-    target={"Id": targetid,
-            "Arn": targetarn}
-    props={"EventPattern": pattern,
-           "Targets": [target],
-           "State": "ENABLED"}
-    return (resourcename,
-            "AWS::Events::Rule",
-            props)
-
-@resource
-def init_rule_permission(builder):
-    resourcename=H("%s-builder-rule-permission" % builder["name"])
-    sourcearn={"Fn::GetAtt": [H("%s-builder-rule" % builder["name"]), "Arn"]}
-    funcname={"Ref": H("%s-function" % builder["notifications"])}
-    props={"Action": "lambda:InvokeFunction",
-           "Principal": "events.amazonaws.com",
-           "FunctionName": funcname,
-           "SourceArn": sourcearn}
-    return (resourcename,
-            "AWS::Lambda::Permission",
-            props)
-
 def render_resources(builder):
     resources=[]
     for fn in [init_project,
-               init_service_role,
-               init_rule,
-               init_rule_permission]:
+               init_service_role]:
         resource=fn(builder)
         resources.append(resource)
     return dict(resources)
