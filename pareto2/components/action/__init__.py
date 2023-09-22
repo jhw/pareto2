@@ -2,7 +2,9 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
-import re, yaml
+from pareto2.components.action.events import init_event_rule, init_event_rule_permission
+
+import re
 
 BasePermissions={"logs:CreateLogGroup",
                  "logs:CreateLogStream",
@@ -13,36 +15,6 @@ ActionDefaults={"size": "default",
                 "invocation-type": "async"}
 
 LogGroupPattern="/aws/lambda/${%s}" # note preceeding slash
-
-"""
-- `COMPLETED` does not seem to be an official `completed-phase`; at least you don't seem to get a notification for it; it seems that it appears as a final entry appended to `phases` in the eventbridge FINALIZING message; it does not appear to have an associaed `completed-phase-status`
-- not clear if FINALIZING is always generated ?
-"""
-
-CodeBuildNotificationsPattern=yaml.safe_load("""
-source:
-  - "aws.codebuild"
-detail-type:
-  - "CodeBuild Build Phase Change"
-detail:
-  completed-phase:
-    - SUBMITTED
-    - PROVISIONING
-    - DOWNLOAD_SOURCE
-    - INSTALL
-    - PRE_BUILD
-    - BUILD
-    - POST_BUILD
-    - UPLOAD_ARTIFACTS
-    - FINALIZING
-  completed-phase-status:
-    - TIMED_OUT
-    - STOPPED
-    - FAILED
-    - SUCCEEDED
-    - FAULT
-    - CLIENT_ERROR
-""")
 
 @resource            
 def init_function(action):    
@@ -121,113 +93,6 @@ def init_function_event_config(action, retries=0):
            "Qualifier": "$LATEST"}
     return (resourcename,
             "AWS::Lambda::EventInvokeConfig",
-            props)
-
-"""
-- event rule target id max length 64
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
-- don't introduce random elements in ids because this means rules will be deleted and recreated every time a stack deploys!
-"""
-
-@resource
-def _init_event_rule(action, event, pattern, nmax=64):
-    def init_target(action, event):
-        id="%s-%s-target" % (action["name"],
-                             event["name"])[:nmax] # NB
-        arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
-        return {"Id": id,
-                "Arn": arn}
-    resourcename=H("%s-%s-event-rule" % (action["name"],
-                                         event["name"]))
-    target=init_target(action, event)
-    props={"EventPattern": pattern,
-           "Targets": [target],
-           "State": "ENABLED"}
-    return (resourcename,
-            "AWS::Events::Rule",
-            props)
-
-"""
-- event is created by s3 eventbridge notification config
-"""
-
-def init_bucket_event_rule(action, event):
-    pattern={}
-    if "topic" in event:
-        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
-    if "pattern" in event:
-        pattern["detail"]=event["pattern"]
-    if "source" in event:
-        pattern.setdefault("detail", {})
-        pattern["detail"].setdefault("bucket", {})
-        pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["name"])}]
-        pattern["source"]=["aws.s3"]
-    if pattern=={}:
-        raise RuntimeError("%s/%s event config is blank" % (action["name"],
-                                                            event["name"]))
-    return _init_event_rule(action, event, pattern)
-
-def init_builder_event_rule(action, event,
-                            basepattern=CodeBuildNotificationsPattern):
-    pattern=dict(basepattern)
-    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % event["name"])}]
-    return _init_event_rule(action, event, pattern)
-
-"""
-- event is custom event created by table-streaming-function
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-target.html#cfn-events-rule-target-id
-"""
-
-def init_table_event_rule(action, event):
-    pattern={}
-    if "topic" in event:
-        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
-    if "pattern" in event:
-        pattern["detail"]=event["pattern"]
-    if "source" in event:
-        pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
-    if pattern=={}:
-        raise RuntimeError("%s/%s event config is blank" % (action["name"],
-                                                            event["name"]))
-    return _init_event_rule(action, event, pattern)
-
-def init_unbound_event_rule(action, event):
-    pattern={}
-    if "topic" in event:
-        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
-    if "pattern" in event:
-        pattern["detail"]=event["pattern"]
-    if pattern=={}:
-        raise RuntimeError("%s/%s event config is blank" % (action["name"],
-                                                            event["name"]))
-    return _init_event_rule(action, event, pattern)
-
-def init_event_rule(action, event):
-    if "source" in event:
-        if event["source"]["type"]=="bucket":
-            return init_bucket_event_rule(action, event)
-        elif event["source"]["type"]=="builder":
-            return init_builder_event_rule(action, event)
-        elif event["source"]["type"]=="table":
-            return init_table_event_rule(action, event)        
-        else:
-            raise RuntimeError("no event rule handler for type %s" % event["type"])
-    else:
-        return init_unbound_event_rule(action, event)
-    
-@resource
-def init_event_rule_permission(action, event):
-    resourcename=H("%s-%s-event-rule-permission" % (action["name"],
-                                                    event["name"]))
-    sourcearn={"Fn::GetAtt": [H("%s-%s-event-rule" % (action["name"],
-                                                      event["name"])), "Arn"]}
-    funcname={"Ref": H("%s-function" % action["name"])}
-    props={"Action": "lambda:InvokeFunction",
-           "Principal": "events.amazonaws.com",
-           "FunctionName": funcname,
-           "SourceArn": sourcearn}
-    return (resourcename,
-            "AWS::Lambda::Permission",
             props)
 
 @resource

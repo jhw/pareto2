@@ -1,7 +1,5 @@
 ### short
 
-- expand events demos
-
 - test adding action sub directories
 
 ### medium
@@ -44,6 +42,7 @@
 
 ### done
 
+- expand events demos
 - new action builder event rule
 - replace builder bucket user directive
 - add custom bucket back to builder
