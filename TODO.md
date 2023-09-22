@@ -2,16 +2,16 @@
 
 ### medium
 
+- consider adding subdirectories eg actions.events
+- public api doesn't need cors method
 - rationalise use of drain_queue in tests
 - website [cloudfront] pattern for static assets
-- replace custom ddb/eventbridge streaming code with eventbridge pipes
 - userpool should be named private-api
 - apigw logging
-
-### long
-
 - wheel package
 - lambda alarms
+
+### long
 
 ### thoughts
 
@@ -40,6 +40,7 @@
 
 ### done
 
+- replace custom ddb/eventbridge streaming code with eventbridge pipes
 - builder needs to be created with bucket reference
 - ensure framework creates both warn and error logs stuff, with levels for each
 - check refs created by init_logs_subscription
