@@ -1,6 +1,5 @@
 ### short
 
-- replace builder bucket user directive
 - new action builder event rule
 - replace existing builder test with table/bucket like one
 - test adding action sub directories
@@ -45,6 +44,7 @@
 
 ### done
 
+- replace builder bucket user directive
 - add custom bucket back to builder
 - add builder to schema event options
 - remove builder from binding restrictions

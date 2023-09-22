@@ -46,7 +46,7 @@ def init_project(builder,
     source={"Type": "NO_SOURCE",
             "BuildSpec": buildspec}
     rolename=H("%s-builder-service-role" % builder["name"])
-    bucketname=H("%s-bucket" % builder["bucket"])
+    bucketname=H("%s-builder-bucket" % builder["name"])
     artifacts={"Type": "S3",
                "Location": {"Ref": bucketname},
                "Packaging": "ZIP",
