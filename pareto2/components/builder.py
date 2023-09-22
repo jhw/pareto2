@@ -87,10 +87,19 @@ def init_service_role(builder, permissions=Permissions):
             "AWS::IAM::Role",
             props)
 
+@resource
+def init_bucket(builder):
+    resourcename=H("%s-builder-bucket" % builder["name"])
+    props={}
+    return (resourcename,
+            "AWS::S3::Bucket",
+            props)
+
 def render_resources(builder):
     resources=[]
     for fn in [init_project,
-               init_service_role]:
+               init_service_role,
+               init_bucket]:
         resource=fn(builder)
         resources.append(resource)
     return dict(resources)
