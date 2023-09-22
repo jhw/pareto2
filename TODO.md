@@ -1,10 +1,8 @@
 ### short
 
-- test adding action sub directories
-
 ### medium
 
-- replace action- related builder config with global table/bucket style
+- abstract api code like action
 - remove cors method from public api
 - rationalise use of drain_queue in tests
 - website [cloudfront] pattern for static assets
@@ -42,6 +40,7 @@
 
 ### done
 
+- replace action- related builder config with global table/bucket style
 - expand events demos
 - new action builder event rule
 - replace builder bucket user directive
