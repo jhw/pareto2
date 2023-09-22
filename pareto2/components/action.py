@@ -19,7 +19,7 @@ LogGroupPattern="/aws/lambda/${%s}" # note preceeding slash
 - not clear if FINALIZING is always generated ?
 """
 
-CodeBuildNotificationPattern=yaml.safe_load("""
+CodeBuildNotificationsPattern=yaml.safe_load("""
 source:
   - "aws.codebuild"
 detail-type:

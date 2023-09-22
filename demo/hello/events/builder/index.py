@@ -6,12 +6,11 @@ infra:
       hello: world
     source:
       name: demo
-      type: bucket
+      type: builder
 """
 
 import os
 
 def handler(event, context,
-            tablename=os.environ["DEMO_TABLE"],
-            bucketname=os.environ["DEMO_BUCKET"]):
+            buildername=os.environ["DEMO_BUILDER"]):
     print (event)
