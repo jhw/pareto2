@@ -1,6 +1,5 @@
 ### short
 
-- add builder to schema event options
 - add custom bucket back to builder
 - replace builder bucket user directive
 - new action builder event rule
@@ -47,6 +46,7 @@
 
 ### done
 
+- add builder to schema event options
 - remove builder from binding restrictions
 - remove builder bindings from schema
 - replace custom ddb/eventbridge streaming code with eventbridge pipes

@@ -22,6 +22,7 @@ definitions:
             type: string
             enum:
             - bucket
+            - builder
             - table
         required:
         - name
