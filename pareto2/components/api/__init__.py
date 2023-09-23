@@ -90,7 +90,7 @@ def init_cognito_authorizer(api):
 """
 
 @resource
-def init_cors_default_response(api, code):        
+def init_default_response(api, code):        
     params={CorsGatewayHeader % k.capitalize(): "'%s'" % v # NB quotes
             for k, v in [("headers", "*"),
                          ("origin", "*")]}
@@ -243,7 +243,7 @@ def init_open_resources(api, resources):
                init_domain_record_set]:
         resources.append(fn(api))
     for code in "4XX|5XX".split("|"):
-        resources.append(init_cors_default_response(api, code))
+        resources.append(init_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_open_method,
@@ -267,7 +267,7 @@ def init_cognito_resources(api, resources):
                init_domain_record_set]:
         resources.append(fn(api))
     for code in "4XX|5XX".split("|"):
-        resources.append(init_cors_default_response(api, code))
+        resources.append(init_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_cognito_method,
