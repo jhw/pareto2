@@ -9,9 +9,11 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
-import json, yaml
+from pareto2.components.api.domain import init_domain, init_domain_path_mapping, init_domain_record_set
 
-MethodArn="arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
+from pareto2.components.api.methods import init_method, init_cognito_method, init_cors_method
+
+import json
 
 PermissionSrcArn="arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${%s}/${%s}/%s/%s"
 
@@ -19,17 +21,7 @@ EndpointUrl="https://${%s}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${%s}"
 
 EndpointSchemaVersion="http://json-schema.org/draft-07/schema#"
 
-CorsMethodHeader="method.response.header.Access-Control-Allow-%s"
-
 CorsGatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
-
-CorsHeaders=yaml.safe_load("""
-- Content-Type
-- X-Amz-Date
-- Authorization
-- X-Api-Key
-- X-Amz-Security-Token
-""")
 
 @resource
 def init_rest_api(api):
@@ -88,7 +80,7 @@ def init_cognito_authorizer(api):
 """
 
 @resource
-def init_cors_default_response(api, code):        
+def init_default_response(api, code):        
     params={CorsGatewayHeader % k.capitalize(): "'%s'" % v # NB quotes
             for k, v in [("headers", "*"),
                          ("origin", "*")]}
@@ -110,77 +102,6 @@ def init_resource(api, endpoint):
            "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Resource",
-            props)
-
-def init_method(api, endpoint, authorisation):
-    resourcename=H("%s-api-method" % endpoint["name"])
-    uri={"Fn::Sub": [MethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
-    integration={"IntegrationHttpMethod": "POST",
-                 "Type": "AWS_PROXY",
-                 "Uri": uri}
-    props={"HttpMethod": endpoint["method"],
-           "Integration": integration,
-           "ResourceId": {"Ref": H("%s-api-resource" % endpoint["name"])},
-           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
-    props.update(authorisation)
-    if "parameters" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
-        props["RequestParameters"]={"method.request.querystring.%s" % param: True
-                                    for param in endpoint["parameters"]}
-    elif "schema" in endpoint:
-        props["RequestValidatorId"]={"Ref": H("%s-api-validator" % endpoint["name"])}
-        props["RequestModels"]={"application/json": H("%s-api-model" % endpoint["name"])}
-    return (resourcename,
-            "AWS::ApiGateway::Method",
-            props)
-
-@resource
-def init_open_method(api, endpoint):
-    authorisation={"AuthorizationType": "NONE"}
-    return init_method(api, endpoint, authorisation)
-
-@resource
-def init_cognito_method(api, endpoint):
-    authorisation={"AuthorizationType": "COGNITO_USER_POOLS",
-                   "AuthorizerId": {"Ref": H("%s-api-authorizer" % api["name"])}}
-    return init_method(api, endpoint, authorisation)
-
-@resource
-def init_cors_method(api, endpoint):
-    def init_integration_response(endpoint):
-        params={CorsMethodHeader % k.capitalize(): "'%s'" % v # NB quotes
-                for k, v in [("headers", ",".join(CorsHeaders)),
-                             ("methods", "%s,OPTIONS" % endpoint["method"]),
-                             ("origin", "*")]}
-        templates={"application/json": ""}
-        return {"StatusCode": 200,
-                "ResponseParameters": params,
-                "ResponseTemplates": templates}
-    def init_integration(endpoint):
-        templates={"application/json": json.dumps({"statusCode": 200})}
-        response=init_integration_response(endpoint)
-        return {"IntegrationResponses": [response],
-                "PassthroughBehavior": "WHEN_NO_MATCH",
-                "RequestTemplates": templates,
-                "Type": "MOCK"}
-    def init_response():
-        params={CorsMethodHeader % k.capitalize(): False
-                for k in ["headers", "methods", "origin"]}
-        models={"application/json": "Empty"}
-        return {"StatusCode": 200,
-                "ResponseModels": models,
-                "ResponseParameters": params}
-    resourcename=H("%s-api-cors-method" % endpoint["name"])
-    integration=init_integration(endpoint)
-    response=init_response()
-    props={"AuthorizationType": "NONE",
-           "HttpMethod": "OPTIONS",
-           "Integration": integration,
-           "MethodResponses": [response],
-           "ResourceId": {"Ref": H("%s-api-resource" % endpoint["name"])},
-           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
-    return (resourcename,
-            "AWS::ApiGateway::Method",
             props)
 
 @resource
@@ -228,47 +149,6 @@ def init_model(api, endpoint, schematype=EndpointSchemaVersion):
             "AWS::ApiGateway::Model",
             props)    
 
-@resource
-def init_domain(api):
-    resourcename=H("%s-api-domain" % api["name"])
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-domain-prefix" % api["name"])}, "name": {"Ref": H("domain-name")}}]}
-    props={"DomainName": domainname,
-           "CertificateArn": {"Ref": H("certificate-arn")}}
-    return (resourcename,
-            "AWS::ApiGateway::DomainName",
-            props)
-
-@resource
-def init_domain_path_mapping(api):
-    resourcename=H("%s-api-domain-path-mapping" % api["name"])
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-domain-prefix" % api["name"])}, "name": {"Ref": H("domain-name")}}]}
-    props={"DomainName": domainname,
-           "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
-           "Stage": api["stage"]["name"]}
-    depends=[H("%s-api-domain" % api["name"])]
-    return (resourcename,
-            "AWS::ApiGateway::BasePathMapping",
-            props,
-            depends)
-
-@resource
-def init_domain_record_set(api):
-    resourcename=H("%s-api-domain-record-set" % api["name"])
-    hzname={"Fn::Sub": ["${name}.", {"name": {"Ref": H("domain-name")}}]} # NB note trailing period
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-domain-prefix" % api["name"])}, "name": {"Ref": H("domain-name")}}]}
-    dnsname={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionDomainName"]}
-    hzid={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionHostedZoneId"]}
-    aliastarget={"DNSName": dnsname,
-                 "EvaluateTargetHealth": False,
-                 "HostedZoneId": hzid}
-    props={"HostedZoneName": hzname,
-           "Name": domainname, # NB `Name` key
-           "Type": "A",
-           "AliasTarget": aliastarget}
-    return (resourcename,
-            "AWS::Route53::RecordSet",
-            props)
-
 """
 - NB an open API is still CORS- enabled
 """
@@ -282,7 +162,7 @@ def init_open_resources(api, resources):
                init_domain_record_set]:
         resources.append(fn(api))
     for code in "4XX|5XX".split("|"):
-        resources.append(init_cors_default_response(api, code))
+        resources.append(init_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_open_method,
@@ -306,7 +186,7 @@ def init_cognito_resources(api, resources):
                init_domain_record_set]:
         resources.append(fn(api))
     for code in "4XX|5XX".split("|"):
-        resources.append(init_cors_default_response(api, code))
+        resources.append(init_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_cognito_method,
