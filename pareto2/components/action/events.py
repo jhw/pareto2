@@ -65,7 +65,7 @@ def init_bucket_event_rule(action, event):
 def init_builder_event_rule(action, event,
                             basepattern=CodeBuildNotificationsPattern):
     pattern=dict(basepattern)
-    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder-project" % event["source"]["name"])}]
+    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder" % event["source"]["name"])}]
     return _init_event_rule(action, event, pattern)
 
 def init_table_event_rule(action, event):

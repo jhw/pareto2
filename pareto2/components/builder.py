@@ -38,15 +38,15 @@ def init_project(builder,
                  buildspec=BuildSpec,
                  buildprefix="build",
                  logsprefix="logs"):
-    resourcename=H("%s-builder-project" % builder["name"])
+    resourcename=H("%s-builder" % builder["name"])
     env={"ComputeType": buildcomputetype,
          "Image": buildimage,
          "Type": buildtype}
-    name={"Fn::Sub": "%s-builder-project-${AWS::StackName}-${AWS::Region}" % builder["name"]}
+    name={"Fn::Sub": "%s-builder-${AWS::StackName}-${AWS::Region}" % builder["name"]}
     source={"Type": "NO_SOURCE",
             "BuildSpec": buildspec}
     rolename=H("%s-builder-service-role" % builder["name"])
-    bucketname=H("%s-builder-bucket" % builder["name"])
+    bucketname=H("%s-bucket" % builder["name"]) # NB core app bucket not dedicated
     artifacts={"Type": "S3",
                "Location": {"Ref": bucketname},
                "Packaging": "ZIP",
@@ -87,27 +87,18 @@ def init_service_role(builder, permissions=Permissions):
             "AWS::IAM::Role",
             props)
 
-@resource
-def init_bucket(builder):
-    resourcename=H("%s-builder-bucket" % builder["name"])
-    props={}
-    return (resourcename,
-            "AWS::S3::Bucket",
-            props)
-
 def render_resources(builder):
     resources=[]
     for fn in [init_project,
-               init_service_role,
-               init_bucket]:
+               init_service_role]:
         resource=fn(builder)
         resources.append(resource)
     return dict(resources)
 
 def render_outputs(builder):
     outputs={}
-    project={"Ref": H("%s-builder-project" % builder["name"])}
-    outputs[H("%s-builder-project" % builder["name"])]={"Value": project}
+    project={"Ref": H("%s-builder" % builder["name"])}
+    outputs[H("%s-builder" % builder["name"])]={"Value": project}
     return outputs
 
 if __name__=="__main__":

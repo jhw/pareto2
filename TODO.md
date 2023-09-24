@@ -1,8 +1,5 @@
 ### short
 
-- rename project-builder as simply builder
-- builder should reference core app bucket not custom bucket
-- remove custom builder bucket
 - add script helper which assures bucket avialable if builder declared
 
 ### medium
@@ -45,6 +42,9 @@
 
 ### done
 
+- rename project-builder as simply builder
+- builder should reference core app bucket not custom bucket
+- remove custom builder bucket
 - replace action- related builder config with global table/bucket style
 - expand events demos
 - new action builder event rule
