@@ -349,12 +349,17 @@ class Script:
             action["invocation-type"]="sync"
         return action
 
+    """
+    - NB builder requires definition of bucket to push artifacts to
+    """
+    
     @property
     def bucket_names_env(self):
         return ["-".join([tok.lower()
                           for tok in varname.split("_")[:-1]]) # [NB :-1]
                 for varname in self.envvars
-                if varname.endswith("_BUCKET")]
+                if (varname.endswith("_BUCKET") or
+                    varname.endswith("_BUILDER"))]
 
     @property
     def bucket_names_event(self):
@@ -362,8 +367,9 @@ class Script:
         if "events" in self.infra:
             for event in self.infra["events"]:
                 if ("source" in event and
-                    event["source"]["type"]=="bucket"):
-                    names.add(event["source"]["name"])                    
+                    event["source"]["type"] in ["bucket",
+                                                "builder"]):
+                    names.add(event["source"]["name"])              
         return names
     
     @property

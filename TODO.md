@@ -1,7 +1,5 @@
 ### short
 
-- add script helper which assures bucket avialable if builder declared
-
 ### medium
 
 - abstract api code like action
@@ -42,6 +40,7 @@
 
 ### done
 
+- add script helper which assures bucket avialable if builder declared
 - rename project-builder as simply builder
 - builder should reference core app bucket not custom bucket
 - remove custom builder bucket
