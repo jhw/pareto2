@@ -11,7 +11,7 @@ from pareto2.components import resource
 
 from pareto2.components.api.domain import init_domain, init_domain_path_mapping, init_domain_record_set
 
-from pareto2.components.api.methods import init_method, init_cognito_method, init_cors_method
+from pareto2.components.api.methods import init_method, init_open_method, init_cognito_method, init_cors_method
 
 import json
 
