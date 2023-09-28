@@ -104,7 +104,7 @@ def init_async_component(action):
                init_function_event_config,
                init_log_group,
                init_log_stream,
-               # init_warn_logs_subscription,
+               init_warn_logs_subscription,
                init_error_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
@@ -122,7 +122,7 @@ def init_sync_component(action):
                init_function_role,
                init_log_group,
                init_log_stream,
-               # init_warn_logs_subscription,
+               init_warn_logs_subscription,
                init_error_logs_subscription]:
         resource=fn(action)
         resources.append(resource)
