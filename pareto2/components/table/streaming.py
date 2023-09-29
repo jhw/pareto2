@@ -92,7 +92,6 @@ def handler(event, context,
             batch=entries[i*batchsize:(i+1)*batchsize]
             events.put_events(Entries=batch)"""
 
-StreamType="NEW_AND_OLD_IMAGES"
 StreamWindow=1
 StreamRetries=3
 StreamBatchSize=10
@@ -100,37 +99,6 @@ StreamBatchSize=10
 StreamingFunctionDefaults={"size": "default",
                            "timeout": "default",
                            "debug": "false"}
-
-@resource
-def init_table(table, streamtype=StreamType, **kwargs):
-    resourcename=H("%s-table" % table["name"])
-    attrs=[("pk", "S"),
-           ("sk", "S")]
-    if "indexes" in table:
-        attrs+=[(index["name"], index["type"])
-                for index in table["indexes"]]
-    formattedattrs=[{"AttributeName": name,
-                     "AttributeType": type_}
-                    for name, type_ in attrs]
-    keyschema=[{"AttributeName": k,
-                "KeyType": v}
-               for k, v in [("pk", "HASH"),
-                            ("sk", "RANGE")]]
-    props={"AttributeDefinitions": formattedattrs,
-           "BillingMode": "PAY_PER_REQUEST",
-           "KeySchema": keyschema}
-    if "indexes" in table:
-        gsi=[{"IndexName": "%s-index" % index["name"],
-              "Projection": {"ProjectionType": "ALL"},
-              "KeySchema": [{"AttributeName": index["name"],
-                             "KeyType": "HASH"}]}
-             for index in table["indexes"]]
-        props["GlobalSecondaryIndexes"]=gsi
-    if "streaming" in table:
-        props["StreamSpecification"]={"StreamViewType": streamtype}
-    return (resourcename,
-            "AWS::DynamoDB::Table",
-            props)
 
 @resource
 def init_streaming_binding(table,
@@ -149,7 +117,7 @@ def init_streaming_binding(table,
             "AWS::Lambda::EventSourceMapping",
             props)
 
-def streaming_function_defaults(fn):
+def streaming_defaults(fn):
     def wrapped(table, defaults=StreamingFunctionDefaults, **kwargs):
         if "streaming" in table:
             streaming=table["streaming"]
@@ -159,7 +127,7 @@ def streaming_function_defaults(fn):
         return fn(table, **kwargs)
     return wrapped
 
-@streaming_function_defaults
+@streaming_defaults
 @resource            
 def init_streaming_function(table,
                             batchsize=StreamBatchSize,
@@ -222,21 +190,5 @@ def init_streaming_role(table,
             "AWS::IAM::Role",
             props)
 
-def render_resources(table):
-    resources=[]
-    for fn in [init_table]:
-        resource=fn(table)
-        resources.append(resource)
-    if "streaming" in table:
-        for fn in [init_streaming_binding,
-                   init_streaming_function,
-                   init_streaming_role]:
-            resource=fn(table)
-            resources.append(resource)
-    return dict(resources)
-
-def render_outputs(table):
-    return {H("%s-table" % table["name"]): {"Value": {"Ref": H("%s-table" % table["name"])}}}
-                               
 if __name__=="__main__":
     pass
