@@ -1,12 +1,12 @@
 ### short
 
+- separate cognito package
+- userpool should be named private-api
+- extend range of tests
+
 ### medium
 
-- abstract api code like action
-- remove cors method from public api
-- rationalise use of drain_queue in tests
-- website [cloudfront] pattern for static assets
-- userpool should be named private-api
+- website
 - apigw logging
 - wheel package
 - lambda alarms
@@ -40,6 +40,8 @@
 
 ### done
 
+- remove cors stuff from public api
+- abstract api code like action
 - add script helper which assures bucket avialable if builder declared
 - rename project-builder as simply builder
 - builder should reference core app bucket not custom bucket

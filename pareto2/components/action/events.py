@@ -28,24 +28,6 @@ detail:
     - CLIENT_ERROR
 """)
 
-@resource
-def _init_event_rule(action, event, pattern, nmax=64):
-    def init_target(action, event):
-        id="%s-%s-target" % (action["name"],
-                             event["name"])[:nmax] # NB
-        arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
-        return {"Id": id,
-                "Arn": arn}
-    resourcename=H("%s-%s-event-rule" % (action["name"],
-                                         event["name"]))
-    target=init_target(action, event)
-    props={"EventPattern": pattern,
-           "Targets": [target],
-           "State": "ENABLED"}
-    return (resourcename,
-            "AWS::Events::Rule",
-            props)
-
 def init_bucket_event_rule(action, event):
     pattern={}
     if "topic" in event:
@@ -57,16 +39,13 @@ def init_bucket_event_rule(action, event):
         pattern["detail"].setdefault("bucket", {})
         pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["name"])}]
         pattern["source"]=["aws.s3"]
-    if pattern=={}:
-        raise RuntimeError("%s/%s event config is blank" % (action["name"],
-                                                            event["name"]))
-    return _init_event_rule(action, event, pattern)
+    return pattern
 
 def init_builder_event_rule(action, event,
                             basepattern=CodeBuildNotificationsPattern):
     pattern=dict(basepattern)
     pattern["detail"]["project-name"]=[{"Ref": H("%s-builder" % event["source"]["name"])}]
-    return _init_event_rule(action, event, pattern)
+    return pattern
 
 def init_table_event_rule(action, event):
     pattern={}
@@ -76,10 +55,7 @@ def init_table_event_rule(action, event):
         pattern["detail"]=event["pattern"]
     if "source" in event:
         pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
-    if pattern=={}:
-        raise RuntimeError("%s/%s event config is blank" % (action["name"],
-                                                            event["name"]))
-    return _init_event_rule(action, event, pattern)
+    return pattern
 
 def init_unbound_event_rule(action, event):
     pattern={}
@@ -87,11 +63,33 @@ def init_unbound_event_rule(action, event):
         pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
     if "pattern" in event:
         pattern["detail"]=event["pattern"]
-    if pattern=={}:
-        raise RuntimeError("%s/%s event config is blank" % (action["name"],
-                                                            event["name"]))
-    return _init_event_rule(action, event, pattern)
+    return pattern
 
+def render_event_rule(fn):
+    def init_target(action, event, nmax=64):
+        id="%s-%s-target" % (action["name"],
+                             event["name"])[:nmax] # NB
+        arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
+        return {"Id": id,
+                "Arn": arn}
+    def wrapped(action, event):
+        resourcename=H("%s-%s-event-rule" % (action["name"],
+                                             event["name"]))
+        target=init_target(action, event)
+        pattern=fn(action, event)
+        if pattern=={}:
+            raise RuntimeError("%s/%s event config is blank" % (action["name"],
+                                                                event["name"]))
+        props={"EventPattern": pattern,
+               "Targets": [target],
+               "State": "ENABLED"}
+        return (resourcename,
+                "AWS::Events::Rule",
+                props)
+    return wrapped
+
+@resource
+@render_event_rule
 def init_event_rule(action, event):
     if "source" in event:
         if event["source"]["type"]=="bucket":
