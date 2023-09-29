@@ -2,7 +2,6 @@
 
 - separate cognito package
 - userpool should be named private-api
-- extend range of tests
 
 ### medium
 
@@ -40,6 +39,7 @@
 
 ### done
 
+- extend range of tests
 - remove cors stuff from public api
 - abstract api code like action
 - add script helper which assures bucket avialable if builder declared
