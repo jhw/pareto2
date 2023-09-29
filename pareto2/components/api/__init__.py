@@ -1,25 +1,15 @@
-"""
-- quite a lot of the CORS header stuff seems to require single quotes
-- these render badly with pyyaml - if you look in the tmp/cloudformation stuff you will see that single quotes inside double quotes are rendered as triple single quotes
-- however remember that deploy_stack.py deploys JSON templates rather than YAML; YAML are simply dumped to tmp for convenience and debugging
-- reasonable confidence that local JSON parser will handle these single quotes well, and that whatever parses the JSON on the AWS side will do also
-- much less confidence about this on the YAML side; but if you ever do need to try and ensure compliance between local and remote YAML parsers, try ruamel.yaml in place of pyyaml
-"""
-
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
 from pareto2.components.api.domain import init_domain, init_domain_path_mapping, init_domain_record_set
-
 from pareto2.components.api.methods import init_method, init_open_method, init_cognito_method, init_cors_method
+from pareto2.components.api.validation import init_validator, init_model
 
 import json
 
 PermissionSrcArn="arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${%s}/${%s}/%s/%s"
 
 EndpointUrl="https://${%s}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${%s}"
-
-EndpointSchemaVersion="http://json-schema.org/draft-07/schema#"
 
 CorsGatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
 
@@ -118,36 +108,6 @@ def init_permission(api, endpoint):
     return (resourcename, 
             "AWS::Lambda::Permission",
             props)
-
-@resource
-def init_validator(api, endpoint):
-    resourcename=H("%s-api-validator" % endpoint["name"])
-    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
-    if "parameters" in endpoint:
-        props["ValidateRequestParameters"]=True
-    elif "schema" in endpoint:
-        props["ValidateRequestBody"]=True
-    return (resourcename,
-            "AWS::ApiGateway::RequestValidator",
-            props)
-
-"""
-- Name is "optional" but is in fact required if Method is to be able to look up model :/
-"""
-
-@resource
-def init_model(api, endpoint, schematype=EndpointSchemaVersion):
-    resourcename=H("%s-api-model" % endpoint["name"])
-    schema=endpoint["schema"]
-    if "$schema" not in schema:
-        schema["$schema"]=schematype
-    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
-           "ContentType": "application/json",
-           "Name": resourcename,
-           "Schema": schema}
-    return (resourcename,
-            "AWS::ApiGateway::Model",
-            props)    
 
 """
 - NB an open API is still CORS- enabled
