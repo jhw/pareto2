@@ -1,5 +1,6 @@
 ### short [01-website]
 
+- 404 support
 - policy_document needs ability to specify resource per group
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
