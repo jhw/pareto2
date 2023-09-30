@@ -1,11 +1,13 @@
-### short
+### short [01-website]
 
-- separate cognito package
-- userpool should be named private-api
+- rationalise component lookup code
+- website component
+- add website hooks similar to bucket hooks
+- refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 
 ### medium
 
-- website
+- website 40X error handling
 - apigw logging
 - wheel package
 - lambda alarms
@@ -14,6 +16,10 @@
 
 ### thoughts
 
+- separate api cognito package?
+  - doesn't make any sense
+- userpool should be named private-api?
+  - can't think why I wanted to do this
 - make database and bucket fixed assets, like errors?
 - seems inconsistent that table has an appname prefix but api does not
 - push_artifacts.py didn't seem to throw exception on bad POST schema in infa
