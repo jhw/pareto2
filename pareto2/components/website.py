@@ -1,6 +1,8 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
+from pareto2.components.common.iam import policy_document, assume_role_policy_document
+
 StageName="prod"
 
 @resource
@@ -43,11 +45,25 @@ def init_resource(website, pathpart="{proxy+}"):
     return (resourcename,
             "AWS::ApiGateway::Resource",
             props)
+@resource
+def init_role(website,
+              permissions=["s3:GetObject"]):
+    resourcename=H("%s-website-role" % website["name"])
+    policyname={"Fn::Sub": "%s-website-role-policy-${AWS::StackName}" % website["name"]}
+    policyresource={"Fn::Sub": "arn:aws:s3:::${S3Bucket}/*"  % H("%s-website" % website["name"])}
+    policydoc=policy_document(permissions, resource=policyresource)
+    policies=[{"PolicyDocument": policydoc,
+               "PolicyName": policyname}]
+    props={"AssumeRolePolicyDocument": assume_role_policy_document(service="apigateway.amazonaws.com"),
+           "Policies": policies}
+    return (resourcename,
+            "AWS::IAM::Role",
+            props)
 
 @resource
 def init_method(website):
     resourcename=H("%s-website-method" % website["name"])
-    uri={"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H("%s-website" % website["name"])}}
+    uri={"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H("%s-website" % website["name"])}
     credentials={"Fn::GetAtt": [H("%s-website-role" % website["name"]),
                                 "Arn"]}
     requestparams={"integration.request.path.proxy": "method.request.path.proxy"}
@@ -85,6 +101,7 @@ def render_resources(website):
                init_deployment,
                init_stage,
                init_resource,
+               init_role,
                init_method,
                init_bucket]:
         resource=fn(website)

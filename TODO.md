@@ -1,8 +1,8 @@
 ### short [01-website]
 
-- role
 - domain name
 
+- policy_document needs ability to specify resource per group
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 
@@ -46,6 +46,7 @@
 
 ### done
 
+- role
 - complete method
 - rationalise component lookup code
 - extend range of tests
