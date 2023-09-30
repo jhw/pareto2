@@ -2,6 +2,8 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
+from pareto2.components.common.iam import policy_document, assume_role_policy_document
+
 FunctionCode="""import boto3, json, math, os
 
 class Key:
@@ -162,29 +164,12 @@ def init_streaming_role(table,
                                      "logs:CreateLogGroup",
                                      "logs:CreateLogStream",
                                      "logs:PutLogEvents"]):
-    def group_permissions(permissions):
-        groups={}
-        for permission in permissions:
-            prefix=permission.split(":")[0]
-            groups.setdefault(prefix, [])
-            groups[prefix].append(permission)
-        return [sorted(group)
-                for group in list(groups.values())]
-
     resourcename=H("%s-table-streaming-function-role" % table["name"])
-    assumerolepolicydoc={"Version": "2012-10-17",
-                         "Statement": [{"Action": "sts:AssumeRole",
-                                        "Effect": "Allow",
-                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : group,
-                              "Effect": "Allow",
-                              "Resource": "*"}
-                             for group in group_permissions(permissions)]}
     policyname={"Fn::Sub": "%s-table-streaming-function-role-policy-${AWS::StackName}" % table["name"]}
+    policydoc=policy_document(permissions)
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
-    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+    props={"AssumeRolePolicyDocument": assume_role_policy_document(),
            "Policies": policies}
     return (resourcename,
             "AWS::IAM::Role",

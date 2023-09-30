@@ -2,6 +2,8 @@ from pareto2.components import hungarorise as H
 from pareto2.components import uppercase as U
 from pareto2.components import resource
 
+from pareto2.components.common.iam import policy_document, assume_role_policy_document
+
 SlackFunctionCode="""import json, os, urllib.request
 
 # https://colorswall.com/palette/3
@@ -59,28 +61,12 @@ def init_dlq_function_role(queue,
                                         "sqs:DeleteMessage",
                                         "sqs:GetQueueAttributes",
                                         "sqs:ReceiveMessage"]):
-    def group_permissions(permissions):
-        groups={}
-        for permission in permissions:
-            prefix=permission.split(":")[0]
-            groups.setdefault(prefix, [])
-            groups[prefix].append(permission)
-        return [sorted(group)
-                for group in list(groups.values())]
     resourcename=H("%s-queue-dlq-function-role" % queue["name"])
-    assumerolepolicydoc={"Version": "2012-10-17",
-                         "Statement": [{"Action": "sts:AssumeRole",
-                                        "Effect": "Allow",
-                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : group,
-                              "Effect": "Allow",
-                              "Resource": "*"}
-                             for group in group_permissions(permissions)]}
     policyname={"Fn::Sub": "%s-queue-dlq-function-role-policy-${AWS::StackName}" % queue["name"]}
+    policydoc=policy_document(permissions)
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
-    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+    props={"AssumeRolePolicyDocument": assume_role_policy_document(),
            "Policies": policies}
     return (resourcename,
             "AWS::IAM::Role",

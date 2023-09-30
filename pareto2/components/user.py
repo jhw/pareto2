@@ -1,6 +1,8 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
+from pareto2.components.common.iam import policy_document
+
 @resource
 def init_userpool(user):
     resourcename=H("%s-user-userpool" % user["name"])
@@ -64,7 +66,7 @@ def init_identitypool(user):
             "AWS::Cognito::IdentityPool",
             props)
 
-def init_assume_role_policy_doc(user, typestr):
+def role_policy_document(user, typestr):
     condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H("%s-user-identitypool" % user["name"])}},
                "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
     statement=[{"Effect": "Allow",
@@ -74,22 +76,14 @@ def init_assume_role_policy_doc(user, typestr):
     return {"Version": "2012-10-17",
             "Statement": statement}
 
-def init_policy_document(groups):
-    statement=[{"Effect": "Allow",
-                "Action": group,
-                "Resource": "*"}
-               for group in groups]
-    return {"Version": "2012-10-17",
-            "Statement": statement}
-
 @resource
 def init_unauthorized_role(user,
-                           groups=[["mobileanalytics:PutEvents",
-                                    "cognito-sync:*"]]):
+                           permissions=["mobileanalytics:PutEvents",
+                                        "cognito-sync:*"]):
     resourcename=H("%s-user-unauthorized-role" % user["name"])
-    assumerolepolicydoc=init_assume_role_policy_doc(user, "unauthenticated")
+    assumerolepolicydoc=role_policy_document(user, "unauthenticated")
     policyname=H("%s-user-unauthorized-role-policy" % user["name"])
-    policydoc=init_policy_document(groups)
+    policydoc=policy_document(permissions)
     policy={"PolicyName": policyname,
             "PolicyDocument": policydoc}
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,
@@ -100,14 +94,14 @@ def init_unauthorized_role(user,
 
 @resource
 def init_authorized_role(user,
-                         groups=[["mobileanalytics:PutEvents",
-                                  "cognito-sync:*",
-                                  "cognito-identity:*"],
-                                 ["lambda:InvokeFunction"]]):
+                         permissions=["mobileanalytics:PutEvents",
+                                      "cognito-sync:*",
+                                      "cognito-identity:*",
+                                      "lambda:InvokeFunction"]):
     resourcename=H("%s-user-authorized-role" % user["name"])
-    assumerolepolicydoc=init_assume_role_policy_doc(user, "authenticated")
+    assumerolepolicydoc=role_policy_document(user, "authenticated")
     policyname=H("%s-user-authorized-role-policy" % user["name"])
-    policydoc=init_policy_document(groups)
+    policydoc=policy_document(permissions)
     policy={"PolicyName": policyname,
             "PolicyDocument": policydoc}
     props={"AssumeRolePolicyDocument": assumerolepolicydoc,

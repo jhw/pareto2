@@ -1,9 +1,9 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
-import yaml
+from pareto2.components.common.iam import policy_document, assume_role_policy_document
 
-Permissions=["events", "logs", "codebuild", "s3"]
+import yaml
 
 BuildType="LINUX_CONTAINER"
 BuildComputeType="BUILD_GENERAL1_SMALL"
@@ -67,21 +67,17 @@ def init_project(builder,
             props)
 
 @resource
-def init_service_role(builder, permissions=Permissions):
+def init_service_role(builder,
+                      permissions=["events:*",
+                                   "logs:*",
+                                   "codebuild:*",
+                                   "s3:*"]):
     resourcename=H("%s-builder-service-role" % builder["name"])
-    assumerolepolicydoc={"Version": "2012-10-17",
-                         "Statement": [{"Action": "sts:AssumeRole",
-                                        "Effect": "Allow",
-                                        "Principal": {"Service": "codebuild.amazonaws.com"}}]}
-    policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : "%s:*" % permission,
-                              "Effect": "Allow",
-                              "Resource": "*"}
-                             for permission in sorted(permissions)]}
     policyname={"Fn::Sub": "%s-builder-role-policy-${AWS::StackName}" % builder["name"]}
+    policydoc=policy_document(permissions)
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
-    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+    props={"AssumeRolePolicyDocument": assume_role_policy_document("codebuild.amazonaws.com"),
            "Policies": policies}
     return (resourcename,
             "AWS::IAM::Role",

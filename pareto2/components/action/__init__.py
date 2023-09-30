@@ -3,8 +3,9 @@ from pareto2.components import uppercase as U
 from pareto2.components import resource
 
 from pareto2.components.action.events import init_event_rule, init_event_rule_permission
-
 from pareto2.components.action.logs import init_log_group, init_log_stream, init_warn_logs_subscription, init_error_logs_subscription
+
+from pareto2.components.common.iam import policy_document, assume_role_policy_document
 
 BasePermissions={"logs:CreateLogGroup",
                  "logs:CreateLogStream",
@@ -48,35 +49,12 @@ def init_function_role(action, basepermissions=BasePermissions):
         if "permissions" in action:
             permissions.update(set(action["permissions"]))
         return sorted(list(permissions))
-    class Group(list):
-        def __init__(self, key, item=[]):
-            list.__init__(item)
-            self.key=key
-        def render(self):
-            return ["%s:*" % self.key] if "*" in self else ["%s:%s" % (self.key, value) for value in self]
-    def group_permissions(permissions):
-        groups={}
-        for permission in permissions:
-            prefix, suffix = permission.split(":")
-            groups.setdefault(prefix, Group(prefix))
-            groups[prefix].append(suffix)
-        return [group.render()
-                for group in list(groups.values())]
     resourcename=H("%s-function-role" % action["name"])
-    assumerolepolicydoc={"Version": "2012-10-17",
-                         "Statement": [{"Action": "sts:AssumeRole",
-                                        "Effect": "Allow",
-                                        "Principal": {"Service": "lambda.amazonaws.com"}}]}
-    permissions=init_permissions(action, basepermissions)
-    policydoc={"Version": "2012-10-17",
-               "Statement": [{"Action" : group,
-                              "Effect": "Allow",
-                              "Resource": "*"}
-                             for group in group_permissions(permissions)]}
     policyname={"Fn::Sub": "%s-function-role-policy-${AWS::StackName}" % action["name"]}
+    policydoc=policy_document(init_permissions(action, basepermissions))
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
-    props={"AssumeRolePolicyDocument": assumerolepolicydoc,
+    props={"AssumeRolePolicyDocument": assume_role_policy_document(),
            "Policies": policies}
     return (resourcename,
             "AWS::IAM::Role",
