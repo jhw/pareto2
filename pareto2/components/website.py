@@ -1,0 +1,103 @@
+from pareto2.components import hungarorise as H
+from pareto2.components import resource
+
+StageName="prod"
+
+@resource
+def init_rest_api(website):
+    resourcename=H("%s-website-rest-api" % website["name"])
+    name={"Fn::Sub": "%s-website-rest-api-${AWS::StackName}" % website["name"]}
+    props={"Name": name}
+    return (resourcename,            
+            "AWS::ApiGateway::RestApi",
+            props)
+
+@resource
+def init_deployment(website):
+    resourcename=H("%s-website-deployment" % website["name"])
+    props={"RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
+    depends=[H("%s-website-method" % endpoint["name"])]
+    return (resourcename,            
+            "AWS::ApiGateway::Deployment",
+            props,
+            depends)
+
+@resource
+def init_stage(website, stagename=StageName):
+    resourcename=H("%s-website-stage" % website["name"])
+    props={"StageName": stagename,
+           "DeploymentId": {"Ref": H("%s-website-deployment" % website["name"])},
+           "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
+    return (resourcename,
+            "AWS::ApiGateway::Stage",
+            props)
+
+@resource
+def init_resource(website, pathpart="{proxy+}"):
+    resourcename=H("%s-website-resource" % website["name"])
+    parentid={"Fn::GetAtt": [H("%s-website-rest-api" % website["name"]),
+                             "RootResourceId"]}
+    props={"ParentId": parentid,
+           "PathPart": pathpart,
+           "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
+    return (resourcename,
+            "AWS::ApiGateway::Resource",
+            props)
+
+"""
+ Uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:s3:path/${S3Bucket}/{proxy}
+        Credentials:
+          Fn::GetAtt:
+            - ApiGatewayRole
+            - Arn
+"""
+
+@resource
+def init_method(website):
+    resourcename=H("%s-website-method" % website["name"])
+    integration={"IntegrationHttpMethod": "ANY",
+                 "Type": "AWS",
+                 "PassthroughBehaviour": "WHEN_NO_MATCH",
+                 "Uri": None,
+                 "Credentials": None,
+                 "RequestParameters": {"integration.request.path.proxy": "method.request.path.proxy"},
+                 "IntegrationResponses": [{"StatusCode": 200}]}
+    props={"HttpMethod": "GET",
+           "AuthorizationType": "NONE",
+           "RequestParameters": {"method.request.path.proxy": True},
+           "MethodResponses": [{"StatusCode": 200}],
+           "Integration": integration,
+           "ResourceId": {"Ref": H("%s-website-resource" % website["name"])},
+           "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
+    return (resourcename,
+            "AWS::ApiGateway::Method",
+            props)
+
+@resource
+def init_bucket(website):
+    resourcename=H("%s-website" % website["name"])
+    notconf={"EventBridgeConfiguration": {"EventBridgeEnabled": True}}
+    props={"NotificationConfiguration": notconf}
+    return (resourcename,
+            "AWS::S3::Bucket",
+            props)
+
+def render_resources(website):
+    resources=[]
+    for fn in [init_bucket,
+               init_rest_api,
+               init_deployment,
+               init_stage,
+               init_resource,
+               init_method,
+               init_bucket]:
+        resource=fn(website)
+        resources.append(resource)
+    return dict(resources)
+
+def render_outputs(website):
+    return {H("%s-website" % website["name"]): {"Value": {"Ref": H("%s-website" % website["name"])}}}
+
+if __name__=="__main__":
+    pass

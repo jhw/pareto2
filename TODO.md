@@ -1,6 +1,8 @@
 ### short [01-website]
 
-- website component
+- complete method
+- role/credentials
+
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 
