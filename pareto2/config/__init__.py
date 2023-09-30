@@ -17,6 +17,7 @@ import pareto2.components.table
 import pareto2.components.timer
 import pareto2.components.topic
 import pareto2.components.user
+import pareto2.components.website
 
 import pareto2.dashboard
 
@@ -32,7 +33,8 @@ ComponentModules={"action": pareto2.components.action,
                   "table": pareto2.components.table,
                   "timer": pareto2.components.timer,
                   "topic": pareto2.components.topic,
-                  "user": pareto2.components.user}
+                  "user": pareto2.components.user,
+                  "website": pareto2.components.website}
 
 ParameterDefaults=yaml.safe_load("""
 memory-size-default: 512
@@ -121,7 +123,8 @@ class Config(dict):
                      "tables",
                      "timers",
                      "topics",
-                     "users"]:
+                     "users",
+                     "websites"]:
             self["components"]+=getattr(scripts, attr)
         for script in scripts:
             action, envvars, = script.action, script.envvars

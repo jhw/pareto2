@@ -32,6 +32,9 @@ class Components(list):
     @property
     def users(self):
         return self.subset(type="users")
+    @property
+    def websites(self):
+        return self.subset(type="websites")
 
     @property
     def endpoints(self):

@@ -57,6 +57,19 @@ def init_table_event_rule(action, event):
         pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
     return pattern
 
+def init_website_event_rule(action, event):
+    pattern={}
+    if "topic" in event:
+        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
+    if "pattern" in event:
+        pattern["detail"]=event["pattern"]
+    if "source" in event:
+        pattern.setdefault("detail", {})
+        pattern["detail"].setdefault("bucket", {})
+        pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-website" % event["source"]["name"])}]
+        pattern["source"]=["aws.s3"]
+    return pattern
+
 def init_unbound_event_rule(action, event):
     pattern={}
     if "topic" in event:
@@ -97,7 +110,9 @@ def init_event_rule(action, event):
         elif event["source"]["type"]=="builder":
             return init_builder_event_rule(action, event)
         elif event["source"]["type"]=="table":
-            return init_table_event_rule(action, event)        
+            return init_table_event_rule(action, event)
+        elif event["source"]["type"]=="website":
+            return init_website_event_rule(action, event)        
         else:
             raise RuntimeError("no event rule handler for type %s" % event["type"])
     else:

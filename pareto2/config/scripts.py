@@ -24,6 +24,7 @@ definitions:
             - bucket
             - builder
             - table
+            - website
         required:
         - name
         - type
@@ -243,6 +244,10 @@ class Scripts(list):
                              "type": "user"}]
         return []
 
+    @property
+    def websites(self):
+        return self.aggregate("websites")
+    
 class Script:
 
     def __init__(self, filename, body):
@@ -459,6 +464,32 @@ class Script:
         return [{"name": self.action_name,
                  "type": "topic",
                  "action": self.action_name}] if "topic" in self.infra else []
+
+    @property
+    def website_names_env(self):
+        return ["-".join([tok.lower()
+                          for tok in varname.split("_")[:-1]]) # [NB :-1]
+                for varname in self.envvars
+                if varname.endswith("_WEBSITE")]
+
+    @property
+    def website_names_event(self):
+        names=set()
+        if "events" in self.infra:
+            for event in self.infra["events"]:
+                if ("source" in event and
+                    event["source"]["type"] in ["website"]):
+                    names.add(event["source"]["name"])              
+        return names
+    
+    @property
+    def websites(self):
+        websitenames=set(self.website_names_env)
+        websitenames.update(set(self.website_names_event))
+        return [{"name": websitename,
+                "type": "website"}
+                for websitename in list(websitenames)]
+
     
 if __name__=="__main__":
     pass

@@ -1,13 +1,14 @@
 ### short [01-website]
 
-- add website hooks similar to bucket hooks
-- refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 - add website demo
-- investigate push_artifacts.py handling of os variables
+- refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 
 ### medium
 
+- abstract jsonschema into separate file
+- investigate push_artifacts.py handling of os variables
 - policy_document needs ability to specify resource per group
+
 - apigw logging
 - fix api stagename as prod
 - wheel package
@@ -46,6 +47,9 @@
 
 ### done
 
+- add website as event source
+- add website event
+- add website hooks similar to bucket hooks
 - 404 support
 - domain name
 - role
