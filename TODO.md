@@ -1,6 +1,5 @@
 ### short [01-website]
 
-- rationalise component lookup code
 - website component
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
@@ -45,6 +44,7 @@
 
 ### done
 
+- rationalise component lookup code
 - extend range of tests
 - remove cors stuff from public api
 - abstract api code like action

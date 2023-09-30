@@ -3,30 +3,36 @@ class Components(list):
     def __init__(self, struct=[]):
         list.__init__(self, struct)
 
+    def subset(self, type):
+        return [component
+                for component in self
+                if component["type"]==type]
+        
     @property
     def actions(self):
-        return [component
-                for component in self
-                if component["type"]=="action"]
-
+        return self.subset(type="action")
     @property
     def apis(self):
-        return [component
-                for component in self
-                if component["type"]=="api"]
-
+        return self.subset(type="api")
     @property
     def buckets(self):
-        return [component
-                for component in self
-                if component["type"]=="bucket"]
-
+        return self.subset(type="bucket")
     @property
     def builders(self):
-        return [component
-                for component in self
-                if component["type"]=="builder"]
-    
+        return self.subset(type="builder")
+    @property
+    def secrets(self):
+        return self.subset(type="secret")
+    @property
+    def tables(self):
+        return self.subset(type="table")
+    @property
+    def topics(self):
+        return self.subset(type="topic")
+    @property
+    def users(self):
+        return self.subset(type="users")
+
     @property
     def endpoints(self):
         endpoints=[]
@@ -43,29 +49,5 @@ class Components(list):
                 events+=action["events"]
         return events
     
-    @property
-    def secrets(self):
-        return [component
-                for component in self
-                if component["type"]=="secret"]
-
-    @property
-    def tables(self):
-        return [component
-                for component in self
-                if component["type"]=="table"]
-
-    @property
-    def topics(self):
-        return [component
-                for component in self
-                if component["type"]=="topic"]
-
-    @property
-    def users(self):
-        return [component
-                for component in self
-                if component["type"]=="user"]
-
 if __name__=="__main__":
     pass
