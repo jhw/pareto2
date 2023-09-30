@@ -1,6 +1,6 @@
 ### short [01-website]
 
-- refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
+- how to handle domain name and prefix across api and website?
 
 ### medium
 
