@@ -44,24 +44,19 @@ def init_resource(website, pathpart="{proxy+}"):
             "AWS::ApiGateway::Resource",
             props)
 
-"""
- Uri:
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:s3:path/${S3Bucket}/{proxy}
-        Credentials:
-          Fn::GetAtt:
-            - ApiGatewayRole
-            - Arn
-"""
-
 @resource
 def init_method(website):
     resourcename=H("%s-website-method" % website["name"])
+    uri={"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H("%s-website" % website["name"])}}
+    credentials={"Fn::GetAtt": [H("%s-website-role" % website["name"]),
+                                "Arn"]}
+    requestparams={"integration.request.path.proxy": "method.request.path.proxy"}
     integration={"IntegrationHttpMethod": "ANY",
                  "Type": "AWS",
                  "PassthroughBehaviour": "WHEN_NO_MATCH",
-                 "Uri": None,
-                 "Credentials": None,
-                 "RequestParameters": {"integration.request.path.proxy": "method.request.path.proxy"},
+                 "Uri": uri,
+                 "Credentials": credentials,
+                 "RequestParameters": requestparams, 
                  "IntegrationResponses": [{"StatusCode": 200}]}
     props={"HttpMethod": "GET",
            "AuthorizationType": "NONE",

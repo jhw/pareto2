@@ -1,7 +1,7 @@
 ### short [01-website]
 
-- complete method
-- role/credentials
+- role
+- domain name
 
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
@@ -46,6 +46,7 @@
 
 ### done
 
+- complete method
 - rationalise component lookup code
 - extend range of tests
 - remove cors stuff from public api
