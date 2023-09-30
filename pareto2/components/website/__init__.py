@@ -20,7 +20,7 @@ def init_rest_api(website):
 def init_deployment(website):
     resourcename=H("%s-website-deployment" % website["name"])
     props={"RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
-    depends=[H("%s-website-method" % endpoint["name"])]
+    depends=[H("%s-website-method" % website["name"])]
     return (resourcename,            
             "AWS::ApiGateway::Deployment",
             props,
@@ -52,7 +52,7 @@ def init_role(website,
               permissions=["s3:GetObject"]):
     resourcename=H("%s-website-role" % website["name"])
     policyname={"Fn::Sub": "%s-website-role-policy-${AWS::StackName}" % website["name"]}
-    policyresource={"Fn::Sub": "arn:aws:s3:::${S3Bucket}/*"  % H("%s-website" % website["name"])}
+    policyresource={"Fn::Sub": "arn:aws:s3:::${%s}/*"  % H("%s-website" % website["name"])}
     policydoc=policy_document(permissions, resource=policyresource)
     policies=[{"PolicyDocument": policydoc,
                "PolicyName": policyname}]
