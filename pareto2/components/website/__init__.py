@@ -1,6 +1,8 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
+from pareto2.components.website.domain import init_domain, init_domain_path_mapping, init_domain_record_set
+
 from pareto2.components.common.iam import policy_document, assume_role_policy_document
 
 StageName="prod"
@@ -103,7 +105,10 @@ def render_resources(website):
                init_resource,
                init_role,
                init_method,
-               init_bucket]:
+               init_bucket,
+               init_domain,
+               init_domain_path_mapping,
+               init_domain_record_set]:
         resource=fn(website)
         resources.append(resource)
     return dict(resources)

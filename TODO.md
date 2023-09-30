@@ -1,15 +1,15 @@
 ### short [01-website]
 
-- domain name
-
 - policy_document needs ability to specify resource per group
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
+- add website demo
 
 ### medium
 
 - website 40X error handling
 - apigw logging
+- fix api stagename as prod
 - wheel package
 - lambda alarms
 
@@ -46,6 +46,7 @@
 
 ### done
 
+- domain name
 - role
 - complete method
 - rationalise component lookup code
