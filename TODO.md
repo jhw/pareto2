@@ -1,6 +1,5 @@
 ### short [01-website]
 
-- 404 support
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 - add website demo
@@ -47,6 +46,7 @@
 
 ### done
 
+- 404 support
 - domain name
 - role
 - complete method

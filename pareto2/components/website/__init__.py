@@ -64,22 +64,30 @@ def init_role(website,
 
 @resource
 def init_method(website):
+    def init_integration(website):
+        uri={"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H("%s-website" % website["name"])}
+        creds={"Fn::GetAtt": [H("%s-website-role" % website["name"]),
+                              "Arn"]}
+        reqparams={"integration.request.path.proxy": "method.request.path.proxy"}
+        responses=[{"StatusCode": 200},
+                   {"StatusCode": 404,
+                    "SelectionPattern": "404"}]
+        return {"IntegrationHttpMethod": "ANY",
+                "Type": "AWS",
+                "PassthroughBehaviour": "WHEN_NO_MATCH",
+                "Uri": uri,
+                "Credentials": creds,
+                "RequestParameters": reqparams, 
+                "IntegrationResponses": responses}        
     resourcename=H("%s-website-method" % website["name"])
-    uri={"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H("%s-website" % website["name"])}
-    credentials={"Fn::GetAtt": [H("%s-website-role" % website["name"]),
-                                "Arn"]}
-    requestparams={"integration.request.path.proxy": "method.request.path.proxy"}
-    integration={"IntegrationHttpMethod": "ANY",
-                 "Type": "AWS",
-                 "PassthroughBehaviour": "WHEN_NO_MATCH",
-                 "Uri": uri,
-                 "Credentials": credentials,
-                 "RequestParameters": requestparams, 
-                 "IntegrationResponses": [{"StatusCode": 200}]}
+    integration=init_integration(website)
+    reqparams={"method.request.path.proxy": True}
+    methodresponses=[{"StatusCode": 200},
+                     {"StatusCode": 404}]    
     props={"HttpMethod": "GET",
            "AuthorizationType": "NONE",
-           "RequestParameters": {"method.request.path.proxy": True},
-           "MethodResponses": [{"StatusCode": 200}],
+           "RequestParameters": reqparams,
+           "MethodResponses": methodresponses,
            "Integration": integration,
            "ResourceId": {"Ref": H("%s-website-resource" % website["name"])},
            "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
