@@ -1,14 +1,14 @@
 ### short [01-website]
 
 - 404 support
-- policy_document needs ability to specify resource per group
 - add website hooks similar to bucket hooks
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 - add website demo
+- investigate push_artifacts.py handling of os variables
 
 ### medium
 
-- website 40X error handling
+- policy_document needs ability to specify resource per group
 - apigw logging
 - fix api stagename as prod
 - wheel package
