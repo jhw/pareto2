@@ -1,6 +1,5 @@
 ### short [01-website]
 
-- add website demo
 - refactor PUBLIC_DOMAIN_PREFIX as PUBLIC_API_DOMAIN_PREFIX
 
 ### medium
@@ -47,6 +46,7 @@
 
 ### done
 
+- add website demo
 - add website as event source
 - add website event
 - add website hooks similar to bucket hooks
