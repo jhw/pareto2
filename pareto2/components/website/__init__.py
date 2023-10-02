@@ -74,7 +74,7 @@ def init_method(website):
                     "SelectionPattern": "404"}]
         return {"IntegrationHttpMethod": "ANY",
                 "Type": "AWS",
-                "PassthroughBehaviour": "WHEN_NO_MATCH",
+                "PassthroughBehavior": "WHEN_NO_MATCH",
                 "Uri": uri,
                 "Credentials": creds,
                 "RequestParameters": reqparams, 
