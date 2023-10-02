@@ -1,3 +1,3 @@
 jsonschema
-moto[dynamodb,s3,sns]
+moto[dynamodb,events,iam,lambda,s3,sns,sqs]
 pyyaml

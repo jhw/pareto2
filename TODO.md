@@ -1,7 +1,8 @@
-### short [01-website]
+### short
 
 ### medium
 
+- assert events detail is a dict
 - fix api stagename as prod
 - abstract jsonschema into separate file
 - policy_document needs ability to specify resource per group
