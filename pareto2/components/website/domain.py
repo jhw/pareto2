@@ -6,7 +6,7 @@ StageName="prod"
 @resource
 def init_domain(website):
     resourcename=H("%s-website-domain" % website["name"])
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-domain-prefix" % website["name"])}, "name": {"Ref": H("domain-name")}}]}
+    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-website-domain-prefix" % website["name"])}, "name": {"Ref": H("domain-name")}}]}
     props={"DomainName": domainname,
            "CertificateArn": {"Ref": H("certificate-arn")}}
     return (resourcename,
@@ -16,7 +16,7 @@ def init_domain(website):
 @resource
 def init_domain_path_mapping(website, stagename=StageName):
     resourcename=H("%s-website-domain-path-mapping" % website["name"])
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-domain-prefix" % website["name"])}, "name": {"Ref": H("domain-name")}}]}
+    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-website-domain-prefix" % website["name"])}, "name": {"Ref": H("domain-name")}}]}
     props={"DomainName": domainname,
            "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])},
            "Stage": stagename}
@@ -30,7 +30,7 @@ def init_domain_path_mapping(website, stagename=StageName):
 def init_domain_record_set(website):
     resourcename=H("%s-website-domain-record-set" % website["name"])
     hzname={"Fn::Sub": ["${name}.", {"name": {"Ref": H("domain-name")}}]} # NB note trailing period
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-domain-prefix" % website["name"])}, "name": {"Ref": H("domain-name")}}]}
+    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-website-domain-prefix" % website["name"])}, "name": {"Ref": H("domain-name")}}]}
     dnsname={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionDomainName"]}
     hzid={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionHostedZoneId"]}
     aliastarget={"DNSName": dnsname,

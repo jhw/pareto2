@@ -1,8 +1,5 @@
 ### short [01-website]
 
-
-- refactor api domain name as (eg) public-api
-- refactor website domain name
 - simplify push_artifacts handling of os variables so you don't need to maintain a manual list
 
 ### medium
@@ -48,6 +45,8 @@
 
 ### done
 
+- refactor api domain name as (eg) public-api
+- refactor website domain name
 - add website demo
 - add website as event source
 - add website event
