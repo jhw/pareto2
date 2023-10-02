@@ -1,10 +1,9 @@
 ### short [01-website]
 
-- simplify push_artifacts handling of os variables so you don't need to maintain a manual list
+- abstract jsonschema into separate file
 
 ### medium
 
-- abstract jsonschema into separate file
 - policy_document needs ability to specify resource per group
 
 - apigw logging
@@ -45,6 +44,7 @@
 
 ### done
 
+- simplify push_artifacts handling of os variables so you don't need to maintain a manual list
 - refactor api domain name as (eg) public-api
 - refactor website domain name
 - add website demo

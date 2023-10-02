@@ -108,27 +108,17 @@ class Assets:
         config.expand(scripts)
         self.config=config
 
-    def lookup_env_variables(self, suffixes=["_API_KEY",
-                                             "_ARN",
-                                             "APP_NAME",
-                                             "DOMAIN_NAME", # NB no underscore prefix
-                                             "_DOMAIN_PREFIX",
-                                             "_WEBHOOK",
-                                             "_WEBHOOK_URL"]):
-        variables={}
-        for key, value in os.environ.items():
-            for suffix in suffixes:
-                if key.endswith(suffix):
-                    variables[hungarorise(key)]=value
-        return variables
+    @property
+    def env_variables(self):
+        return {hungarorise(k):v
+                for k, v in os.environ.items()}
         
     def put_template(self, s3, modules=ComponentModules):
         template=self.config.spawn_template(modules)
         template.init_implied_parameters()
         parameters=self.config.parameters
-        parameters["ArtifactsBucket"]=os.environ["ARTIFACTS_BUCKET"]
+        parameters.update(self.env_variables)
         parameters["ArtifactsKey"]=self.lambdas.s3_key
-        parameters.update(self.lookup_env_variables())
         template.parameters.update_defaults(parameters)
         template.parameters.validate()
         template.validate()
