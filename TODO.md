@@ -1,13 +1,12 @@
 ### short [01-website]
 
-- abstract jsonschema into separate file
-
 ### medium
 
+- fix api stagename as prod
+- abstract jsonschema into separate file
 - policy_document needs ability to specify resource per group
 
 - apigw logging
-- fix api stagename as prod
 - wheel package
 - lambda alarms
 
