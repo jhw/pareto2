@@ -89,6 +89,10 @@ def init_permission(api, endpoint):
             "AWS::Lambda::Permission",
             props)
 
+"""
+- public api includes CORS options to simplify local UI development
+"""
+
 def init_open_resources(api, resources):
     for fn in [init_rest_api,
                init_deployment,
@@ -97,6 +101,8 @@ def init_open_resources(api, resources):
                init_domain_path_mapping,
                init_domain_record_set]:
         resources.append(fn(api))
+    for code in "4XX|5XX".split("|"):
+        resources.append(init_cors_default_response(api, code))
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_open_method,
