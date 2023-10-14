@@ -95,7 +95,7 @@ def init_permission(api, endpoint):
 
 def init_open_resources(api, resources):
     for fn in [init_rest_api,
-               init_deployment,
+               init_cors_deployment,
                init_stage,
                init_domain,
                init_domain_path_mapping,
@@ -106,7 +106,8 @@ def init_open_resources(api, resources):
     for endpoint in api["endpoints"]:
         for fn in [init_resource,
                    init_open_method,
-                   init_permission]:
+                   init_permission,
+                   init_cors_method]:
             resource=fn(api, endpoint)
             resources.append(resource)
         if "parameters" in endpoint:
