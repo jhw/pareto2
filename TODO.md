@@ -2,14 +2,19 @@
 
 ### medium
 
-- assert events detail is a dict
+- merge website and bucket
+- abstract schema from scripts config 
+- moto lambda doesn't seem to exist 
+- lambda alarms 
+- apigw root redirect 
+- dynamodb pipes implementation
+- events test to validate detail is dict
+- replace setup.py with project.toml etc
+- bucket/table streaming stuff to be created only if relevant events exist
+- merge cloudwatch subscriptions and capture timeouts 
 - fix api stagename as prod
-- abstract jsonschema into separate file
 - policy_document needs ability to specify resource per group
-
 - apigw logging
-- wheel package
-- lambda alarms
 
 ### long
 
@@ -44,6 +49,7 @@
 
 ### done
 
+- remove dashboards
 - simplify push_artifacts handling of os variables so you don't need to maintain a manual list
 - refactor api domain name as (eg) public-api
 - refactor website domain name

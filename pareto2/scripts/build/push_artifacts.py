@@ -76,14 +76,6 @@ class TemplateWrapper:
     def s3_latest_key(self):
         return "template-latest.json"
 
-    def rewrite_dash_names(self):
-        for resource in self.template.resources.values():
-            if resource["Type"]=="AWS::CloudWatch::Dashboard":                
-                props=resource["Properties"]
-                modname="%s-%s" % (self.appname, props["DashboardName"])
-                props["DashboardName"]=modname
-        return self
-    
     def put_s3(self, s3, bucketname):
         for s3key in [self.s3_timestamped_key,
                       self.s3_latest_key]:
@@ -122,7 +114,7 @@ class Assets:
         template.parameters.update_defaults(parameters)
         template.parameters.validate()
         template.validate()
-        TemplateWrapper(self.appname, self.timestamp, template).rewrite_dash_names().put_s3(s3, os.environ["ARTIFACTS_BUCKET"])
+        TemplateWrapper(self.appname, self.timestamp, template).put_s3(s3, os.environ["ARTIFACTS_BUCKET"])
 
     def put_lambdas(self, s3):
         self.lambdas.put_s3(s3, os.environ["ARTIFACTS_BUCKET"])

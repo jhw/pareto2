@@ -19,8 +19,6 @@ import pareto2.components.topic
 import pareto2.components.user
 import pareto2.components.website
 
-import pareto2.dashboard
-
 import os, yaml
 
 ComponentModules={"action": pareto2.components.action,
@@ -135,16 +133,6 @@ class Config(dict):
         self.attach_indexes(scripts)
         return self
     
-    def add_dashboard(fn):
-        def wrapped(self, *args, **kwargs):
-            template=fn(self, *args, **kwargs)
-            resourcefn=getattr(pareto2.dashboard,
-                               "render_resources")
-            template.resources.update(resourcefn(self))
-            return template
-        return wrapped
-    
-    @add_dashboard
     def spawn_template(self,                  
                        modules=ComponentModules):
         template=Template()
