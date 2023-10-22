@@ -2,23 +2,26 @@
 
 ### medium
 
-- merge website and bucket
+- merge cloudwatch subscriptions and capture timeouts 
 - abstract schema from scripts config 
+- replace setup.py with project.toml etc
+- merge website and bucket
+- rename function as action
+
 - lambda alarms 
 - apigw root redirect 
 - dynamodb pipes implementation
-- events test to validate detail is dict
-- replace setup.py with project.toml etc
 - bucket/table streaming stuff to be created only if relevant events exist
-- merge cloudwatch subscriptions and capture timeouts 
 - fix api stagename as prod
 - policy_document needs ability to specify resource per group
-- apigw logging
 
 ### long
 
 ### thoughts
 
+- apigw logging?
+  - not clear you need it as alex de brie says is very verbose
+  - and once you have the apigw patterns down, it's probably superfluous
 - separate api cognito package?
   - doesn't make any sense
 - userpool should be named private-api?
@@ -48,6 +51,7 @@
 
 ### done
 
+- events test to validate detail is dict
 - moto lambda doesn't seem to exist 
 - remove dashboards
 - simplify push_artifacts handling of os variables so you don't need to maintain a manual list

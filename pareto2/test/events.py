@@ -17,7 +17,27 @@ class Pareto2EventsTestMixin:
             self.events.put_targets(Rule=rulename,
                                     Targets=[{"Id": targetid,
                                               "Arn": queueattrs["QueueArn"]}])
+
+    """
+    - events details is required by AWS to be a dict
+    - however if you send a list it will be silently ignored, causing mucho problems
+    - hence sensible to include a check here to avoid frustration
+    - think moto is going to implement this but not sure when
+    - https://github.com/getmoto/moto/issues/6874
+    """
             
+    def assert_detail_dict(fn):
+        def wrapped(self, queue):
+            messages=fn(self, queue)
+            for message in messages:
+                body=json.loads(message["Body"])
+                if ("detail" in body and
+                    not isinstance(body["detail"], dict)):
+                    self.fail("encountered non- dict events message detail field %s" % body["detail"])
+            return messages
+        return wrapped
+        
+    @assert_detail_dict            
     def drain_queue(self, queue):
         messages=[]
         while True:
