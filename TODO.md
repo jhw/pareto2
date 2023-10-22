@@ -4,7 +4,6 @@
 
 - merge website and bucket
 - abstract schema from scripts config 
-- moto lambda doesn't seem to exist 
 - lambda alarms 
 - apigw root redirect 
 - dynamodb pipes implementation
@@ -49,6 +48,7 @@
 
 ### done
 
+- moto lambda doesn't seem to exist 
 - remove dashboards
 - simplify push_artifacts handling of os variables so you don't need to maintain a manual list
 - refactor api domain name as (eg) public-api
