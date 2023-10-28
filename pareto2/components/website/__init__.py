@@ -69,7 +69,8 @@ def init_method(website):
         creds={"Fn::GetAtt": [H("%s-website-role" % website["name"]),
                               "Arn"]}
         reqparams={"integration.request.path.proxy": "method.request.path.proxy"}
-        responses=[{"StatusCode": 200},
+        responses=[{"StatusCode": 200,
+                    "ResponseParameters": {"method.response.header.Content-Type": "integration.response.header.Content-Type"}},
                    {"StatusCode": 404,
                     "SelectionPattern": "404"}]
         return {"IntegrationHttpMethod": "ANY",
@@ -82,8 +83,9 @@ def init_method(website):
     resourcename=H("%s-website-method" % website["name"])
     integration=init_integration(website)
     reqparams={"method.request.path.proxy": True}
-    methodresponses=[{"StatusCode": 200},
-                     {"StatusCode": 404}]    
+    methodresponses=[{"StatusCode": 200,
+                      "ResponseParameters": {"method.response.header.Content-Type": True}},
+                     {"StatusCode": 404}]
     props={"HttpMethod": "GET",
            "AuthorizationType": "NONE",
            "RequestParameters": reqparams,
