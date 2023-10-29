@@ -143,12 +143,12 @@ def render_outputs(website):
     dnsname={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionDomainName"]}
     hzid={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionHostedZoneId"]}
     outputs={}
-    for k, v in {"bucket": bucket,
-                 "rest-api": restapi,
-                 "stage": stage,
-                 "dns-name": dnsname,
-                 "hosted-zone-id": hzid}.items():
-        outputs[H("%s-website-%s" % (website["name"], k))]={"Value": v}
+    for k, v in {"website": bucket,
+                 "website-rest-api": restapi,
+                 "website-stage": stage,
+                 "website-dns-name": dnsname,
+                 "website-hosted-zone-id": hzid}.items():
+        outputs[H("%s-%s" % (website["name"], k))]={"Value": v}
     return outputs
 
 if __name__=="__main__":
