@@ -1,15 +1,19 @@
 ### short
 
+- apigw root redirect 
+
 ### medium
 
-- merge cloudwatch subscriptions and capture timeouts 
+- apigw auto deployment trick
+- add timeouts to error subscriptions
+
 - abstract schema from scripts config 
 - replace setup.py with project.toml etc
-- merge website and bucket
-- rename function as action
+
+- merge website and bucket (?)
+- rename function as action (?)
 
 - lambda alarms 
-- apigw root redirect 
 - dynamodb pipes implementation
 - bucket/table streaming stuff to be created only if relevant events exist
 - fix api stagename as prod
