@@ -5,13 +5,22 @@ from pareto2.components.website.domain import init_domain, init_domain_path_mapp
 
 from pareto2.components.common.iam import policy_document, assume_role_policy_document
 
+import yaml
+
+BinaryMediaTypes=yaml.safe_load("""
+- audio/mpeg
+- image/jpeg
+- image/x-png
+""")
+
 StageName="prod"
 
 @resource
-def init_rest_api(website):
+def init_rest_api(website, binarymediatypes=BinaryMediaTypes):
     resourcename=H("%s-website-rest-api" % website["name"])
     name={"Fn::Sub": "%s-website-rest-api-${AWS::StackName}" % website["name"]}
-    props={"Name": name}
+    props={"Name": name,
+           "BinaryMediaTypes": binarymediatypes}
     return (resourcename,            
             "AWS::ApiGateway::RestApi",
             props)
@@ -123,8 +132,25 @@ def render_resources(website):
         resources.append(resource)
     return dict(resources)
 
+"""
+- RestApi and Stage (echoed from input) are required for apigw redeployment
+"""
+
 def render_outputs(website):
-    return {H("%s-website" % website["name"]): {"Value": {"Ref": H("%s-website" % website["name"])}}}
+    bucket=H("%s-website" % website["name"])
+    restapi={"Ref": H("%s-website-rest-api" % website["name"])}
+    stage={"Ref": H("%s-website-stage" % website["name"])}
+    dnsname={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionDomainName"]}
+    hzid={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionHostedZoneId"]}
+    outputs={}
+    for k, v in {"bucket": bucket,
+                 "rest-api": restapi,
+                 "stage": stage,
+                 "dns-name": dnsname,
+                 "hosted-zone-id": hzid}.items():
+        outputs[H("%s-%s" % (website["name"], k))]={"Value": v}
+    print (outputs)
+    return outputs
 
 if __name__=="__main__":
     pass
