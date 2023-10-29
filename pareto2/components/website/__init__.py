@@ -56,6 +56,19 @@ def init_resource(website, pathpart="{proxy+}"):
     return (resourcename,
             "AWS::ApiGateway::Resource",
             props)
+
+@resource
+def init_root_redirect_resource(website, pathpart="/"):
+    resourcename=H("%s-website-root-redirect-resource" % website["name"])
+    parentid={"Fn::GetAtt": [H("%s-website-rest-api" % website["name"]),
+                             "RootResourceId"]}
+    props={"ParentId": parentid,
+           "PathPart": pathpart,
+           "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
+    return (resourcename,
+            "AWS::ApiGateway::Resource",
+            props)
+
 @resource
 def init_role(website,
               permissions=["s3:GetObject"]):
@@ -107,6 +120,33 @@ def init_method(website):
             props)
 
 @resource
+def init_root_redirect_method(website):
+    def init_integration(website):
+        requests={"application/json": "{\"statusCode\" : 302}"}
+        redirecturl={"Fn::Sub": ["'https://${prefix}.${name}/index.html'", # NB note single quotes
+                                 {"prefix": {"Ref": H("%s-website-domain-prefix" % website["name"])},
+                                  "name": {"Ref": H("domain-name")}}]}
+        responses=[{"StatusCode": 302,
+                    "ResponseTemplates": {"application/json": "{}"},
+                    "ResponseParameters": {"method.response.header.Location": redirecturl}}]
+        return {"Type": "MOCK",
+                "RequestTemplates": requests,
+                "IntegrationResponses": responses}        
+    resourcename=H("%s-website-root-redirect-method" % website["name"])
+    integration=init_integration(website)
+    methodresponses=[{"StatusCode": 302,
+                      "ResponseParameters": {"method.response.header.Location": True}}]
+    props={"HttpMethod": "GET",
+           "AuthorizationType": "NONE",
+           "MethodResponses": methodresponses,
+           "Integration": integration,
+           "ResourceId": {"Ref": H("%s-website-root-redirect-resource" % website["name"])},
+           "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
+    return (resourcename,
+            "AWS::ApiGateway::Method",
+            props)
+
+@resource
 def init_bucket(website):
     resourcename=H("%s-website" % website["name"])
     notconf={"EventBridgeConfiguration": {"EventBridgeEnabled": True}}
@@ -122,8 +162,10 @@ def render_resources(website):
                init_deployment,
                init_stage,
                init_resource,
+               init_root_redirect_resource,
                init_role,
                init_method,
+               init_root_redirect_method,
                init_bucket,
                init_domain,
                init_domain_path_mapping,
