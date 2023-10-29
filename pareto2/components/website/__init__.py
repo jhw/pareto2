@@ -137,7 +137,7 @@ def render_resources(website):
 """
 
 def render_outputs(website):
-    bucket=H("%s-website" % website["name"])
+    bucket={"Ref": H("%s-website" % website["name"])}
     restapi={"Ref": H("%s-website-rest-api" % website["name"])}
     stage={"Ref": H("%s-website-stage" % website["name"])}
     dnsname={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionDomainName"]}
@@ -148,7 +148,7 @@ def render_outputs(website):
                  "stage": stage,
                  "dns-name": dnsname,
                  "hosted-zone-id": hzid}.items():
-        outputs[H("%s-%s" % (website["name"], k))]={"Value": v}
+        outputs[H("%s-website-%s" % (website["name"], k))]={"Value": v}
     return outputs
 
 if __name__=="__main__":
