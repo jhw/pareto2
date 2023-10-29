@@ -149,7 +149,6 @@ def render_outputs(website):
                  "dns-name": dnsname,
                  "hosted-zone-id": hzid}.items():
         outputs[H("%s-%s" % (website["name"], k))]={"Value": v}
-    print (outputs)
     return outputs
 
 if __name__=="__main__":
