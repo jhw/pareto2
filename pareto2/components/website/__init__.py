@@ -58,18 +58,6 @@ def init_resource(website, pathpart="{proxy+}"):
             props)
 
 @resource
-def init_root_redirect_resource(website, pathpart="/"):
-    resourcename=H("%s-website-root-redirect-resource" % website["name"])
-    parentid={"Fn::GetAtt": [H("%s-website-rest-api" % website["name"]),
-                             "RootResourceId"]}
-    props={"ParentId": parentid,
-           "PathPart": pathpart,
-           "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
-    return (resourcename,
-            "AWS::ApiGateway::Resource",
-            props)
-
-@resource
 def init_role(website,
               permissions=["s3:GetObject"]):
     resourcename=H("%s-website-role" % website["name"])
@@ -136,11 +124,13 @@ def init_root_redirect_method(website):
     integration=init_integration(website)
     methodresponses=[{"StatusCode": 302,
                       "ResponseParameters": {"method.response.header.Location": True}}]
+    parentid={"Fn::GetAtt": [H("%s-website-rest-api" % website["name"]),
+                             "RootResourceId"]}
     props={"HttpMethod": "GET",
            "AuthorizationType": "NONE",
            "MethodResponses": methodresponses,
            "Integration": integration,
-           "ResourceId": {"Ref": H("%s-website-root-redirect-resource" % website["name"])},
+           "ResourceId": parentid, 
            "RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
     return (resourcename,
             "AWS::ApiGateway::Method",
@@ -162,7 +152,6 @@ def render_resources(website):
                init_deployment,
                init_stage,
                init_resource,
-               init_root_redirect_resource,
                init_role,
                init_method,
                init_root_redirect_method,
