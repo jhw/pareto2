@@ -1,21 +1,19 @@
 ### short
 
-- apigw root redirect 
-
-### medium
-
 - apigw auto deployment trick
 - add timeouts to error subscriptions
 
+### 0.7.x
+
+- fold website into bucket
 - abstract schema from scripts config 
 - replace setup.py with project.toml etc
+- refactor action -function as -action?
 
-- merge website and bucket (?)
-- rename function as action (?)
+### medium
 
 - lambda alarms 
 - dynamodb pipes implementation
-- bucket/table streaming stuff to be created only if relevant events exist
 - fix api stagename as prod
 - policy_document needs ability to specify resource per group
 
@@ -55,6 +53,7 @@
 
 ### done
 
+- apigw root redirect 
 - events test to validate detail is dict
 - moto lambda doesn't seem to exist 
 - remove dashboards
