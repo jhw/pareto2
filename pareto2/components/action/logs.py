@@ -43,7 +43,7 @@ def init_logs_subscription(action, logs):
 def init_warn_logs_subscription(action):
     return init_logs_subscription(action, 
                                   logs={"name": "warn",
-                                        "pattern": "WARNING"})
+                                        "pattern": "WARNING \"Task timed out\""})
 
 def init_error_logs_subscription(action):
     return init_logs_subscription(action, 

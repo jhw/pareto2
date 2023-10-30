@@ -1,6 +1,5 @@
 ### short
 
-- add timeouts to warning subscriptions
 - apigw auto deployment trick
 
 ### 0.7.x
@@ -53,6 +52,7 @@
 
 ### done
 
+- add timeouts to warning subscriptions
 - apigw root redirect 
 - events test to validate detail is dict
 - moto lambda doesn't seem to exist 
