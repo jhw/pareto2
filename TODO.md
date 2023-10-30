@@ -1,7 +1,7 @@
 ### short
 
+- add timeouts to warning subscriptions
 - apigw auto deployment trick
-- add timeouts to error subscriptions
 
 ### 0.7.x
 
