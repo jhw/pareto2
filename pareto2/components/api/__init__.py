@@ -21,23 +21,6 @@ def init_rest_api(api):
             "AWS::ApiGateway::RestApi",
             props)
 
-"""
-- if you fail to depend on any methods then you get the following 
--  Resource handler returned message: "The REST API doesn't contain any methods (Service: ApiGateway, Status Code: 400, Request ID: 7e343643-cdff-4ca4-9c2f-f94b1b61be5e, Extended Request ID: null)" (RequestToken: ea5517dd-42b4-7e4a-d443-eb3511f34ff5, HandlerErrorCode: InvalidRequest)
-"""
-
-@resource
-def init_deployment(api):
-    resourcename=H("%s-api-deployment" % api["name"])
-    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
-    depends=[]
-    for endpoint in api["endpoints"]:
-        depends+=[H("%s-api-method" % endpoint["name"])]
-    return (resourcename,            
-            "AWS::ApiGateway::Deployment",
-            props,
-            depends)
-
 @resource
 def init_stage(api):
     resourcename=H("%s-api-stage" % api["name"])

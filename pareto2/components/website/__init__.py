@@ -5,7 +5,7 @@ from pareto2.components.website.domain import init_domain, init_domain_path_mapp
 
 from pareto2.components.common.iam import policy_document, assume_role_policy_document
 
-import yaml
+import time, yaml
 
 BinaryMediaTypes=yaml.safe_load("""
 - audio/mpeg
@@ -25,10 +25,15 @@ def init_rest_api(website, binarymediatypes=BinaryMediaTypes):
             "AWS::ApiGateway::RestApi",
             props)
 
+"""
+- description includes timestamp to force creation of new apigw deployment on each cf deployment, so you can automatically see new api methods / changes to methods etc
+"""
+
 @resource
 def init_deployment(website):
     resourcename=H("%s-website-deployment" % website["name"])
-    props={"RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])}}
+    props={"RestApiId": {"Ref": H("%s-website-rest-api" % website["name"])},
+           "Description": "created at %i" % int(time.time()*1000)}
     depends=[H("%s-website-method" % website["name"])]
     return (resourcename,            
             "AWS::ApiGateway::Deployment",

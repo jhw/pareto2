@@ -1,13 +1,11 @@
 ### short
 
-- apigw auto deployment trick
-
 ### 0.7.x
 
-- fold website into bucket
 - abstract schema from scripts config 
 - replace setup.py with project.toml etc
-- refactor action -function as -action?
+- fold website into bucket
+- refactor action -function as -action (?)
 
 ### medium
 
@@ -52,6 +50,7 @@
 
 ### done
 
+- apigw auto deployment trick
 - add timeouts to warning subscriptions
 - apigw root redirect 
 - events test to validate detail is dict
