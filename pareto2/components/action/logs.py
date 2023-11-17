@@ -40,15 +40,10 @@ def init_logs_subscription(action, logs):
             props,
             depends)
 
-"""
-- timeouts temporarily commented out as it feels they are stopping warnings from being rendered
-"""
-
 def init_warn_logs_subscription(action):
     return init_logs_subscription(action, 
                                   logs={"name": "warn",
-                                        # "pattern": "WARNING \"Task timed out\""})
-                                        "pattern": "WARNING"})
+                                        "pattern": "%WARNING|Task timed out%"})
 
 def init_error_logs_subscription(action):
     return init_logs_subscription(action, 
