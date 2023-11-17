@@ -1,11 +1,12 @@
 ### short
 
+- search_logs.py needs to limit prefix length and dump names of multiple log groups matched
+
 ### 0.7.x
 
 - abstract schema from scripts config 
 - replace setup.py with project.toml etc
 - fold website into bucket
-- refactor action -function as -action (?)
 
 ### medium
 
@@ -18,6 +19,7 @@
 
 ### thoughts
 
+- refactor action -function as -action (?)
 - apigw logging?
   - not clear you need it as alex de brie says is very verbose
   - and once you have the apigw patterns down, it's probably superfluous
