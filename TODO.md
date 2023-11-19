@@ -1,17 +1,24 @@
 ### short
 
-- search_logs.py needs to limit prefix length and dump names of multiple log groups matched
+- search_logs.py needs to limit prefix length
+- search_logs.py needs to dump names of multiple log groups matched
 
 ### 0.7.x
 
+- replace apigateway with apigateway2
 - abstract schema from scripts config 
-- replace setup.py with project.toml etc
-- fold website into bucket
+- define state resources in project root infra
+- lambda alarms 
+- clean up setup.py and/or replace with project.toml
+
+### pending 
+
+- dynamodb pipes implementation
 
 ### medium
 
-- lambda alarms 
-- dynamodb pipes implementation
+- federated cognito sign up
+- step functions
 - fix api stagename as prod
 - policy_document needs ability to specify resource per group
 
@@ -19,6 +26,7 @@
 
 ### thoughts
 
+- fold website into bucket?
 - refactor action -function as -action (?)
 - apigw logging?
   - not clear you need it as alex de brie says is very verbose
