@@ -1,5 +1,7 @@
 ### short
 
+- https://github.com/getmoto/moto/issues/7101
+
 - search_logs.py needs to limit prefix length
 - search_logs.py needs to dump names of multiple log groups matched
 
