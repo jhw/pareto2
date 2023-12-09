@@ -28,7 +28,7 @@ phases:
     commands:
     - pip install --upgrade pip
     - mkdir -p build/python
-    - pip install --platform manylinux2010_x86_64 --implementation cp --only-binary=:all: --upgrade --target build/python $PIP_TARGET 'urllib3<2'
+    - pip install --platform manylinux2010_x86_64 --implementation cp --only-binary=":all:" --upgrade --target build/python $PIP_TARGET 'urllib3<2'
     runtime-versions:
       python: $PYTHON_RUNTIME
 version: '0.2'
