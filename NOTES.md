@@ -1,3 +1,8 @@
+### glibc 08/12/23
+
+- https://repost.aws/questions/QUrXOioL46RcCnFGyELJWKLw/glibc-2-27-on-amazon-linux-
+- https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
 ### identity pools 29/03/23
 
 - https://gist.github.com/singledigit/2c4d7232fa96d9e98a3de89cf6ebe7a5
