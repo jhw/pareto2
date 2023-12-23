@@ -1,3 +1,14 @@
+### layer naming convention strategy 23/12/23
+
+- old strategy used variables defined in setenv.sh such as "set REQUESTS_LAYER_ARN=#{arn:for:requests}" and then layer refs in infra block such as 'layers: ["requests"]'
+- this introduced a layer of indirection as you could easily have "set FOOBAR_LAYER_ARN=#{arn:for:requests}" and 'layers: ["foobar"]'
+- conveniently this allowed you to avoid the issue of layer names and how they might be hungarorised
+- now you are removing the layer of indirection by allowing layer names to be specified directly in the infra block
+- it's a bit awkward as layers are currently named (eg) "layman2-requests-0-1-2" which will hungarorise to "Layman2Requests012"
+- but it shouldn't matter as the hungarorised version will only exist under the hood
+
+*** what is crucial is that expander's definition of hungarorise() much match pareto's definition of hungarorise(), specifically with respect to splitting on dashes as well as underscores ***
+
 ### glibc 08/12/23
 
 - https://repost.aws/questions/QUrXOioL46RcCnFGyELJWKLw/glibc-2-27-on-amazon-linux-

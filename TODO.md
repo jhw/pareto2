@@ -1,7 +1,5 @@
 ### short
 
-- document layer naming strategy for expander
-
 ### medium
 
 - extended demos
@@ -65,6 +63,7 @@
 
 ### done
 
+- document layer naming strategy for expander
 - separate scripts from script
 - fix api stagename as prod
 - check how template hungarorises layer names
