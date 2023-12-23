@@ -1,5 +1,7 @@
 ### short
 
+- rename config as dsl
+
 ### medium
 
 - abstract jsonschema to files
