@@ -2,7 +2,6 @@
 
 ### medium
 
-- remove all unnecessary scripts
 - remove apigw restapi/deployment/stage outputs
 - remove apigw randomised description
 - abstract jsonschema to files
@@ -63,6 +62,7 @@
 
 ### done
 
+- remove all unnecessary scripts
 - apigw auto deployment trick
 - add timeouts to warning subscriptions
 - apigw root redirect 
