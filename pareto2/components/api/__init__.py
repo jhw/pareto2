@@ -141,16 +141,8 @@ def render_resources(api):
 def render_outputs(api):
     endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
                                         H("%s-api-stage" % api["name"]))}
-    restapi={"Ref": H("%s-api-rest-api" % api["name"])}
-    stage={"Ref": H("%s-api-stage" % api["name"])}
-    dnsname={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionDomainName"]}
-    hzid={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionHostedZoneId"]}
     outputs={}
-    for k, v in {"endpoint":endpoint,
-                 "rest-api": restapi,
-                 "stage": stage,
-                 "dns-name": dnsname,
-                 "hosted-zone-id": hzid}.items():
+    for k, v in {"endpoint":endpoint}.items():
         outputs[H("%s-%s" % (api["name"], k))]={"Value": v}
     return outputs
 

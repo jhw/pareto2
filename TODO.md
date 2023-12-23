@@ -2,7 +2,6 @@
 
 ### medium
 
-- remove apigw restapi/deployment/stage outputs
 - remove apigw randomised description
 - abstract jsonschema to files
 - improved dsl api
@@ -62,6 +61,7 @@
 
 ### done
 
+- remove apigw restapi/deployment/stage outputs
 - remove all unnecessary scripts
 - apigw auto deployment trick
 - add timeouts to warning subscriptions
