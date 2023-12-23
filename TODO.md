@@ -1,10 +1,13 @@
 ### short
 
 - rename config as dsl
+- abstract jsonschema to files
 
 ### medium
 
-- abstract jsonschema to files
+- secret should be an object not an array
+- eventbridge target id must be capped at length 64
+- extended list of demos
 - improved dsl api
 - define state resources in project root infra
 - clean up setup.py
@@ -14,13 +17,9 @@
 - sphinx documentation
 - move expander differ formatting code into dsl
 - api root redirect
-- eventbridge target id must be capped at length 64
-- secret should be an object not an array
 - replace apigateway with apigateway2
 - lambda alarms 
-- clean up setup.py and/or replace with project.toml
-- search_logs.py needs to limit prefix length
-- search_logs.py needs to dump names of multiple log groups matched
+- replace setup.py with project.toml
 - step functions mapreduce
 - fix api stagename as prod
 - policy_document needs ability to specify resource per group
