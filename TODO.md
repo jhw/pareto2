@@ -1,30 +1,31 @@
 ### short
 
-- https://github.com/getmoto/moto/issues/7101
-
-- search_logs.py needs to limit prefix length
-- search_logs.py needs to dump names of multiple log groups matched
-
-### 0.7.x
-
-- replace apigateway with apigateway2
-- abstract schema from scripts config 
-- define state resources in project root infra
-- lambda alarms 
-- clean up setup.py and/or replace with project.toml
-
-### pending 
-
-- dynamodb pipes implementation
-
 ### medium
 
-- federated cognito sign up
-- step functions
-- fix api stagename as prod
-- policy_document needs ability to specify resource per group
+- remove all unnecessary scripts
+- remove apigw restapi/deployment/stage outputs
+- remove apigw randomised description
+- abstract jsonschema to files
+- improved dsl api
+- define state resources in project root infra
+- clean up setup.py
 
 ### long
+
+- sphinx documentation
+- move expander differ formatting code into dsl
+- api root redirect
+- eventbridge target id must be capped at length 64
+- secret should be an object not an array
+- replace apigateway with apigateway2
+- lambda alarms 
+- clean up setup.py and/or replace with project.toml
+- search_logs.py needs to limit prefix length
+- search_logs.py needs to dump names of multiple log groups matched
+- step functions mapreduce
+- fix api stagename as prod
+- policy_document needs ability to specify resource per group
+- federated cognito sign up
 
 ### thoughts
 
