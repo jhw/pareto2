@@ -1,10 +1,9 @@
 ### short
 
-- separate scripts and script
+- document layer naming strategy for expander
 
 ### medium
 
-- document layer naming strategy for expander
 - extended demos
 - define state resources in project root infra
 - improved dsl api
@@ -66,6 +65,7 @@
 
 ### done
 
+- separate scripts from script
 - fix api stagename as prod
 - check how template hungarorises layer names
 - eventbridge target id must be capped at length 64
