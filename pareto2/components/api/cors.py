@@ -1,7 +1,7 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
-import json, time, yaml
+import json, yaml
 
 CorsGatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
 
@@ -15,15 +15,10 @@ CorsHeaders=yaml.safe_load("""
 - X-Amz-Security-Token
 """)
 
-"""
-- description includes timestamp to force creation of new apigw deployment on each cf deployment, so you can automatically see new api methods / changes to methods etc
-"""
-
 @resource
 def init_cors_deployment(api):
     resourcename=H("%s-api-deployment" % api["name"])
-    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
-           "Description": "created at %i" % int(time.time()*1000)}
+    props={"RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])}}
     depends=[]
     for endpoint in api["endpoints"]:
         depends+=[H("%s-api-method" % endpoint["name"]),

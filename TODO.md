@@ -2,7 +2,6 @@
 
 ### medium
 
-- remove apigw randomised description
 - abstract jsonschema to files
 - improved dsl api
 - define state resources in project root infra
@@ -61,6 +60,7 @@
 
 ### done
 
+- remove apigw randomised description
 - remove apigw restapi/deployment/stage outputs
 - remove all unnecessary scripts
 - apigw auto deployment trick
