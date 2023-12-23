@@ -19,7 +19,7 @@ class Scripts(list):
         list.__init__(self, items)
 
     @property
-    def apis(self, stagename="1-0-0"):
+    def apis(self, stagename="prod"):
         def init_public(apiname):
             return {"name": apiname,
                     "type": "api",
@@ -69,10 +69,6 @@ class Scripts(list):
     def queues(self):
         return self.aggregate("queues")
     
-    @property
-    def secrets(self):
-        return self.aggregate("secrets")
-
     @property
     def tables(self):
         return self.aggregate("tables")
@@ -268,13 +264,6 @@ class Script:
                  "type": "queue",
                  "batch": self.infra["queue"]["batch"] if "batch" in self.infra["queue"] else batchsize,
                  "action": self.action_name}] if "queue" in self.infra else []
-    
-    @property
-    def secrets(self):
-        return [{"name": secret["name"],
-                 "values": [secret["value"]],
-                 "type": "secret"}
-                for secret in self.infra["secrets"]] if "secrets" in self.infra else []
     
     @property
     def table_names_env(self):

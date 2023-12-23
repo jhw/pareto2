@@ -21,9 +21,6 @@ class Components(list):
     def builders(self):
         return self.subset(type="builder")
     @property
-    def secrets(self):
-        return self.subset(type="secret")
-    @property
     def tables(self):
         return self.subset(type="table")
     @property

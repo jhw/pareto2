@@ -80,8 +80,8 @@ def init_unbound_event_rule(action, event):
 
 def render_event_rule(fn):
     def init_target(action, event, nmax=64):
-        id="%s-%s-target" % (action["name"],
-                             event["name"])[:nmax] # NB
+        id=("%s-%s-target" % (action["name"],
+                              event["name"]))[:nmax] # NB
         arn={"Fn::GetAtt": [H("%s-function" % action["name"]), "Arn"]}
         return {"Id": id,
                 "Arn": arn}

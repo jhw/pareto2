@@ -12,7 +12,6 @@ import pareto2.components.bucket
 import pareto2.components.builder
 import pareto2.components.logs
 import pareto2.components.queue
-import pareto2.components.secret
 import pareto2.components.table
 import pareto2.components.timer
 import pareto2.components.topic
@@ -27,7 +26,6 @@ ComponentModules={"action": pareto2.components.action,
                   "builder": pareto2.components.builder,
                   "logs": pareto2.components.logs,
                   "queue": pareto2.components.queue,
-                  "secret": pareto2.components.secret,
                   "table": pareto2.components.table,
                   "timer": pareto2.components.timer,
                   "topic": pareto2.components.topic,
@@ -117,7 +115,6 @@ class DSL(dict):
                      "buckets",
                      "builders",
                      "queues",
-                     "secrets",
                      "tables",
                      "timers",
                      "topics",

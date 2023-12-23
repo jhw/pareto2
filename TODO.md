@@ -1,31 +1,32 @@
 ### short
 
-- eventbridge target id must be capped at length 64
-- secret should be an object not an array
+- separate scripts and script
 
 ### medium
 
+- document layer naming strategy for expander
+- extended demos
 - define state resources in project root infra
 - improved dsl api
-- extended demos
 
 ### long
 
+- add back secrets
 - replace setup.py with pyproject.toml
 - move expander differ formatting code into dsl
 - api root redirect
 
 - replace setup.py with project.toml
-- fix api stagename as prod
 - policy_document needs ability to specify resource per group
 - federated cognito sign up
 
 ### features
 
-- sphinx documentation
-- replace apigateway with apigateway2
+- secrets
+- apigateway -> apigateway2
 - lambda alarms 
 - step functions mapreduce
+- sphinx docs
 
 ### thoughts
 
@@ -65,6 +66,9 @@
 
 ### done
 
+- fix api stagename as prod
+- check how template hungarorises layer names
+- eventbridge target id must be capped at length 64
 - clean up setup.py
 - abstract jsonschema to files
 - rename config as dsl
