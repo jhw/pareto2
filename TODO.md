@@ -1,12 +1,11 @@
 ### short
 
-- abstract jsonschema to files
+- remove yaml dependency
+- eventbridge target id must be capped at length 64
+- secret should be an object not an array
 
 ### medium
 
-- remove yaml dependency
-- secret should be an object not an array
-- eventbridge target id must be capped at length 64
 - extended list of demos
 - improved dsl api
 - define state resources in project root infra
@@ -61,6 +60,7 @@
 
 ### done
 
+- abstract jsonschema to files
 - rename config as dsl
 - remove apigw randomised description
 - remove apigw restapi/deployment/stage outputs

@@ -1,0 +1,148 @@
+---
+"$schema": "http://json-schema.org/draft-07/schema#"
+type: object
+definitions:
+  event:
+    type: object
+    properties: 
+      name:
+        type: string
+      topic:
+        type: string
+      pattern:
+        type: object
+      source:
+        type: object
+        properties:
+          name:
+            type: string
+          type: 
+            type: string
+            enum:
+            - bucket
+            - builder
+            - table
+            - website
+        required:
+        - name
+        - type
+        additionalProperties: false
+    required:
+    - name
+    additionalProperties: false
+  index:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        enum:
+        - S
+      table:
+        type: string
+    required:
+    - name
+    - type
+    - table
+    additionalProperties: false
+  layer:
+    type: string
+  permission:
+    type: string
+    pattern: "^(\\w+\\-)*\\w+\\:(\\w+|\\*)$"
+  queue:
+    type: object
+    properties:
+      batch:
+        type: integer
+    required:
+    - name
+    additionalProperties: false
+  secret:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+    required:
+    - name
+    - value
+    additionalProperties: false
+  timer:
+    type: object
+    properties:
+      rate:
+        type: string
+      body:
+        type: object
+    required:
+    - rate
+    - body
+    additionalProperties: false
+properties:
+  endpoint:
+    type: object
+    properties: 
+      api:
+        type: string
+      method:
+        type: string
+        enum:
+        - GET
+        - POST
+      path:
+        type: string
+      parameters:
+        type: array
+      schema:
+        type: object
+    required:
+    - api
+    - method
+    - path
+    additionalProperties: false
+  events:
+    type: array
+    items:
+      "$ref": "#/definitions/event"
+  indexes:
+    type: array
+    items:
+      "$ref": "#/definitions/index"
+  layers:
+    type: array
+    items:
+      "$ref": "#/definitions/layer"
+  permissions:
+    type: array
+    items:
+      "$ref": "#/definitions/permission"
+  queue:
+    type: object
+    additionProperties: false
+  secrets:
+    type: array
+    items:
+      "$ref": "#/definitions/secret"
+  size:
+    type: string
+    enum:
+    - default
+    - medium
+    - large
+  timeout:
+    type: string
+    enum:
+    - default
+    - medium
+    - long
+  timer:
+    type: object
+    additionProperties: false
+  topic:
+    type: object
+    additionProperties: false
+required: []
+additionalProperties: false
