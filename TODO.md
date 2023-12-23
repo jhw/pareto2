@@ -1,31 +1,36 @@
 ### short
 
-- remove yaml dependency
 - eventbridge target id must be capped at length 64
 - secret should be an object not an array
 
 ### medium
 
-- extended list of demos
-- improved dsl api
 - define state resources in project root infra
-- clean up setup.py
+- improved dsl api
+- extended demos
 
 ### long
 
-- sphinx documentation
+- replace setup.py with pyproject.toml
 - move expander differ formatting code into dsl
 - api root redirect
-- replace apigateway with apigateway2
-- lambda alarms 
+
 - replace setup.py with project.toml
-- step functions mapreduce
 - fix api stagename as prod
 - policy_document needs ability to specify resource per group
 - federated cognito sign up
 
+### features
+
+- sphinx documentation
+- replace apigateway with apigateway2
+- lambda alarms 
+- step functions mapreduce
+
 ### thoughts
 
+- remove yaml dependency?
+  - no; too much yaml everywhere
 - fold website into bucket?
 - refactor action -function as -action (?)
 - apigw logging?
@@ -60,6 +65,7 @@
 
 ### done
 
+- clean up setup.py
 - abstract jsonschema to files
 - rename config as dsl
 - remove apigw randomised description
