@@ -39,7 +39,8 @@ setuptools.setup(
     ],
     # packages=setuptools.find_packages(),
     packages=filter_packages("pareto2"),
-    package_data={"pareto2", ["**/*.yaml"]},
-    install_requires=requirements
-    # include_package_data=True
+    # package_data={"pareto2", ["**/*.yaml"]},
+    install_requires=requirements,
+    setup_requires=['setuptools_scm'],
+    include_package_data=True
 )
