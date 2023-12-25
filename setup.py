@@ -38,8 +38,9 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     # packages=setuptools.find_packages(),
-    packages=filter_packages("pareto2"),
-    package_data={"pareto2", ["**/*.yaml"]},
+    # packages=filter_packages("pareto2"),
+    packages=["pareto2"],
+    # package_data={"pareto2", ["**/*.yaml"]},
     install_requires=requirements,
     include_package_data=True
 )
