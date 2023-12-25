@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+import setuptools
 
 with open("README.md", "r") as fh:
     long_description=fh.read()
@@ -20,7 +20,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=find_packages(),
+    packages=setuptools.find_packages(),
     install_requires=requirements,
     include_package_data=True
 )
