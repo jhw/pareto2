@@ -39,7 +39,7 @@ setuptools.setup(
     ],
     # packages=setuptools.find_packages(),
     packages=filter_packages("pareto2"),
-    package_data={"pareto2", ["**/*.yaml"]},
+    # package_data={"pareto2", ["**/*.yaml"]},
     install_requires=requirements,
     include_package_data=True
 )
