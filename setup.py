@@ -5,6 +5,23 @@ with open("README.md", "r") as fh:
 
 with open('requirements.txt', 'r') as f:
     requirements=f.read().splitlines()
+
+"""
+- because setuptools.find_packages() is useless and broken
+"""
+
+def filter_packages(root):
+    def filter_packages(root, packages):
+        packages.append(root.replace("/", "."))
+        for path in os.listdir(root):
+            if path=="__pycache__":
+                continue
+            newpath="%s/%s" % (root, path)
+            if os.path.isdir(newpath):
+                filter_packages(newpath, packages)
+    packages=[]
+    filter_packages(root, packages)
+    return packages
     
 setuptools.setup(
     name="pareto2",
@@ -20,7 +37,8 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=setuptools.find_packages(),
+    # packages=setuptools.find_packages(),
+    packages=filter_packages("pareto2"),
     install_requires=requirements,
     include_package_data=True
 )
