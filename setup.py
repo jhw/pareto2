@@ -33,16 +33,12 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    """
-    - setuptools.find_packages() is completely broken
-    """    
+    # - setuptools.find_packages() is completely broken
     # packages=setuptools.find_packages(),
     packages=filter_packages("pareto2"),
     install_requires=requirements,
-    """
-    - https://stackoverflow.com/a/57932258/124179
-    - to include yaml files
-    """
+    # - https://stackoverflow.com/a/57932258/124179
+    # - to include yaml files
     setup_requires=['setuptools_scm'],
     include_package_data=True
 )
