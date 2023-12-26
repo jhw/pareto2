@@ -1,3 +1,40 @@
+"""
+### overview
+
+- the whole setuptools/setup.py dance is a total shitshow
+
+### packages
+
+- ideally packages should be auto- installed from specification of a project root, but no such luck
+- it appears setup() wants you to use `packages=setuptools.find_packages()` but this seems completely broken
+- it's quite common to find a target project supposedly installed by pip that is completely empty
+- instead, implement `filter_packages` and use that
+- setup() `packages` arg clearly needs a list of packages
+
+### non- python files
+
+- non- python files are not installed by default
+- seems to be whole load of conflicting advice on this one
+- correct answer is here
+- https://stackoverflow.com/a/57932258/124179
+
+```
+setup_requires=['setuptools_scm'],
+include_package_data=True
+```
+
+- :/
+
+### dependencies
+
+- mercifully stuff in requirements.txt seems to be installed by default
+- at least if you stick to vanilla pip declarations
+- I haven't tried 
+  - pip versions (I think these can be assumed to work)
+  - pip sub- packages (moto; don't think these work)
+  - git packages (think some modifications required here; try pareto2/setup.py from 0.6.x
+"""
+
 import setuptools, os
 
 with open("README.md", "r") as fh:
@@ -33,12 +70,10 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    # - setuptools.find_packages() is completely broken
     # packages=setuptools.find_packages(),
     packages=filter_packages("pareto2"),
     install_requires=requirements,
     # - https://stackoverflow.com/a/57932258/124179
-    # - to include yaml files
-    # setup_requires=['setuptools_scm'],
+    setup_requires=['setuptools_scm'],
     include_package_data=True
 )
