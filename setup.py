@@ -39,6 +39,6 @@ setuptools.setup(
     install_requires=requirements,
     # - https://stackoverflow.com/a/57932258/124179
     # - to include yaml files
-    setup_requires=['setuptools_scm'],
+    # setup_requires=['setuptools_scm'],
     include_package_data=True
 )
