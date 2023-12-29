@@ -33,12 +33,20 @@ class Lambdas(list):
         self.appname=appname
         self.timestamp=timestamp
 
+    """
+    - https://chat.openai.com/c/34736a67-aa28-4662-ad65-1c2d522e67ec
+    """
+        
     @property
     def zip_buffer(self):
         buf=io.BytesIO()
         zf=zipfile.ZipFile(buf, "a", zipfile.ZIP_DEFLATED, False)
         for k, v in self:
-            zf.writestr(k, v)
+            # zf.writestr(k, v)
+            unix_mode=0o100644  # File permission: rw-r--r--
+            zip_info=zipfile.ZipInfo(k)
+            zip_info.external_attr = (unix_mode << 16) | 0o755  # Add execute permission
+            zf.writestr(zip_info, v)
         zf.close()
         return buf.getvalue()
 
