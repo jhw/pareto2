@@ -1,6 +1,8 @@
 ### short
 
-- remove builder once layman2 retired
+### layman2 
+
+- need something to replace action event rule for builder
 
 ### medium
 
@@ -65,6 +67,7 @@
 
 ### done
 
+- remove builder once layman2 retired
 - document layer naming strategy for expander
 - separate scripts from script
 - fix api stagename as prod

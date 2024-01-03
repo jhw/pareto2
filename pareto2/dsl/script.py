@@ -114,17 +114,12 @@ class Script:
             action["invocation-type"]="sync"
         return action
 
-    """
-    - NB builder requires definition of bucket to push artifacts to
-    """
-    
     @property
     def bucket_names_env(self):
         return ["-".join([tok.lower()
                           for tok in varname.split("_")[:-1]]) # [NB :-1]
                 for varname in self.envvars
-                if (varname.endswith("_BUCKET") or
-                    varname.endswith("_BUILDER"))]
+                if varname.endswith("_BUCKET")]
 
     @property
     def bucket_names_event(self):
@@ -132,8 +127,7 @@ class Script:
         if "events" in self.infra:
             for event in self.infra["events"]:
                 if ("source" in event and
-                    event["source"]["type"] in ["bucket",
-                                                "builder"]):
+                    event["source"]["type"] in ["bucket"]):
                     names.add(event["source"]["name"])              
         return names
     
@@ -145,31 +139,6 @@ class Script:
                 "type": "bucket"}
                 for bucketname in list(bucketnames)]
 
-    @property
-    def builder_names_env(self):
-        return ["-".join([tok.lower()
-                          for tok in varname.split("_")[:-1]])
-                for varname in self.envvars
-                if varname.endswith("_BUILDER")]
-
-    @property
-    def builder_names_event(self):
-        names=set()
-        if "events" in self.infra:
-            for event in self.infra["events"]:
-                if ("source" in event and
-                    event["source"]["type"]=="builder"):
-                    names.add(event["source"]["name"])                    
-        return names
-    
-    @property
-    def builders(self):
-        buildernames=set(self.builder_names_env)
-        buildernames.update(set(self.builder_names_event))
-        return [{"name": buildername,
-                 "type": "builder"}
-                for buildername in list(buildernames)]
-    
     @property
     def queues(self, batchsize=1):
         return [{"name": self.action_name,

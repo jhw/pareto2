@@ -41,12 +41,6 @@ def init_bucket_event_rule(action, event):
         pattern["source"]=["aws.s3"]
     return pattern
 
-def init_builder_event_rule(action, event,
-                            basepattern=CodeBuildNotificationsPattern):
-    pattern=dict(basepattern)
-    pattern["detail"]["project-name"]=[{"Ref": H("%s-builder" % event["source"]["name"])}]
-    return pattern
-
 def init_table_event_rule(action, event):
     pattern={}
     if "topic" in event:
@@ -107,8 +101,6 @@ def init_event_rule(action, event):
     if "source" in event:
         if event["source"]["type"]=="bucket":
             return init_bucket_event_rule(action, event)
-        elif event["source"]["type"]=="builder":
-            return init_builder_event_rule(action, event)
         elif event["source"]["type"]=="table":
             return init_table_event_rule(action, event)
         elif event["source"]["type"]=="website":

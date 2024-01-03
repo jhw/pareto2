@@ -54,10 +54,6 @@ class Scripts(list):
         return self.aggregate("buckets")
 
     @property
-    def builders(self):
-        return self.aggregate("builders")
-    
-    @property
     def queues(self):
         return self.aggregate("queues")
     
