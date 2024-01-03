@@ -2,13 +2,13 @@
 
 ### layman2 
 
-- need something to replace action event rule for builder
+- how to replace the setting of builder project name in the event rule for notifications?
 
 ### medium
 
-- extended demos
-- define state resources in project root infra
-- improved dsl api
+- bucket and table to be defined automatically
+- simplify domain prefix+name handling
+- better demos and testing
 
 ### long
 
