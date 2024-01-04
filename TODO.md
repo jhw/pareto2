@@ -1,9 +1,5 @@
 ### short
 
-### layman2 
-
-- how to replace the setting of builder project name in the event rule for notifications?
-
 ### medium
 
 - bucket and table to be defined automatically
@@ -67,6 +63,7 @@
 
 ### done
 
+- how to replace the setting of builder project name in the event rule for notifications?
 - remove builder once layman2 retired
 - document layer naming strategy for expander
 - separate scripts from script
