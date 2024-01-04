@@ -1,33 +1,6 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
-import yaml
-
-CodeBuildNotificationsPattern=yaml.safe_load("""
-source:
-  - "aws.codebuild"
-detail-type:
-  - "CodeBuild Build Phase Change"
-detail:
-  completed-phase:
-    - SUBMITTED
-    - PROVISIONING
-    - DOWNLOAD_SOURCE
-    - INSTALL
-    - PRE_BUILD
-    - BUILD
-    - POST_BUILD
-    - UPLOAD_ARTIFACTS
-    - FINALIZING
-  completed-phase-status:
-    - TIMED_OUT
-    - STOPPED
-    - FAILED
-    - SUCCEEDED
-    - FAULT
-    - CLIENT_ERROR
-""")
-
 def init_bucket_event_rule(action, event):
     pattern={}
     if "topic" in event:
