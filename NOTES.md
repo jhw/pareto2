@@ -1,3 +1,29 @@
+### roadmap 03/01/24
+
+- let's assume we manage to refactor layman2 to include local builder
+- this leaves pareto2 in a clean ish state but in need of surgery in places 
+- mainly around the dsl
+- first thing is that it needs some kind of extension system to facilitate custom components such as layman's builder 
+- second thing is that the support for global entities (bucket, table, website, API) needs to change In favour of a) auto configuration of bucket and table b) configuration of website and api at setenv level
+- this means you can rip out the awful text detection and inferenxe stuff at the dsl level 
+- it means you should be able to simplify the schema also and restrict it to lambda related patterns 
+- the domain name prefix thing should be simplified in favour of simple fully qualified domain names
+- probably API domain name and website domain name should be harmonised 
+- these in turn mean the expander templater code can be simplified
+- so pareto and expander work in close harmony whilst layman is loosely coupled 
+- then it's easier to add lambda alarms and refactor API for apigw2 
+
+### layer naming convention strategy 23/12/23
+
+- old strategy used variables defined in setenv.sh such as "set REQUESTS_LAYER_ARN=#{arn:for:requests}" and then layer refs in infra block such as 'layers: ["requests"]'
+- this introduced a layer of indirection as you could easily have "set FOOBAR_LAYER_ARN=#{arn:for:requests}" and 'layers: ["foobar"]'
+- conveniently this allowed you to avoid the issue of layer names and how they might be hungarorised
+- now you are removing the layer of indirection by allowing layer names to be specified directly in the infra block
+- it's a bit awkward as layers are currently named (eg) "layman2-requests-0-1-2" which will hungarorise to "Layman2Requests012"
+- but it shouldn't matter as the hungarorised version will only exist under the hood
+
+*** what is crucial is that expander's definition of hungarorise() much match pareto's definition of hungarorise(), specifically with respect to splitting on dashes as well as underscores ***
+
 ### glibc 08/12/23
 
 - https://repost.aws/questions/QUrXOioL46RcCnFGyELJWKLw/glibc-2-27-on-amazon-linux-

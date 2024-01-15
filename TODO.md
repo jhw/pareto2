@@ -1,33 +1,34 @@
 ### short
 
-- https://github.com/getmoto/moto/issues/7101
-
-- search_logs.py needs to limit prefix length
-- search_logs.py needs to dump names of multiple log groups matched
-
-### 0.7.x
-
-- replace apigateway with apigateway2
-- abstract schema from scripts config 
-- define state resources in project root infra
-- lambda alarms 
-- clean up setup.py and/or replace with project.toml
-
-### pending 
-
-- dynamodb pipes implementation
-
 ### medium
 
-- federated cognito sign up
-- step functions
-- fix api stagename as prod
-- policy_document needs ability to specify resource per group
+- bucket and table to be defined automatically
+- simplify domain prefix+name handling
+- better demos and testing
 
 ### long
 
+- add back secrets
+- replace setup.py with pyproject.toml
+- move expander differ formatting code into dsl
+- api root redirect
+
+- replace setup.py with project.toml
+- policy_document needs ability to specify resource per group
+- federated cognito sign up
+
+### features
+
+- secrets
+- apigateway -> apigateway2
+- lambda alarms 
+- step functions mapreduce
+- sphinx docs
+
 ### thoughts
 
+- remove yaml dependency?
+  - no; too much yaml everywhere
 - fold website into bucket?
 - refactor action -function as -action (?)
 - apigw logging?
@@ -62,6 +63,19 @@
 
 ### done
 
+- how to replace the setting of builder project name in the event rule for notifications?
+- remove builder once layman2 retired
+- document layer naming strategy for expander
+- separate scripts from script
+- fix api stagename as prod
+- check how template hungarorises layer names
+- eventbridge target id must be capped at length 64
+- clean up setup.py
+- abstract jsonschema to files
+- rename config as dsl
+- remove apigw randomised description
+- remove apigw restapi/deployment/stage outputs
+- remove all unnecessary scripts
 - apigw auto deployment trick
 - add timeouts to warning subscriptions
 - apigw root redirect 

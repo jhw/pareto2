@@ -1,6 +1,6 @@
-from pareto2.config.components import Components
-from pareto2.config.parameters import Parameters
-from pareto2.config.scripts import Scripts, Script
+from pareto2.dsl.components import Components
+from pareto2.dsl.parameters import Parameters
+from pareto2.dsl.scripts import Scripts, Script
 
 from pareto2.template import Template
 
@@ -9,10 +9,8 @@ from pareto2.components import hungarorise
 import pareto2.components.action
 import pareto2.components.api
 import pareto2.components.bucket
-import pareto2.components.builder
 import pareto2.components.logs
 import pareto2.components.queue
-import pareto2.components.secret
 import pareto2.components.table
 import pareto2.components.timer
 import pareto2.components.topic
@@ -24,10 +22,8 @@ import os, yaml
 ComponentModules={"action": pareto2.components.action,
                   "api": pareto2.components.api,
                   "bucket": pareto2.components.bucket,
-                  "builder": pareto2.components.builder,
                   "logs": pareto2.components.logs,
                   "queue": pareto2.components.queue,
-                  "secret": pareto2.components.secret,
                   "table": pareto2.components.table,
                   "timer": pareto2.components.timer,
                   "topic": pareto2.components.topic,
@@ -44,7 +40,7 @@ timeout-long: 30
 timeout-medium: 15
 """)
 
-LogsConfig=yaml.safe_load("""
+LogsDSL=yaml.safe_load("""
 - name: warn
   level: warning
   type: logs
@@ -59,7 +55,7 @@ LogsConfig=yaml.safe_load("""
     timeout: default
 """)
 
-class Config(dict):
+class DSL(dict):
 
     def __init__(self,
                  parameters=ParameterDefaults,
@@ -110,14 +106,12 @@ class Config(dict):
     def expand(self,
                scripts,
                globals={},
-               logs=LogsConfig):
+               logs=LogsDSL):
         self["parameters"].update(globals)                
         self["components"]+=logs
         for attr in ["apis",
                      "buckets",
-                     "builders",
                      "queues",
-                     "secrets",
                      "tables",
                      "timers",
                      "topics",
@@ -164,10 +158,10 @@ def load_files(root):
 
 if __name__=="__main__":    
     try:
-        config=Config()
+        dsl=DSL()
         scripts=Scripts.initialise(load_files("demo/hello"))
-        config.expand(scripts)
-        template=config.spawn_template()
+        dsl.expand(scripts)
+        template=dsl.spawn_template()
         template.init_implied_parameters()
         if not os.path.exists("tmp"):
             os.mkdir("tmp")

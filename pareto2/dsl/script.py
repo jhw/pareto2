@@ -1,252 +1,12 @@
 import jsonschema, re, yaml
 
-InfraSchema=yaml.safe_load("""
-"$schema": "http://json-schema.org/draft-07/schema#"
-type: object
-definitions:
-  event:
-    type: object
-    properties: 
-      name:
-        type: string
-      topic:
-        type: string
-      pattern:
-        type: object
-      source:
-        type: object
-        properties:
-          name:
-            type: string
-          type: 
-            type: string
-            enum:
-            - bucket
-            - builder
-            - table
-            - website
-        required:
-        - name
-        - type
-        additionalProperties: false
-    required:
-    - name
-    additionalProperties: false
-  index:
-    type: object
-    properties:
-      name:
-        type: string
-      type:
-        type: string
-        enum:
-        - S
-      table:
-        type: string
-    required:
-    - name
-    - type
-    - table
-    additionalProperties: false
-  layer:
-    type: string
-  permission:
-    type: string
-    pattern: "^(\\\\w+\\\\-)*\\\\w+\\\\:(\\\\w+|\\\\*)$"
-  queue:
-    type: object
-    properties:
-      batch:
-        type: integer
-    required:
-    - name
-    additionalProperties: false
-  secret:
-    type: object
-    properties:
-      name:
-        type: string
-      value:
-        type: string
-    required:
-    - name
-    - value
-    additionalProperties: false
-  timer:
-    type: object
-    properties:
-      rate:
-        type: string
-      body:
-        type: object
-    required:
-    - rate
-    - body
-    additionalProperties: false
-properties:
-  endpoint:
-    type: object
-    properties: 
-      api:
-        type: string
-      method:
-        type: string
-        enum:
-        - GET
-        - POST
-      path:
-        type: string
-      parameters:
-        type: array
-      schema:
-        type: object
-    required:
-    - api
-    - method
-    - path
-    additionalProperties: false
-  events:
-    type: array
-    items:
-      "$ref": "#/definitions/event"
-  indexes:
-    type: array
-    items:
-      "$ref": "#/definitions/index"
-  layers:
-    type: array
-    items:
-      "$ref": "#/definitions/layer"
-  permissions:
-    type: array
-    items:
-      "$ref": "#/definitions/permission"
-  queue:
-    type: object
-    additionProperties: false
-  secrets:
-    type: array
-    items:
-      "$ref": "#/definitions/secret"
-  size:
-    type: string
-    enum:
-    - default
-    - medium
-    - large
-  timeout:
-    type: string
-    enum:
-    - default
-    - medium
-    - long
-  timer:
-    type: object
-    additionProperties: false
-  topic:
-    type: object
-    additionProperties: false
-required: []
-additionalProperties: false
-""")
+InfraSchema=yaml.safe_load(open("/".join(__file__.split("/")[:-1]+["schema.yaml"])))
 
 SQSLookbackPermissions=yaml.safe_load("""
 - sqs:DeleteMessage
 - sqs:GetQueueAttributes
 - sqs:ReceiveMessage
 """)
-
-class Scripts(list):
-
-    @classmethod
-    def initialise(self, assets):
-        return Scripts([Script(*asset)
-                        for asset in assets])
-    
-    def __init__(self, items=[]):
-        list.__init__(self, items)
-
-    @property
-    def apis(self, stagename="1-0-0"):
-        def init_public(apiname):
-            return {"name": apiname,
-                    "type": "api",
-                    "endpoints": [],
-                    "stage": {"name": stagename},
-                    "auth-type": "open"}
-        def init_private(apiname):
-            return {"name": apiname,
-                    "type": "api",
-                    "endpoints": [],
-                    "stage": {"name": stagename},
-                    "user": "api",
-                    "auth-type": "cognito"}
-        def init_api(apiname):
-            for pat, fn in [("public", init_public),
-                            ("private", init_private)]:
-                if pat in apiname:
-                    return fn(apiname)
-            raise RuntimeError("no api initialiser for '%s'" % apiname)
-        apis={}
-        for script in self:
-            if "endpoint" in script.infra:
-                endpoint=script.infra["endpoint"]
-                endpoint["name"]="-".join([tok
-                                           for tok in endpoint["path"].split("/")
-                                           if tok!=''])
-                apiname=endpoint["api"]
-                apis[apiname]=init_api(apiname)
-        return list(apis.values())
-
-    def aggregate(self, attr):
-        items={}
-        for script in self:
-            items.update({item["name"]:item
-                          for item in getattr(script, attr)})
-        return (list(items.values()))
-        
-    @property    
-    def buckets(self):
-        return self.aggregate("buckets")
-
-    @property
-    def builders(self):
-        return self.aggregate("builders")
-    
-    @property
-    def queues(self):
-        return self.aggregate("queues")
-    
-    @property
-    def secrets(self):
-        return self.aggregate("secrets")
-
-    @property
-    def tables(self):
-        return self.aggregate("tables")
-
-    @property
-    def timers(self):
-        return self.aggregate("timers")
-    
-    @property
-    def topics(self):
-        return self.aggregate("topics")
-
-    @property
-    def users(self):
-        for script in self:
-            if "endpoint" in script.infra:
-                endpoint=script.infra["endpoint"]
-                apiname=endpoint["api"]
-                if "private" in apiname:
-                    return [{"name": "api",
-                             "type": "user"}]
-        return []
-
-    @property
-    def websites(self):
-        return self.aggregate("websites")
     
 class Script:
 
@@ -290,7 +50,7 @@ class Script:
              "parameters" not in endpoint) or
             (endpoint["method"]=="POST" and
              "schema" not in endpoint)):
-            raise RuntimeError("%s endpoint is mis- configured" % self.filename)
+            raise RuntimeError("%s endpoint is mis- dslured" % self.filename)
 
     def filter_infra(self, text):
         block, inblock = [], False
@@ -354,17 +114,12 @@ class Script:
             action["invocation-type"]="sync"
         return action
 
-    """
-    - NB builder requires definition of bucket to push artifacts to
-    """
-    
     @property
     def bucket_names_env(self):
         return ["-".join([tok.lower()
                           for tok in varname.split("_")[:-1]]) # [NB :-1]
                 for varname in self.envvars
-                if (varname.endswith("_BUCKET") or
-                    varname.endswith("_BUILDER"))]
+                if varname.endswith("_BUCKET")]
 
     @property
     def bucket_names_event(self):
@@ -372,8 +127,7 @@ class Script:
         if "events" in self.infra:
             for event in self.infra["events"]:
                 if ("source" in event and
-                    event["source"]["type"] in ["bucket",
-                                                "builder"]):
+                    event["source"]["type"] in ["bucket"]):
                     names.add(event["source"]["name"])              
         return names
     
@@ -386,43 +140,11 @@ class Script:
                 for bucketname in list(bucketnames)]
 
     @property
-    def builder_names_env(self):
-        return ["-".join([tok.lower()
-                          for tok in varname.split("_")[:-1]])
-                for varname in self.envvars
-                if varname.endswith("_BUILDER")]
-
-    @property
-    def builder_names_event(self):
-        names=set()
-        if "events" in self.infra:
-            for event in self.infra["events"]:
-                if ("source" in event and
-                    event["source"]["type"]=="builder"):
-                    names.add(event["source"]["name"])                    
-        return names
-    
-    @property
-    def builders(self):
-        buildernames=set(self.builder_names_env)
-        buildernames.update(set(self.builder_names_event))
-        return [{"name": buildername,
-                 "type": "builder"}
-                for buildername in list(buildernames)]
-    
-    @property
     def queues(self, batchsize=1):
         return [{"name": self.action_name,
                  "type": "queue",
                  "batch": self.infra["queue"]["batch"] if "batch" in self.infra["queue"] else batchsize,
                  "action": self.action_name}] if "queue" in self.infra else []
-    
-    @property
-    def secrets(self):
-        return [{"name": secret["name"],
-                 "values": [secret["value"]],
-                 "type": "secret"}
-                for secret in self.infra["secrets"]] if "secrets" in self.infra else []
     
     @property
     def table_names_env(self):

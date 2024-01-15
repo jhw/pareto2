@@ -1,17 +1,47 @@
 """
-- https://stackoverflow.com/questions/50585246/pip-install-creates-only-the-dist-info-not-the-package
-- https://stackoverflow.com/questions/32688688/how-to-write-setup-py-to-include-a-git-repo-as-a-dependency
-- https://stackoverflow.com/questions/1612733/including-non-python-files-with-setup-py
+### overview
+
+- the whole setuptools/setup.py dance is a total shitshow
+
+### packages
+
+- ideally packages should be auto- installed from specification of a project root, but no such luck
+- it appears setup() wants you to use `packages=setuptools.find_packages()` but this seems completely broken
+- it's quite common to find a target project supposedly installed by pip that is completely empty
+- instead, implement `filter_packages` and use that
+- setup() `packages` arg clearly needs a list of packages
+
+### non- python files
+
+- non- python files are not installed by default
+- seems to be whole load of conflicting advice on this one
+- correct answer is here
+- https://stackoverflow.com/a/57932258/124179
+
+```
+setup_requires=['setuptools_scm'],
+include_package_data=True
+```
+
+- :/
+
+### dependencies
+
+- mercifully stuff in requirements.txt seems to be installed by default
+- at least if you stick to vanilla pip declarations
+- I haven't tried 
+  - pip versions (I think these can be assumed to work)
+  - pip sub- packages (moto; don't think these work)
+  - git packages (think some modifications required here; try pareto2/setup.py from 0.6.x
 """
 
-import os, setuptools
+import setuptools, os
 
 with open("README.md", "r") as fh:
     long_description=fh.read()
 
-"""
-- because setuptools.find_packages() is useless and broken
-"""
+with open('requirements.txt', 'r') as f:
+    requirements=f.read().splitlines()
 
 def filter_packages(root):
     def filter_packages(root, packages):
@@ -25,35 +55,10 @@ def filter_packages(root):
     packages=[]
     filter_packages(root, packages)
     return packages
-
-"""
-- https://stackoverflow.com/a/59109622/124179
-"""
-
-def format_dependencies(root="requirements.txt"):
-    def clean_row(fn):
-        def wrapped(row):
-            return fn(row.replace(" ", "").split("#")[0])
-        return wrapped
-    def is_git(row):
-        return row.startswith("git")
-    @clean_row
-    def format_git(row):
-        pkgname=row.split("@")[1].split("/")[-1].split(".")[0]
-        return "%s@%s" % (pkgname, row)
-    @clean_row
-    def format_pip(row):
-        return row
-    def format_dep(row):
-        return format_git(row) if is_git(row) else format_pip(row)
-    return [format_dep(row)
-            for row in open(root).read().split("\n")
-            if (row!='' and
-                not row.startswith("#"))]
-
+    
 setuptools.setup(
     name="pareto2",
-    version="0.6.41",
+    version="0.7.0",
     author="jhw",
     author_email="justin.worrall@gmail.com",
     description="An SDK for serverless apps",
@@ -67,8 +72,8 @@ setuptools.setup(
     ],
     # packages=setuptools.find_packages(),
     packages=filter_packages("pareto2"),
-    install_requires=format_dependencies(),
-    # https://stackoverflow.com/a/57932258/124179
+    install_requires=requirements,
+    # - https://stackoverflow.com/a/57932258/124179
     setup_requires=['setuptools_scm'],
     include_package_data=True
 )

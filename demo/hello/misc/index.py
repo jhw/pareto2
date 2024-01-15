@@ -8,9 +8,6 @@ infra:
   - pyyaml
   permissions:
   - foo:bar
-  secrets:
-  - name: whatevs
-    value: stuff
   size: medium
   timeout: medium
 """
