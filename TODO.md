@@ -1,26 +1,25 @@
 ### short
 
+- move components and parameters into dsl
+- add check for multiple tables, buckets, websites, apis
+- add check for bucket and website
+- check if apis should really be guaranteed to exist
+
 ### medium
 
-- bucket and table to be defined automatically
 - simplify domain prefix+name handling
 - better demos and testing
-
-### long
-
 - add back secrets
 - replace setup.py with pyproject.toml
 - move expander differ formatting code into dsl
 - api root redirect
-
-- replace setup.py with project.toml
 - policy_document needs ability to specify resource per group
 - federated cognito sign up
 
 ### features
 
 - secrets
-- apigateway -> apigateway2
+- apigateway2
 - lambda alarms 
 - step functions mapreduce
 - sphinx docs
