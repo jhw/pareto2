@@ -1,11 +1,10 @@
 ### short
 
-- add check for multiple tables, buckets, websites, apis
-- add check for bucket and website
 - move differ stuff into dsl
 
 ### medium
 
+- add back demos for bucket and private api
 - check if apis should really be guaranteed to exist
 - simplify domain prefix+name handling
 - better demos and testing
@@ -62,6 +61,8 @@
 
 ### done
 
+- add check for multiple tables, buckets, websites, apis
+- add check for bucket and website
 - move dsl/components and parameters
 - how to replace the setting of builder project name in the event rule for notifications?
 - remove builder once layman2 retired

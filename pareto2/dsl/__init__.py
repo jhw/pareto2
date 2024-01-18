@@ -112,7 +112,37 @@ class DSL(dict):
                         raise RuntimeError("%s not found" % tablename)
                     table=tables[tablename]
                     table["indexes"].append(index)
-                
+
+    def assert_singleton(type):
+        def decorator(fn):
+            def wrapped(self, *args, **kwargs):
+                struct=fn(self, *args, **kwargs)
+                components=[component for component in struct["components"]
+                            if component["type"]==type]
+                if len(components) > 1:
+                    names=[component["name"] for component in components]
+                    raise RuntimeError("multiple %ss are defined [%s]" % (type, ", ".join(names)))
+                return struct
+            return wrapped
+        return decorator
+
+    def assert_bucket_website(fn):
+        def wrapped(self, *args, **kwargs):
+            struct=fn(self, *args, **kwargs)
+            buckets=[component for component in struct["components"]
+                     if component["type"]=="bucket"]
+            websites=[component for component in struct["components"]
+                      if component["type"]=="website"]
+            if buckets!=[] and websites!=[]:
+                raise RuntimeError("can't define both bucket and website")
+            return struct
+        return wrapped
+    
+    @assert_singleton("table")
+    @assert_singleton("bucket")
+    @assert_singleton("website")
+    @assert_singleton("api")
+    @assert_bucket_website
     def expand(self,
                scripts,
                globals={},
