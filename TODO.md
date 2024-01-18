@@ -1,12 +1,13 @@
 ### short
 
-- move components and parameters into dsl
+- move dsl/components and parameters
 - add check for multiple tables, buckets, websites, apis
 - add check for bucket and website
-- check if apis should really be guaranteed to exist
+- move differ stuff into dsl
 
 ### medium
 
+- check if apis should really be guaranteed to exist
 - simplify domain prefix+name handling
 - better demos and testing
 - add back secrets
