@@ -1,5 +1,5 @@
 from pareto2.dsl.components import Components
-from pareto2.dsl.parameters import Parameters
+
 from pareto2.dsl.scripts import Scripts, Script
 
 from pareto2.template import Template
@@ -54,6 +54,16 @@ LogsDSL=yaml.safe_load("""
     size: default
     timeout: default
 """)
+
+class Parameters(dict):
+
+    def __init__(self, struct={}):
+        dict.__init__(self, struct)
+
+    @property
+    def parameters(self):
+        return {hungarorise(k):v
+                for k, v in self.items()}
 
 class DSL(dict):
 

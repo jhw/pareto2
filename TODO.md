@@ -1,6 +1,5 @@
 ### short
 
-- move dsl/components and parameters
 - add check for multiple tables, buckets, websites, apis
 - add check for bucket and website
 - move differ stuff into dsl
@@ -63,6 +62,7 @@
 
 ### done
 
+- move dsl/components and parameters
 - how to replace the setting of builder project name in the event rule for notifications?
 - remove builder once layman2 retired
 - document layer naming strategy for expander
