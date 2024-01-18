@@ -1,6 +1,9 @@
 ### short
 
-- move differ stuff into dsl
+- dsl.formatted to auto sort lists
+  - check if is_dict and name field exists
+  - check if is_string
+  - else raise error
 
 ### medium
 
@@ -61,6 +64,7 @@
 
 ### done
 
+- move differ stuff into dsl
 - add check for multiple tables, buckets, websites, apis
 - add check for bucket and website
 - move dsl/components and parameters

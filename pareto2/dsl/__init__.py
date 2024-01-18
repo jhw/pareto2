@@ -17,7 +17,7 @@ import pareto2.components.topic
 import pareto2.components.user
 import pareto2.components.website
 
-import os, yaml
+import json, os, yaml
 
 ComponentModules={"action": pareto2.components.action,
                   "api": pareto2.components.api,
@@ -178,6 +178,41 @@ class DSL(dict):
             template.outputs.update(outputfn(component))
         return template
 
+    """
+    - because expander wants to do DSL diffs and the simplest way is to do simple string comparison
+    - dicts will be auto- sorted by json.dumps, but you have to do lists yourself
+    - this could probably be done auto- magically
+    """    
+        
+    @property
+    def formatted(self):
+        def format_component(component):
+            if component["type"]=="action":
+                for attr in ["events",
+                             "indexes"]:
+                    if attr in component:
+                        component["events"]=sorted(component[attr],
+                                                   key=lambda x: x["name"])
+                for attr in ["layers",
+                             "permissions"]:
+                    if attr in component:
+                        component[attr]=sorted(component[attr])
+            elif component["type"]=="api":
+                if "endpoints" in component:
+                    for endpoint in component["endpoints"]:
+                        if "parameters" in endpoint:
+                            endpoint["parameters"]=sorted(endpoint["parameters"])
+            return component
+        struct={}
+        struct["parameters"]=self["parameters"]
+        struct["components"]=sorted([format_component(component)
+                                     for component in self["components"]],
+                                    key=lambda x: "%s-%s" % (x["type"],
+                                                             x["name"]))
+        return json.dumps(struct,
+                          sort_keys=True,
+                          indent=2)
+    
 """
 - load_files is separate from scripts as is implementation detail
 - important that it can effectively switch directory
@@ -201,11 +236,11 @@ if __name__=="__main__":
         dsl=DSL()
         scripts=Scripts.initialise(load_files("demo/hello"))
         dsl.expand(scripts)
+        print (dsl.formatted)
         template=dsl.spawn_template()
         template.init_implied_parameters()
         if not os.path.exists("tmp"):
             os.mkdir("tmp")
-        import json
         with open("tmp/template.json", 'w') as f:
             f.write(json.dumps(template.render(),                               
                                indent=2))
