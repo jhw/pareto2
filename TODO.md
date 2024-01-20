@@ -1,30 +1,23 @@
 ### short
 
-- dsl.formatted to auto sort lists
-  - check if is_dict and name field exists
-  - check if is_string
-  - else raise error
+- make dsl.formatted generic
 
 ### medium
 
+- extendable api for action events
 - add back demos for bucket and private api
-- check if apis should really be guaranteed to exist
+- check if apis should really be guaranteed to exist?
 - simplify domain prefix+name handling
 - better demos and testing
-- add back secrets
 - replace setup.py with pyproject.toml
-- move expander differ formatting code into dsl
-- api root redirect
 - policy_document needs ability to specify resource per group
-- federated cognito sign up
 
 ### features
 
-- secrets
 - apigateway2
 - lambda alarms 
+- secrets
 - step functions mapreduce
-- sphinx docs
 
 ### thoughts
 
@@ -64,6 +57,7 @@
 
 ### done
 
+- move expander differ formatting code into dsl
 - move differ stuff into dsl
 - add check for multiple tables, buckets, websites, apis
 - add check for bucket and website
