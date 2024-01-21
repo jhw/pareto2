@@ -186,29 +186,19 @@ class DSL(dict):
         
     @property
     def formatted(self):
-        def format_component(component):
-            if component["type"]=="action":
-                for attr in ["events",
-                             "indexes"]:
-                    if attr in component:
-                        component["events"]=sorted(component[attr],
-                                                   key=lambda x: x["name"])
-                for attr in ["layers",
-                             "permissions"]:
-                    if attr in component:
-                        component[attr]=sorted(component[attr])
-            elif component["type"]=="api":
-                if "endpoints" in component:
-                    for endpoint in component["endpoints"]:
-                        if "parameters" in endpoint:
-                            endpoint["parameters"]=sorted(endpoint["parameters"])
-            return component
-        struct={}
-        struct["parameters"]=self["parameters"]
-        struct["components"]=sorted([format_component(component)
-                                     for component in self["components"]],
-                                    key=lambda x: "%s-%s" % (x["type"],
-                                                             x["name"]))
+        def sort_nested_json(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    obj[key] = sort_nested_json(value)
+            elif isinstance(obj, list):
+                if all(isinstance(item, dict) and 'name' in item for item in obj):
+                    obj.sort(key=lambda x: x['name'])
+                elif all(isinstance(item, str) for item in obj):
+                    obj.sort()
+                else:
+                    raise RuntimeError("list contains unsupported types or is missing 'name' field in dicts")
+            return obj
+        struct=sort_nested_json(self)
         return json.dumps(struct,
                           sort_keys=True,
                           indent=2)
