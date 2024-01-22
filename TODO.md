@@ -1,16 +1,15 @@
 ### short
 
-- see if importlib.import_module uses a cache
-- see if script component properties can be genericised
 - modularise action events
 
+- see if script component properties can be genericised
 - remove domain prefix
 
 ### medium
 
-- add back demos for bucket and private api
+- create multiple demos
+  - bucket and private api currently missing
 - check if apis should really be guaranteed to exist?
-- better demos and testing
 - replace setup.py with pyproject.toml
 - policy_document needs ability to specify resource per group
 
@@ -19,7 +18,8 @@
 - apigateway2
 - lambda alarms 
 - secrets
-- step functions mapreduce
+- multi- lambda patterns
+  - mapreduce
 
 ### thoughts
 
@@ -59,6 +59,7 @@
 
 ### done
 
+- see if importlib.import_module uses a cache
 - move load_files
 - add extension directory to module sources
 - lookup component modules dynamically
