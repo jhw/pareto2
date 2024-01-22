@@ -1,13 +1,13 @@
 ### short
 
-- make dsl.formatted generic
+- modularise action events
+- remove domain prefix
+- lookup component modules dynamically
 
 ### medium
 
-- extendable api for action events
 - add back demos for bucket and private api
 - check if apis should really be guaranteed to exist?
-- simplify domain prefix+name handling
 - better demos and testing
 - replace setup.py with pyproject.toml
 - policy_document needs ability to specify resource per group
@@ -57,6 +57,7 @@
 
 ### done
 
+- make dsl.formatted generic
 - move expander differ formatting code into dsl
 - move differ stuff into dsl
 - add check for multiple tables, buckets, websites, apis
