@@ -6,29 +6,7 @@ from pareto2.template import Template
 
 from pareto2.components import hungarorise
 
-import pareto2.components.action
-import pareto2.components.api
-import pareto2.components.bucket
-import pareto2.components.logs
-import pareto2.components.queue
-import pareto2.components.table
-import pareto2.components.timer
-import pareto2.components.topic
-import pareto2.components.user
-import pareto2.components.website
-
-import json, os, yaml
-
-ComponentModules={"action": pareto2.components.action,
-                  "api": pareto2.components.api,
-                  "bucket": pareto2.components.bucket,
-                  "logs": pareto2.components.logs,
-                  "queue": pareto2.components.queue,
-                  "table": pareto2.components.table,
-                  "timer": pareto2.components.timer,
-                  "topic": pareto2.components.topic,
-                  "user": pareto2.components.user,
-                  "website": pareto2.components.website}
+import importlib, json, os, yaml
 
 ParameterDefaults=yaml.safe_load("""
 memory-size-default: 512
@@ -167,11 +145,17 @@ class DSL(dict):
         self.attach_indexes(scripts)
         return self
     
-    def spawn_template(self,                  
-                       modules=ComponentModules):
-        template=Template()
+    def spawn_template(self):                 
+        template, mods = Template(), {}
         for component in self["components"]:
-            mod=modules[component["type"]]
+            if component["type"] in mods:
+                mod=mods[component["type"]]
+            else:
+                try:
+                    mod=importlib.import_module("pareto2.components.%s" % component["type"])
+                except ModuleNotFoundError as error:
+                    raise RuntimeError(str(error))
+                mods[component["type"]]=mod
             resourcefn=getattr(mod, "render_resources")
             template.resources.update(resourcefn(component))
             outputfn=getattr(mod, "render_outputs")

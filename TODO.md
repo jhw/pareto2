@@ -1,8 +1,10 @@
 ### short
 
+- add extension directory to module sources
+- see if script component properties can be genericised
 - modularise action events
+
 - remove domain prefix
-- lookup component modules dynamically
 
 ### medium
 
@@ -57,6 +59,7 @@
 
 ### done
 
+- lookup component modules dynamically
 - make dsl.formatted generic
 - move expander differ formatting code into dsl
 - move differ stuff into dsl
