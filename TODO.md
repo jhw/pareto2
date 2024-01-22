@@ -1,8 +1,7 @@
 ### short
 
-- modularise action events
-
 - see if script component properties can be genericised
+
 - remove domain prefix
 
 ### medium
@@ -59,6 +58,7 @@
 
 ### done
 
+- modularise action events
 - see if importlib.import_module uses a cache
 - move load_files
 - add extension directory to module sources

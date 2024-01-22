@@ -1,41 +1,21 @@
 from pareto2.components import hungarorise as H
 from pareto2.components import resource
 
-def init_bucket_event_rule(action, event):
-    pattern={}
-    if "topic" in event:
-        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
-    if "pattern" in event:
-        pattern["detail"]=event["pattern"]
-    if "source" in event:
-        pattern.setdefault("detail", {})
-        pattern["detail"].setdefault("bucket", {})
-        pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-bucket" % event["source"]["name"])}]
-        pattern["source"]=["aws.s3"]
-    return pattern
+import importlib
 
-def init_table_event_rule(action, event):
-    pattern={}
-    if "topic" in event:
-        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
-    if "pattern" in event:
-        pattern["detail"]=event["pattern"]
-    if "source" in event:
-        pattern["source"]=[{"Ref": H("%s-table-streaming-function" % event["source"]["name"])}]
-    return pattern
+"""
+- no need for a module cache here as Python/importlib will check sys.modules
+"""
 
-def init_website_event_rule(action, event):
-    pattern={}
-    if "topic" in event:
-        pattern["detail-type"]=[event["topic"]] # NB temp as topic is currently defined as a string
-    if "pattern" in event:
-        pattern["detail"]=event["pattern"]
-    if "source" in event:
-        pattern.setdefault("detail", {})
-        pattern["detail"].setdefault("bucket", {})
-        pattern["detail"]["bucket"]["name"]=[{"Ref": H("%s-website" % event["source"]["name"])}]
-        pattern["source"]=["aws.s3"]
-    return pattern
+def import_event_module(event,
+                        paths=["pareto2.components.action.events.%s",
+                               "ext.%s"]):
+    for path in paths:
+        try:
+            return importlib.import_module(path % event["source"]["type"])
+        except ModuleNotFoundError:
+            pass
+    raise RuntimeError("couldn't import event module for component %s" % event["source"]["type"])
 
 def init_unbound_event_rule(action, event):
     pattern={}
@@ -72,14 +52,8 @@ def render_event_rule(fn):
 @render_event_rule
 def init_event_rule(action, event):
     if "source" in event:
-        if event["source"]["type"]=="bucket":
-            return init_bucket_event_rule(action, event)
-        elif event["source"]["type"]=="table":
-            return init_table_event_rule(action, event)
-        elif event["source"]["type"]=="website":
-            return init_website_event_rule(action, event)        
-        else:
-            raise RuntimeError("no event rule handler for type %s" % event["type"])
+        mod=import_event_module(event)
+        return mod.init_event_rule(action, event)
     else:
         return init_unbound_event_rule(action, event)
     

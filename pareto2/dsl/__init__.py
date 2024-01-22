@@ -151,7 +151,7 @@ class DSL(dict):
                                        "ext.%s"]):
         for path in paths:
             try:
-                return importlib.import_module("pareto2.components.%s" % component["type"])
+                return importlib.import_module(path % component["type"])
             except ModuleNotFoundError:
                 pass
         raise RuntimeError("couldn't import module for component %s" % component["type"])
