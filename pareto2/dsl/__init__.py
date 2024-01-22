@@ -145,16 +145,22 @@ class DSL(dict):
         self.attach_indexes(scripts)
         return self
     
-    def spawn_template(self):                 
+    def spawn_template(self):
+        def import_module(component,
+                          paths=["pareto2.components.%s",
+                                 "ext.%s"]):
+            for path in paths:
+                try:
+                    return importlib.import_module("pareto2.components.%s" % component["type"])
+                except ModuleNotFoundError:
+                    pass
+            raise RuntimeError("couldn't import module for component %s" % component["type"])
         template, mods = Template(), {}
         for component in self["components"]:
             if component["type"] in mods:
                 mod=mods[component["type"]]
             else:
-                try:
-                    mod=importlib.import_module("pareto2.components.%s" % component["type"])
-                except ModuleNotFoundError as error:
-                    raise RuntimeError(str(error))
+                mod=import_module(component)
                 mods[component["type"]]=mod
             resourcefn=getattr(mod, "render_resources")
             template.resources.update(resourcefn(component))
