@@ -193,26 +193,19 @@ class DSL(dict):
                           sort_keys=True,
                           indent=2)
     
-"""
-- load_files is separate from scripts as is implementation detail
-- important that it can effectively switch directory
-- files may be part of s3 or zip archive rather than local file system
-- assumes the tail slug of the root path is the name of the python package
-"""
-    
-def load_files(root):
-    roottokens, items = root.split("/"), []
-    for localroot, dirs, files in os.walk(root):
-        for _filename in files:
-            filename=os.path.join(localroot, _filename)
-            body=open(filename).read()
-            key="/".join(filename.split("/")[len(roottokens)-1:])
-            item=(key, body)
-            items.append(item)
-    return items
 
 if __name__=="__main__":    
     try:
+        def load_files(root):
+            roottokens, items = root.split("/"), []
+            for localroot, dirs, files in os.walk(root):
+                for _filename in files:
+                    filename=os.path.join(localroot, _filename)
+                    body=open(filename).read()
+                    key="/".join(filename.split("/")[len(roottokens)-1:])
+                    item=(key, body)
+                    items.append(item)
+            return items
         dsl=DSL()
         scripts=Scripts.initialise(load_files("demo/hello"))
         dsl.expand(scripts)
