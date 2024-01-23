@@ -116,9 +116,8 @@ def init_method(website):
 def init_root_redirect_method(website):
     def init_integration(website):
         requests={"application/json": "{\"statusCode\" : 302}"}
-        redirecturl={"Fn::Sub": ["'https://${prefix}.${name}/index.html'", # NB note single quotes
-                                 {"prefix": {"Ref": H("%s-website-domain-prefix" % website["name"])},
-                                  "name": {"Ref": H("domain-name")}}]}
+        redirecturl={"Fn::Sub": ["'https://${name}/index.html'", # NB note single quotes
+                                 {"name": {"Ref": H("domain-name")}}]}
         responses=[{"StatusCode": 302,
                     "ResponseTemplates": {"application/json": "{}"},
                     "ResponseParameters": {"method.response.header.Location": redirecturl}}]

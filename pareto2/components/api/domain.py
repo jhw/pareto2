@@ -4,8 +4,7 @@ from pareto2.components import resource
 @resource
 def init_domain(api):
     resourcename=H("%s-api-domain" % api["name"])
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-api-domain-prefix" % api["name"])}, "name": {"Ref": H("domain-name")}}]}
-    props={"DomainName": domainname,
+    props={"DomainName": {"Ref": H("domain-name")},
            "CertificateArn": {"Ref": H("certificate-arn")}}
     return (resourcename,
             "AWS::ApiGateway::DomainName",
@@ -14,8 +13,7 @@ def init_domain(api):
 @resource
 def init_domain_path_mapping(api):
     resourcename=H("%s-api-domain-path-mapping" % api["name"])
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-api-domain-prefix" % api["name"])}, "name": {"Ref": H("domain-name")}}]}
-    props={"DomainName": domainname,
+    props={"DomainName": {"Ref": H("domain-name")},
            "RestApiId": {"Ref": H("%s-api-rest-api" % api["name"])},
            "Stage": api["stage"]["name"]}
     depends=[H("%s-api-domain" % api["name"])]
@@ -28,14 +26,13 @@ def init_domain_path_mapping(api):
 def init_domain_record_set(api):
     resourcename=H("%s-api-domain-record-set" % api["name"])
     hzname={"Fn::Sub": ["${name}.", {"name": {"Ref": H("domain-name")}}]} # NB note trailing period
-    domainname={"Fn::Sub": ["${prefix}.${name}", {"prefix": {"Ref": H("%s-api-domain-prefix" % api["name"])}, "name": {"Ref": H("domain-name")}}]}
     dnsname={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionDomainName"]}
     hzid={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionHostedZoneId"]}
     aliastarget={"DNSName": dnsname,
                  "EvaluateTargetHealth": False,
                  "HostedZoneId": hzid}
     props={"HostedZoneName": hzname,
-           "Name": domainname, # NB `Name` key
+           "Name": {"Ref": H("domain-name")}, # NB `Name` key
            "Type": "A",
            "AliasTarget": aliastarget}
     return (resourcename,

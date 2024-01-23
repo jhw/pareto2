@@ -1,7 +1,5 @@
 ### short
 
-- remove domain prefix
-
 ### medium
 
 - remove dsl.expand globals arg
@@ -58,6 +56,7 @@
 
 ### done
 
+- remove domain prefix
 - add extensions list to dsl.expand (default [])
 - remove enum from action event types
 - modularise action events
