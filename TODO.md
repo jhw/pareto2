@@ -1,11 +1,10 @@
 ### short
 
-- add extensions list to dsl.expand (default [])
-
 - remove domain prefix
 
 ### medium
 
+- remove dsl.expand globals arg
 - see if script component properties can be genericised
 - create multiple demos
   - bucket and private api currently missing
@@ -59,6 +58,7 @@
 
 ### done
 
+- add extensions list to dsl.expand (default [])
 - remove enum from action event types
 - modularise action events
 - see if importlib.import_module uses a cache

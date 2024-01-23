@@ -124,9 +124,11 @@ class DSL(dict):
     def expand(self,
                scripts,
                globals={},
+               extensions=[],
                logs=LogsDSL):
-        self["parameters"].update(globals)                
+        self["parameters"].update(globals)
         self["components"]+=logs
+        self["components"]+=extensions
         for attr in ["apis",
                      "buckets",
                      "queues",
