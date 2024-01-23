@@ -1,11 +1,12 @@
 ### short
 
-- see if script component properties can be genericised
+- remove enum from action event types
 
 - remove domain prefix
 
 ### medium
 
+- see if script component properties can be genericised
 - create multiple demos
   - bucket and private api currently missing
 - check if apis should really be guaranteed to exist?
