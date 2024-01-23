@@ -1,6 +1,7 @@
 ### short
 
 - remove enum from action event types
+- add extensions list to dsl.expand (default [])
 
 - remove domain prefix
 
