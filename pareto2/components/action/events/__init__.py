@@ -9,7 +9,7 @@ import importlib
 
 def import_event_module(event,
                         paths=["pareto2.components.action.events.%s",
-                               "ext.%s"]):
+                               "ext.events.%s"]):
     for path in paths:
         try:
             return importlib.import_module(path % event["source"]["type"])
