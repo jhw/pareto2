@@ -18,10 +18,6 @@ definitions:
             type: string
           type: 
             type: string
-            enum:
-            - bucket
-            - table
-            - website
         required:
         - name
         - type

@@ -1,6 +1,5 @@
 ### short
 
-- remove enum from action event types
 - add extensions list to dsl.expand (default [])
 
 - remove domain prefix
@@ -60,6 +59,7 @@
 
 ### done
 
+- remove enum from action event types
 - modularise action events
 - see if importlib.import_module uses a cache
 - move load_files
