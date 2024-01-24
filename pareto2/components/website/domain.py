@@ -24,10 +24,17 @@ def init_domain_path_mapping(website, stagename=StageName):
             props,
             depends)
 
+"""
+- expression for hzname is horrific but is least bad solution given absence of proper string munging facilities in Cloudformation
+- alternative would be to have parameters for either DomainPrefix or HostedZone and then use DomainName as a two- token expression, but that just leads to more upstream complexity (as have seen with the earlier use of DomainPrefix)
+- not Fn::Select indexes from zero
+"""
+
 @resource
 def init_domain_record_set(website):
     resourcename=H("%s-website-domain-record-set" % website["name"])
-    hzname={"Fn::Sub": ["${name}.", {"name": {"Ref": H("domain-name")}}]} # NB note trailing period
+    hzname={"Fn::Sub": ["${prefix}.${suffix}.", {"prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]},
+                                                 "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}}]}
     dnsname={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionDomainName"]}
     hzid={"Fn::GetAtt": [H("%s-website-domain" % website["name"]), "DistributionHostedZoneId"]}
     aliastarget={"DNSName": dnsname,

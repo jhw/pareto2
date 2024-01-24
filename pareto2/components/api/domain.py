@@ -22,10 +22,17 @@ def init_domain_path_mapping(api):
             props,
             depends)
 
+"""
+- expression for hzname is horrific but is least bad solution given absence of proper string munging facilities in Cloudformation
+- alternative would be to have parameters for either DomainPrefix or HostedZone and then use DomainName as a two- token expression, but that just leads to more upstream complexity (as have seen with the earlier use of DomainPrefix)
+- not Fn::Select indexes from zero
+"""
+
 @resource
 def init_domain_record_set(api):
     resourcename=H("%s-api-domain-record-set" % api["name"])
-    hzname={"Fn::Sub": ["${name}.", {"name": {"Ref": H("domain-name")}}]} # NB note trailing period
+    hzname={"Fn::Sub": ["${prefix}.${suffix}.", {"prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]},
+                                                 "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}}]}
     dnsname={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionDomainName"]}
     hzid={"Fn::GetAtt": [H("%s-api-domain" % api["name"]), "DistributionHostedZoneId"]}
     aliastarget={"DNSName": dnsname,
