@@ -1,9 +1,5 @@
 ### short
 
-```
-- No hosted zones named layers.spaas.link. found
-```
-
 ### medium
 
 - remove dsl.expand globals arg
@@ -60,7 +56,11 @@
 
 ### done
 
-- remove domain prefix
+```
+- No hosted zones named layers.spaas.link. found
+```
+
+- removedomain prefix
 - add extensions list to dsl.expand (default [])
 - remove enum from action event types
 - modularise action events
