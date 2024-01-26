@@ -126,30 +126,5 @@ def init_identitypool_mapping(user):
             "AWS::Cognito::IdentityPoolRoleAttachment",
             props)
 
-"""
-def render_resources(user):
-    resources=[]
-    for fn in [init_userpool,
-               init_userpool_admin_client,
-               init_userpool_web_client,
-               init_identitypool,
-               init_identitypool_unauthorized_role,
-               init_identitypool_authorized_role,
-               init_identitypool_mapping]:
-        resource=fn(user)
-        resources.append(resource)
-    return dict(resources)
-
-def render_outputs(user):
-    outputs={}
-    for suffix in ["userpool",
-                   "userpool-admin-client",
-                   "userpool-web-client",
-                   "identitypool"]:
-        attr=H("%s-%s" % (api["name"], suffix))
-        outputs[attr]={"Value": {"Ref": attr}}
-    return outputs
-"""
-            
 if __name__=="__main__":
     pass
