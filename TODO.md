@@ -1,10 +1,19 @@
-### short [01-merge-user-into-api]
+### short [02-extended-tests]
 
-- add unit testing to test.py
-
-- extend tests
-  - private api
-  - bucket
+- bucket
+- table
+- website
+- bucket events
+- table events
+- website events
+- queue
+- timer
+- topic
+- indexes
+- layers
+- permissions
+- size
+- timeout
 
 ### medium
 
