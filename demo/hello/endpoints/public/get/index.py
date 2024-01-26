@@ -1,7 +1,7 @@
 """
 infra:
   endpoint: 
-    api: public
+    api: private
     path: hello-world-public-get
     method: GET
     parameters:

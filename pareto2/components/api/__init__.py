@@ -37,7 +37,7 @@ def init_stage(api):
 def init_cognito_authorizer(api):
     resourcename=H("%s-api-authorizer" % api["name"])
     name={"Fn::Sub": "%s-api-authorizer-${AWS::StackName}" % api["name"]}
-    providerarn={"Fn::GetAtt": [H("%s-userpool" % api["name"]), "Arn"]}
+    providerarn={"Fn::GetAtt": [H("%s-api-userpool" % api["name"]), "Arn"]}
     props={"IdentitySource": "method.request.header.Authorization",
            "Name": name,
            "ProviderARNs": [providerarn],
@@ -161,7 +161,7 @@ def render_cognito_outputs(api):
                    "userpool-admin-client",
                    "userpool-web-client",
                    "identitypool"]:
-        attr=H("%s-%s" % (api["name"], suffix))
+        attr=H("%s-api-%s" % (api["name"], suffix))
         outputs[attr]={"Value": {"Ref": attr}}
     return outputs
 
