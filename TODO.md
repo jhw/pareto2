@@ -10,9 +10,8 @@
 ### medium
 
 - remove dsl.expand globals arg
+- move logs to common
 - see if script component properties can be genericised
-- create multiple demos
-  - bucket and private api currently missing
 - check if apis should really be guaranteed to exist?
 - replace setup.py with pyproject.toml
 - policy_document needs ability to specify resource per group
@@ -22,8 +21,7 @@
 - apigateway2
 - lambda alarms 
 - secrets
-- multi- lambda patterns
-  - mapreduce
+- step functions
 
 ### thoughts
 
