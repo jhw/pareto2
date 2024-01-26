@@ -1,6 +1,5 @@
 ### short [01-merge-user-into-api]
 
-- refactor refs to -user-userpool
 - refactor refs to api["user"]
 - expunge user/users from dsl
 - add api hook to generate user outputs and resources
@@ -66,6 +65,7 @@
 
 ### done
 
+- refactor refs to -user-userpool
 - move user into api/ 
 - refactor user keyword as api
 - harmonised userpool/identitypool nomenclature
