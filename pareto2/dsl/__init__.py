@@ -58,7 +58,7 @@ class DSL(dict):
         return params
 
     """
-    - apis are guaranteed to exist
+    - apis are guaranteed to exist if endpoints exist
     """
     
     def attach_endpoints(self, scripts):

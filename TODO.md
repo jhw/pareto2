@@ -1,19 +1,16 @@
 ### short [02-extended-tests]
 
-- bucket
-- table
-- website
-- bucket events
-- table events
-- website events
+- api POST
+- bucket/events
+- table/events
+- website/events
 - queue
 - timer
 - topic
 - indexes
 - layers
 - permissions
-- size
-- timeout
+- size, timeout
 
 ### medium
 
