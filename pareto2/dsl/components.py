@@ -24,9 +24,6 @@ class Components(list):
     def topics(self):
         return self.subset(type="topic")
     @property
-    def users(self):
-        return self.subset(type="users")
-    @property
     def websites(self):
         return self.subset(type="websites")
 

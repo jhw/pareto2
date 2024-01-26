@@ -135,7 +135,6 @@ class DSL(dict):
                      "tables",
                      "timers",
                      "topics",
-                     "users",
                      "websites"]:
             self["components"]+=getattr(scripts, attr)
         for script in scripts:

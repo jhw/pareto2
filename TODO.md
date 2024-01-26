@@ -1,6 +1,5 @@
 ### short [01-merge-user-into-api]
 
-- expunge user/users from dsl
 - add api hook to generate user outputs and resources
 
 - refactor tests with proper test suite
@@ -64,6 +63,7 @@
 
 ### done
 
+- expunge user/users from dsl
 - refactor refs to api["user"]
 - refactor refs to -user-userpool
 - move user into api/ 
