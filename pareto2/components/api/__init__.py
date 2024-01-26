@@ -4,6 +4,8 @@ from pareto2.components import resource
 from pareto2.components.api.cors import init_cors_deployment, init_cors_default_response, init_cors_method
 from pareto2.components.api.domain import init_domain, init_domain_path_mapping, init_domain_record_set
 from pareto2.components.api.methods import init_method, init_open_method, init_cognito_method
+from pareto2.components.api.userpool import init_userpool, init_userpool_admin_client, init_userpool_web_client, init_identitypool, init_identitypool_unauthorized_role, init_identitypool_authorized_role, init_identitypool_mapping
+
 from pareto2.components.api.validation import init_validator, init_model
 
 import json
@@ -106,7 +108,14 @@ def init_cognito_resources(api, resources):
                init_cognito_authorizer,
                init_domain,
                init_domain_path_mapping,
-               init_domain_record_set]:
+               init_domain_record_set,
+               init_userpool,
+               init_userpool_admin_client,
+               init_userpool_web_client,
+               init_identitypool,
+               init_identitypool_unauthorized_role,
+               init_identitypool_authorized_role,
+               init_identitypool_mapping]:
         resources.append(fn(api))
     for code in "4XX|5XX".split("|"):
         resources.append(init_cors_default_response(api, code))
@@ -134,17 +143,36 @@ def render_resources(api):
         raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
     return dict(resources)
 
-"""
-- RestApi and Stage (echoed from input) are required for apigw redeployment
-"""
-
-def render_outputs(api):
+def render_open_outputs(api):
+    outputs={}
     endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
                                         H("%s-api-stage" % api["name"]))}
-    outputs={}
     for k, v in {"endpoint":endpoint}.items():
         outputs[H("%s-%s" % (api["name"], k))]={"Value": v}
     return outputs
+
+def render_cognito_outputs(api):
+    outputs={}
+    endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
+                                        H("%s-api-stage" % api["name"]))}
+    for k, v in {"endpoint":endpoint}.items():
+        outputs[H("%s-%s" % (api["name"], k))]={"Value": v}
+    for suffix in ["userpool",
+                   "userpool-admin-client",
+                   "userpool-web-client",
+                   "identitypool"]:
+        attr=H("%s-%s" % (api["name"], suffix))
+        outputs[attr]={"Value": {"Ref": attr}}
+    return outputs
+
+def render_outputs(api):
+    if ("auth-type" not in api or
+        api["auth-type"]=="open"):
+        return render_open_outputs(api)
+    elif api["auth-type"]=="cognito":
+        return render_cognito_outputs(api)
+    else:
+        raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
 
 if __name__=="__main__":
     pass

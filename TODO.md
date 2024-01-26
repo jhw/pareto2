@@ -1,8 +1,7 @@
 ### short [01-merge-user-into-api]
 
-- add api hook to generate user outputs and resources
-
 - refactor tests with proper test suite
+
 - extend tests
   - private api
   - bucket
@@ -61,6 +60,7 @@
 
 ### done
 
+- add api hook to generate user outputs and resources
 - expunge user/users from dsl
 - refactor refs to api["user"]
 - refactor refs to -user-userpool
