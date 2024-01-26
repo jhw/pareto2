@@ -1,6 +1,6 @@
 ### short [01-merge-user-into-api]
 
-- refactor tests with proper test suite
+- add unit testing to test.py
 
 - extend tests
   - private api
