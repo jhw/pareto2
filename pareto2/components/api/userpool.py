@@ -5,7 +5,7 @@ from pareto2.components.common.iam import policy_document
 
 @resource
 def init_userpool(user):
-    resourcename=H("%s-user-userpool" % user["name"])
+    resourcename=H("%s-userpool" % api["name"])
     passwordpolicy={"MinimumLength": 8,
                     "RequireLowercase": True,
                     "RequireNumbers": True,
@@ -26,8 +26,8 @@ def init_userpool(user):
 
 @resource
 def init_userpool_admin_client(user):
-    resourcename=H("%s-user-userpool-admin-client" % user["name"])
-    props={"UserPoolId": {"Ref": H("%s-user-userpool" % user["name"])},
+    resourcename=H("%s-userpool-admin-client" % api["name"])
+    props={"UserPoolId": {"Ref": H("%s-userpool" % api["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_ADMIN_USER_PASSWORD_AUTH",
                                  "ALLOW_REFRESH_TOKEN_AUTH"]}
@@ -37,8 +37,8 @@ def init_userpool_admin_client(user):
 
 @resource
 def init_userpool_web_client(user):
-    resourcename=H("%s-user-userpool-web-client" % user["name"])
-    props={"UserPoolId": {"Ref": H("%s-user-userpool" % user["name"])},
+    resourcename=H("%s-userpool-web-client" % api["name"])
+    props={"UserPoolId": {"Ref": H("%s-userpool" % api["name"])},
            "PreventUserExistenceErrors": "ENABLED",
            "ExplicitAuthFlows": ["ALLOW_USER_SRP_AUTH",
                                  "ALLOW_REFRESH_TOKEN_AUTH"]}
@@ -54,9 +54,9 @@ def init_userpool_web_client(user):
 
 @resource
 def init_identitypool(user):
-    resourcename=H("%s-user-identitypool" % user["name"])
-    clientid={"Ref": H("%s-user-userpool-web-client" % user["name"])}
-    providername={"Fn::GetAtt": [H("%s-user-userpool" % user["name"]),
+    resourcename=H("%s-identitypool" % api["name"])
+    clientid={"Ref": H("%s-userpool-web-client" % api["name"])}
+    providername={"Fn::GetAtt": [H("%s-userpool" % api["name"]),
                                  "ProviderName"]}
     provider={"ClientId": clientid,
               "ProviderName": providername}
@@ -67,7 +67,7 @@ def init_identitypool(user):
             props)
 
 def role_policy_document(user, typestr):
-    condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H("%s-user-identitypool" % user["name"])}},
+    condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H("%s-identitypool" % api["name"])}},
                "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
     statement=[{"Effect": "Allow",
                 "Principal": {"Federated": "cognito-identity.amazonaws.com"},
@@ -77,12 +77,12 @@ def role_policy_document(user, typestr):
             "Statement": statement}
 
 @resource
-def init_unauthorized_role(user,
-                           permissions=["mobileanalytics:PutEvents",
-                                        "cognito-sync:*"]):
-    resourcename=H("%s-user-unauthorized-role" % user["name"])
+def init_identitypool_unauthorized_role(user,
+                                        permissions=["mobileanalytics:PutEvents",
+                                                     "cognito-sync:*"]):
+    resourcename=H("%s-identitypool-unauthorized-role" % api["name"])
     assumerolepolicydoc=role_policy_document(user, "unauthenticated")
-    policyname=H("%s-user-unauthorized-role-policy" % user["name"])
+    policyname=H("%s-identitypool-unauthorized-role-policy" % api["name"])
     policydoc=policy_document(permissions)
     policy={"PolicyName": policyname,
             "PolicyDocument": policydoc}
@@ -93,14 +93,14 @@ def init_unauthorized_role(user,
             props)
 
 @resource
-def init_authorized_role(user,
-                         permissions=["mobileanalytics:PutEvents",
-                                      "cognito-sync:*",
-                                      "cognito-identity:*",
-                                      "lambda:InvokeFunction"]):
-    resourcename=H("%s-user-authorized-role" % user["name"])
+def init_identitypool_authorized_role(user,
+                                      permissions=["mobileanalytics:PutEvents",
+                                                   "cognito-sync:*",
+                                                   "cognito-identity:*",
+                                                   "lambda:InvokeFunction"]):
+    resourcename=H("%s-identitypool-authorized-role" % api["name"])
     assumerolepolicydoc=role_policy_document(user, "authenticated")
-    policyname=H("%s-user-authorized-role-policy" % user["name"])
+    policyname=H("%s-identitypool-authorized-role-policy" % api["name"])
     policydoc=policy_document(permissions)
     policy={"PolicyName": policyname,
             "PolicyDocument": policydoc}
@@ -112,11 +112,11 @@ def init_authorized_role(user,
 
 @resource
 def init_identitypool_mapping(user):
-    resourcename=H("%s-user-identitypool-mapping" % user["name"])
-    identitypoolid={"Ref": H("%s-user-identitypool" % user["name"])}
-    authrole={"Fn::GetAtt": [H("%s-user-authorized-role" % user["name"]),
+    resourcename=H("%s-identitypool-mapping" % api["name"])
+    identitypoolid={"Ref": H("%s-identitypool" % api["name"])}
+    authrole={"Fn::GetAtt": [H("%s-identitypool-authorized-role" % api["name"]),
                              "Arn"]}
-    unauthrole={"Fn::GetAtt": [H("%s-user-unauthorized-role" % user["name"]),
+    unauthrole={"Fn::GetAtt": [H("%s-identitypool-unauthorized-role" % api["name"]),
                                "Arn"]}
     roles={"authenticated": authrole,
            "unauthenticated": unauthrole}
@@ -126,14 +126,15 @@ def init_identitypool_mapping(user):
             "AWS::Cognito::IdentityPoolRoleAttachment",
             props)
 
+"""
 def render_resources(user):
     resources=[]
     for fn in [init_userpool,
                init_userpool_admin_client,
                init_userpool_web_client,
                init_identitypool,
-               init_unauthorized_role,
-               init_authorized_role,
+               init_identitypool_unauthorized_role,
+               init_identitypool_authorized_role,
                init_identitypool_mapping]:
         resource=fn(user)
         resources.append(resource)
@@ -145,9 +146,10 @@ def render_outputs(user):
                    "userpool-admin-client",
                    "userpool-web-client",
                    "identitypool"]:
-        attr=H("%s-user-%s" % (user["name"], suffix))
+        attr=H("%s-%s" % (api["name"], suffix))
         outputs[attr]={"Value": {"Ref": attr}}
     return outputs
+"""
             
 if __name__=="__main__":
     pass

@@ -1,4 +1,12 @@
-### short
+### short [01-merge-user-into-api]
+
+- expunge user/users from dsl
+- add api hook to generate user outputs and resources
+
+- refactor tests with proper test suite
+- extend tests
+  - private api
+  - bucket
 
 ### medium
 
@@ -55,6 +63,10 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- move user into api/ 
+- refactor user keyword as api
+- harmonised userpool/identitypool nomenclature
 
 ```
 - No hosted zones named layers.spaas.link. found
