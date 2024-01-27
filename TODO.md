@@ -1,20 +1,15 @@
 ### short [02-extended-tests]
 
 - layers
-- indexes
-
-- permissions
-- size+timeout
-
-- nest tests
 
 ### expander
 
-- assert domain name if api or website exist
+- assert domain name if either api or website exist
 
 ### medium
 
-- move logs to common?
+- rationalise common/logs/iam
+- index which references table doesn't force table to exist
 - remove dsl.expand globals arg
 - see if script component properties can be genericised
 - replace setup.py with pyproject.toml
@@ -29,6 +24,10 @@
 
 ### thoughts
 
+- permissions, size/timeout tests?
+  - not sure it adds anything
+- nest tests?
+  - think it obfuscates stuff
 - remove yaml dependency?
   - no; too much yaml everywhere
 - fold website into bucket?
@@ -65,6 +64,7 @@
 
 ### done
 
+- indexes
 - timer
 - queue
 - topic
