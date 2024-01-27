@@ -4,13 +4,13 @@
 - topic
 - timer
 
-- table events
-- website events
-
-- indexes
 - layers
+- indexes
+
 - permissions
 - size+timeout
+
+- nest tests
 
 ### expander
 
@@ -69,6 +69,8 @@
 
 ### done
 
+- table events
+- website events
 - bucket events
 - api POST
 - test.py to auto- detect tests

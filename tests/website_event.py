@@ -13,14 +13,14 @@ infra:
       foo: bar
     source:
       name: hello
-      type: bucket
+      type: website
 \"\"\"
 
 def handler(event, context):
     pass
 """
 
-class BucketEventTest(unittest.TestCase):
+class WebsiteEventTest(unittest.TestCase):
 
     def test_expansion(self, body=IndexBody):
         dsl=DSL()
@@ -31,10 +31,10 @@ class BucketEventTest(unittest.TestCase):
         template.validate()
         rendered=template.render()
         resources=rendered["Resources"]        
-        for attr in ["HelloBucket",
+        for attr in ["HelloWebsite",
                      "HelloWhatevsEventRule"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloBucket"]["Type"], "AWS::S3::Bucket")
+        self.assertEquals(resources["HelloWebsite"]["Type"], "AWS::S3::Bucket")
         
 if __name__=="__main__":
     unittest.main()
