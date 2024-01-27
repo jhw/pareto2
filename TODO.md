@@ -1,7 +1,5 @@
 ### short [02-extended-tests]
 
-- queue
-- topic
 - timer
 
 - layers
@@ -69,6 +67,8 @@
 
 ### done
 
+- queue
+- topic
 - table events
 - website events
 - bucket events
