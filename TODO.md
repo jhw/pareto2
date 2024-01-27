@@ -1,7 +1,5 @@
 ### short [02-extended-tests]
 
-- timer
-
 - layers
 - indexes
 
@@ -67,6 +65,7 @@
 
 ### done
 
+- timer
 - queue
 - topic
 - table events
