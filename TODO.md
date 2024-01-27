@@ -1,7 +1,5 @@
 ### short [02-extended-tests]
 
-- test.py to auto- detect tests
-
 - api POST
 - bucket+events
 - table+events
@@ -71,6 +69,7 @@
 
 ### done
 
+- test.py to auto- detect tests
 - clean up apigw outputs
 - add api hook to generate user outputs and resources
 - expunge user/users from dsl

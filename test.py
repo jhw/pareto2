@@ -1,32 +1,32 @@
-from pareto2.dsl import DSL
-
-from pareto2.dsl.scripts import Scripts
-
-import os, json
-
-def load_files(root):
-    roottokens, items = root.split("/"), []
+import importlib, inspect, os, unittest
+        
+def filter_tests(root):
+    tests=[]
     for localroot, dirs, files in os.walk(root):
-        for _filename in files:
-            filename=os.path.join(localroot, _filename)
-            body=open(filename).read()
-            key="/".join(filename.split("/")[len(roottokens)-1:])
-            item=(key, body)
-            items.append(item)
-    return items
-    
-if __name__=="__main__":    
+        for filename in files:
+            if filename.endswith(".py"):
+                absfilename=os.path.join(localroot, filename)
+                modname=absfilename.split(".")[0].replace("/", ".")
+                mod=importlib.import_module(modname)
+                tests+=[obj for name, obj in inspect.getmembers(mod,
+                                                                inspect.isclass)
+                        if name.endswith("Test")]
+    return tests
+
+def run_tests(tests):
+    suite=unittest.TestSuite()
+    for test in tests:
+        suite.addTest(unittest.makeSuite(test))
+    runner=unittest.TextTestRunner()
+    result=runner.run(suite)
+    if (result.errors!=[] or
+        result.failures!=[]):
+        raise RuntimeError("/n".join([error[1]
+                                      for error in result.errors+result.failures]))
+
+if __name__=="__main__":
     try:
-        dsl=DSL()
-        scripts=Scripts.initialise(load_files("demo/hello"))
-        dsl.expand(scripts)
-        # print (dsl.formatted)
-        template=dsl.spawn_template()
-        template.init_implied_parameters()
-        if not os.path.exists("tmp"):
-            os.mkdir("tmp")
-        with open("tmp/template.json", 'w') as f:
-            f.write(json.dumps(template.render(),                               
-                               indent=2))
+        tests=filter_tests("tests")
+        run_tests(tests)
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print ("Error: %s" % error)
