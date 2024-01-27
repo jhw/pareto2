@@ -1,11 +1,13 @@
 ### short [02-extended-tests]
 
-- bucket+events
-- table+events
-- website+events
 - queue
-- timer
 - topic
+- timer
+
+- bucket events
+- table events
+- website events
+
 - indexes
 - layers
 - permissions

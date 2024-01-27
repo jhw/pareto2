@@ -18,7 +18,7 @@ def handler(event, context):
     print (event)
 """
 
-class PublicApiGetTest(unittest.TestCase):
+class PublicApiPostTest(unittest.TestCase):
 
     def test_expansion(self, body=IndexBody):
         dsl=DSL()
