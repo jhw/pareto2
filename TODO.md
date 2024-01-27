@@ -1,6 +1,5 @@
 ### short [02-extended-tests]
 
-- api POST
 - bucket+events
 - table+events
 - website+events
@@ -69,6 +68,7 @@
 
 ### done
 
+- api POST
 - test.py to auto- detect tests
 - clean up apigw outputs
 - add api hook to generate user outputs and resources

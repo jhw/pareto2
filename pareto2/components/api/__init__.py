@@ -143,9 +143,6 @@ def render_resources(api):
         raise RuntimeError("%s api type '%s' not recognised" % (api["name"], api["auth-type"]))
     return dict(resources)
 
-def render_open_outputs(api):
-    return {}
-
 def render_cognito_outputs(api):
     outputs={}
     for suffix in ["userpool",
@@ -159,7 +156,7 @@ def render_cognito_outputs(api):
 def render_outputs(api):
     if ("auth-type" not in api or
         api["auth-type"]=="open"):
-        return render_open_outputs(api)
+        return {}
     elif api["auth-type"]=="cognito":
         return render_cognito_outputs(api)
     else:

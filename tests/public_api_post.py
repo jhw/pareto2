@@ -8,18 +8,17 @@ IndexBody="""
 \"\"\"
 infra:
   endpoint: 
-    api: private
-    path: echo
-    method: GET
-    parameters:
-    - message
+    api: public
+    path: upload
+    method: POST
+    schema: {}
 \"\"\"
 
 def handler(event, context):
     print (event)
 """
 
-class PrivateApiGetTest(unittest.TestCase):
+class PublicApiGetTest(unittest.TestCase):
 
     def test_expansion(self, body=IndexBody):
         dsl=DSL()
@@ -35,22 +34,22 @@ class PrivateApiGetTest(unittest.TestCase):
                      "HelloFunction",
                      "HelloWarnLogsSubscription",
                      "HelloErrorLogsSubscription",
-                     "PrivateApiDomain",
-                     "PrivateApiRestApi",
-                     "PrivateApiUserpool",
-                     "EchoApiResource",
-                     "EchoApiValidator",
-                     "EchoApiCorsMethod"]:
+                     "PublicApiDomain",
+                     "PublicApiRestApi",
+                     "UploadApiResource",
+                     "UploadApiValidator",
+                     "UploadApiModel",
+                     "UploadApiCorsMethod"]:
             self.assertTrue(attr in resources)
-        validatorprops=resources["EchoApiValidator"]["Properties"]
-        self.assertTrue("ValidateRequestParameters" in validatorprops and
-                        validatorprops["ValidateRequestParameters"] and
-                        "ValidateRequestBody" not in validatorprops)
+        validatorprops=resources["UploadApiValidator"]["Properties"]
+        self.assertTrue("ValidateRequestBody" in validatorprops and
+                        validatorprops["ValidateRequestBody"] and
+                        "ValidateRequestParameters" not in validatorprops)
         for attr in ["HelloTable",
                      "HelloBucket",
                      "HelloWebsite",
-                     "EchoApiModel"]:
+                     "PublicApiUserpool"]:
             self.assertFalse(attr in resources)
-
+        
 if __name__=="__main__":
     unittest.main()

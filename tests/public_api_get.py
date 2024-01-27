@@ -29,18 +29,22 @@ class PublicApiGetTest(unittest.TestCase):
         template.init_implied_parameters()
         template.validate()
         rendered=template.render()
-        resources={k:v["Type"] for k, v in rendered["Resources"].items()}
-        for attr in ["HelloFunction",
-                     "HelloWarnLogsSubscription",
-                     "HelloErrorLogsSubscription",
-                     "PublicApiDomain",
-                     "PublicApiRestApi",
-                     "EchoApiResource",
-                     "EchoApiValidator",
-                     "EchoApiCorsMethod",
-                     "WarnLogsFunction",
-                     "ErrorLogsFunction"]:
+        resources=rendered["Resources"]
+        for attr in["WarnLogsFunction",
+                    "ErrorLogsFunction",
+                    "HelloFunction",
+                    "HelloWarnLogsSubscription",
+                    "HelloErrorLogsSubscription",
+                    "PublicApiDomain",
+                    "PublicApiRestApi",
+                    "EchoApiResource",
+                    "EchoApiValidator",
+                    "EchoApiCorsMethod"]:
             self.assertTrue(attr in resources)
+            validatorprops=resources["EchoApiValidator"]["Properties"]
+        self.assertTrue("ValidateRequestParameters" in validatorprops and
+                        validatorprops["ValidateRequestParameters"] and
+                        "ValidateRequestBody" not in validatorprops)
         for attr in ["HelloTable",
                      "HelloBucket",
                      "HelloWebsite",

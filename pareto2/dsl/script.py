@@ -50,7 +50,7 @@ class Script:
              "parameters" not in endpoint) or
             (endpoint["method"]=="POST" and
              "schema" not in endpoint)):
-            raise RuntimeError("%s endpoint is mis- dslured" % self.filename)
+            raise RuntimeError("%s endpoint is mis- configured" % self.filename)
 
     def filter_infra(self, text):
         block, inblock = [], False
