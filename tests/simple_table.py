@@ -29,7 +29,7 @@ class SimpleTableTest(unittest.TestCase):
         for attr in ["HelloTable",
                      "HelloTableStreamingFunction"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloTable"]["Type"], "AWS::DynamoDB::Table")
+        self.assertEqual(resources["HelloTable"]["Type"], "AWS::DynamoDB::Table")
         
 
 if __name__=="__main__":

@@ -27,7 +27,7 @@ class SimpleQueueTest(unittest.TestCase):
         resources=rendered["Resources"]
         for attr in ["HelloQueue"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloQueue"]["Type"], "AWS::SQS::Queue")
+        self.assertEqual(resources["HelloQueue"]["Type"], "AWS::SQS::Queue")
         
 if __name__=="__main__":
     unittest.main()

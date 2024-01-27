@@ -34,7 +34,7 @@ class WebsiteEventTest(unittest.TestCase):
         for attr in ["HelloWebsite",
                      "HelloWhatevsEventRule"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloWebsite"]["Type"], "AWS::S3::Bucket")
+        self.assertEqual(resources["HelloWebsite"]["Type"], "AWS::S3::Bucket")
         
 if __name__=="__main__":
     unittest.main()

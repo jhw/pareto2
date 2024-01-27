@@ -34,7 +34,7 @@ class BucketEventTest(unittest.TestCase):
         for attr in ["HelloBucket",
                      "HelloWhatevsEventRule"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloBucket"]["Type"], "AWS::S3::Bucket")
+        self.assertEqual(resources["HelloBucket"]["Type"], "AWS::S3::Bucket")
         
 if __name__=="__main__":
     unittest.main()

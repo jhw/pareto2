@@ -27,7 +27,7 @@ class SimpleBucketTest(unittest.TestCase):
         rendered=template.render()
         resources=rendered["Resources"]        
         self.assertTrue("HelloBucket" in resources)
-        self.assertEquals(resources["HelloBucket"]["Type"], "AWS::S3::Bucket")
+        self.assertEqual(resources["HelloBucket"]["Type"], "AWS::S3::Bucket")
         self.assertTrue("HelloWebsite" not in resources)
         
 if __name__=="__main__":

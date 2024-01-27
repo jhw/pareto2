@@ -27,7 +27,7 @@ class SimpleTopicTest(unittest.TestCase):
         resources=rendered["Resources"]
         for attr in ["HelloTopic"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloTopic"]["Type"], "AWS::SNS::Topic")
+        self.assertEqual(resources["HelloTopic"]["Type"], "AWS::SNS::Topic")
         
 if __name__=="__main__":
     unittest.main()

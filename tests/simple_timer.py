@@ -30,7 +30,7 @@ class SimpleTimerTest(unittest.TestCase):
         resources=rendered["Resources"]
         for attr in ["HelloTimer"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloTimer"]["Type"], "AWS::Events::Rule")
+        self.assertEqual(resources["HelloTimer"]["Type"], "AWS::Events::Rule")
         
 if __name__=="__main__":
     unittest.main()

@@ -29,7 +29,7 @@ class SimpleWebsiteTest(unittest.TestCase):
         for attr in ["HelloWebsite",
                      "HelloWebsiteRestApi"]:
             self.assertTrue(attr in resources)
-        self.assertEquals(resources["HelloWebsite"]["Type"], "AWS::S3::Bucket")
+        self.assertEqual(resources["HelloWebsite"]["Type"], "AWS::S3::Bucket")
         self.assertTrue("HelloBucket" not in resources)
         
 if __name__=="__main__":
