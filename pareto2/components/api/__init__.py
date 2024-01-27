@@ -144,19 +144,10 @@ def render_resources(api):
     return dict(resources)
 
 def render_open_outputs(api):
-    outputs={}
-    endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
-                                        H("%s-api-stage" % api["name"]))}
-    for k, v in {"endpoint":endpoint}.items():
-        outputs[H("%s-%s" % (api["name"], k))]={"Value": v}
-    return outputs
+    return {}
 
 def render_cognito_outputs(api):
     outputs={}
-    endpoint={"Fn::Sub": EndpointUrl % (H("%s-api-rest-api" % api["name"]),
-                                        H("%s-api-stage" % api["name"]))}
-    for k, v in {"endpoint":endpoint}.items():
-        outputs[H("%s-%s" % (api["name"], k))]={"Value": v}
     for suffix in ["userpool",
                    "userpool-admin-client",
                    "userpool-web-client",

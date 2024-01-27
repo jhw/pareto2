@@ -1,23 +1,28 @@
 ### short [02-extended-tests]
 
+- test.py to auto- detect tests
+
 - api POST
-- bucket/events
-- table/events
-- website/events
+- bucket+events
+- table+events
+- website+events
 - queue
 - timer
 - topic
 - indexes
 - layers
 - permissions
-- size, timeout
+- size+timeout
+
+### expander
+
+- assert domain name if api or website exist
 
 ### medium
 
+- move logs to common?
 - remove dsl.expand globals arg
-- move logs to common
 - see if script component properties can be genericised
-- check if apis should really be guaranteed to exist?
 - replace setup.py with pyproject.toml
 - policy_document needs ability to specify resource per group
 
@@ -66,6 +71,7 @@
 
 ### done
 
+- clean up apigw outputs
 - add api hook to generate user outputs and resources
 - expunge user/users from dsl
 - refactor refs to api["user"]
