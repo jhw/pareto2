@@ -4,7 +4,6 @@
 - topic
 - timer
 
-- bucket events
 - table events
 - website events
 
@@ -70,6 +69,7 @@
 
 ### done
 
+- bucket events
 - api POST
 - test.py to auto- detect tests
 - clean up apigw outputs
