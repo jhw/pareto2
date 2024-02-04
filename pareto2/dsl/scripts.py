@@ -2,10 +2,15 @@ from pareto2.dsl.script import Script
 
 class Scripts(list):
 
+    """
+    - index.py check because Script will try and unpack infra, and only index.py files should contain infra
+    """
+    
     @classmethod
     def initialise(self, assets):
-        return Scripts([Script(*asset)
-                        for asset in assets])
+        return Scripts([Script(filename, body)
+                        for filename, body in assets
+                        if filename.endswith("index.py")])
     
     def __init__(self, items=[]):
         list.__init__(self, items)
