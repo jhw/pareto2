@@ -1,5 +1,7 @@
 ### short
 
+- replace default/medium/long for size/timeout with integer values
+
 ### expander
 
 - assert domain name if either api or website exist
