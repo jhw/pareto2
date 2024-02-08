@@ -1,5 +1,7 @@
 ### short
 
+- remove redundant website outputs, copying api
+
 - replace default/medium/long for size/timeout with integer values
 
 ### expander
