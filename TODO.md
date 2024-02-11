@@ -1,8 +1,8 @@
 ### short
 
 - remove redundant website outputs, copying api
-
 - replace default/medium/long for size/timeout with integer values
+- remove dsl.expand globals arg
 
 ### expander
 
@@ -12,7 +12,6 @@
 
 - rationalise common/logs/iam
 - index which references table doesn't force table to exist
-- remove dsl.expand globals arg
 - see if script component properties can be genericised
 - replace setup.py with pyproject.toml
 - policy_document needs ability to specify resource per group
