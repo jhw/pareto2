@@ -7,7 +7,7 @@ def filter_instances(root="pareto2/components"):
             if not filename.endswith(".py"):
                 continue
             absfilename="%s/%s" % (path, filename)
-            for block in  open(absfilename).read().split("\n\n"):
+            for block in open(absfilename).read().split("\n\n"):
                 if block.startswith("@resource"):
                     for match in set(re.findall("\"AWS\\:{2}\\w+\\:{2}\\w+\"", block)):
                         key=match[1:-1].lower().replace("::", "/")
@@ -17,8 +17,8 @@ def filter_instances(root="pareto2/components"):
 
 def format_values(values):
     buf=[]
-    for k, v in values:
-        buf.append("# %s" % key)
+    for k, v in values:    
+        buf.append("# %s" % k)
         buf.append(v)
     return "\n\n".join(buf)
 

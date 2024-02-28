@@ -1,11 +1,19 @@
-### short
+### short [0-8-0]
+
+- rename functionbase as rolebase
+- import rolebase 
+
+- iam 
+- permissions
+- logs
+- actions
+
+### medium
 
 - replace website binary media types with `*/*`
 - remove redundant website outputs, copying api
 - refactor functional components as classes
   - openai to refactor
-
-### medium
 
 - replace default/medium/long for size/timeout with integer values
 - remove dsl.expand globals arg
