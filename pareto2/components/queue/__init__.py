@@ -1,3 +1,4 @@
+from pareto.aws.iam import Role as RoleBase
 
 class DLQFunctionRole(RoleBase):
 

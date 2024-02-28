@@ -1,3 +1,5 @@
+from pareto.aws.iam import Role as RoleBase
+
 class WebsiteRole(RoleBase):
 
     def __init__(self, website, permissions=None):

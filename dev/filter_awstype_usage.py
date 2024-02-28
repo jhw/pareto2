@@ -2,7 +2,7 @@ import os, re, yaml
 
 if __name__=="__main__":
     struct={}
-    for path, _, filenames in os.walk("pareto2/components"):
+    for path, _, filenames in os.walk("pareto2/_components"):
         for filename in filenames:
             if not filename.endswith(".py"):
                 continue

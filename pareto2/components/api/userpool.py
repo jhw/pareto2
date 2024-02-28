@@ -1,3 +1,5 @@
+from pareto.aws.iam import Role as RoleBase
+
 class IdentityPoolUnauthorizedRole(RoleBase):
 
     def __init__(self, api, permissions=None):

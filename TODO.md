@@ -1,25 +1,13 @@
 ### short [0-8-0]
 
-- check all IAM components migrated
-- rename function base as role base
-- add role base import statements 
-- maintain a list of migrated components with todo and done
-- common stuff first - Iam, permissions, functions
-- rename functionbase as rolebase
-- import rolebase 
-
-- iam 
 - permissions
 - logs
-- actions
+- functions
 
 ### medium
 
 - replace website binary media types with `*/*`
 - remove redundant website outputs, copying api
-- refactor functional components as classes
-  - openai to refactor
-
 - replace default/medium/long for size/timeout with integer values
 - remove dsl.expand globals arg
 - index which references table doesn't force table to exist
@@ -75,6 +63,13 @@
 
 ### done
 
+- maintain a list of migrated components
+- iam 
+- add role base import statements 
+- import rolebase 
+- rename functionbase as rolebase
+- rename function base as role base
+- check all IAM components migrated
 - move table IAM into streaming subdir 
 - move API IAM into cognito subdir
 - maintain same component module structure as of old

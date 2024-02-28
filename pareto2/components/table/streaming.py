@@ -1,3 +1,5 @@
+from pareto.aws.iam import Role as RoleBase
+
 class StreamingRole(RoleBase):
 
     def __init__(self, table, permissions=None):

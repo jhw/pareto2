@@ -1,8 +1,8 @@
 import os, re, yaml
 
-def filter_instances(root="pareto2/components"):
+def filter_instances(root="pareto2/_components"):
     struct={}
-    for path, _, filenames in os.walk("pareto2/components"):
+    for path, _, filenames in os.walk("pareto2/_components"):
         for filename in filenames:
             if not filename.endswith(".py"):
                 continue

@@ -1,4 +1,5 @@
-class FunctionBase:
+class Role:
+
     def __init__(self, name, permissions=None, service=None):
         self.name = name
         self.permissions = permissions or []

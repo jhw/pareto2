@@ -1,3 +1,5 @@
+from pareto.aws.iam import Role as RoleBase
+
 class LogsRole(RoleBase):
 
     def __init__(self, logs, permissions=None):
