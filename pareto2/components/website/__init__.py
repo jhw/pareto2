@@ -1,7 +1,8 @@
-# Subclass for Website Role
-class WebsiteRole(FunctionBase):
+class WebsiteRole(RoleBase):
+
     def __init__(self, website, permissions=None):
-        super().__init__(website["name"], permissions or ["s3:GetObject"])
+        super().__init__(website["name"],
+                         permissions or ["s3:GetObject"])
         self.service = "apigateway.amazonaws.com"
 
     def aws_properties(self):

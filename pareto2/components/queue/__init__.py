@@ -1,5 +1,12 @@
-# Subclass for DLQ Function Role
-class DLQFunctionRole(FunctionBase):
+
+class DLQFunctionRole(RoleBase):
+
     def __init__(self, queue, permissions=None):
-        super().__init__(queue["name"], permissions or ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents", "sqs:DeleteMessage", "sqs:GetQueueAttributes", "sqs:ReceiveMessage"])
+        super().__init__(queue["name"],
+                         permissions or ["logs:CreateLogGroup",
+                                         "logs:CreateLogStream",
+                                         "logs:PutLogEvents",
+                                         "sqs:DeleteMessage",
+                                         "sqs:GetQueueAttributes",
+                                         "sqs:ReceiveMessage"])
 

@@ -1,4 +1,7 @@
-# Subclass for Function Role
-class FunctionRole(FunctionBase):
+class LogsRole(RoleBase):
+
     def __init__(self, logs, permissions=None):
-        super().__init__(logs["name"], permissions or ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"])
+        super().__init__(logs["name"],
+                         permissions or ["logs:CreateLogGroup",
+                                         "logs:CreateLogStream",
+                                         "logs:PutLogEvents"])
