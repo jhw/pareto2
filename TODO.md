@@ -1,6 +1,5 @@
 ### short [0-8-0]
 
-- permissions
 - logs
 - functions
 
@@ -63,6 +62,7 @@
 
 ### done
 
+- permissions
 - maintain a list of migrated components
 - iam 
 - add role base import statements 
