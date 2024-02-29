@@ -1,9 +1,5 @@
 ### short
 
-AWS::Lambda::EventSourceMapping:
-- pareto2/_components/queue.py
-- pareto2/_components/table/streaming.py
-
 AWS::Route53::RecordSet:
 - pareto2/_components/website/domain.py
 - pareto2/_components/api/domain.py
@@ -81,12 +77,14 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::Lambda::EventSourceMapping:
+- pareto2/_components/queue.py
+- pareto2/_components/table/streaming.py
 AWS::Lambda::Function:
 - pareto2/_components/queue.py
 - pareto2/_components/logs.py
 - pareto2/_components/action/__init__.py
 - pareto2/_components/table/streaming.py
-
 AWS::Lambda::Permission:
 - pareto2/_components/timer.py
 - pareto2/_components/logs.py

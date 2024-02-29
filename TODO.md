@@ -1,10 +1,10 @@
 ### short [0-8-0]
 
-- load inline code
-- ensure all properties have property decorator
-- ensure all constructors are called with keywords
 - action role
 - action events
+- ensure all properties have property decorator
+- ensure all constructors are called with keywords
+- use of H()
 
 ### medium
 
@@ -65,6 +65,7 @@
 
 ### done
 
+- load inline code
 - SlackFunctionCode
 - DDBStreaming Code
 - logs
