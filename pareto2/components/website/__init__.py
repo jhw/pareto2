@@ -1,6 +1,12 @@
-from pareto.aws.iam import Role as RoleBase
+from pareto2.aws.s3 import Bucket as BucketBase
+from pareto2.aws.iam import Role as RoleBase
 
-class WebsiteRole(RoleBase):
+class Bucket(BucketBase):
+
+    def __init__(self, website):
+        super().__init__(website["name"], "website")
+
+class Role(RoleBase):
 
     def __init__(self, website, permissions=None):
         super().__init__(website["name"],

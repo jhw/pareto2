@@ -1,13 +1,5 @@
 ### short
 
-AWS::S3::Bucket:
-- pareto2/_components/bucket.py
-- pareto2/_components/website/__init__.py
-
-AWS::Events::Rule:
-- pareto2/_components/timer.py
-- pareto2/_components/action/events/__init__.py
-
 ### medium
 
 AWS::ApiGateway::Method:
@@ -33,6 +25,10 @@ AWS::ApiGateway::RestApi:
 AWS::ApiGateway::Stage:
 - pareto2/_components/website/__init__.py
 - pareto2/_components/api/__init__.py
+
+AWS::Events::Rule:
+- pareto2/_components/timer.py
+- pareto2/_components/action/events/__init__.py
 
 AWS::ApiGateway::Authorizer:
 - pareto2/_components/api/__init__.py
@@ -75,6 +71,9 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::S3::Bucket:
+- pareto2/_components/bucket.py
+- pareto2/_components/website/__init__.py
 AWS::Route53::RecordSet:
 - pareto2/_components/website/domain.py
 - pareto2/_components/api/domain.py
