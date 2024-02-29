@@ -1,10 +1,20 @@
 ### short
 
-AWS::Lambda::Function:
+AWS::Lambda::EventSourceMapping:
 - pareto2/_components/queue.py
-- pareto2/_components/logs.py
-- pareto2/_components/action/__init__.py
 - pareto2/_components/table/streaming.py
+
+AWS::Route53::RecordSet:
+- pareto2/_components/website/domain.py
+- pareto2/_components/api/domain.py
+
+AWS::S3::Bucket:
+- pareto2/_components/bucket.py
+- pareto2/_components/website/__init__.py
+
+AWS::Events::Rule:
+- pareto2/_components/timer.py
+- pareto2/_components/action/events/__init__.py
 
 ### medium
 
@@ -51,15 +61,8 @@ AWS::Cognito::UserPoolClient:
 AWS::DynamoDB::Table:
 - pareto2/_components/table/__init__.py
 
-AWS::Events::Rule:
-- pareto2/_components/timer.py
-- pareto2/_components/action/events/__init__.py
-
 AWS::Lambda::EventInvokeConfig:
 - pareto2/_components/action/__init__.py
-AWS::Lambda::EventSourceMapping:
-- pareto2/_components/queue.py
-- pareto2/_components/table/streaming.py
 
 AWS::Logs::LogGroup:
 - pareto2/_components/action/logs.py
@@ -67,14 +70,6 @@ AWS::Logs::LogStream:
 - pareto2/_components/action/logs.py
 AWS::Logs::SubscriptionFilter:
 - pareto2/_components/action/logs.py
-
-AWS::Route53::RecordSet:
-- pareto2/_components/website/domain.py
-- pareto2/_components/api/domain.py
-
-AWS::S3::Bucket:
-- pareto2/_components/bucket.py
-- pareto2/_components/website/__init__.py
 
 AWS::SNS::Topic:
 - pareto2/_components/topic.py
@@ -85,6 +80,12 @@ AWS::SQS::Queue:
 - pareto2/_components/queue.py
 
 ### done
+
+AWS::Lambda::Function:
+- pareto2/_components/queue.py
+- pareto2/_components/logs.py
+- pareto2/_components/action/__init__.py
+- pareto2/_components/table/streaming.py
 
 AWS::Lambda::Permission:
 - pareto2/_components/timer.py

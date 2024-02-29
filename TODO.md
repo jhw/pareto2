@@ -1,7 +1,10 @@
 ### short [0-8-0]
 
-- logs
-- functions
+- load inline code
+- ensure all properties have property decorator
+- ensure all constructors are called with keywords
+- action role
+- action events
 
 ### medium
 
@@ -62,6 +65,10 @@
 
 ### done
 
+- SlackFunctionCode
+- DDBStreaming Code
+- logs
+- functions
 - permissions
 - maintain a list of migrated components
 - iam 
