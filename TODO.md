@@ -2,6 +2,7 @@
 
 - action role
 - action events
+- remove component sub- directories
 - ensure all properties have property decorator
 - ensure all constructors are called with keywords
 - use of H()

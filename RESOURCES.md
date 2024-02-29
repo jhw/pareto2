@@ -1,9 +1,5 @@
 ### short
 
-AWS::Route53::RecordSet:
-- pareto2/_components/website/domain.py
-- pareto2/_components/api/domain.py
-
 AWS::S3::Bucket:
 - pareto2/_components/bucket.py
 - pareto2/_components/website/__init__.py
@@ -14,8 +10,11 @@ AWS::Events::Rule:
 
 ### medium
 
-AWS::ApiGateway::Authorizer:
-- pareto2/_components/api/__init__.py
+AWS::ApiGateway::Method:
+- pareto2/_components/website/__init__.py
+- pareto2/_components/api/cors.py
+- pareto2/_components/api/methods.py
+
 AWS::ApiGateway::BasePathMapping:
 - pareto2/_components/website/domain.py
 - pareto2/_components/api/domain.py
@@ -25,16 +24,6 @@ AWS::ApiGateway::Deployment:
 AWS::ApiGateway::DomainName:
 - pareto2/_components/website/domain.py
 - pareto2/_components/api/domain.py
-AWS::ApiGateway::GatewayResponse:
-- pareto2/_components/api/cors.py
-AWS::ApiGateway::Method:
-- pareto2/_components/website/__init__.py
-- pareto2/_components/api/cors.py
-- pareto2/_components/api/methods.py
-AWS::ApiGateway::Model:
-- pareto2/_components/api/validation.py
-AWS::ApiGateway::RequestValidator:
-- pareto2/_components/api/validation.py
 AWS::ApiGateway::Resource:
 - pareto2/_components/website/__init__.py
 - pareto2/_components/api/__init__.py
@@ -44,6 +33,15 @@ AWS::ApiGateway::RestApi:
 AWS::ApiGateway::Stage:
 - pareto2/_components/website/__init__.py
 - pareto2/_components/api/__init__.py
+
+AWS::ApiGateway::Authorizer:
+- pareto2/_components/api/__init__.py
+AWS::ApiGateway::GatewayResponse:
+- pareto2/_components/api/cors.py
+AWS::ApiGateway::Model:
+- pareto2/_components/api/validation.py
+AWS::ApiGateway::RequestValidator:
+- pareto2/_components/api/validation.py
 
 AWS::Cognito::IdentityPool:
 - pareto2/_components/api/userpool.py
@@ -77,6 +75,9 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::Route53::RecordSet:
+- pareto2/_components/website/domain.py
+- pareto2/_components/api/domain.py
 AWS::Lambda::EventSourceMapping:
 - pareto2/_components/queue.py
 - pareto2/_components/table/streaming.py
