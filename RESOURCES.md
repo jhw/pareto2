@@ -2,11 +2,6 @@
 
 ### medium
 
-AWS::ApiGateway::Method:
-- pareto2/_components/website/__init__.py
-- pareto2/_components/api/cors.py
-- pareto2/_components/api/methods.py
-
 AWS::ApiGateway::BasePathMapping:
 - pareto2/_components/website/domain.py
 - pareto2/_components/api/domain.py
@@ -71,6 +66,10 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::ApiGateway::Method:
+- pareto2/_components/website/__init__.py
+- pareto2/_components/api/cors.py
+- pareto2/_components/api/methods.py
 AWS::S3::Bucket:
 - pareto2/_components/bucket.py
 - pareto2/_components/website/__init__.py

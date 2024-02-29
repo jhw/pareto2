@@ -1,7 +1,9 @@
 ### short [0-8-0]
 
+- api method
 - action role
 - action events
+
 - remove component sub- directories
 - check for refs to pareto (should be pareto2)
 - ensure all properties have property decorator
