@@ -10,6 +10,8 @@ from pareto2.aws.apigateway import Resource as ResourceBase
 from pareto2.aws.apigateway import RestApi as RestApiBase
 from pareto2.aws.apigateway import Stage as StageBase
 
+from pareto2.aws.cognito import UserPool as UserPoolBase
+
 from pareto.aws.iam import Role as RoleBase
 
 from pareto2.aws.lambda import Permission as PermissionBase
@@ -159,6 +161,12 @@ class Permission(PermissionBase):
                          source_arn,
                          "apigateway.amazonaws.com")
 
+class UserPool(UserPoolBase):
+    
+    def __init__(self, api):
+        super().__init__(api)
+
+        
 class IdentityPoolUnauthorizedRole(RoleBase):
 
     def __init__(self, api, permissions=None):

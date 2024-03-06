@@ -1,7 +1,14 @@
+from pareto2.aws.dynamodb import Table as TableBase
+
 from pareto.aws.iam import Role as RoleBase
 
 from pareto.aws.lambda import EventSourceMapping
 from pareto.aws.lambda import Function as FunctionBase
+
+class Table(TableBase):
+    
+    def __init__(self, table, streamtype="NEW_AND_OLD_IMAGES", **kwargs):
+        super().__init__(table, streamtype, **kwargs)
 
 class StreamingFunction(FunctionBase):
 
