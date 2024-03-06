@@ -1,10 +1,14 @@
+from pareto2.aws.apigateway import BasePathMapping as BasePathMappingBase
 from pareto2.aws.apigateway import Deployment as DeploymentBase
+from pareto2.aws.apigateway import DomainName as DomainNameBase
 from pareto2.aws.apigateway import Method as MethodBase
 from pareto2.aws.apigateway import Resource as ResourceBase
 from pareto2.aws.apigateway import RestApi as RestApiBase
 from pareto2.aws.apigateway import Stage as StageBase
 
 from pareto2.aws.iam import Role as RoleBase
+
+from pareto2.aws.route53 import RecordSet
 
 from pareto2.aws.s3 import Bucket as BucketBase
 
@@ -109,6 +113,22 @@ class RedirectMethod(MethodBase):
         }
         return props
 
+class DomainName(DomainNameBase):
+
+    def __init__(self, website):
+        super().__init__(website["name"])
+
+class BasePathMapping(BasePathMappingBase):
+
+    def __init__(self, website, stagename="StageName"):
+        super().__init__(website["name"], "domain-name", stagename)
+        self.website = website
+
+class RecordSet(RecordSetBase):
+
+    def __init__(self, website):
+        super().__init__(website["name"], "website")
+    
 class Bucket(BucketBase):
 
     def __init__(self, website):

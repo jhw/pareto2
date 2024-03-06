@@ -4,7 +4,6 @@
 - action role
 - action events
 
-- remove component sub- directories
 - check for refs to pareto (should be pareto2)
 - ensure all properties have property decorator
 - ensure all constructors are called with keywords
@@ -69,6 +68,7 @@
 
 ### done
 
+- remove component sub- directories
 - load inline code
 - SlackFunctionCode
 - DDBStreaming Code
