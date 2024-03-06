@@ -59,5 +59,55 @@ class UserPoolClient:
     @property
     def explicit_auth_flows(self):
         raise
-
     
+class IdentityPoolBase:
+
+    def __init__(self, api):
+        self.api = api
+
+    @property
+    def resource_name(self):
+        return f"{self.api['name']}-api-identitypool"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::Cognito::IdentityPool"
+
+    @property
+    def aws_properties(self):
+        client_id = {"Ref": f"{self.api['name']}-api-userpool-web-client"}
+        provider_name = {"Fn::GetAtt": [f"{self.api['name']}-api-userpool", "ProviderName"]}
+        provider = {"ClientId": client_id, "ProviderName": provider_name}
+        return {
+            "AllowUnauthenticatedIdentities": True,
+            "CognitoIdentityProviders": [provider]
+        }
+
+class IdentityPoolRoleAttachment:
+    
+    def __init__(self, api):
+        self.api = api
+
+    @property
+    def resource_name(self):
+        return f"{self.api['name']}-api-identitypool-mapping"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::Cognito::IdentityPoolRoleAttachment"
+
+    @property
+    def aws_properties(self):
+        identity_pool_id = {"Ref": f"{self.api['name']}-api-identitypool"}
+        auth_role = {"Fn::GetAtt": [f"{self.api['name']}-api-identitypool-authorized-role", "Arn"]}
+        unauth_role = {"Fn::GetAtt": [f"{self.api['name']}-api-identitypool-unauthorized-role", "Arn"]}
+        roles = {
+            "authenticated": auth_role,
+            "unauthenticated": unauth_role
+        }
+        return {
+            "Roles": roles,
+            "IdentityPoolId": identity_pool_id
+        }
+    
+

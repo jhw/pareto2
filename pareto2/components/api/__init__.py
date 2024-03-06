@@ -10,9 +10,12 @@ from pareto2.aws.apigateway import Resource as ResourceBase
 from pareto2.aws.apigateway import RestApi as RestApiBase
 from pareto2.aws.apigateway import Stage as StageBase
 
+from pareto2.aws.cognito import IdentityPool as IdentityPoolBase
+from pareto2.aws.cognito import IdentityPoolRoleAttachment as IdentityPoolRoleAttachmentBase
 from pareto2.aws.cognito import UserPool as UserPoolBase
+from pareto2.aws.cognito import UserPoolClient as UserPoolClientBase
 
-from pareto.aws.iam import Role as RoleBase
+from pareto2.aws.iam import Role as RoleBase
 
 from pareto2.aws.lambda import Permission as PermissionBase
 
@@ -199,6 +202,16 @@ class UserPoolWebClient(UserPoolClientBase):
             "ALLOW_USER_SRP_AUTH",
             "ALLOW_REFRESH_TOKEN_AUTH"
         ]        
+
+class IdentityPool(IdentityPoolBase):
+
+    def __init__(self, api):
+        super().__init__(api)
+
+class IdentityPoolRoleAttachment(IdentityPoolRoleAttachmentBase):
+
+    def __init__(self, api):
+        super().__init__(api)
         
 class IdentityPoolUnauthorizedRole(RoleBase):
 

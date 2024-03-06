@@ -1,9 +1,9 @@
-from pareto.aws.iam import Role as RoleBase
+from pareto2.aws.iam import Role as RoleBase
 
-from pareto.aws.lambda import EventSourceMapping as EventSourceMappingBase
-from pareto.aws.lambda import Function as FunctionBase
+from pareto2.aws.lambda import EventSourceMapping as EventSourceMappingBase
+from pareto2.aws.lambda import Function as FunctionBase
 
-from pareto.aws.sqs import Queue as QueueBase
+from pareto2.aws.sqs import Queue as QueueBase
 
 class Queue(QueueBase):
 

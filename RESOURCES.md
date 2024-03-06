@@ -2,11 +2,6 @@
 
 ### medium
 
-AWS::Cognito::IdentityPool:
-- pareto2/_components/api/userpool.py
-AWS::Cognito::IdentityPoolRoleAttachment:
-- pareto2/_components/api/userpool.py
-
 AWS::Logs::LogGroup:
 - pareto2/_components/action/logs.py
 AWS::Logs::LogStream:
@@ -20,6 +15,10 @@ AWS::Events::Rule:
 
 ### done
 
+AWS::Cognito::IdentityPoolRoleAttachment:
+- pareto2/_components/api/userpool.py
+AWS::Cognito::IdentityPool:
+- pareto2/_components/api/userpool.py
 AWS::Cognito::UserPoolClient:
 - pareto2/_components/api/userpool.py
 AWS::Cognito::UserPool:

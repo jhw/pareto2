@@ -1,4 +1,4 @@
-from pareto.aws.lambda import Permission as PermissionBase
+from pareto2.aws.lambda import Permission as PermissionBase
 
 class Permission(PermissionBase):
 

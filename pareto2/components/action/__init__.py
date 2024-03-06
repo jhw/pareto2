@@ -1,7 +1,7 @@
-from pareto.aws.lambda import EventInvokeConfig as EventInvokeConfigBase
-from pareto.aws.lambda import Function as FunctionBase
+from pareto2.aws.lambda import EventInvokeConfig as EventInvokeConfigBase
+from pareto2.aws.lambda import Function as FunctionBase
 
-from pareto.aws.iam import Role as RoleBase
+from pareto2.aws.iam import Role as RoleBase
 
 class Function(FunctionBase):
     

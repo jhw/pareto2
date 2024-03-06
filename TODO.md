@@ -2,10 +2,9 @@
 
 - api method
 
-- refactor pareto refs as pareto2
 - review components for missing resources
+- harmonise use of names at aws level [remove api refs]
 - refactor boundaries between subclasses and implementations
-- harmonise use of names at aws level
 - ensure all constructors are called with keywords
 - action events
 - consider removing empty subclasses
@@ -72,6 +71,7 @@
 
 ### done
 
+- refactor pareto refs as pareto2
 - remove component sub- directories
 - load inline code
 - SlackFunctionCode

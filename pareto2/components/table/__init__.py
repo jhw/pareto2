@@ -1,9 +1,9 @@
 from pareto2.aws.dynamodb import Table as TableBase
 
-from pareto.aws.iam import Role as RoleBase
+from pareto2.aws.iam import Role as RoleBase
 
-from pareto.aws.lambda import EventSourceMapping
-from pareto.aws.lambda import Function as FunctionBase
+from pareto2.aws.lambda import EventSourceMapping
+from pareto2.aws.lambda import Function as FunctionBase
 
 class Table(TableBase):
     
