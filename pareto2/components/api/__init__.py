@@ -4,6 +4,7 @@ from pareto2.aws.apigateway import Deployment as DeploymentBase
 from pareto2.aws.apigateway import DomainName as DomainNameBase
 from pareto2.aws.apigateway import GatewayResponse as GatewayResponseBase
 from pareto2.aws.apigateway import Method as MethodBase
+from pareto2.aws.apigateway import Model as ModelBase
 from pareto2.aws.apigateway import RequestValidator as RequestValidatorBase
 from pareto2.aws.apigateway import Resource as ResourceBase
 from pareto2.aws.apigateway import RestApi as RestApiBase
@@ -63,7 +64,20 @@ class RequestValidator(RequestValidatorBase):
         if "schema" in self.endpoint:
             settings["ValidateRequestBody"] = True
         return settings
-        
+
+class Model(ModelBase):
+
+    def __init__(self, api, endpoint, schematype="http://json-schema.org/draft-04/schema#"):
+        super().__init__(api["name"], f"{api['name']}-api-rest-api", f"{endpoint['name']}-api-model")
+        self.endpoint = endpoint
+        self.schematype = schematype
+
+    def schema(self):
+        schema = self.endpoint.get("schema", {})
+        if "$schema" not in schema:
+            schema["$schema"] = self.schematype
+        return schema
+    
 class CorsMethod(MethodBase):
     
     def __init__(self, api, endpoint, **kwargs):

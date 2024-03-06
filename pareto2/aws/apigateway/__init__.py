@@ -159,8 +159,38 @@ class RequestValidator:
     def validation_settings(self):
         """Method to be implemented by subclasses for specific validation settings."""
         return {}
+
+class Model:
     
-class GatewayResponseBase:
+    def __init__(self, api_name, rest_api_id_ref, name, content_type="application/json"):
+        self.api_name = api_name
+        self.rest_api_id_ref = rest_api_id_ref
+        self.name = name
+        self.content_type = content_type
+
+    @property
+    def resource_name(self):
+        return f"{self.api_name}-api-model"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::Model"
+
+    @property
+    def aws_properties(self):
+        return {
+            "RestApiId": {"Ref": self.rest_api_id_ref},
+            "ContentType": self.content_type,
+            "Name": self.name,
+            "Schema": self.schema()
+        }
+
+    def schema(self):
+        """Method to be overridden by subclasses to provide specific schema details."""
+        raise NotImplementedError("Subclasses must implement this method")
+
+    
+class GatewayRespons:
     
     def __init__(self, api_name, response_type, rest_api_id_ref):
         self.api_name = api_name

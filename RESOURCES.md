@@ -6,9 +6,6 @@ AWS::Events::Rule:
 - pareto2/_components/timer.py
 - pareto2/_components/action/events/__init__.py
 
-AWS::ApiGateway::Model:
-- pareto2/_components/api/validation.py
-
 AWS::Cognito::IdentityPool:
 - pareto2/_components/api/userpool.py
 AWS::Cognito::IdentityPoolRoleAttachment:
@@ -41,6 +38,8 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::ApiGateway::Model:
+- pareto2/_components/api/validation.py
 AWS::ApiGateway::RequestValidator:
 - pareto2/_components/api/validation.py
 AWS::ApiGateway::GatewayResponse:
