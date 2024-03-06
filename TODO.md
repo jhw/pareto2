@@ -1,7 +1,7 @@
 ### short [0-8-0]
 
-- import H(), U()
 - review components for missing resources
+- import H(), U()
 - harmonise use of names at aws level
 - ensure all constructors are called with keywords
 - action events

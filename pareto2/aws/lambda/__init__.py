@@ -102,3 +102,27 @@ class EventSourceMapping:
         if self.maximum_retry_attempts is not None:
             props["MaximumRetryAttempts"] = self.maximum_retry_attempts
         return props
+
+
+class EventInvokeConfig:
+    
+    def __init__(self, action_name, function_name_ref, retries=0):
+        self.action_name = action_name
+        self.function_name_ref = function_name_ref
+        self.retries = retries
+
+    @property
+    def resource_name(self):
+        return f"{self.action_name}-function-event-config"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::Lambda::EventInvokeConfig"
+
+    @property
+    def aws_properties(self):
+        return {
+            "MaximumRetryAttempts": self.retries,
+            "FunctionName": {"Ref": self.function_name_ref},
+            "Qualifier": "$LATEST"
+        }

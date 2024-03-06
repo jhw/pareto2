@@ -18,9 +18,6 @@ AWS::Cognito::UserPoolClient:
 AWS::DynamoDB::Table:
 - pareto2/_components/table/__init__.py
 
-AWS::Lambda::EventInvokeConfig:
-- pareto2/_components/action/__init__.py
-
 AWS::Logs::LogGroup:
 - pareto2/_components/action/logs.py
 AWS::Logs::LogStream:
@@ -33,11 +30,13 @@ AWS::SNS::Topic:
 AWS::SNS::TopicPolicy:
 - pareto2/_components/topic.py
 
-AWS::SQS::Queue:
-- pareto2/_components/queue.py
 
 ### done
 
+AWS::Lambda::EventInvokeConfig:
+- pareto2/_components/action/__init__.py
+AWS::SQS::Queue:
+- pareto2/_components/queue.py
 AWS::ApiGateway::Model:
 - pareto2/_components/api/validation.py
 AWS::ApiGateway::RequestValidator:

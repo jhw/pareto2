@@ -1,3 +1,4 @@
+from pareto.aws.lambda import EventInvokeConfig as EventInvokeConfigBase
 from pareto.aws.lambda import Function as FunctionBase
 
 from pareto.aws.iam import Role as RoleBase
@@ -20,6 +21,12 @@ class Function(FunctionBase):
                          envvars=envvars,
                          layers=layers,
                          handler=handler)
+
+class EventInvokeConfig(EventInvokeConfigBase):
+
+    def __init__(self, action, retries=0):
+        super().__init__(action["name"], f"{action['name']}-function", retries)
+        
 class LogsFunction(FunctionBase):
 
     def __init__(self, logs, code=SlackFunctionCode):
