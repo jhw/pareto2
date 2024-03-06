@@ -1,5 +1,22 @@
 from pareto2.aws.lambda import Permission as PermissionBase
 
+from pareto2.aws.sns import Topic as TopicBase
+
+class Topic(TopicBase):
+
+    def __init__(self, topic):
+        super().__init__(topic["name"])
+        self.topic = topic
+        self.setup_lambda_subscription()
+
+    def setup_lambda_subscription(self):
+        endpoint = {"Fn::GetAtt": [f"{self.topic['action']}-function", "Arn"]}
+        subscription = {
+            "Protocol": "lambda",
+            "Endpoint": endpoint
+        }
+        self.add_subscription(subscription)
+
 class Permission(PermissionBase):
     
     def __init__(self, topic):

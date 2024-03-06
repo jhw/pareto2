@@ -1,17 +1,16 @@
 ### short [0-8-0]
 
 - review components for missing resources
-- import H(), U()
 - harmonise use of names at aws level
 - ensure all constructors are called with keywords
 - action events
 - consider removing empty subclasses
-- copy/paste component generation
+- copy/paste existing component generation routines
+- import H(), U()
 
 ### medium
 
 - replace website binary media types with `*/*`
-- remove redundant website outputs, copying api
 - replace default/medium/long for size/timeout with integer values
 - remove dsl.expand globals arg
 - index which references table doesn't force table to exist
@@ -22,8 +21,8 @@
 
 - apigateway2
 - lambda alarms 
-- secrets
 - step functions
+- secrets
 
 ### thoughts
 

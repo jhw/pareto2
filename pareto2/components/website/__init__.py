@@ -17,7 +17,11 @@ class RestApi(RestApiBase):
     def __init__(self, website, binary_media_types="BinaryMediaTypes"):
         super().__init__(website["name"], binary_media_types)
     
-    
+class Stage(StageBase):
+
+    def __init__(self, website, stagename="StageName"):
+        super().__init__(website["name"], stagename, f"{website['name']}-website-deployment", f"{website['name']}-website-rest-api")
+        
 class Deployment(DeploymentBase):
 
     def __init__(self, website):
@@ -35,10 +39,6 @@ class Deployment(DeploymentBase):
     def depends(self):
         return [f"{self.name}-website-method"]
 
-class Stage(StageBase):
-
-    def __init__(self, website, stagename="StageName"):
-        super().__init__(website["name"], stagename, f"{website['name']}-website-deployment", f"{website['name']}-website-rest-api")
 
 class Resource(ResourceBase):
 

@@ -21,7 +21,16 @@ class RestApi(RestApiBase):
     def __init__(self, api):
         super().__init__(api["name"])
 
-class CorsDeployment(DeploymentBase):
+class Stage(StageBase):
+    
+    def __init__(self, api):
+        super().__init__(api["name"], api["stage"]["name"], f"{api['name']}-api-deployment", f"{api['name']}-api-rest-api")
+    
+"""
+- NB includes method and cors method
+"""
+        
+class Deployment(DeploymentBase):
 
     def __init__(self, api):
         super().__init__(api["name"])
@@ -37,13 +46,10 @@ class CorsDeployment(DeploymentBase):
     def depends(self):
         dependencies = []
         for endpoint in self.api["endpoints"]:
-            dependencies += [f"{endpoint['name']}-api-method", f"{endpoint['name']}-api-cors-method"]
+            dependencies += [f"{endpoint['name']}-api-method",
+                             f"{endpoint['name']}-api-cors-method"]
         return dependencies
         
-class Stage(StageBase):
-    
-    def __init__(self, api):
-        super().__init__(api["name"], api["stage"]["name"], f"{api['name']}-api-deployment", f"{api['name']}-api-rest-api")
 
 
 class Resource(ResourceBase):
