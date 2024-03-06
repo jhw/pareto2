@@ -4,6 +4,7 @@ from pareto2.aws.lambda import Function as FunctionBase
 from pareto2.aws.iam import Role as RoleBase
 
 from pareto2.aws.logs import LogGroup as LogGroupBase
+from pareto2.aws.logs import LogStream as LogStreamBase
 
 ### core
 
@@ -79,5 +80,10 @@ class LogsRole(RoleBase):
 
 class LogGroup(LogGroupBase):
 
+    def __init__(self, action, retention_days=3):
+        super().__init__(action, retention_days)
+
+class LogStream(LogStreamBase):
+    
     def __init__(self, action, retention_days=3):
         super().__init__(action, retention_days)
