@@ -1,4 +1,23 @@
-from pareto2.aws.apigateway import Method
+from pareto2.aws.apigateway import Deployment, Method
+
+class CorsDeployment(Deployment):
+
+    def __init__(self, api):
+        super().__init__(api["name"])
+        self.api = api
+
+    @property
+    def aws_properties(self):
+        return {
+            "RestApiId": {"Ref": f"{self.name}-api-rest-api"}
+        }
+
+    @property
+    def depends(self):
+        dependencies = []
+        for endpoint in self.api["endpoints"]:
+            dependencies += [f"{endpoint['name']}-api-method", f"{endpoint['name']}-api-cors-method"]
+        return dependencies
 
 class CorsMethod(Method):
     

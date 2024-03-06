@@ -1,3 +1,4 @@
+from pareto2.aws.apigateway import Deployment as DeploymentBase
 from pareto2.aws.apigateway import Method as MethodBase
 from pareto2.aws.iam import Role as RoleBase
 from pareto2.aws.s3 import Bucket as BucketBase
@@ -19,6 +20,23 @@ class Role(RoleBase):
         props["AssumeRolePolicyDocument"] = self._assume_role_policy_document(self.service)
         return props
 
+class Deployment(DeploymentBase):
+
+    def __init__(self, website):
+        super().__init__(website["name"])
+        self.website = website
+
+    @property
+    def aws_properties(self):
+        return {
+            "RestApiId": {"Ref": f"{self.name}-website-rest-api"},
+            "Description": f"created at {int(time.time()*1000)}"
+        }
+
+    @property
+    def depends(self):
+        return [f"{self.name}-website-method"]
+    
 class Method(MethodBase):
 
     def __init__(self, website, **kwargs):
