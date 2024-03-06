@@ -1,5 +1,7 @@
 ### short [0-8-0]
 
+- api method
+
 - review components for missing resources
 - harmonise use of names at aws level
 - ensure all constructors are called with keywords

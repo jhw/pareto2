@@ -1,6 +1,7 @@
 from pareto2.aws.lambda import Permission as PermissionBase
 
 from pareto2.aws.sns import Topic as TopicBase
+from pareto2.aws.sns import TopicPolicy as TopicPolicyBase
 
 class Topic(TopicBase):
 
@@ -17,6 +18,11 @@ class Topic(TopicBase):
         }
         self.add_subscription(subscription)
 
+class TopicPolicy(TopicPolicyBase):
+
+    def __init__(self, topic):
+        super().__init__(name=topic["name"])
+        
 class Permission(PermissionBase):
     
     def __init__(self, topic):

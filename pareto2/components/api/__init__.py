@@ -50,8 +50,6 @@ class Deployment(DeploymentBase):
                              f"{endpoint['name']}-api-cors-method"]
         return dependencies
         
-
-
 class Resource(ResourceBase):
 
     def __init__(self, api, endpoint):

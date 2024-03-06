@@ -25,11 +25,10 @@ AWS::Logs::LogStream:
 AWS::Logs::SubscriptionFilter:
 - pareto2/_components/action/logs.py
 
-AWS::SNS::TopicPolicy:
-- pareto2/_components/topic.py
-
 ### done
 
+AWS::SNS::TopicPolicy:
+- pareto2/_components/topic.py
 AWS::SNS::Topic:
 - pareto2/_components/topic.py
 AWS::Lambda::EventInvokeConfig:
