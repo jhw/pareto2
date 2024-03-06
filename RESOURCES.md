@@ -2,8 +2,6 @@
 
 ### medium
 
-AWS::Logs::LogGroup:
-- pareto2/_components/action/logs.py
 AWS::Logs::LogStream:
 - pareto2/_components/action/logs.py
 AWS::Logs::SubscriptionFilter:
@@ -15,6 +13,8 @@ AWS::Events::Rule:
 
 ### done
 
+AWS::Logs::LogGroup:
+- pareto2/_components/action/logs.py
 AWS::Cognito::IdentityPoolRoleAttachment:
 - pareto2/_components/api/userpool.py
 AWS::Cognito::IdentityPool:
