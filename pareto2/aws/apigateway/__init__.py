@@ -110,6 +110,32 @@ class Method:
     def aws_properties(self):
         raise NotImplementedError("Subclasses must implement this property.")
 
+class Authorizer:
+    
+    def __init__(self, name, rest_api_id_ref, authorizer_type, identity_source):
+        self.name = name
+        self.rest_api_id_ref = rest_api_id_ref
+        self.authorizer_type = authorizer_type
+        self.identity_source = identity_source
+
+    @property
+    def resource_name(self):
+        return f"{self.name}-authorizer"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::Authorizer"
+
+    @property
+    def aws_properties(self):
+        return {
+            "IdentitySource": self.identity_source,
+            "Name": {"Fn::Sub": f"{self.name}-authorizer-${{AWS::StackName}}"},
+            "RestApiId": {"Ref": self.rest_api_id_ref},
+            "Type": self.authorizer_type
+        }
+
+    
 
 class DomainName:
 

@@ -1,10 +1,11 @@
+from pareto2.aws.apigateway import Authorizer as AuthorizerBase
 from pareto2.aws.apigateway import BasePathMapping as BasePathMappingBase
-from pareto2.aws.apigateway import DomainName as DomainNameBase
-from pareto2.aws.apigateway import RestApi as RestApiBase
 from pareto2.aws.apigateway import Deployent as DeploymentBase
-from pareto2.aws.apigateway import Stage as StageBase
-from pareto2.aws.apigateway import Resource as ResourceBase
+from pareto2.aws.apigateway import DomainName as DomainNameBase
 from pareto2.aws.apigateway import Method as MethodBase
+from pareto2.aws.apigateway import Resource as ResourceBase
+from pareto2.aws.apigateway import RestApi as RestApiBase
+from pareto2.aws.apigateway import Stage as StageBase
 
 from pareto.aws.iam import Role as RoleBase
 
@@ -68,6 +69,18 @@ class CorsMethod(MethodBase):
         integration_response = init_integration_response(self.endpoint)
         integration
 
+class CognitoAuthorizer(AuthorizerBase):
+    
+    def __init__(self, api, user_pool_arn_ref):
+        super().__init__(api["name"], f"{api['name']}-api-rest-api", "COGNITO_USER_POOLS", "method.request.header.Authorization")
+        self.user_pool_arn_ref = user_pool_arn_ref
+
+    @property
+    def aws_properties(self):
+        base_properties = super().aws_properties
+        base_properties["ProviderARNs"] = [{"Fn::GetAtt": [self.user_pool_arn_ref, "Arn"]}]
+        return base_properties
+        
 class DomainName(DomainNameBase):
 
     def __init__(self, api):

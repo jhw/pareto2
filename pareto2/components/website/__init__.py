@@ -8,7 +8,7 @@ from pareto2.aws.apigateway import Stage as StageBase
 
 from pareto2.aws.iam import Role as RoleBase
 
-from pareto2.aws.route53 import RecordSet
+from pareto2.aws.route53 import RecordSet as RecordSetBase
 
 from pareto2.aws.s3 import Bucket as BucketBase
 
