@@ -39,6 +39,28 @@ class Method:
         raise NotImplementedError("Subclasses must implement this property.")
 
 
+class DomainName:
+
+    def __init__(self, name, domain_name_ref="domain-name", certificate_arn_ref="certificate-arn"):
+        self.name = name
+        self.domain_name_ref = domain_name_ref
+        self.certificate_arn_ref = certificate_arn_ref
+
+    @property
+    def resource_name(self):
+        return f"{self.name}-domain"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::DomainName"
+
+    @property
+    def aws_properties(self):
+        return {
+            "DomainName": {"Ref": self.domain_name_ref},
+            "CertificateArn": {"Ref": self.certificate_arn_ref}
+        }
+    
 class BasePathMapping:
 
     def __init__(self, name, domain_name="domain-name", stage_name="StageName"):

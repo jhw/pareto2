@@ -1,6 +1,11 @@
 from pareto2.aws.apigateway import BasePathMapping
+from pareto2.aws.apigateway import DomainName as DomainNameBase
 from pareto2.aws.route53 import RecordSet
 
+class DomainName(DomainNameBase):
+
+    def __init__(self, api):
+        super().__init__(api["name"])
 
 class DomainBasePathMapping(BasePathMapping):
 
