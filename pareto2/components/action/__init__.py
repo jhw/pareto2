@@ -3,6 +3,8 @@ from pareto2.aws.lambda import Function as FunctionBase
 
 from pareto2.aws.iam import Role as RoleBase
 
+### core
+
 class Function(FunctionBase):
     
     def __init__(self, action):
@@ -22,7 +24,7 @@ class Function(FunctionBase):
                          layers=layers,
                          handler=handler)
 
-class FunctionRole(RoleBase):
+class Role(RoleBase):
     
     def __init__(self, component, base_permissions=[], additional_permissions=None):
         self.component_name = component["name"]
@@ -48,6 +50,8 @@ class EventInvokeConfig(EventInvokeConfigBase):
 
     def __init__(self, action, retries=0):
         super().__init__(action["name"], f"{action['name']}-function", retries)
+
+### logs
         
 class LogsFunction(FunctionBase):
 

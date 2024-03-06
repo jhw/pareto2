@@ -5,11 +5,15 @@ from pareto2.aws.iam import Role as RoleBase
 from pareto2.aws.lambda import EventSourceMapping
 from pareto2.aws.lambda import Function as FunctionBase
 
+### core
+
 class Table(TableBase):
     
     def __init__(self, table, streamtype="NEW_AND_OLD_IMAGES", **kwargs):
         super().__init__(table, streamtype, **kwargs)
 
+### streaming
+        
 class StreamingFunction(FunctionBase):
 
     def __init__(self, table,

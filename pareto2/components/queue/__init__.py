@@ -5,6 +5,8 @@ from pareto2.aws.lambda import Function as FunctionBase
 
 from pareto2.aws.sqs import Queue as QueueBase
 
+### core
+
 class Queue(QueueBase):
 
     def __init__(self, queue_name, max_receive_count=1):
@@ -29,6 +31,8 @@ class EventSourceMapping(EventSourceMappingBase):
             batch_size=batch_size
         )
 
+### dead letter queue
+            
 class DeadLetterQueue(QueueBase):
             
     def __init__(self, queue_name):
