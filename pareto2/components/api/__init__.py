@@ -1,6 +1,12 @@
 from pareot2.aws.apigateway import Resource as ResourceBase
+from pareot2.aws.apigateway import RestApi as RestApiBase
 from pareot2.aws.apigateway import Stage as StageBase
 from pareto2.aws.lambda import Permission as PermissionBase
+
+class RestApi(RestApiBase):
+
+    def __init__(self, api):
+        super().__init__(api["name"])
 
 class Stage(StageBase):
     

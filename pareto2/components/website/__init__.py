@@ -1,32 +1,18 @@
 from pareto2.aws.apigateway import Deployment as DeploymentBase
 from pareto2.aws.apigateway import Method as MethodBase
-from pareto2.aws.apigateway import Rssource as ResourceBase
+from pareto2.aws.apigateway import Resource as ResourceBase
+from pareto2.aws.apigateway import RestApi as RestApiBase
 from pareto2.aws.apigateway import Stage as StageBase
+
 from pareto2.aws.iam import Role as RoleBase
+
 from pareto2.aws.s3 import Bucket as BucketBase
 
-class Bucket(BucketBase):
-
-    def __init__(self, website):
-        super().__init__(website["name"], "website")
-
-class Role(RoleBase):
-
-    def __init__(self, website, permissions=None):
-        super().__init__(website["name"],
-                         permissions or ["s3:GetObject"])
-        self.service = "apigateway.amazonaws.com"
-
-    def aws_properties(self):
-        props = super().aws_properties
-        props["AssumeRolePolicyDocument"] = self._assume_role_policy_document(self.service)
-        return props
-
-class Resource(ResourceBase):
-
-    def __init__(self, website, pathpart="{proxy+}"):
-        super().__init__(website["name"], f"{website['name']}-website-rest-api", pathpart)
-
+class RestApi(RestApiBase):
+    
+    def __init__(self, website, binary_media_types="BinaryMediaTypes"):
+        super().__init__(website["name"], binary_media_types)
+    
     
 class Deployment(DeploymentBase):
 
@@ -50,7 +36,11 @@ class Stage(StageBase):
     def __init__(self, website, stagename="StageName"):
         super().__init__(website["name"], stagename, f"{website['name']}-website-deployment", f"{website['name']}-website-rest-api")
 
-    
+class Resource(ResourceBase):
+
+    def __init__(self, website, pathpart="{proxy+}"):
+        super().__init__(website["name"], f"{website['name']}-website-rest-api", pathpart)
+
 class Method(MethodBase):
 
     def __init__(self, website, **kwargs):
@@ -117,4 +107,21 @@ class RedirectMethod(MethodBase):
             "ResourceId": {"Fn::GetAtt": [f"{self.website['name']}-website-rest-api", "RootResourceId"]},
             "RestApiId": {"Ref": f"{self.website['name']}-website-rest-api"}
         }
+        return props
+
+class Bucket(BucketBase):
+
+    def __init__(self, website):
+        super().__init__(website["name"], "website")
+
+class Role(RoleBase):
+
+    def __init__(self, website, permissions=None):
+        super().__init__(website["name"],
+                         permissions or ["s3:GetObject"])
+        self.service = "apigateway.amazonaws.com"
+
+    def aws_properties(self):
+        props = super().aws_properties
+        props["AssumeRolePolicyDocument"] = self._assume_role_policy_document(self.service)
         return props

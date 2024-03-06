@@ -1,3 +1,26 @@
+class RestApi:
+
+    def __init__(self, name, binary_media_types=None):
+        self.name = name
+        self.binary_media_types = binary_media_types
+
+    @property
+    def resource_name(self):
+        return f"{self.name}-rest-api"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::RestApi"
+
+    @property
+    def aws_properties(self):
+        properties = {
+            "Name": {"Fn::Sub": f"{self.name}-rest-api-${{AWS::StackName}}"}
+        }
+        if self.binary_media_types:
+            properties["BinaryMediaTypes"] = self.binary_media_types
+        return properties
+
 class Deployment:
 
     def __init__(self, name):

@@ -1,6 +1,6 @@
 ### short [0-8-0]
 
-- api method
+- api deployment, method
 - action role
 - action events
 
