@@ -71,9 +71,9 @@ class Permission:
 
 class EventSourceMapping:
     
-    def __init__(self, name, function_ref, source_arn, batch_size=1, starting_position=None, maximum_batching_window_in_seconds=None, maximum_retry_attempts=None):
+    def __init__(self, name, function, source_arn, batch_size=1, starting_position=None, maximum_batching_window_in_seconds=None, maximum_retry_attempts=None):
         self.name = name
-        self.function_ref = function_ref
+        self.function = function
         self.source_arn = source_arn
         self.batch_size = batch_size
         self.starting_position = starting_position
@@ -91,7 +91,7 @@ class EventSourceMapping:
     @property
     def aws_properties(self):
         props = {
-            "FunctionName": {"Ref": self.function_ref},
+            "FunctionName": {"Ref": self.function},
             "EventSourceArn": self.source_arn,
             "BatchSize": self.batch_size
         }
@@ -106,14 +106,14 @@ class EventSourceMapping:
 
 class EventInvokeConfig:
     
-    def __init__(self, action_name, function_name_ref, retries=0):
-        self.action_name = action_name
-        self.function_name_ref = function_name_ref
+    def __init__(self, name, function_name, retries=0):
+        self.name = name
+        self.function_name = function_name
         self.retries = retries
 
     @property
     def resource_name(self):
-        return f"{self.action_name}-function-event-config"
+        return f"{self.name}-function-event-config"
 
     @property
     def aws_resource_type(self):
@@ -123,6 +123,6 @@ class EventInvokeConfig:
     def aws_properties(self):
         return {
             "MaximumRetryAttempts": self.retries,
-            "FunctionName": {"Ref": self.function_name_ref},
+            "FunctionName": {"Ref": self.function_name},
             "Qualifier": "$LATEST"
         }

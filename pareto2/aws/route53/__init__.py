@@ -1,13 +1,12 @@
 class RecordSet:
     
-    def __init__(self, name, resource_suffix, domain_name_ref="domain-name"):
+    def __init__(self, name, resource_suffix, domain_name):
         self.name = name
-        self.resource_suffix = resource_suffix
-        self.domain_name_ref = domain_name_ref
+        self.domain_name = domain_name
 
     @property
     def resource_name(self):
-        return f"{self.name}-{self.resource_suffix}-domain-record-set"
+        return f"{self.name}-record-set"
 
     @property
     def aws_resource_type(self):
@@ -16,11 +15,11 @@ class RecordSet:
     @property
     def aws_properties(self):
         hzname = {"Fn::Sub": ["${prefix}.${suffix}.", {
-            "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": self.domain_name_ref}]}]},
-            "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": self.domain_name_ref}]}]}
+            "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": self.domain_name}]}]},
+            "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": self.domain_name}]}]}
         }]}
-        dnsname = {"Fn::GetAtt": [f"{self.name}-{self.resource_suffix}-domain", "DistributionDomainName"]}
-        hzid = {"Fn::GetAtt": [f"{self.name}-{self.resource_suffix}-domain", "DistributionHostedZoneId"]}
+        dnsname = {"Fn::GetAtt": [f"{self.name}-record-set", "DistributionDomainName"]}
+        hzid = {"Fn::GetAtt": [f"{self.name}-record-set", "DistributionHostedZoneId"]}
         aliastarget = {
             "DNSName": dnsname,
             "EvaluateTargetHealth": False,
@@ -28,7 +27,7 @@ class RecordSet:
         }
         return {
             "HostedZoneName": hzname,
-            "Name": {"Ref": self.domain_name_ref},
+            "Name": {"Ref": self.domain_name},
             "Type": "A",
             "AliasTarget": aliastarget
         }

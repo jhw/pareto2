@@ -1,10 +1,11 @@
 ### short [0-8-0]
 
-- action events and timers
-- api method
+- timers
+- action events
 - review components for missing resources
 
-- harmonise use of names at aws level [remove api refs]
+- route53 record set should get distribution parameters from elsewhere, not from self?
+
 - refactor boundaries between subclasses and implementations
 - ensure all constructors are called with keywords
 - consider removing empty subclasses
@@ -71,6 +72,8 @@
 
 ### done
 
+- harmonise use of name paramters at aws level
+- api method
 - refactor pareto refs as pareto2
 - remove component sub- directories
 - load inline code

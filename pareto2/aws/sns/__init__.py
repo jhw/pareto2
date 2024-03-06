@@ -22,7 +22,7 @@ class Topic:
 
 class TopicPolicy:
 
-    def __init__(self, name="default"):
+    def __init__(self, name):
         self.name = name
 
     @property

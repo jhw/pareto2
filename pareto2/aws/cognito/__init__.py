@@ -1,11 +1,11 @@
 class UserPool:
 
-    def __init__(self, api):
-        self.api = api
+    def __init__(self, name):
+        self.name = name
 
     @property
     def resource_name(self):
-        return f"{self.api['name']}-api-userpool"
+        return f"{self.name}-api-userpool"
 
     @property
     def aws_resource_type(self):
@@ -36,13 +36,13 @@ class UserPool:
 
 class UserPoolClient:
     
-    def __init__(self, api, client_type):
-        self.api = api
+    def __init__(self, name, client_type):
+        self.name = name
         self.client_type = client_type
 
     @property
     def resource_name(self):
-        return f"{self.api['name']}-api-userpool-{self.client_type}-client"
+        return f"{self.name}-api-userpool-{self.client_type}-client"
 
     @property
     def aws_resource_type(self):
@@ -51,7 +51,7 @@ class UserPoolClient:
     @property
     def aws_properties(self):
         return {
-            "UserPoolId": {"Ref": f"{self.api['name']}-api-userpool"},
+            "UserPoolId": {"Ref": f"{self.name}-api-userpool"},
             "PreventUserExistenceErrors": "ENABLED",
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
@@ -62,12 +62,12 @@ class UserPoolClient:
     
 class IdentityPoolBase:
 
-    def __init__(self, api):
-        self.api = api
+    def __init__(self, name):
+        self.name = name
 
     @property
     def resource_name(self):
-        return f"{self.api['name']}-api-identitypool"
+        return f"{self.name}-api-identitypool"
 
     @property
     def aws_resource_type(self):
@@ -75,8 +75,8 @@ class IdentityPoolBase:
 
     @property
     def aws_properties(self):
-        client_id = {"Ref": f"{self.api['name']}-api-userpool-web-client"}
-        provider_name = {"Fn::GetAtt": [f"{self.api['name']}-api-userpool", "ProviderName"]}
+        client_id = {"Ref": f"{self.name}-api-userpool-web-client"}
+        provider_name = {"Fn::GetAtt": [f"{self.name}-api-userpool", "ProviderName"]}
         provider = {"ClientId": client_id, "ProviderName": provider_name}
         return {
             "AllowUnauthenticatedIdentities": True,
@@ -85,12 +85,12 @@ class IdentityPoolBase:
 
 class IdentityPoolRoleAttachment:
     
-    def __init__(self, api):
-        self.api = api
+    def __init__(self, name):
+        self.name = name
 
     @property
     def resource_name(self):
-        return f"{self.api['name']}-api-identitypool-mapping"
+        return f"{self.name}-api-identitypool-mapping"
 
     @property
     def aws_resource_type(self):
@@ -98,9 +98,9 @@ class IdentityPoolRoleAttachment:
 
     @property
     def aws_properties(self):
-        identity_pool_id = {"Ref": f"{self.api['name']}-api-identitypool"}
-        auth_role = {"Fn::GetAtt": [f"{self.api['name']}-api-identitypool-authorized-role", "Arn"]}
-        unauth_role = {"Fn::GetAtt": [f"{self.api['name']}-api-identitypool-unauthorized-role", "Arn"]}
+        identity_pool_id = {"Ref": f"{self.name}-api-identitypool"}
+        auth_role = {"Fn::GetAtt": [f"{self.name}-api-identitypool-authorized-role", "Arn"]}
+        unauth_role = {"Fn::GetAtt": [f"{self.name}-api-identitypool-unauthorized-role", "Arn"]}
         roles = {
             "authenticated": auth_role,
             "unauthenticated": unauth_role

@@ -34,21 +34,13 @@ class Deployment:
     def aws_resource_type(self):
         return "AWS::ApiGateway::Deployment"
 
-    @property
-    def aws_properties(self):
-        raise NotImplementedError("Subclasses must implement aws_properties")
-
-    @property
-    def depends(self):
-        raise NotImplementedError("Subclasses must implement depends")
-
 class Stage:
 
-    def __init__(self, name, stage_name, deployment_id_ref, rest_api_id_ref):
+    def __init__(self, name, stage_name, deployment_id, rest_api_id):
         self.name = name
         self.stage_name = stage_name
-        self.deployment_id_ref = deployment_id_ref
-        self.rest_api_id_ref = rest_api_id_ref
+        self.deployment_id = deployment_id
+        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
@@ -62,17 +54,17 @@ class Stage:
     def aws_properties(self):
         return {
             "StageName": self.stage_name,
-            "DeploymentId": {"Ref": self.deployment_id_ref},
-            "RestApiId": {"Ref": self.rest_api_id_ref}
+            "DeploymentId": {"Ref": self.deployment_id},
+            "RestApiId": {"Ref": self.rest_api_id}
         }
     
 class Resource:
 
-    def __init__(self, name, rest_api_ref, pathpart, parent_id_ref="RootResourceId"):
+    def __init__(self, name, rest_api, pathpart, parent_id="RootResourceId"):
         self.name = name
-        self.rest_api_ref = rest_api_ref
+        self.rest_api = rest_api
         self.pathpart = pathpart
-        self.parent_id_ref = parent_id_ref
+        self.parent_id = parent_id
 
     @property
     def resource_name(self):
@@ -84,11 +76,11 @@ class Resource:
 
     @property
     def aws_properties(self):
-        parent_id = {"Fn::GetAtt": [self.rest_api_ref, self.parent_id_ref]}
+        parent_id = {"Fn::GetAtt": [self.rest_api, self.parent_id]}
         return {
             "ParentId": parent_id,
             "PathPart": self.pathpart,
-            "RestApiId": {"Ref": self.rest_api_ref}
+            "RestApiId": {"Ref": self.rest_api}
         }
     
 class Method:
@@ -106,15 +98,11 @@ class Method:
     def aws_resource_type(self):
         return self._aws_resource_type
 
-    @property
-    def aws_properties(self):
-        raise NotImplementedError("Subclasses must implement this property.")
-
 class Authorizer:
     
-    def __init__(self, name, rest_api_id_ref, authorizer_type, identity_source):
+    def __init__(self, name, rest_api_id, authorizer_type, identity_source):
         self.name = name
-        self.rest_api_id_ref = rest_api_id_ref
+        self.rest_api_id = rest_api_id
         self.authorizer_type = authorizer_type
         self.identity_source = identity_source
 
@@ -131,15 +119,15 @@ class Authorizer:
         return {
             "IdentitySource": self.identity_source,
             "Name": {"Fn::Sub": f"{self.name}-authorizer-${{AWS::StackName}}"},
-            "RestApiId": {"Ref": self.rest_api_id_ref},
+            "RestApiId": {"Ref": self.rest_api_id},
             "Type": self.authorizer_type
         }
 
 class RequestValidator:
 
-    def __init__(self, api_name, rest_api_id_ref):
+    def __init__(self, api_name, rest_api_id):
         self.api_name = api_name
-        self.rest_api_id_ref = rest_api_id_ref
+        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
@@ -151,7 +139,7 @@ class RequestValidator:
 
     @property
     def aws_properties(self):
-        props = {"RestApiId": {"Ref": self.rest_api_id_ref}}
+        props = {"RestApiId": {"Ref": self.rest_api_id}}
         validation_settings = self.validation_settings()
         props.update(validation_settings)
         return props
@@ -162,9 +150,9 @@ class RequestValidator:
 
 class Model:
     
-    def __init__(self, api_name, rest_api_id_ref, name, content_type="application/json"):
+    def __init__(self, api_name, rest_api_id, name, content_type="application/json"):
         self.api_name = api_name
-        self.rest_api_id_ref = rest_api_id_ref
+        self.rest_api_id = rest_api_id
         self.name = name
         self.content_type = content_type
 
@@ -179,23 +167,18 @@ class Model:
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": self.rest_api_id_ref},
+            "RestApiId": {"Ref": self.rest_api_id},
             "ContentType": self.content_type,
             "Name": self.name,
             "Schema": self.schema()
         }
 
-    def schema(self):
-        """Method to be overridden by subclasses to provide specific schema details."""
-        raise NotImplementedError("Subclasses must implement this method")
-
-    
 class GatewayRespons:
     
-    def __init__(self, api_name, response_type, rest_api_id_ref):
+    def __init__(self, api_name, response_type, rest_api_id):
         self.api_name = api_name
         self.response_type = response_type
-        self.rest_api_id_ref = rest_api_id_ref
+        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
@@ -208,20 +191,17 @@ class GatewayRespons:
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": self.rest_api_id_ref},
+            "RestApiId": {"Ref": self.rest_api_id},
             "ResponseType": self.response_type,
             "ResponseParameters": self.response_parameters()
         }
 
-    def response_parameters(self):
-        raise NotImplementedError("Subclasses must implement this method")
-
 class DomainName:
 
-    def __init__(self, name, domain_name_ref="domain-name", certificate_arn_ref="certificate-arn"):
+    def __init__(self, name, domain_name="domain-name", certificate_arn="certificate-arn"):
         self.name = name
-        self.domain_name_ref = domain_name_ref
-        self.certificate_arn_ref = certificate_arn_ref
+        self.domain_name = domain_name
+        self.certificate_arn = certificate_arn
 
     @property
     def resource_name(self):
@@ -234,8 +214,8 @@ class DomainName:
     @property
     def aws_properties(self):
         return {
-            "DomainName": {"Ref": self.domain_name_ref},
-            "CertificateArn": {"Ref": self.certificate_arn_ref}
+            "DomainName": {"Ref": self.domain_name},
+            "CertificateArn": {"Ref": self.certificate_arn}
         }
     
 class BasePathMapping:
