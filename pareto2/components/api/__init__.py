@@ -1,7 +1,8 @@
 from pareto2.aws.apigateway import Authorizer as AuthorizerBase
 from pareto2.aws.apigateway import BasePathMapping as BasePathMappingBase
-from pareto2.aws.apigateway import Deployent as DeploymentBase
+from pareto2.aws.apigateway import Deployment as DeploymentBase
 from pareto2.aws.apigateway import DomainName as DomainNameBase
+from pareto2.aws.apigateway import GatewayResponse as GatewayResponseBase
 from pareto2.aws.apigateway import Method as MethodBase
 from pareto2.aws.apigateway import Resource as ResourceBase
 from pareto2.aws.apigateway import RestApi as RestApiBase
@@ -80,7 +81,26 @@ class CognitoAuthorizer(AuthorizerBase):
         base_properties = super().aws_properties
         base_properties["ProviderARNs"] = [{"Fn::GetAtt": [self.user_pool_arn_ref, "Arn"]}]
         return base_properties
-        
+
+"""
+- needs separate subclasses for 400, 500 responses
+"""
+    
+class CorsGatewayResponse(GatewayResponseBase):
+
+    def __init__(self, api, code):
+        super().__init__(api["name"], f"DEFAULT_{code}", f"{api['name']}-api-rest-api")
+        self.code = code
+
+    def response_parameters(self):
+        cors_headers = {
+            "Access-Control-Allow-Headers": "'*'",
+            "Access-Control-Allow-Origin": "'*'"
+        }
+        # Format the parameters to match the AWS::ApiGateway::GatewayResponse format
+        params = {f"gatewayresponse.header.{k}": v for k, v in cors_headers.items()}
+        return params
+    
 class DomainName(DomainNameBase):
 
     def __init__(self, api):

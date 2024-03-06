@@ -6,8 +6,6 @@ AWS::Events::Rule:
 - pareto2/_components/timer.py
 - pareto2/_components/action/events/__init__.py
 
-AWS::ApiGateway::GatewayResponse:
-- pareto2/_components/api/cors.py
 AWS::ApiGateway::Model:
 - pareto2/_components/api/validation.py
 AWS::ApiGateway::RequestValidator:
@@ -45,6 +43,8 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::ApiGateway::GatewayResponse:
+- pareto2/_components/api/cors.py
 AWS::ApiGateway::Authorizer:
 - pareto2/_components/api/__init__.py
 AWS::ApiGateway::RestApi:

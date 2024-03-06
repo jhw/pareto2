@@ -135,7 +135,31 @@ class Authorizer:
             "Type": self.authorizer_type
         }
 
+class GatewayResponseBase:
     
+    def __init__(self, api_name, response_type, rest_api_id_ref):
+        self.api_name = api_name
+        self.response_type = response_type
+        self.rest_api_id_ref = rest_api_id_ref
+
+    @property
+    def resource_name(self):
+        return f"{self.api_name}-gateway-response-{self.response_type}"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::GatewayResponse"
+
+    @property
+    def aws_properties(self):
+        return {
+            "RestApiId": {"Ref": self.rest_api_id_ref},
+            "ResponseType": self.response_type,
+            "ResponseParameters": self.response_parameters()
+        }
+
+    def response_parameters(self):
+        raise NotImplementedError("Subclasses must implement this method")
 
 class DomainName:
 
