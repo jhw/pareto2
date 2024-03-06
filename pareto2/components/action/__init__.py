@@ -22,6 +22,28 @@ class Function(FunctionBase):
                          layers=layers,
                          handler=handler)
 
+class FunctionRole(RoleBase):
+    
+    def __init__(self, component, base_permissions=[], additional_permissions=None):
+        self.component_name = component["name"]
+        self.base_permissions = base_permissions
+        self.additional_permissions = additional_permissions or []
+        super().__init__(self.component_name, self._compile_permissions())
+
+    def _compile_permissions(self):
+        # Combine base permissions with additional ones
+        return sorted(list(set(self.base_permissions + self.additional_permissions)))
+
+    @property
+    def policy_document(self):
+        # Specific implementation for generating policy document
+        return policy_document(self.permissions, self.resource)
+
+    @property
+    def assume_role_policy_document(self):
+        # Assume role policy, potentially customized based on service_principal
+        return assume_role_policy_document(self.service_principal)
+        
 class EventInvokeConfig(EventInvokeConfigBase):
 
     def __init__(self, action, retries=0):
