@@ -1,9 +1,24 @@
 from pareto.aws.iam import Role as RoleBase
 
-from pareto.aws.lambda import EventSourceMapping
+from pareto.aws.lambda import EventSourceMapping as EventSourceMappingBase
 from pareto.aws.lambda import Function as FunctionBase
 
-class Binding(EventSourceMapping):
+from pareto.aws.sqs import Queue as QueueBase
+
+class Queue(QueueBase):
+
+    def __init__(self, queue_name, max_receive_count=1):
+        super().__init__(queue_name)
+        self.max_receive_count = max_receive_count
+
+    @property
+    def aws_properties(self):
+        dlq_arn = {"Fn::GetAtt": [f"{self.queue_name}-queue-dlq", "Arn"]}
+        redrive_policy = {
+            "deadLetterTargetArn": dlq_arn,
+            "maxReceiveCount": self.max_receive_count
+
+class EventSourceMapping(EventSourceMappingBase):
     
     def __init__(self, queue):
         batch_size = 1 if "batch" not in queue else queue["batch"]
@@ -14,7 +29,16 @@ class Binding(EventSourceMapping):
             batch_size=batch_size
         )
 
-class DLQFunction(FunctionBase):
+class DeadLetterQueue(QueueBase):
+            
+    def __init__(self, queue_name):
+        super().__init__(queue_name)
+
+    @property
+    def resource_name(self):
+        return f"{self.queue_name}-queue-dlq"
+            
+class DeadLetterQueueFunction(FunctionBase):
 
     def __init__(self, queue,
                  size='default',
@@ -28,7 +52,7 @@ class DLQFunction(FunctionBase):
                          timeout=timeout,
                          envvars={env: {"Ref": env} for env in envvars})
 
-class DLQFunctionRole(RoleBase):
+class DeadLetterQueueFunctionRole(RoleBase):
 
     def __init__(self, queue, permissions=None):
         super().__init__(queue["name"],
@@ -39,7 +63,7 @@ class DLQFunctionRole(RoleBase):
                                          "sqs:GetQueueAttributes",
                                          "sqs:ReceiveMessage"])
 
-class DLQBinding(EventSourceMapping):
+class DeadLetterQueueBinding(EventSourceMapping):
     
     def __init__(self, queue, batch_size=1):
         super().__init__(

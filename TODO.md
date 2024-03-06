@@ -1,13 +1,12 @@
 ### short [0-8-0]
 
-- api deployment, method
-- action role
-- action events
-- remove api refs from apigateway core naming code
-- check for refs to pareto (should be pareto2)
-- ensure all properties have property decorator
+- import H(), U()
+- review components for missing resources
+- harmonise use of names at aws level
 - ensure all constructors are called with keywords
-- use of H()
+- action events
+- consider removing empty subclasses
+- copy/paste component generation
 
 ### medium
 
