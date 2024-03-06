@@ -2,9 +2,6 @@
 
 ### medium
 
-AWS::ApiGateway::Resource:
-- pareto2/_components/website/__init__.py
-- pareto2/_components/api/__init__.py
 AWS::ApiGateway::RestApi:
 - pareto2/_components/website/__init__.py
 - pareto2/_components/api/__init__.py
@@ -57,6 +54,9 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::ApiGateway::Resource:
+- pareto2/_components/website/__init__.py
+- pareto2/_components/api/__init__.py
 AWS::ApiGateway::DomainName:
 - pareto2/_components/website/domain.py
 - pareto2/_components/api/domain.py

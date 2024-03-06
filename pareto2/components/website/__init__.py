@@ -1,5 +1,6 @@
 from pareto2.aws.apigateway import Deployment as DeploymentBase
 from pareto2.aws.apigateway import Method as MethodBase
+from pareto2.aws.apigateway import Rssource as ResourceBase
 from pareto2.aws.iam import Role as RoleBase
 from pareto2.aws.s3 import Bucket as BucketBase
 
@@ -20,6 +21,12 @@ class Role(RoleBase):
         props["AssumeRolePolicyDocument"] = self._assume_role_policy_document(self.service)
         return props
 
+class Resource(ResourceBase):
+
+    def __init__(self, website, pathpart="{proxy+}"):
+        super().__init__(website["name"], f"{website['name']}-website-rest-api", pathpart)
+
+    
 class Deployment(DeploymentBase):
 
     def __init__(self, website):

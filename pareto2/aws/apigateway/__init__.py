@@ -19,6 +19,31 @@ class Deployment:
     def depends(self):
         raise NotImplementedError("Subclasses must implement depends")
 
+class Resource:
+
+    def __init__(self, name, rest_api_ref, pathpart, parent_id_ref="RootResourceId"):
+        self.name = name
+        self.rest_api_ref = rest_api_ref
+        self.pathpart = pathpart
+        self.parent_id_ref = parent_id_ref
+
+    @property
+    def resource_name(self):
+        return f"{self.name}-resource"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::Resource"
+
+    @property
+    def aws_properties(self):
+        parent_id = {"Fn::GetAtt": [self.rest_api_ref, self.parent_id_ref]}
+        return {
+            "ParentId": parent_id,
+            "PathPart": self.pathpart,
+            "RestApiId": {"Ref": self.rest_api_ref}
+        }
+    
 class Method:
     
     def __init__(self, name, aws_resource_type="AWS::ApiGateway::Method", **kwargs):
