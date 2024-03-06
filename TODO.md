@@ -25,6 +25,8 @@
 
 - apigateway2
 - lambda alarms 
+- federated auth
+- passwordless auth
 - step functions
 - secrets
 
