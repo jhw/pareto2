@@ -12,6 +12,8 @@ from pareto2.aws.route53 import RecordSet as RecordSetBase
 
 from pareto2.aws.s3 import Bucket as BucketBase
 
+### core
+
 class RestApi(RestApiBase):
     
     def __init__(self, website, binary_media_types="BinaryMediaTypes"):
@@ -38,7 +40,6 @@ class Deployment(DeploymentBase):
     @property
     def depends(self):
         return [f"{self.name}-website-method"]
-
 
 class Resource(ResourceBase):
 
@@ -84,6 +85,25 @@ class Method(MethodBase):
         }
         return props
 
+class Bucket(BucketBase):
+
+    def __init__(self, website):
+        super().__init__(website["name"], "website")
+
+class Role(RoleBase):
+
+    def __init__(self, website, permissions=None):
+        super().__init__(website["name"],
+                         permissions or ["s3:GetObject"])
+        self.service = "apigateway.amazonaws.com"
+
+    def aws_properties(self):
+        props = super().aws_properties
+        props["AssumeRolePolicyDocument"] = self._assume_role_policy_document(self.service)
+        return props
+    
+### redirect
+    
 class RedirectMethod(MethodBase):
     
     def __init__(self, website, **kwargs):
@@ -112,7 +132,9 @@ class RedirectMethod(MethodBase):
             "RestApiId": {"Ref": f"{self.website['name']}-website-rest-api"}
         }
         return props
-
+    
+### domain
+    
 class DomainName(DomainNameBase):
 
     def __init__(self, website):
@@ -128,20 +150,3 @@ class RecordSet(RecordSetBase):
 
     def __init__(self, website):
         super().__init__(website["name"], "website")
-    
-class Bucket(BucketBase):
-
-    def __init__(self, website):
-        super().__init__(website["name"], "website")
-
-class Role(RoleBase):
-
-    def __init__(self, website, permissions=None):
-        super().__init__(website["name"],
-                         permissions or ["s3:GetObject"])
-        self.service = "apigateway.amazonaws.com"
-
-    def aws_properties(self):
-        props = super().aws_properties
-        props["AssumeRolePolicyDocument"] = self._assume_role_policy_document(self.service)
-        return props

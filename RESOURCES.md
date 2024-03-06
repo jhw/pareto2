@@ -2,8 +2,6 @@
 
 ### medium
 
-AWS::Cognito::UserPoolClient:
-- pareto2/_components/api/userpool.py
 AWS::Cognito::IdentityPool:
 - pareto2/_components/api/userpool.py
 AWS::Cognito::IdentityPoolRoleAttachment:
@@ -22,6 +20,8 @@ AWS::Events::Rule:
 
 ### done
 
+AWS::Cognito::UserPoolClient:
+- pareto2/_components/api/userpool.py
 AWS::Cognito::UserPool:
 - pareto2/_components/api/userpool.py
 AWS::DynamoDB::Table:

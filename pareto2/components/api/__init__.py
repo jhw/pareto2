@@ -18,6 +18,8 @@ from pareto2.aws.lambda import Permission as PermissionBase
 
 from pareto2.aws.route53 import RecordSet as RecordSetBase
 
+### core
+
 class RestApi(RestApiBase):
 
     def __init__(self, api):
@@ -57,6 +59,17 @@ class Resource(ResourceBase):
     def __init__(self, api, endpoint):
         super().__init__(endpoint["name"], f"{api['name']}-api-rest-api", endpoint["path"])
 
+class Permission(PermissionBase):
+    
+    def __init__(self, api, endpoint):
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:{api['name']}/{endpoint['method']}/{endpoint['path']}"}
+        super().__init__(endpoint["name"],
+                         endpoint["action"],
+                         source_arn,
+                         "apigateway.amazonaws.com")
+        
+### validation
+        
 class RequestValidator(RequestValidatorBase):
 
     def __init__(self, api, endpoint):
@@ -84,6 +97,8 @@ class Model(ModelBase):
             schema["$schema"] = self.schematype
         return schema
     
+### CORS
+
 class CorsMethod(MethodBase):
     
     def __init__(self, api, endpoint, **kwargs):
@@ -105,18 +120,6 @@ class CorsMethod(MethodBase):
         integration_response = init_integration_response(self.endpoint)
         integration
 
-class CognitoAuthorizer(AuthorizerBase):
-    
-    def __init__(self, api, user_pool_arn_ref):
-        super().__init__(api["name"], f"{api['name']}-api-rest-api", "COGNITO_USER_POOLS", "method.request.header.Authorization")
-        self.user_pool_arn_ref = user_pool_arn_ref
-
-    @property
-    def aws_properties(self):
-        base_properties = super().aws_properties
-        base_properties["ProviderARNs"] = [{"Fn::GetAtt": [self.user_pool_arn_ref, "Arn"]}]
-        return base_properties
-
 """
 - needs separate subclasses for 400, 500 responses
 """
@@ -135,7 +138,9 @@ class CorsGatewayResponse(GatewayResponseBase):
         # Format the parameters to match the AWS::ApiGateway::GatewayResponse format
         params = {f"gatewayresponse.header.{k}": v for k, v in cors_headers.items()}
         return params
-    
+        
+### domain
+        
 class DomainName(DomainNameBase):
 
     def __init__(self, api):
@@ -152,20 +157,48 @@ class RecordSet(RecordSetBase):
     def __init__(self, api):
         super().__init__(api["name"], "api")
         
-class Permission(PermissionBase):
+### auth
+
+class Authorizer(AuthorizerBase):
     
-    def __init__(self, api, endpoint):
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:{api['name']}/{endpoint['method']}/{endpoint['path']}"}
-        super().__init__(endpoint["name"],
-                         endpoint["action"],
-                         source_arn,
-                         "apigateway.amazonaws.com")
+    def __init__(self, api, user_pool_arn_ref):
+        super().__init__(api["name"], f"{api['name']}-api-rest-api", "COGNITO_USER_POOLS", "method.request.header.Authorization")
+        self.user_pool_arn_ref = user_pool_arn_ref
+
+    @property
+    def aws_properties(self):
+        base_properties = super().aws_properties
+        base_properties["ProviderARNs"] = [{"Fn::GetAtt": [self.user_pool_arn_ref, "Arn"]}]
+        return base_properties    
 
 class UserPool(UserPoolBase):
     
     def __init__(self, api):
         super().__init__(api)
 
+class UserPoolAdminClient(UserPoolClientBase):
+
+    def __init__(self, api):
+        super().__init__(api, "admin")
+
+    @property
+    def explicit_auth_flows(self):
+        return [
+            "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+            "ALLOW_REFRESH_TOKEN_AUTH"
+        ]
+
+class UserPoolWebClient(UserPoolClientBase):
+    
+    def __init__(self, api):
+        super().__init__(api, "web")
+
+    @property
+    def explicit_auth_flows(self):
+        return [
+            "ALLOW_USER_SRP_AUTH",
+            "ALLOW_REFRESH_TOKEN_AUTH"
+        ]        
         
 class IdentityPoolUnauthorizedRole(RoleBase):
 
