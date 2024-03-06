@@ -3,7 +3,7 @@
 - api deployment, method
 - action role
 - action events
-
+- remove api refs from apigateway core naming code
 - check for refs to pareto (should be pareto2)
 - ensure all properties have property decorator
 - ensure all constructors are called with keywords

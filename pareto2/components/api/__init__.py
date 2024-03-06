@@ -4,6 +4,7 @@ from pareto2.aws.apigateway import Deployment as DeploymentBase
 from pareto2.aws.apigateway import DomainName as DomainNameBase
 from pareto2.aws.apigateway import GatewayResponse as GatewayResponseBase
 from pareto2.aws.apigateway import Method as MethodBase
+from pareto2.aws.apigateway import RequestValidator as RequestValidatorBase
 from pareto2.aws.apigateway import Resource as ResourceBase
 from pareto2.aws.apigateway import RestApi as RestApiBase
 from pareto2.aws.apigateway import Stage as StageBase
@@ -49,6 +50,20 @@ class Resource(ResourceBase):
     def __init__(self, api, endpoint):
         super().__init__(endpoint["name"], f"{api['name']}-api-rest-api", endpoint["path"])
 
+class RequestValidator(RequestValidatorBase):
+
+    def __init__(self, api, endpoint):
+        super().__init__(api["name"], f"{api['name']}-api-rest-api")
+        self.endpoint = endpoint
+
+    def validation_settings(self):
+        settings = {}
+        if "parameters" in self.endpoint:
+            settings["ValidateRequestParameters"] = True
+        if "schema" in self.endpoint:
+            settings["ValidateRequestBody"] = True
+        return settings
+        
 class CorsMethod(MethodBase):
     
     def __init__(self, api, endpoint, **kwargs):

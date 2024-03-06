@@ -8,8 +8,6 @@ AWS::Events::Rule:
 
 AWS::ApiGateway::Model:
 - pareto2/_components/api/validation.py
-AWS::ApiGateway::RequestValidator:
-- pareto2/_components/api/validation.py
 
 AWS::Cognito::IdentityPool:
 - pareto2/_components/api/userpool.py
@@ -43,6 +41,8 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::ApiGateway::RequestValidator:
+- pareto2/_components/api/validation.py
 AWS::ApiGateway::GatewayResponse:
 - pareto2/_components/api/cors.py
 AWS::ApiGateway::Authorizer:

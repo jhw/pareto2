@@ -135,6 +135,31 @@ class Authorizer:
             "Type": self.authorizer_type
         }
 
+class RequestValidator:
+
+    def __init__(self, api_name, rest_api_id_ref):
+        self.api_name = api_name
+        self.rest_api_id_ref = rest_api_id_ref
+
+    @property
+    def resource_name(self):
+        return f"{self.api_name}-api-validator"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::RequestValidator"
+
+    @property
+    def aws_properties(self):
+        props = {"RestApiId": {"Ref": self.rest_api_id_ref}}
+        validation_settings = self.validation_settings()
+        props.update(validation_settings)
+        return props
+
+    def validation_settings(self):
+        """Method to be implemented by subclasses for specific validation settings."""
+        return {}
+    
 class GatewayResponseBase:
     
     def __init__(self, api_name, response_type, rest_api_id_ref):
