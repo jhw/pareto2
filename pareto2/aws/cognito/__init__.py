@@ -5,13 +5,17 @@ class UserPool:
 
     @property
     def resource_name(self):
-        return f"{self.name}-api-userpool"
+        return f"{self.name}-user-pool"
 
     @property
     def aws_resource_type(self):
         return "AWS::Cognito::UserPool"
 
-    @property
+    """
+    password policy, schema should be part of component
+    """
+    
+    @property    
     def aws_properties(self):
         password_policy = {
             "MinimumLength": 8,
@@ -36,13 +40,12 @@ class UserPool:
 
 class UserPoolClient:
     
-    def __init__(self, name, client_type):
+    def __init__(self, name):
         self.name = name
-        self.client_type = client_type
 
     @property
     def resource_name(self):
-        return f"{self.name}-api-userpool-{self.client_type}-client"
+        return f"{self.name}-user-pool-client"
 
     @property
     def aws_resource_type(self):
@@ -51,23 +54,20 @@ class UserPoolClient:
     @property
     def aws_properties(self):
         return {
-            "UserPoolId": {"Ref": f"{self.name}-api-userpool"},
+            "UserPoolId": {"Ref": f"{self.name}-user-pool"},
             "PreventUserExistenceErrors": "ENABLED",
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
 
-    @property
-    def explicit_auth_flows(self):
-        raise
-    
 class IdentityPoolBase:
 
-    def __init__(self, name):
+    def __init__(self, name, client_id):
         self.name = name
+        self.client_id = client_id
 
     @property
     def resource_name(self):
-        return f"{self.name}-api-identitypool"
+        return f"{self.name}-identity-pool"
 
     @property
     def aws_resource_type(self):
@@ -75,9 +75,10 @@ class IdentityPoolBase:
 
     @property
     def aws_properties(self):
-        client_id = {"Ref": f"{self.name}-api-userpool-web-client"}
-        provider_name = {"Fn::GetAtt": [f"{self.name}-api-userpool", "ProviderName"]}
-        provider = {"ClientId": client_id, "ProviderName": provider_name}
+        client_id = {"Ref": self.client_id}
+        provider_name = {"Fn::GetAtt": [f"{self.name}-user-pool", "ProviderName"]}
+        provider = {"ClientId": client_id,
+                    "ProviderName": provider_name}
         return {
             "AllowUnauthenticatedIdentities": True,
             "CognitoIdentityProviders": [provider]
@@ -90,7 +91,7 @@ class IdentityPoolRoleAttachment:
 
     @property
     def resource_name(self):
-        return f"{self.name}-api-identitypool-mapping"
+        return f"{self.name}-identity-pool-role-attachment"
 
     @property
     def aws_resource_type(self):
@@ -98,9 +99,9 @@ class IdentityPoolRoleAttachment:
 
     @property
     def aws_properties(self):
-        identity_pool_id = {"Ref": f"{self.name}-api-identitypool"}
-        auth_role = {"Fn::GetAtt": [f"{self.name}-api-identitypool-authorized-role", "Arn"]}
-        unauth_role = {"Fn::GetAtt": [f"{self.name}-api-identitypool-unauthorized-role", "Arn"]}
+        identity_pool_id = {"Ref": f"{self.name}-identity-pool"}
+        auth_role = {"Fn::GetAtt": [f"{self.name}-identity-pool-authorized-role", "Arn"]}
+        unauth_role = {"Fn::GetAtt": [f"{self.name}-identity-pool-unauthorized-role", "Arn"]}
         roles = {
             "authenticated": auth_role,
             "unauthenticated": unauth_role

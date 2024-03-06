@@ -85,10 +85,8 @@ class Resource:
     
 class Method:
     
-    def __init__(self, name, aws_resource_type="AWS::ApiGateway::Method", **kwargs):
+    def __init__(self, name):
         self.name = name
-        self._aws_resource_type = aws_resource_type
-        self.kwargs = kwargs
 
     @property
     def resource_name(self):
@@ -96,7 +94,7 @@ class Method:
 
     @property
     def aws_resource_type(self):
-        return self._aws_resource_type
+        return "AWS::ApiGateway::Method"
 
 class Authorizer:
     
@@ -125,13 +123,13 @@ class Authorizer:
 
 class RequestValidator:
 
-    def __init__(self, api_name, rest_api_id):
-        self.api_name = api_name
+    def __init__(self, name, rest_api_id):
+        self.name = name
         self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
-        return f"{self.api_name}-api-validator"
+        return f"{self.name}-request-validator"
 
     @property
     def aws_resource_type(self):
@@ -150,15 +148,14 @@ class RequestValidator:
 
 class Model:
     
-    def __init__(self, api_name, rest_api_id, name, content_type="application/json"):
-        self.api_name = api_name
-        self.rest_api_id = rest_api_id
+    def __init__(self, name, rest_api_id, content_type="application/json"):
         self.name = name
+        self.rest_api_id = rest_api_id
         self.content_type = content_type
 
     @property
     def resource_name(self):
-        return f"{self.api_name}-api-model"
+        return f"{self.name}-model"
 
     @property
     def aws_resource_type(self):
@@ -173,16 +170,16 @@ class Model:
             "Schema": self.schema()
         }
 
-class GatewayRespons:
+class GatewayResponse:
     
-    def __init__(self, api_name, response_type, rest_api_id):
-        self.api_name = api_name
+    def __init__(self, name, response_type, rest_api_id):
+        self.name = name
         self.response_type = response_type
         self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
-        return f"{self.api_name}-gateway-response-{self.response_type}"
+        return f"{self.name}-gateway-response"
 
     @property
     def aws_resource_type(self):
@@ -198,7 +195,7 @@ class GatewayRespons:
 
 class DomainName:
 
-    def __init__(self, name, domain_name="domain-name", certificate_arn="certificate-arn"):
+    def __init__(self, name, domain_name, certificate_arn):
         self.name = name
         self.domain_name = domain_name
         self.certificate_arn = certificate_arn
@@ -220,14 +217,15 @@ class DomainName:
     
 class BasePathMapping:
 
-    def __init__(self, name, domain_name="domain-name", stage_name="StageName"):
+    def __init__(self, name, domain_name, stage_name, rest_api_id):
         self.name = name
         self.domain_name = domain_name
         self.stage_name = stage_name
+        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
-        return f"{self.name}-domain-path-mapping"
+        return f"{self.name}-base-path-mapping"
 
     @property
     def aws_resource_type(self):
@@ -237,7 +235,7 @@ class BasePathMapping:
     def aws_properties(self):
         return {
             "DomainName": {"Ref": self.domain_name},
-            "RestApiId": {"Ref": f"{self.name}-rest-api"},
+            "RestApiId": {"Ref": self.rest_api_id},
             "Stage": self.stage_name
         }
 
