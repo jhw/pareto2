@@ -5,6 +5,7 @@ from pareto2.aws.iam import Role as RoleBase
 
 from pareto2.aws.logs import LogGroup as LogGroupBase
 from pareto2.aws.logs import LogStream as LogStreamBase
+from pareto2.aws.logs import SubscriptionFilter as SubscriptionFilterBase
 
 ### core
 
@@ -55,7 +56,7 @@ class EventInvokeConfig(EventInvokeConfigBase):
         super().__init__(action["name"], f"{action['name']}-function", retries)
 
 ### logs
-        
+
 class LogsFunction(FunctionBase):
 
     def __init__(self, logs, code=SlackFunctionCode):
@@ -78,6 +79,11 @@ class LogsRole(RoleBase):
                                          "logs:CreateLogStream",
                                          "logs:PutLogEvents"])
 
+class SubscriptionFilter(SubscriptionFilterBase):
+
+    def __init__(self, action, logs):
+        super().__init__(action, logs)
+        
 class LogGroup(LogGroupBase):
 
     def __init__(self, action, retention_days=3):

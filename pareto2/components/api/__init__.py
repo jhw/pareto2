@@ -122,12 +122,8 @@ class CorsMethod(MethodBase):
 
         integration_response = init_integration_response(self.endpoint)
         integration
-
-"""
-- needs separate subclasses for 400, 500 responses
-"""
     
-class CorsGatewayResponse(GatewayResponseBase):
+class GatewayResponse(GatewayResponseBase):
 
     def __init__(self, api, code):
         super().__init__(api["name"], f"DEFAULT_{code}", f"{api['name']}-api-rest-api")

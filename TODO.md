@@ -1,12 +1,12 @@
 ### short [0-8-0]
 
+- action events and timers
 - api method
-
 - review components for missing resources
+
 - harmonise use of names at aws level [remove api refs]
 - refactor boundaries between subclasses and implementations
 - ensure all constructors are called with keywords
-- action events
 - consider removing empty subclasses
 - copy/paste existing component generation routines
 - import H(), U()
