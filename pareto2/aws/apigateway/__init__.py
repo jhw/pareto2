@@ -19,6 +19,30 @@ class Deployment:
     def depends(self):
         raise NotImplementedError("Subclasses must implement depends")
 
+class Stage:
+
+    def __init__(self, name, stage_name, deployment_id_ref, rest_api_id_ref):
+        self.name = name
+        self.stage_name = stage_name
+        self.deployment_id_ref = deployment_id_ref
+        self.rest_api_id_ref = rest_api_id_ref
+
+    @property
+    def resource_name(self):
+        return f"{self.name}-stage"
+
+    @property
+    def aws_resource_type(self):
+        return "AWS::ApiGateway::Stage"
+
+    @property
+    def aws_properties(self):
+        return {
+            "StageName": self.stage_name,
+            "DeploymentId": {"Ref": self.deployment_id_ref},
+            "RestApiId": {"Ref": self.rest_api_id_ref}
+        }
+    
 class Resource:
 
     def __init__(self, name, rest_api_ref, pathpart, parent_id_ref="RootResourceId"):

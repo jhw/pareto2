@@ -5,9 +5,6 @@
 AWS::ApiGateway::RestApi:
 - pareto2/_components/website/__init__.py
 - pareto2/_components/api/__init__.py
-AWS::ApiGateway::Stage:
-- pareto2/_components/website/__init__.py
-- pareto2/_components/api/__init__.py
 
 AWS::Events::Rule:
 - pareto2/_components/timer.py
@@ -54,6 +51,9 @@ AWS::SQS::Queue:
 
 ### done
 
+AWS::ApiGateway::Stage:
+- pareto2/_components/website/__init__.py
+- pareto2/_components/api/__init__.py
 AWS::ApiGateway::Resource:
 - pareto2/_components/website/__init__.py
 - pareto2/_components/api/__init__.py

@@ -1,6 +1,6 @@
 from pareto2.aws.lambda import Permission as PermissionBase
 
-class TopicPermission(PermissionBase):
+class Permission(PermissionBase):
     
     def __init__(self, topic):
         super().__init__(topic["name"],

@@ -1,6 +1,6 @@
 from pareto.aws.lambda import Function as FunctionBase
 
-class ActionFunction(FunctionBase):
+class Function(FunctionBase):
     
     def __init__(self, action):
         code = {

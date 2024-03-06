@@ -1,6 +1,7 @@
 from pareto2.aws.apigateway import Deployment as DeploymentBase
 from pareto2.aws.apigateway import Method as MethodBase
 from pareto2.aws.apigateway import Rssource as ResourceBase
+from pareto2.aws.apigateway import Stage as StageBase
 from pareto2.aws.iam import Role as RoleBase
 from pareto2.aws.s3 import Bucket as BucketBase
 
@@ -43,6 +44,12 @@ class Deployment(DeploymentBase):
     @property
     def depends(self):
         return [f"{self.name}-website-method"]
+
+class Stage(StageBase):
+
+    def __init__(self, website, stagename="StageName"):
+        super().__init__(website["name"], stagename, f"{website['name']}-website-deployment", f"{website['name']}-website-rest-api")
+
     
 class Method(MethodBase):
 

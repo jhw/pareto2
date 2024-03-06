@@ -1,6 +1,6 @@
 from pareto.aws.lambda import Permission as PermissionBase
 
-class TimerPermission(PermissionBase):
+class Permission(PermissionBase):
 
     def __init__(self, timer):
         super().__init__(timer["name"],

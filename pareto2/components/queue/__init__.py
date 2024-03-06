@@ -3,7 +3,7 @@ from pareto.aws.iam import Role as RoleBase
 from pareto.aws.lambda import EventSourceMapping
 from pareto.aws.lambda import Function as FunctionBase
 
-class QueueBinding(EventSourceMapping):
+class Binding(EventSourceMapping):
     
     def __init__(self, queue):
         batch_size = 1 if "batch" not in queue else queue["batch"]
