@@ -1,15 +1,10 @@
 ### short [0-8-0]
 
-- replace resource_suffix
+- review aws classes
 
 - timers
 - action events
-- review components for missing resources
-- route53 record set should get distribution parameters from elsewhere, not from self?
-- refactor boundaries between subclasses and implementations
 - ensure all constructors are called with keywords
-- consider removing empty subclasses
-- copy/paste existing component generation routines
 - import H(), U()
 
 ### medium
@@ -72,6 +67,8 @@
 
 ### done
 
+- route53 record set should get distribution parameters from elsewhere, not from self?
+- replace resource_suffix
 - harmonise use of name paramters at aws level
 - api method
 - refactor pareto refs as pareto2
