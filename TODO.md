@@ -1,6 +1,5 @@
 ### short [0-8-0]
 
-- -domain (-domain-name)
 - "Ref"
 - lambda self.action, self.function
 
@@ -74,6 +73,8 @@
 
 ### done
 
+- dehungarorise
+- -domain (-domain-name)
 - rest_api_id
 - route53 record set should get distribution parameters from elsewhere, not from self?
 - replace resource_suffix

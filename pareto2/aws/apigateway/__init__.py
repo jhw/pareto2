@@ -243,4 +243,4 @@ class BasePathMapping(aws.Resource):
 
     @property
     def depends(self):
-        return [H(f"{self.component_name}-domain")]
+        return [H(f"{self.component_name}-domain-name")]

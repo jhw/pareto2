@@ -17,11 +17,11 @@ class RecordSet(Resource):
     @property
     def aws_properties(self):
         hzname = {"Fn::Sub": ["${prefix}.${suffix}.", {
-            "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]},
-            "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}
+            "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}, # global
+            "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]} # global
         }]}
-        dnsnameref = {"Fn::GetAtt": [H(f"{self.component_name}-domain"), "DistributionDomainName"]} # APIGW
-        hzidref = {"Fn::GetAtt": [H(f"{self.component_name}-domain"), "DistributionHostedZoneId"]} # APIGW
+        dnsnameref = {"Fn::GetAtt": [H(f"{self.component_name}-domain-name"), "DistributionDomainName"]} # APIGW
+        hzidref = {"Fn::GetAtt": [H(f"{self.component_name}-domain-name"), "DistributionHostedZoneId"]} # APIGW
         aliastarget = {
             "DNSName": dnsnameref,
             "EvaluateTargetHealth": False,
