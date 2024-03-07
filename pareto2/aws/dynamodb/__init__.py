@@ -9,14 +9,6 @@ class Table(Resource):
         self.streamtype = streamtype
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-table")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::DynamoDB::Table"
-
-    @property
     def aws_properties(self):
         attrs = [("pk", "S"), ("sk", "S")]
         if "indexes" in self.table:

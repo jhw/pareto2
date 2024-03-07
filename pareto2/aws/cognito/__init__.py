@@ -6,14 +6,6 @@ class UserPool(Resource):
     def __init__(self, component_name):
         self.component_name = component_name
 
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-user-pool")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Cognito::UserPool"
-
     """
     password policy, schema should be part of component
     """
@@ -47,14 +39,6 @@ class UserPoolClient(Resource):
         self.component_name = component_name
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-user-pool-client")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Cognito::UserPoolClient"
-
-    @property
     def aws_properties(self):
         return {
             "UserPoolId": {"Ref": H(f"{self.component_name}-user-pool")},
@@ -67,14 +51,6 @@ class IdentityPool(Resource):
     def __init__(self, component_name, client_id):
         self.component_name = component_name
         self.client_id = client_id
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-identity-pool")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Cognito::IdentityPool"
 
     @property
     def aws_properties(self):
@@ -91,14 +67,6 @@ class IdentityPoolRoleAttachment(Resource):
     
     def __init__(self, component_name):
         self.component_name = component_name
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-identity-pool-role-attachment")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Cognito::IdentityPoolRoleAttachment"
 
     @property
     def aws_properties(self):

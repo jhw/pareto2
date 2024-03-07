@@ -8,14 +8,6 @@ class SubscriptionFilter(Resource):
         self.pattern = pattern
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-subscription-filter")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Logs::SubscriptionFilter"
-
-    @property
     def aws_properties(self):
         destination_arn = {"Fn::GetAtt": [H(f"{self.component_name}-logs-function"), "Arn"]}
         log_group_name = {"Fn::Sub": LogGroupPattern.format(self.component_name)}
@@ -39,14 +31,6 @@ class LogGroup(Resource):
         self.retention_days = retention_days
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-log-group")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Logs::LogGroup"
-
-    @property
     def aws_properties(self):
         # Assuming LogGroupPattern is a predefined pattern string
         log_group_name = {"Fn::Sub": LogGroupPattern.format(self.component_name)}
@@ -60,14 +44,6 @@ class LogStream(Resource):
     def __init__(self, component_name, retention_days=3):
         self.component_name = component_name
         self.retention_days = retention_days
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-log-stream")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Logs::LogStream"
 
     @property
     def aws_properties(self):

@@ -9,14 +9,6 @@ class Role(Resource):
         self.service = service
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-role")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::IAM::Role"
-
-    @property
     def aws_properties(self):
         policy_name = H(f"{self.resource_name}-policy-${{AWS::StackName}}")
         policy_document = self._policy_document(self.permissions)

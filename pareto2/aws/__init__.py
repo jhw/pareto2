@@ -65,12 +65,20 @@ def resource(fn):
 class Resource:
 
     @property
-    def resource_name(self):
-        return None
+    def resource_name(self):    
+        tokens=str(self.__class__).split("'")[1].split(".")
+        return "%s-%s" % (self.component_name, dehungarorise(tokens[-1]))
 
     @property
     def aws_resource_type(self):
-        return None
+        tokens=str(self.__class__).split("'")[1].split(".")
+        return "::".join([tokens[-3].upper(),
+                          hungarorise(tokens[-2]),
+                          hungarorise(tokens[-1])])
 
+    @property
+    def aws_properties(self):
+        return {}
+    
     def render(self):
         pass

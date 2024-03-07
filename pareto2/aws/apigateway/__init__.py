@@ -14,14 +14,6 @@ class RestApi(aws.Resource):
         self.binary_media_types = binary_media_types
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-rest-api")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::RestApi"
-
-    @property
     def aws_properties(self):
         properties = {
             "Name": {"Fn::Sub": H(f"{self.component_name}-rest-api-${{AWS::StackName}}")}
@@ -35,13 +27,6 @@ class Deployment(aws.Resource):
     def __init__(self, component_name):
         self.component_name = component_name
 
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-deployment")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::Deployment"
 
 class Stage(aws.Resource):
 
@@ -49,14 +34,6 @@ class Stage(aws.Resource):
         self.component_name = component_name
         self.stage_name = stage_name
         self.deployment_id = deployment_id
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-stage")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::Stage"
 
     @property
     def aws_properties(self):
@@ -74,14 +51,6 @@ class Resource(aws.Resource):
         self.parent_id = parent_id
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-resource")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::Resource"
-
-    @property
     def aws_properties(self):
         parent_id = {"Fn::GetAtt": [H(f"{self.component_name}-rest-api"), self.parent_id]}
         return {
@@ -95,28 +64,12 @@ class Method(aws.Resource):
     def __init__(self, component_name):
         self.component_name = component_name
 
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-method")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::Method"
-
 class Authorizer(aws.Resource):
     
     def __init__(self, component_name, authorizer_type, identity_source):
         self.component_name = component_name
         self.authorizer_type = authorizer_type
         self.identity_source = identity_source
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-authorizer")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::Authorizer"
 
     @property
     def aws_properties(self):
@@ -131,14 +84,6 @@ class RequestValidator(aws.Resource):
 
     def __init__(self, component_name):
         self.component_name = component_name
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-request-validator")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::RequestValidator"
 
     @property
     def aws_properties(self):
@@ -158,14 +103,6 @@ class Model(aws.Resource):
         self.content_type = content_type
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-model")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::Model"
-
-    @property
     def aws_properties(self):
         return {
             "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
@@ -179,14 +116,6 @@ class GatewayResponse(aws.Resource):
     def __init__(self, component_name, response_type):
         self.component_name = component_name
         self.response_type = response_type
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-gateway-response")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::GatewayResponse"
 
     @property
     def aws_properties(self):
@@ -204,14 +133,6 @@ class DomainName(aws.Resource):
         self.certificate_arn = certificate_arn
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-domain-name")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::DomainName"
-
-    @property
     def aws_properties(self):
         return {
             "DomainName": {"Ref": self.domain_name},
@@ -224,14 +145,6 @@ class BasePathMapping(aws.Resource):
         self.component_name = component_name
         self.domain_name = domain_name
         self.stage_name = stage_name
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-base-path-mapping")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::ApiGateway::BasePathMapping"
 
     @property
     def aws_properties(self):

@@ -7,14 +7,6 @@ class RecordSet(Resource):
         self.component_name = component_name
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-record-set")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Route53::RecordSet"
-
-    @property
     def aws_properties(self):
         hzname = {"Fn::Sub": ["${prefix}.${suffix}.", {
             "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}, # global

@@ -1,13 +1,14 @@
 ### short [0-8-0]
 
-- Resource base class resource_name, aws_type properties (based on class)
-
-- review resources
-- component base class
-- review componnets
+- move aws directories
 
 - timers
 - action events
+
+- review resources
+- component base class
+- review components
+
 - ensure all constructors are called with keywords
 
 ### medium
@@ -70,6 +71,7 @@
 
 ### done
 
+- Resource base class resource_name, aws_type properties (based on class)
 - lambda self.action, self.function
 - "Ref"
 - dehungarorise

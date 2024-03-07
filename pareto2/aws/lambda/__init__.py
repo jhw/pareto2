@@ -22,14 +22,6 @@ class Function(Resource):
         self.layers = layers
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-function")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Lambda::Function"
-
-    @property
     def aws_properties(self):
         environment_variables = {k: {"Ref": v} for k, v in self.envvars.items()}        
         props = {
@@ -51,14 +43,6 @@ class Permission(Resource):
         self.component_name = component_name
         self.source_arn = source_arn
         self.principal = principal
-    
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-permission")
-    
-    @property
-    def aws_resource_type(self):
-        return "AWS::Lambda::Permission"
     
     @property
     def aws_properties(self):
@@ -88,14 +72,6 @@ class EventSourceMapping(Resource):
         self.maximum_retry_attempts = maximum_retry_attempts
 
     @property
-    def resource_name(self):
-        return H(f"{self.component_name}-event-source-mapping")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Lambda::EventSourceMapping"
-
-    @property
     def aws_properties(self):
         props = {
             "FunctionName": {"Ref": H(f"{self.component_name}-function")},
@@ -115,14 +91,6 @@ class EventInvokeConfig(Resource):
     def __init__(self, component_name, retries=0):
         self.component_name = component_name
         self.retries = retries
-
-    @property
-    def resource_name(self):
-        return H(f"{self.component_name}-function-event-config")
-
-    @property
-    def aws_resource_type(self):
-        return "AWS::Lambda::EventInvokeConfig"
 
     @property
     def aws_properties(self):
