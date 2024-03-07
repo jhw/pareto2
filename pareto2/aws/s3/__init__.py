@@ -1,11 +1,11 @@
 class Bucket:
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, component_name):
+        self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.name}-bucket"
+        return f"{self.component_name}-bucket"
 
     @property
     def aws_resource_type(self):

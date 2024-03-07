@@ -1,13 +1,13 @@
 class Role:
 
-    def __init__(self, name, permissions=None, service=None):
-        self.name = name
+    def __init__(self, component_name, permissions=None, service=None):
+        self.component_name = component_name
         self.permissions = permissions or []
         self.service = service
 
     @property
     def resource_name(self):
-        return f"{self.name}-role"
+        return f"{self.component_name}-role"
 
     @property
     def aws_resource_type(self):

@@ -1,13 +1,13 @@
 class Table:
     
-    def __init__(self, name, indexes, streamtype="NEW_AND_OLD_IMAGES"):
-        self.name = name
+    def __init__(self, component_name, indexes, streamtype="NEW_AND_OLD_IMAGES"):
+        self.component_name = component_name
         self.indexes = indexes
         self.streamtype = streamtype
 
     @property
     def resource_name(self):
-        return f"{self.name}-table"
+        return f"{self.component_name}-table"
 
     @property
     def aws_resource_type(self):

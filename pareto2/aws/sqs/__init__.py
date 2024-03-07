@@ -1,11 +1,11 @@
 class Queue:
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, component_name):
+        self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.name}-queue"
+        return f"{self.component_name}-queue"
 
     @property
     def aws_resource_type(self):

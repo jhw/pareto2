@@ -1,11 +1,11 @@
 class Topic:
     
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, component_name):
+        self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.name}-topic"
+        return f"{self.component_name}-topic"
 
     @property
     def aws_resource_type(self):
@@ -22,12 +22,12 @@ class Topic:
 
 class TopicPolicy:
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, component_name):
+        self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.name}-topic-policy"
+        return f"{self.component_name}-topic-policy"
 
     @property
     def aws_resource_type(self):
@@ -39,7 +39,7 @@ class TopicPolicy:
             "Effect": "Allow",
             "Principal": {"Service": "sns.amazonaws.com"},
             "Action": ["sns:Publish"],
-            "Resource": {"Ref": self._h(f"{self.name}-topic")}
+            "Resource": {"Ref": self._h(f"{self.component_name}-topic")}
         }
         policy_doc = {
             "Version": "2012-10-17",
@@ -47,6 +47,6 @@ class TopicPolicy:
         }
         return {
             "PolicyDocument": policy_doc,
-            "Topics": [{"Ref": self._h(f"{self.name}-topic")}]
+            "Topics": [{"Ref": self._h(f"{self.component_name}-topic")}]
         }
 

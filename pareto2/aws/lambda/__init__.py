@@ -1,7 +1,7 @@
 class Function:
 
-    def __init__(self, name, role_suffix, code, runtime_version='runtime-version', handler='index.handler', size='default-size', timeout='default-timeout', envvars=None, layers=None):
-        self.name = name
+    def __init__(self, component_name, role_suffix, code, runtime_version='runtime-version', handler='index.handler', size='default-size', timeout='default-timeout', envvars=None, layers=None):
+        self.component_name = component_name
         self.role_suffix = role_suffix
         self.code = code
         self.runtime_version = runtime_version
@@ -13,7 +13,7 @@ class Function:
 
     @property
     def resource_name(self):
-        return f"{self.name}-function"
+        return f"{self.component_name}-function"
 
     @property
     def aws_resource_type(self):
@@ -21,7 +21,7 @@ class Function:
 
     @property
     def aws_properties(self):
-        role_name = f"{self.name}-{self.role_suffix}"
+        role_name = f"{self.component_name}-{self.role_suffix}"
         memory_size = f"memory-size-{self.size}"
         timeout = f"timeout-{self.timeout}"
         runtime = f"python${{{self.runtime_version}}}"
@@ -44,15 +44,15 @@ class Function:
 
 class Permission:
 
-    def __init__(self, name, action=None, source_arn=None, principal=None):
-        self.name = name
+    def __init__(self, component_name, action=None, source_arn=None, principal=None):
+        self.component_name = component_name
         self.action = action
         self.source_arn = source_arn
         self.principal = principal
     
     @property
     def resource_name(self):
-        return f"{self.name}-permission"
+        return f"{self.component_name}-permission"
     
     @property
     def aws_resource_type(self):
@@ -71,8 +71,8 @@ class Permission:
 
 class EventSourceMapping:
     
-    def __init__(self, name, function, source_arn, batch_size=1, starting_position=None, maximum_batching_window_in_seconds=None, maximum_retry_attempts=None):
-        self.name = name
+    def __init__(self, component_name, function, source_arn, batch_size=1, starting_position=None, maximum_batching_window_in_seconds=None, maximum_retry_attempts=None):
+        self.component_name = component_name
         self.function = function
         self.source_arn = source_arn
         self.batch_size = batch_size
@@ -82,7 +82,7 @@ class EventSourceMapping:
 
     @property
     def resource_name(self):
-        return f"{self.name}-event-source-mapping"
+        return f"{self.component_name}-event-source-mapping"
 
     @property
     def aws_resource_type(self):
@@ -106,14 +106,14 @@ class EventSourceMapping:
 
 class EventInvokeConfig:
     
-    def __init__(self, name, function_name, retries=0):
-        self.name = name
+    def __init__(self, component_name, function_name, retries=0):
+        self.component_name = component_name
         self.function_name = function_name
         self.retries = retries
 
     @property
     def resource_name(self):
-        return f"{self.name}-function-event-config"
+        return f"{self.component_name}-function-event-config"
 
     @property
     def aws_resource_type(self):

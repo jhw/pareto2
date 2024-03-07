@@ -1,12 +1,12 @@
 class RecordSet:
     
-    def __init__(self, name, resource_suffix, domain_name):
-        self.name = name
+    def __init__(self, component_name, resource_suffix, domain_name):
+        self.component_name = component_name
         self.domain_name = domain_name
 
     @property
     def resource_name(self):
-        return f"{self.name}-record-set"
+        return f"{self.component_name}-record-set"
 
     @property
     def aws_resource_type(self):
@@ -18,8 +18,8 @@ class RecordSet:
             "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": self.domain_name}]}]},
             "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": self.domain_name}]}]}
         }]}
-        dnsname = {"Fn::GetAtt": [f"{self.name}-record-set", "DistributionDomainName"]}
-        hzid = {"Fn::GetAtt": [f"{self.name}-record-set", "DistributionHostedZoneId"]}
+        dnsname = {"Fn::GetAtt": [f"{self.component_name}-record-set", "DistributionDomainName"]}
+        hzid = {"Fn::GetAtt": [f"{self.component_name}-record-set", "DistributionHostedZoneId"]}
         aliastarget = {
             "DNSName": dnsname,
             "EvaluateTargetHealth": False,
