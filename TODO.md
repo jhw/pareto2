@@ -71,6 +71,7 @@
 
 ### done
 
+- resource naming to handle irregulars (apigateway)
 - Resource base class resource_name, aws_type properties (based on class)
 - lambda self.action, self.function
 - "Ref"

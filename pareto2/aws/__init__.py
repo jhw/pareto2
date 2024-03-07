@@ -70,10 +70,10 @@ class Resource:
         return "%s-%s" % (self.component_name, dehungarorise(tokens[-1]))
 
     @property
-    def aws_resource_type(self):
+    def aws_resource_type(self, irregulars={"apigateway": "APIGateway"}):
         tokens=str(self.__class__).split("'")[1].split(".")
         return "::".join([tokens[-3].upper(),
-                          hungarorise(tokens[-2]),
+                          irregulars[tokens[-2]] if tokens[-2] in irregulars else hungarorise(tokens[-2]),
                           hungarorise(tokens[-1])])
 
     @property
