@@ -1,5 +1,7 @@
 ### short [0-8-0]
 
+- method and cors method bodies
+
 - review resources
 - resource rendering
 
