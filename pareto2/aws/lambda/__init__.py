@@ -1,4 +1,7 @@
-class Function:
+from pareto2.aws import hungarorise as H
+from pareto2.aws import Resource
+
+class Function(Resource):
 
     def __init__(self, component_name, code, runtime_version='runtime-version', handler='index.handler', size='default-size', timeout='default-timeout', envvars=None, layers=None):
         self.component_name = component_name
@@ -12,7 +15,7 @@ class Function:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-function"
+        return H(f"{self.component_name}-function")
 
     @property
     def aws_resource_type(self):
@@ -20,10 +23,10 @@ class Function:
 
     @property
     def aws_properties(self):
-        role_name = f"{self.component_name}-function-role"
-        memory_size = f"memory-size-{self.size}"
-        timeout = f"timeout-{self.timeout}"
-        runtime = f"python${{{self.runtime_version}}}"
+        role_name = H(f"{self.component_name}-function-role")
+        memory_size = H(f"memory-size-{self.size}")
+        timeout = H(f"timeout-{self.timeout}")
+        runtime = H(f"python${{{self.runtime_version}}}")
         environment_variables = {k: {"Ref": v} for k, v in self.envvars.items()}
         
         props = {
@@ -41,7 +44,7 @@ class Function:
         
         return props
 
-class Permission:
+class Permission(Resource):
 
     def __init__(self, component_name, action=None, source_arn=None, principal=None):
         self.component_name = component_name
@@ -51,7 +54,7 @@ class Permission:
     
     @property
     def resource_name(self):
-        return f"{self.component_name}-permission"
+        return H(f"{self.component_name}-permission")
     
     @property
     def aws_resource_type(self):
@@ -61,14 +64,14 @@ class Permission:
     def aws_properties(self):
         props = {
             "Action": "lambda:InvokeFunction",
-            "FunctionName": {"Ref": f"{self.action}-function"},
+            "FunctionName": {"Ref": H(f"{self.action}-function")},
             "Principal": self.principal
         }
         if self.source_arn:
             props["SourceArn"] = self.source_arn
         return props
 
-class EventSourceMapping:
+class EventSourceMapping(Resource):
     
     def __init__(self, component_name, function, source_arn, batch_size=1, starting_position=None, maximum_batching_window_in_seconds=None, maximum_retry_attempts=None):
         self.component_name = component_name
@@ -81,7 +84,7 @@ class EventSourceMapping:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-event-source-mapping"
+        return H(f"{self.component_name}-event-source-mapping")
 
     @property
     def aws_resource_type(self):
@@ -103,7 +106,7 @@ class EventSourceMapping:
         return props
 
 
-class EventInvokeConfig:
+class EventInvokeConfig(Resource):
     
     def __init__(self, component_name, function_name, retries=0):
         self.component_name = component_name
@@ -112,7 +115,7 @@ class EventInvokeConfig:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-function-event-config"
+        return H(f"{self.component_name}-function-event-config")
 
     @property
     def aws_resource_type(self):

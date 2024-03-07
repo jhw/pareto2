@@ -1,11 +1,19 @@
 ### short [0-8-0]
 
-- review aws classes
+- rest_api_id
+- -domain (-domain-name)
+- "Ref"
+- lambda self.action, self.function
+
+- Resource base class resource_name, aws_type properties (based on class)
+
+- review resources
+- component base class
+- review componnets
 
 - timers
 - action events
 - ensure all constructors are called with keywords
-- import H(), U()
 
 ### medium
 
@@ -18,12 +26,12 @@
 
 ### features
 
-- apigateway2
 - lambda alarms 
+- apigateway2
 - federated auth
 - passwordless auth
-- step functions
 - secrets
+- step functions
 
 ### thoughts
 

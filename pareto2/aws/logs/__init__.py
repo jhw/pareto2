@@ -1,4 +1,7 @@
-class SubscriptionFilter:
+from pareto2.aws import hungarorise as H
+from pareto2.aws import Resource
+
+class SubscriptionFilter(Resource):
     
     def __init__(self, component_name, pattern):
         self.component_name = component_name
@@ -6,7 +9,7 @@ class SubscriptionFilter:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-logs-subscription"
+        return H(f"{self.component_name}-subscription-filter")
 
     @property
     def aws_resource_type(self):
@@ -14,7 +17,7 @@ class SubscriptionFilter:
 
     @property
     def aws_properties(self):
-        destination_arn = {"Fn::GetAtt": [f"{self.component_name}-logs-function", "Arn"]}
+        destination_arn = {"Fn::GetAtt": [H(f"{self.component_name}-logs-function"), "Arn"]}
         log_group_name = {"Fn::Sub": LogGroupPattern.format(self.component_name)}
         return {
             "DestinationArn": destination_arn,
@@ -25,11 +28,11 @@ class SubscriptionFilter:
     @property
     def depends(self):
         return [
-            f"{self.component_name}-log-stream",
-            f"{self.component_name}-logs-permission"
+            H(f"{self.component_name}-log-stream"),
+            H(f"{self.component_name}-logs-permission")
         ]
 
-class LogGroup:
+class LogGroup(Resource):
 
     def __init__(self, component_name, retention_days=3):
         self.component_name = component_name
@@ -37,7 +40,7 @@ class LogGroup:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-log-group"
+        return H(f"{self.component_name}-log-group")
 
     @property
     def aws_resource_type(self):
@@ -52,7 +55,7 @@ class LogGroup:
             "RetentionInDays": self.retention_days
         }
 
-class LogStream:
+class LogStream(Resource):
 
     def __init__(self, component_name, retention_days=3):
         self.component_name = component_name
@@ -60,7 +63,7 @@ class LogStream:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-log-stream"
+        return H(f"{self.component_name}-log-stream")
 
     @property
     def aws_resource_type(self):
@@ -76,5 +79,5 @@ class LogStream:
 
     @property
     def depends(self):
-        return [f"{self.component_name}-log-group"]
+        return [H(f"{self.component_name}-log-group")]
 

@@ -1,4 +1,7 @@
-class Table:
+from pareto2.aws import hungarorise as H
+from pareto2.aws import Resource
+
+class Table(Resource):
     
     def __init__(self, component_name, indexes, streamtype="NEW_AND_OLD_IMAGES"):
         self.component_name = component_name
@@ -7,7 +10,7 @@ class Table:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-table"
+        return H(f"{self.component_name}-table")
 
     @property
     def aws_resource_type(self):
@@ -26,7 +29,7 @@ class Table:
             "KeySchema": key_schema
         }
         if "indexes" in self.table:
-            gsi = [{"IndexName": f"{index['name']}-index",
+            gsi = [{"IndexName": H(f"{index['name']}-index"),
                     "Projection": {"ProjectionType": "ALL"},
                     "KeySchema": [{"AttributeName": index["name"], "KeyType": "HASH"}]}
                    for index in self.indexes]

@@ -1,4 +1,13 @@
-class RestApi:
+from pareto2.aws import hungarorise as H
+
+"""
+- distinguish between aws.Resource and apigw.Resource
+"""
+
+# from pareto2.aws import Resource
+from pareto2 import aws
+
+class RestApi(aws.Resource):
 
     def __init__(self, component_name, binary_media_types=None):
         self.component_name = component_name
@@ -6,7 +15,7 @@ class RestApi:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-rest-api"
+        return H(f"{self.component_name}-rest-api")
 
     @property
     def aws_resource_type(self):
@@ -15,26 +24,26 @@ class RestApi:
     @property
     def aws_properties(self):
         properties = {
-            "Name": {"Fn::Sub": f"{self.component_name}-rest-api-${{AWS::StackName}}"}
+            "Name": {"Fn::Sub": H(f"{self.component_name}-rest-api-${{AWS::StackName}}")}
         }
         if self.binary_media_types:
             properties["BinaryMediaTypes"] = self.binary_media_types
         return properties
 
-class Deployment:
+class Deployment(aws.Resource):
 
     def __init__(self, component_name):
         self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-deployment"
+        return H(f"{self.component_name}-deployment")
 
     @property
     def aws_resource_type(self):
         return "AWS::ApiGateway::Deployment"
 
-class Stage:
+class Stage(aws.Resource):
 
     def __init__(self, component_name, stage_name, deployment_id, rest_api_id):
         self.component_name = component_name
@@ -44,7 +53,7 @@ class Stage:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-stage"
+        return H(f"{self.component_name}-stage")
 
     @property
     def aws_resource_type(self):
@@ -58,7 +67,7 @@ class Stage:
             "RestApiId": {"Ref": self.rest_api_id}
         }
     
-class Resource:
+class Resource(aws.Resource):
 
     def __init__(self, component_name, rest_api, pathpart, parent_id="RootResourceId"):
         self.component_name = component_name
@@ -68,7 +77,7 @@ class Resource:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-resource"
+        return H(f"{self.component_name}-resource")
 
     @property
     def aws_resource_type(self):
@@ -83,20 +92,20 @@ class Resource:
             "RestApiId": {"Ref": self.rest_api}
         }
     
-class Method:
+class Method(aws.Resource):
     
     def __init__(self, component_name):
         self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-method"
+        return H(f"{self.component_name}-method")
 
     @property
     def aws_resource_type(self):
         return "AWS::ApiGateway::Method"
 
-class Authorizer:
+class Authorizer(aws.Resource):
     
     def __init__(self, component_name, rest_api_id, authorizer_type, identity_source):
         self.component_name = component_name
@@ -106,7 +115,7 @@ class Authorizer:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-authorizer"
+        return H(f"{self.component_name}-authorizer")
 
     @property
     def aws_resource_type(self):
@@ -116,12 +125,12 @@ class Authorizer:
     def aws_properties(self):
         return {
             "IdentitySource": self.identity_source,
-            "Name": {"Fn::Sub": f"{self.component_name}-authorizer-${{AWS::StackName}}"},
+            "Name": {"Fn::Sub": H(f"{self.component_name}-authorizer-${{AWS::StackName}}")},
             "RestApiId": {"Ref": self.rest_api_id},
             "Type": self.authorizer_type
         }
 
-class RequestValidator:
+class RequestValidator(aws.Resource):
 
     def __init__(self, component_name, rest_api_id):
         self.component_name = component_name
@@ -129,7 +138,7 @@ class RequestValidator:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-request-validator"
+        return H(f"{self.component_name}-request-validator")
 
     @property
     def aws_resource_type(self):
@@ -146,7 +155,7 @@ class RequestValidator:
         """Method to be implemented by subclasses for specific validation settings."""
         return {}
 
-class Model:
+class Model(aws.Resource):
     
     def __init__(self, component_name, rest_api_id, content_type="application/json"):
         self.component_name = component_name
@@ -155,7 +164,7 @@ class Model:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-model"
+        return H(f"{self.component_name}-model")
 
     @property
     def aws_resource_type(self):
@@ -170,7 +179,7 @@ class Model:
             "Schema": self.schema()
         }
 
-class GatewayResponse:
+class GatewayResponse(aws.Resource):
     
     def __init__(self, component_name, response_type, rest_api_id):
         self.component_name = component_name
@@ -179,7 +188,7 @@ class GatewayResponse:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-gateway-response"
+        return H(f"{self.component_name}-gateway-response")
 
     @property
     def aws_resource_type(self):
@@ -193,7 +202,7 @@ class GatewayResponse:
             "ResponseParameters": self.response_parameters()
         }
 
-class DomainName:
+class DomainName(aws.Resource):
 
     def __init__(self, component_name, domain_name, certificate_arn):
         self.component_name = component_name
@@ -202,7 +211,7 @@ class DomainName:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-domain"
+        return H(f"{self.component_name}-domain-name")
 
     @property
     def aws_resource_type(self):
@@ -215,7 +224,7 @@ class DomainName:
             "CertificateArn": {"Ref": self.certificate_arn}
         }
     
-class BasePathMapping:
+class BasePathMapping(aws.Resource):
 
     def __init__(self, component_name, domain_name, stage_name, rest_api_id):
         self.component_name = component_name
@@ -225,7 +234,7 @@ class BasePathMapping:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-base-path-mapping"
+        return H(f"{self.component_name}-base-path-mapping")
 
     @property
     def aws_resource_type(self):
@@ -241,4 +250,4 @@ class BasePathMapping:
 
     @property
     def depends(self):
-        return [f"{self.component_name}-domain"]
+        return [H(f"{self.component_name}-domain")]

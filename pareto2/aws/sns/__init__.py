@@ -1,11 +1,14 @@
-class Topic:
+from pareto2.aws import hungarorise as H
+from pareto2.aws import Resource
+
+class Topic(Resource):
     
     def __init__(self, component_name):
         self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-topic"
+        return H(f"{self.component_name}-topic")
 
     @property
     def aws_resource_type(self):
@@ -20,14 +23,14 @@ class Topic:
             self.aws_properties["Subscription"] = []
         self.aws_properties["Subscription"].append(subscription)
 
-class TopicPolicy:
+class TopicPolicy(Resource):
 
     def __init__(self, component_name):
         self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-topic-policy"
+        return H(f"{self.component_name}-topic-policy")
 
     @property
     def aws_resource_type(self):
@@ -39,7 +42,7 @@ class TopicPolicy:
             "Effect": "Allow",
             "Principal": {"Service": "sns.amazonaws.com"},
             "Action": ["sns:Publish"],
-            "Resource": {"Ref": self._h(f"{self.component_name}-topic")}
+            "Resource": {"Ref": H(f"{self.component_name}-topic")}
         }
         policy_doc = {
             "Version": "2012-10-17",

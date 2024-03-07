@@ -1,11 +1,14 @@
-class UserPool:
+from pareto2.aws import hungarorise as H
+from pareto2.aws import Resource
+
+class UserPool(Resource):
 
     def __init__(self, component_name):
         self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-user-pool"
+        return H(f"{self.component_name}-user-pool")
 
     @property
     def aws_resource_type(self):
@@ -38,14 +41,14 @@ class UserPool:
             "UsernameAttributes": ["email"]
         }
 
-class UserPoolClient:
+class UserPoolClient(Resource):
     
     def __init__(self, component_name):
         self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-user-pool-client"
+        return H(f"{self.component_name}-user-pool-client")
 
     @property
     def aws_resource_type(self):
@@ -54,12 +57,12 @@ class UserPoolClient:
     @property
     def aws_properties(self):
         return {
-            "UserPoolId": {"Ref": f"{self.component_name}-user-pool"},
+            "UserPoolId": {"Ref": H(f"{self.component_name}-user-pool")},
             "PreventUserExistenceErrors": "ENABLED",
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
 
-class IdentityPoolBase:
+class IdentityPool(Resource):
 
     def __init__(self, component_name, client_id):
         self.component_name = component_name
@@ -67,7 +70,7 @@ class IdentityPoolBase:
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-identity-pool"
+        return H(f"{self.component_name}-identity-pool")
 
     @property
     def aws_resource_type(self):
@@ -76,7 +79,7 @@ class IdentityPoolBase:
     @property
     def aws_properties(self):
         client_id = {"Ref": self.client_id}
-        provider_name = {"Fn::GetAtt": [f"{self.component_name}-user-pool", "ProviderName"]}
+        provider_name = {"Fn::GetAtt": [H(f"{self.component_name}-user-pool"), "ProviderName"]}
         provider = {"ClientId": client_id,
                     "ProviderName": provider_name}
         return {
@@ -84,14 +87,14 @@ class IdentityPoolBase:
             "CognitoIdentityProviders": [provider]
         }
 
-class IdentityPoolRoleAttachment:
+class IdentityPoolRoleAttachment(Resource):
     
     def __init__(self, component_name):
         self.component_name = component_name
 
     @property
     def resource_name(self):
-        return f"{self.component_name}-identity-pool-role-attachment"
+        return H(f"{self.component_name}-identity-pool-role-attachment")
 
     @property
     def aws_resource_type(self):
@@ -99,9 +102,9 @@ class IdentityPoolRoleAttachment:
 
     @property
     def aws_properties(self):
-        identity_pool_id = {"Ref": f"{self.component_name}-identity-pool"}
-        auth_role = {"Fn::GetAtt": [f"{self.component_name}-identity-pool-authorized-role", "Arn"]}
-        unauth_role = {"Fn::GetAtt": [f"{self.component_name}-identity-pool-unauthorized-role", "Arn"]}
+        identity_pool_id = {"Ref": H(f"{self.component_name}-identity-pool")}
+        auth_role = {"Fn::GetAtt": [H(f"{self.component_name}-identity-pool-authorized-role"), "Arn"]}
+        unauth_role = {"Fn::GetAtt": [H(f"{self.component_name}-identity-pool-unauthorized-role"), "Arn"]}
         roles = {
             "authenticated": auth_role,
             "unauthenticated": unauth_role
