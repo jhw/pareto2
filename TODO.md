@@ -1,10 +1,14 @@
-### short [0-8-0]
+### short 
 
-- method and cors method bodies
+- migrate components/api method, corsmethod into aws/apigateway
+- migrate components/api cognito stuff into aws/cognito
 
-- review resources
+- AWS::Lambda::Permission
+- AWS::IAM::Role
+- AWS::Route53::RecordSet
+- AWS::Cognito::*
+
 - resource rendering
-
 - component base class
 - review components
 

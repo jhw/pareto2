@@ -66,7 +66,7 @@ class Resource:
 
     @property
     def class_names(self):
-        return [str(cls).split("'")[1] for cls in self.__class__.__mro__]
+        return [str(cls).split("'")[1] for cls in reversed(self.__class__.__mro__)]
 
     @property
     def aws_proxy_class(self, filterfn=AWSProxyClassFilterFn):
@@ -75,7 +75,7 @@ class Resource:
             tokens=classname.split(".")
             if filterfn(tokens):
                 return classname
-        raise RuntimeError("AWS proxy class not found for %s" % classnames[0])
+        raise RuntimeError("AWS proxy class not found for %s" % classnames[-1])
                 
     @property
     def resource_name(self):    
