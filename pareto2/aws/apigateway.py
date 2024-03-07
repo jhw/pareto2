@@ -5,74 +5,74 @@ from pareto2.aws import hungarorise as H
 """
 
 # from pareto2.aws import Resource
-from pareto2 import aws
+from pareto2.aws import Resource as AWSResource
 
 StageName="prod"
 
-class RestApi(aws.Resource):
+class RestApi(AWSResource):
 
-    def __init__(self, component_name):
-        self.component_name = component_name
+    def __init__(self, name):
+        self.name = name
 
     @property
     def aws_properties(self):
         return {
-            "Name": {"Fn::Sub": H(f"{self.component_name}-rest-api-${{AWS::StackName}}")}
+            "Name": {"Fn::Sub": H(f"{self.name}-rest-api-${{AWS::StackName}}")}
         }
 
-class Deployment(aws.Resource):
+class Deployment(AWSResource):
 
-    def __init__(self, component_name):
-        self.component_name = component_name
+    def __init__(self, name):
+        self.name = name
 
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")}
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")}
         }
 
     @property
     def depends(self):
-        return [H(f"{self.component_name}-method"),
-                H(f"{self.component_name}-cors-method")]
+        return [H(f"{self.name}-method"),
+                H(f"{self.name}-cors-method")]
                 
-class Stage(aws.Resource):
+class Stage(AWSResource):
 
-    def __init__(self, component_name, stage_name=StageName):
-        self.component_name = component_name
+    def __init__(self, name, stage_name=StageName):
+        self.name = name
         self.stage_name = stage_name
 
     @property
     def aws_properties(self):
         return {
             "StageName": self.stage_name,
-            "DeploymentId": {"Ref": H(f"{self.component_name}-deployment")},
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")}
+            "DeploymentId": {"Ref": H(f"{self.name}-deployment")},
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")}
         }
     
-class Resource(aws.Resource):
+class Resource(AWSResource):
 
-    def __init__(self, component_name, path):
-        self.component_name = component_name
+    def __init__(self, name, path):
+        self.name = name
         self.path = path
 
     @property
     def aws_properties(self):
         return {
-            "ParentId": {"Fn::GetAtt": [H(f"{self.component_name}-rest-api"), "RootResourceId"]}.
+            "ParentId": {"Fn::GetAtt": [H(f"{self.name}-rest-api"), "RootResourceId"]}.
             "PathPart": self.path,
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")}
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")}
         }
 
-class Method(aws.Resource):
+class Method(AWSResource):
     
-    def __init__(self, component_name):
-        self.component_name = component_name
+    def __init__(self, name):
+        self.name = name
 
-class Authorizer(aws.Resource):
+class Authorizer(AWSResource):
     
-    def __init__(self, component_name):
-        self.component_name = component_name
+    def __init__(self, name):
+        self.name = name
 
     """
     - feels like all APIGW authentication is going to be done against a UserPool, so it's okay to make this Cognito- centric in a base class
@@ -81,48 +81,48 @@ class Authorizer(aws.Resource):
     @property
     def aws_properties(self):
         return {
-            "ProviderARNS": [{"Fn::GetAtt": [H(f"{self.component_name}-user-pool"), "Arn"]}],
+            "ProviderARNS": [{"Fn::GetAtt": [H(f"{self.name}-user-pool"), "Arn"]}],
             "IdentitySource": "method.request.header.Authorization",
-            "Name": {"Fn::Sub": H(f"{self.component_name}-authorizer-${{AWS::StackName}}")},
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
+            "Name": {"Fn::Sub": H(f"{self.name}-authorizer-${{AWS::StackName}}")},
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
             "Type": "COGNITO_USER_POOLS"
         }
 
-class RequestValidatorBase(aws.Resource):
+class RequestValidatorBase(AWSResource):
 
-    def __init__(self, component_name, validate_request_parameters=False, validate_request_body=False):
-        self.component_name = component_name
+    def __init__(self, name, validate_request_parameters=False, validate_request_body=False):
+        self.name = name
         self.validate_request_parameters = validate_request_parameters
         self.validate_request_body = validate_request_body
 
     @property
     def aws_properties(self):
-        return {"RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
+        return {"RestApiId": {"Ref": H(f"{self.name}-rest-api")},
                 "ValidateRequestParameters": self.validate_request_parameters,
                 "ValidateRequestBody": self.validate_request_body}
 
 class RequestValidatorGET(RequestValidatorBase):
 
-    def __init__(self, component_name):
-        return RequestValidatorBase.__init__(self, component_name, validate_request_parameters=True)
+    def __init__(self, name):
+        return RequestValidatorBase.__init__(self, name, validate_request_parameters=True)
 
 class RequestValidatorPOST(RequestValidatorBase):
 
-    def __init__(self, component_name):
-        return RequestValidatorBase.__init__(self, component_name, validate_request_body=True)
+    def __init__(self, name):
+        return RequestValidatorBase.__init__(self, name, validate_request_body=True)
 
 """
 - pareto 0-7 notes say Name is "optional" but is in fact required if Method is to be able to look up model :/
 """
 
-class Model(aws.Resource):
+class Model(AWSResource):
     
     def __init__(self,
-                 component_name,
+                 name,
                  schema,
                  schema_type="http://json-schema.org/draft-04/schema#",
                  content_type="application/json"):
-        self.component_name = component_name
+        self.name = name
         self.schema = schema
         if "$schema" not in self.schema:
             self.schema["$schema"] = self.schema_type
@@ -131,16 +131,16 @@ class Model(aws.Resource):
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
             "ContentType": self.content_type,
-            "Name": self.component_name, # required?
+            "Name": self.name, # required?
             "Schema": schema
         }
 
-class GatewayResponseBase(aws.Resource):
+class GatewayResponseBase(AWSResource):
 
-    def __init__(self, component_name, response_type):
-        self.component_name = component_name
+    def __init__(self, name, response_type):
+        self.name = name
         self.response_type = response_type
 
     @property
@@ -149,48 +149,48 @@ class GatewayResponseBase(aws.Resource):
                 for k, v in [("headers", "*"),
                              ("origin", "*")]}
         return {
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
             "ResponseType": "DEFAULT_%s" % self.response_type,
             "ResponseParameters": self.response_parameters()
         }
 
 class GatewayResponse4XX(GatewayResponseBase):
 
-    def __init__(self, component_name):
-        return GatewayResponseBase.__init__(self, component_name, response_code="4XX")
+    def __init__(self, name):
+        return GatewayResponseBase.__init__(self, name, response_code="4XX")
 
 class GatewayResponse5XX(GatewayResponseBase):
 
-    def __init__(self, component_name):
-        return GatewayResponseBase.__init__(self, component_name, response_code="5XX")
+    def __init__(self, name):
+        return GatewayResponseBase.__init__(self, name, response_code="5XX")
         
-class DomainName(aws.Resource):
+class DomainName(AWSResource):
 
-    def __init__(self, component_name):
-        self.component_name = component_name
+    def __init__(self, name):
+        self.name = name
 
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
             "DomainName": {"Ref": H("domain-name")},
             "CertificateArn": {"Ref": H("certificate-arn")}
         }
     
-class BasePathMapping(aws.Resource):
+class BasePathMapping(AWSResource):
 
-    def __init__(self, component_name, stage_name=StageName):
-        self.component_name = component_name
+    def __init__(self, name, stage_name=StageName):
+        self.name = name
         self.stage_name = stage_name
 
     @property
     def aws_properties(self):
         return {
             "DomainName": {"Ref": H("domain-name")},
-            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
+            "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
             "Stage": self.stage_name
         }
 
     @property
     def depends(self):
-        return [H(f"{self.component_name}-domain-name")]
+        return [H(f"{self.name}-domain-name")]
