@@ -27,7 +27,6 @@ class Deployment(aws.Resource):
     def __init__(self, component_name):
         self.component_name = component_name
 
-
 class Stage(aws.Resource):
 
     def __init__(self, component_name, stage_name, deployment_id):

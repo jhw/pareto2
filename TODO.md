@@ -1,7 +1,5 @@
 ### short [0-8-0]
 
-- move aws directories
-
 - timers
 - action events
 
@@ -71,6 +69,7 @@
 
 ### done
 
+- move aws directories
 - resource naming to handle irregulars (apigateway)
 - Resource base class resource_name, aws_type properties (based on class)
 - lambda self.action, self.function
