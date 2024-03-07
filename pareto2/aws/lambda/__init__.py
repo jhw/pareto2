@@ -3,15 +3,23 @@ from pareto2.aws import Resource
 
 class Function(Resource):
 
-    def __init__(self, component_name, code, runtime_version='runtime-version', handler='index.handler', size='default-size', timeout='default-timeout', envvars=None, layers=None):
+    def __init__(self,
+                 component_name,
+                 code,
+                 runtime_version='3.10',
+                 handler='index.handler',
+                 size='default',
+                 timeout='default',
+                 envvars={},
+                 layers=[]):
         self.component_name = component_name
         self.code = code
         self.runtime_version = runtime_version
         self.handler = handler
         self.size = size
         self.timeout = timeout
-        self.envvars = envvars or {}
-        self.layers = layers or []
+        self.envvars = envvars
+        self.layers = layers
 
     @property
     def resource_name(self):
@@ -23,32 +31,24 @@ class Function(Resource):
 
     @property
     def aws_properties(self):
-        role_name = H(f"{self.component_name}-function-role")
-        memory_size = H(f"memory-size-{self.size}")
-        timeout = H(f"timeout-{self.timeout}")
-        runtime = H(f"python${{{self.runtime_version}}}")
-        environment_variables = {k: {"Ref": v} for k, v in self.envvars.items()}
-        
+        environment_variables = {k: {"Ref": v} for k, v in self.envvars.items()}        
         props = {
-            "Role": {"Fn::GetAtt": [role_name, "Arn"]},
-            "MemorySize": {"Ref": memory_size},
-            "Timeout": {"Ref": timeout},
+            "Role": {"Fn::GetAtt": [H(f"{self.component_name}-function-role"), "Arn"]},
+            "MemorySize": {"Ref": H(f"memory-size-{self.size}")},
+            "Timeout": {"Ref": H(f"timeout-{self.timeout}")},
             "Code": self.code,
             "Handler": self.handler,
-            "Runtime": {"Fn::Sub": runtime},
+            "Runtime": {"Fn::Sub": f"python{self.runtime_version}"},
             "Environment": {"Variables": environment_variables} if environment_variables else None
-        }
-        
+        }        
         if self.layers:
-            props["Layers"] = [{"Ref": layer} for layer in self.layers]
-        
+            props["Layers"] = [{"Ref": layer} for layer in self.layers]        
         return props
 
 class Permission(Resource):
 
-    def __init__(self, component_name, action=None, source_arn=None, principal=None):
+    def __init__(self, component_name, source_arn=None, principal=None):
         self.component_name = component_name
-        self.action = action
         self.source_arn = source_arn
         self.principal = principal
     
@@ -64,7 +64,7 @@ class Permission(Resource):
     def aws_properties(self):
         props = {
             "Action": "lambda:InvokeFunction",
-            "FunctionName": {"Ref": H(f"{self.action}-function")},
+            "FunctionName": {"Ref": H(f"{self.component_name}-function")},
             "Principal": self.principal
         }
         if self.source_arn:
@@ -73,9 +73,14 @@ class Permission(Resource):
 
 class EventSourceMapping(Resource):
     
-    def __init__(self, component_name, function, source_arn, batch_size=1, starting_position=None, maximum_batching_window_in_seconds=None, maximum_retry_attempts=None):
+    def __init__(self,
+                 component_name,
+                 source_arn,
+                 batch_size=1,
+                 starting_position=None,
+                 maximum_batching_window_in_seconds=None,
+                 maximum_retry_attempts=None):
         self.component_name = component_name
-        self.function = function
         self.source_arn = source_arn
         self.batch_size = batch_size
         self.starting_position = starting_position
@@ -93,7 +98,7 @@ class EventSourceMapping(Resource):
     @property
     def aws_properties(self):
         props = {
-            "FunctionName": {"Ref": self.function},
+            "FunctionName": {"Ref": H(f"{self.component_name}-function")},
             "EventSourceArn": self.source_arn,
             "BatchSize": self.batch_size
         }
@@ -105,12 +110,10 @@ class EventSourceMapping(Resource):
             props["MaximumRetryAttempts"] = self.maximum_retry_attempts
         return props
 
-
 class EventInvokeConfig(Resource):
     
-    def __init__(self, component_name, function_name, retries=0):
+    def __init__(self, component_name, retries=0):
         self.component_name = component_name
-        self.function_name = function_name
         self.retries = retries
 
     @property
@@ -125,6 +128,6 @@ class EventInvokeConfig(Resource):
     def aws_properties(self):
         return {
             "MaximumRetryAttempts": self.retries,
-            "FunctionName": {"Ref": self.function_name},
+            "FunctionName": {"Ref": H(f"{self.component_name}-function")},
             "Qualifier": "$LATEST"
         }

@@ -1,8 +1,5 @@
 ### short [0-8-0]
 
-- "Ref"
-- lambda self.action, self.function
-
 - Resource base class resource_name, aws_type properties (based on class)
 
 - review resources
@@ -73,6 +70,8 @@
 
 ### done
 
+- lambda self.action, self.function
+- "Ref"
 - dehungarorise
 - -domain (-domain-name)
 - rest_api_id
