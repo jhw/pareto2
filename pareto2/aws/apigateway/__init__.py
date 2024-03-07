@@ -45,11 +45,10 @@ class Deployment(aws.Resource):
 
 class Stage(aws.Resource):
 
-    def __init__(self, component_name, stage_name, deployment_id, rest_api_id):
+    def __init__(self, component_name, stage_name, deployment_id):
         self.component_name = component_name
         self.stage_name = stage_name
         self.deployment_id = deployment_id
-        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
@@ -64,14 +63,13 @@ class Stage(aws.Resource):
         return {
             "StageName": self.stage_name,
             "DeploymentId": {"Ref": self.deployment_id},
-            "RestApiId": {"Ref": self.rest_api_id}
+            "RestApiId": {"Ref":  H(f"{self.component_name}-rest-api")}
         }
     
 class Resource(aws.Resource):
 
-    def __init__(self, component_name, rest_api, pathpart, parent_id="RootResourceId"):
+    def __init__(self, component_name, pathpart, parent_id="RootResourceId"):
         self.component_name = component_name
-        self.rest_api = rest_api
         self.pathpart = pathpart
         self.parent_id = parent_id
 
@@ -85,11 +83,11 @@ class Resource(aws.Resource):
 
     @property
     def aws_properties(self):
-        parent_id = {"Fn::GetAtt": [self.rest_api, self.parent_id]}
+        parent_id = {"Fn::GetAtt": [H(f"{self.component_name}-rest-api"), self.parent_id]}
         return {
             "ParentId": parent_id,
             "PathPart": self.pathpart,
-            "RestApiId": {"Ref": self.rest_api}
+            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")}
         }
     
 class Method(aws.Resource):
@@ -107,9 +105,8 @@ class Method(aws.Resource):
 
 class Authorizer(aws.Resource):
     
-    def __init__(self, component_name, rest_api_id, authorizer_type, identity_source):
+    def __init__(self, component_name, authorizer_type, identity_source):
         self.component_name = component_name
-        self.rest_api_id = rest_api_id
         self.authorizer_type = authorizer_type
         self.identity_source = identity_source
 
@@ -126,15 +123,14 @@ class Authorizer(aws.Resource):
         return {
             "IdentitySource": self.identity_source,
             "Name": {"Fn::Sub": H(f"{self.component_name}-authorizer-${{AWS::StackName}}")},
-            "RestApiId": {"Ref": self.rest_api_id},
+            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
             "Type": self.authorizer_type
         }
 
 class RequestValidator(aws.Resource):
 
-    def __init__(self, component_name, rest_api_id):
+    def __init__(self, component_name):
         self.component_name = component_name
-        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
@@ -146,7 +142,7 @@ class RequestValidator(aws.Resource):
 
     @property
     def aws_properties(self):
-        props = {"RestApiId": {"Ref": self.rest_api_id}}
+        props = {"RestApiId": {"Ref": H(f"{self.component_name}-rest-api")}}
         validation_settings = self.validation_settings()
         props.update(validation_settings)
         return props
@@ -157,9 +153,8 @@ class RequestValidator(aws.Resource):
 
 class Model(aws.Resource):
     
-    def __init__(self, component_name, rest_api_id, content_type="application/json"):
+    def __init__(self, component_name, content_type="application/json"):
         self.component_name = component_name
-        self.rest_api_id = rest_api_id
         self.content_type = content_type
 
     @property
@@ -173,7 +168,7 @@ class Model(aws.Resource):
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": self.rest_api_id},
+            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
             "ContentType": self.content_type,
             "Name": self.component_name,
             "Schema": self.schema()
@@ -181,10 +176,9 @@ class Model(aws.Resource):
 
 class GatewayResponse(aws.Resource):
     
-    def __init__(self, component_name, response_type, rest_api_id):
+    def __init__(self, component_name, response_type):
         self.component_name = component_name
         self.response_type = response_type
-        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
@@ -197,7 +191,7 @@ class GatewayResponse(aws.Resource):
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": self.rest_api_id},
+            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
             "ResponseType": self.response_type,
             "ResponseParameters": self.response_parameters()
         }
@@ -226,11 +220,10 @@ class DomainName(aws.Resource):
     
 class BasePathMapping(aws.Resource):
 
-    def __init__(self, component_name, domain_name, stage_name, rest_api_id):
+    def __init__(self, component_name, domain_name, stage_name):
         self.component_name = component_name
         self.domain_name = domain_name
         self.stage_name = stage_name
-        self.rest_api_id = rest_api_id
 
     @property
     def resource_name(self):
@@ -244,7 +237,7 @@ class BasePathMapping(aws.Resource):
     def aws_properties(self):
         return {
             "DomainName": {"Ref": self.domain_name},
-            "RestApiId": {"Ref": self.rest_api_id},
+            "RestApiId": {"Ref": H(f"{self.component_name}-rest-api")},
             "Stage": self.stage_name
         }
 

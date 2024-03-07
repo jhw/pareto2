@@ -1,6 +1,5 @@
 ### short [0-8-0]
 
-- rest_api_id
 - -domain (-domain-name)
 - "Ref"
 - lambda self.action, self.function
@@ -75,6 +74,7 @@
 
 ### done
 
+- rest_api_id
 - route53 record set should get distribution parameters from elsewhere, not from self?
 - replace resource_suffix
 - harmonise use of name paramters at aws level
