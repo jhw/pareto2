@@ -1,13 +1,10 @@
 ### short [0-8-0]
 
-- timers
-- action events
-
 - review resources
+- resource rendering
+
 - component base class
 - review components
-
-- ensure all constructors are called with keywords
 
 ### medium
 
@@ -69,6 +66,8 @@
 
 ### done
 
+- timers
+- action events
 - move aws directories
 - resource naming to handle irregulars (apigateway)
 - Resource base class resource_name, aws_type properties (based on class)
