@@ -1,8 +1,7 @@
 class Function:
 
-    def __init__(self, component_name, role_suffix, code, runtime_version='runtime-version', handler='index.handler', size='default-size', timeout='default-timeout', envvars=None, layers=None):
+    def __init__(self, component_name, code, runtime_version='runtime-version', handler='index.handler', size='default-size', timeout='default-timeout', envvars=None, layers=None):
         self.component_name = component_name
-        self.role_suffix = role_suffix
         self.code = code
         self.runtime_version = runtime_version
         self.handler = handler
@@ -21,7 +20,7 @@ class Function:
 
     @property
     def aws_properties(self):
-        role_name = f"{self.component_name}-{self.role_suffix}"
+        role_name = f"{self.component_name}-function-role"
         memory_size = f"memory-size-{self.size}"
         timeout = f"timeout-{self.timeout}"
         runtime = f"python${{{self.runtime_version}}}"

@@ -1,6 +1,6 @@
 class RecordSet:
     
-    def __init__(self, component_name, resource_suffix, domain_name):
+    def __init__(self, component_name, domain_name):
         self.component_name = component_name
         self.domain_name = domain_name
 
