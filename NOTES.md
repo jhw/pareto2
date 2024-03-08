@@ -1,3 +1,32 @@
+### 0-8 philosophy
+
+- distinguish between resources and components
+- resources live in module/class structure which reflects their aws type
+- can extend base classes with useful default configurations
+- eg SimpleEmailUserPool, streaming table, eventbridge event patterns
+- but each class must be able to return its AWS resource type dynamically
+- to do this there must *always* be a base class which reflects the aws type name, even if its empty
+
+---
+
+- cloudformation makes extensive use of declarative refs, whether directly using Ref or indirectly using Fn::GetAtt
+- majority of resources in a component come from same aws package
+- hence default referencing convention should be to use name + resource suffix convention
+- but there are exceptions, particularly with respect to glue code
+- iam roles, lambda permissions, lambda event source mappings
+- here you probably need to override default refs with custom parameters
+
+---
+
+- resource renders down to resource name string and dict of values - Type, Properties, Depends
+- component is list of resources
+- component will probably render to Parameters, Resources, Outputs
+- template is list of components
+- components are defined in separate directory
+- expectation is that components import a lot of resources
+- but may also extend their own, particularly with respect to glue code
+- eg api component probably defines/extends nonsense cognito roles, other roles, permissions in a custom manner
+
 ### roadmap 03/01/24
 
 - let's assume we manage to refactor layman2 to include local builder

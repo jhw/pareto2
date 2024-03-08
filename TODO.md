@@ -1,11 +1,10 @@
 ### short 
 
-- migrate components/api method
-
-- is method resource defined on endpoint or api level?
+- apigw method api vs endpoint
+- apigw per endpoint resource definition
+- apigw public, private endpoint definition
 
 - AWS::Route53::RecordSet
-
 - AWS::Lambda::Permission
 - AWS::IAM::Role
 
@@ -74,6 +73,7 @@
 
 ### done
 
+- migrate components/api method
 - corsmethod into aws/apigateway
 - AWS::Cognito::*
 - migrate components/api cognito stuff into aws/cognito

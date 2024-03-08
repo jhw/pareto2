@@ -1,11 +1,11 @@
 from pareto2.aws import hungarorise as H
 
-"""
-- distinguish between aws.Resource and apigw.Resource
-"""
-
 # from pareto2.aws import Resource
-from pareto2.aws import Resource as AWSResource
+from pareto2.aws import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
+
+import json
+
+LambdaProxyMethodArn="arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
 
 StageName="prod"
 
@@ -69,14 +69,47 @@ class Method(AWSResource):
     def __init__(self, name):
         self.name = name
 
-class HttpMethod(Method):
+class LambdaProxyMethod(Method):
 
-    def __init__(self, name):
+    def __init__(self, name, parameters = None, schema = None):
         Method.__init__(self, name)
+        self.parameters = parameters
+        self.schema = schema
 
+    """
+    - replace api, endpoint with constructor arg
+    - resource defined on per api or per- endpoint basis?
+    """
+        
     @property
     def aws_properties(self):
-        return {}
+        uri={"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
+        integration={"IntegrationHttpMethod": "POST",
+                     "Type": "AWS_PROXY",
+                     "Uri": uri}
+        props={"HttpMethod": endpoint["method"],
+               "Integration": integration,
+               "ResourceId": {"Ref": H("%s-resource" % endpoint["name"])},
+               "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
+        props.update(authorisation)
+        if self.parameters:
+            props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
+            props["RequestParameters"]={"method.request.querystring.%s" % param: True
+                                        for param in self.parameters}
+        if self.schema:
+            props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
+            props["RequestModels"]={"application/json": H("%s-model" % endpoint["name"])}
+        return props
+
+class PublicLambdaProxyMethod(LambdaProxyMethod):
+
+    def __init__(self, name, **kwargs):
+        LambdaProxyMethod.__init__(self, name, **kwargs)
+
+class PrivateLambdaProxyMethod(LambdaProxyMethod):
+
+    def __init__(self, name, **kwargs):
+        LambdaProxyMethod.__init__(self, name, **kwargs)
         
 class CorsMethod(Method):
 
