@@ -1,14 +1,16 @@
 ### short 
 
-- migrate components/api method, corsmethod into aws/apigateway
+- migrate components/api method
+
+- is method resource defined on endpoint or api level?
+
+- AWS::Route53::RecordSet
 
 - AWS::Lambda::Permission
 - AWS::IAM::Role
-- AWS::Route53::RecordSet
 
 - resource rendering
 - component base class
-- review components
 
 ### medium
 
@@ -72,6 +74,7 @@
 
 ### done
 
+- corsmethod into aws/apigateway
 - AWS::Cognito::*
 - migrate components/api cognito stuff into aws/cognito
 - resource_name to reflect latest class

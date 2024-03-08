@@ -69,6 +69,58 @@ class Method(AWSResource):
     def __init__(self, name):
         self.name = name
 
+class HttpMethod(Method):
+
+    def __init__(self, name):
+        Method.__init__(self, name)
+
+    @property
+    def aws_properties(self):
+        return {}
+        
+class CorsMethod(Method):
+
+    def __init__(self, name, method):
+        Method.__init__(self, name)
+        self.method = method
+
+    def _integration_response(self):
+        params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
+                for k, v in [("headers", ",".join(CorsHeaders)),
+                             ("methods", "%s,OPTIONS" % self.method]),
+                             ("origin", "*")]}
+        templates={"application/json": ""}
+        return {"StatusCode": 200,
+                "ResponseParameters": params,
+                "ResponseTemplates": templates}
+
+    def _integration(self):
+        templates={"application/json": json.dumps({"statusCode": 200})}
+        response=self._integration_response()
+        return {"IntegrationResponses": [response],
+                "PassthroughBehavior": "WHEN_NO_MATCH",
+                "RequestTemplates": templates,
+                "Type": "MOCK"}
+
+    def _response(self):
+        params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): False
+                for k in ["headers", "methods", "origin"]}
+        models={"application/json": "Empty"}
+        return {"StatusCode": 200,
+                "ResponseModels": models,
+                "ResponseParameters": params}
+        
+    @property
+    def aws_properties(self):
+        integration=self._integration()
+        response=self._response()
+        return {"AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "Integration": integration,
+                "MethodResponses": [response],
+                "ResourceId": {"Ref": H(f"{self.name}-resource")}, # API resource or endpoint resource?
+                "RestApiId": {"Ref": H(f"{self.name}-rest-api")}}
+        
 class Authorizer(AWSResource):
     
     def __init__(self, name):
