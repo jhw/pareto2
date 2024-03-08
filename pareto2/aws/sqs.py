@@ -3,12 +3,12 @@ from pareto2.aws import Resource
 
 class Queue(Resource):
 
-    def __init__(self, component_name):
-        self.component_name = component_name
+    def __init__(self, name):
+        self.name = name
 
     @property
     def resource_name(self):
-        return H(f"{self.component_name}-queue")
+        return H(f"{self.name}-queue")
 
     @property
     def aws_resource_type(self):

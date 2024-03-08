@@ -4,7 +4,7 @@ from pareto2.aws import Resource
 class Function(Resource):
 
     def __init__(self,
-                 component_name,
+                 name,
                  code,
                  runtime_version='3.10',
                  handler='index.handler',
@@ -12,7 +12,7 @@ class Function(Resource):
                  timeout='default',
                  envvars={},
                  layers=[]):
-        self.component_name = component_name
+        self.name = name
         self.code = code
         self.runtime_version = runtime_version
         self.handler = handler
@@ -25,7 +25,7 @@ class Function(Resource):
     def aws_properties(self):
         environment_variables = {k: {"Ref": v} for k, v in self.envvars.items()}        
         props = {
-            "Role": {"Fn::GetAtt": [H(f"{self.component_name}-function-role"), "Arn"]},
+            "Role": {"Fn::GetAtt": [H(f"{self.name}-function-role"), "Arn"]},
             "MemorySize": {"Ref": H(f"memory-size-{self.size}")},
             "Timeout": {"Ref": H(f"timeout-{self.timeout}")},
             "Code": self.code,
@@ -39,32 +39,30 @@ class Function(Resource):
 
 class Permission(Resource):
 
-    def __init__(self, component_name, source_arn=None, principal=None):
-        self.component_name = component_name
+    def __init__(self, name, source_arn, principal):
+        self.name = name
         self.source_arn = source_arn
         self.principal = principal
     
     @property
     def aws_properties(self):
-        props = {
+        return {
             "Action": "lambda:InvokeFunction",
-            "FunctionName": {"Ref": H(f"{self.component_name}-function")},
-            "Principal": self.principal
+            "FunctionName": {"Ref": H(f"{self.name}-function")},
+            "Principal": self.principal,
+            "SourceArn": self.source_arn
         }
-        if self.source_arn:
-            props["SourceArn"] = self.source_arn
-        return props
 
 class EventSourceMapping(Resource):
     
     def __init__(self,
-                 component_name,
+                 name,
                  source_arn,
                  batch_size=1,
                  starting_position=None,
                  maximum_batching_window_in_seconds=None,
                  maximum_retry_attempts=None):
-        self.component_name = component_name
+        self.name = name
         self.source_arn = source_arn
         self.batch_size = batch_size
         self.starting_position = starting_position
@@ -74,7 +72,7 @@ class EventSourceMapping(Resource):
     @property
     def aws_properties(self):
         props = {
-            "FunctionName": {"Ref": H(f"{self.component_name}-function")},
+            "FunctionName": {"Ref": H(f"{self.name}-function")},
             "EventSourceArn": self.source_arn,
             "BatchSize": self.batch_size
         }
@@ -88,14 +86,14 @@ class EventSourceMapping(Resource):
 
 class EventInvokeConfig(Resource):
     
-    def __init__(self, component_name, retries=0):
-        self.component_name = component_name
+    def __init__(self, name, retries=0):
+        self.name = name
         self.retries = retries
 
     @property
     def aws_properties(self):
         return {
             "MaximumRetryAttempts": self.retries,
-            "FunctionName": {"Ref": H(f"{self.component_name}-function")},
+            "FunctionName": {"Ref": H(f"{self.name}-function")},
             "Qualifier": "$LATEST"
         }

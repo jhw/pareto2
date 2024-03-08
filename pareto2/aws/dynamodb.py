@@ -3,8 +3,8 @@ from pareto2.aws import Resource
 
 class Table(Resource):
     
-    def __init__(self, component_name, indexes, streamtype="NEW_AND_OLD_IMAGES"):
-        self.component_name = component_name
+    def __init__(self, name, indexes, streamtype="NEW_AND_OLD_IMAGES"):
+        self.name = name
         self.indexes = indexes
         self.streamtype = streamtype
 
