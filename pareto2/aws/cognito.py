@@ -6,14 +6,15 @@ class UserPool(Resource):
     def __init__(self, name):
         self.name = name
 
-    """
-    password policy, schema should be part of component
-    """
-    
+class SimpleEmailUserPool(UserPool):
+
+    def  __init__(self, name):
+        UserPool.__init__(self, name)
+        
     @property    
-    def aws_properties(self):
+    def aws_properties(self, nmin=8):
         password_policy = {
-            "MinimumLength": 8,
+            "MinimumLength": nmin,
             "RequireLowercase": True,
             "RequireNumbers": True,
             "RequireSymbols": True,
@@ -35,27 +36,53 @@ class UserPool(Resource):
 
 class UserPoolClient(Resource):
     
-    def __init__(self, name):
+    def __init__(self, name, pool_type="simple-email"):
         self.name = name
+        self.pool_type = pool_type
 
     @property
     def aws_properties(self):
         return {
-            "UserPoolId": {"Ref": H(f"{self.name}-user-pool")},
+            "UserPoolId": {"Ref": H(f"{self.name}-{self.pool_type}-user-pool")},
             "PreventUserExistenceErrors": "ENABLED",
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
 
+class UserPoolAdminClient(UserPoolClient):
+
+    def __init__(self, name):
+        UserPoolClient.__init__(self, name)
+
+    @property
+    def explicit_auth_flows(self):
+        return [
+            "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+            "ALLOW_REFRESH_TOKEN_AUTH"
+        ]
+
+class UserPoolWebClient(UserPoolClient):
+    
+    def __init__(self, name):
+        UserPoolClient.__init__(self, name)
+
+    @property
+    def explicit_auth_flows(self):
+        return [
+            "ALLOW_USER_SRP_AUTH",
+            "ALLOW_REFRESH_TOKEN_AUTH"
+        ]        
+    
 class IdentityPool(Resource):
 
-    def __init__(self, name, client_id):
+    def __init__(self, name, client_id, pool_type="simple-email"):
         self.name = name
         self.client_id = client_id
+        self.pool_type = pool_type
 
     @property
     def aws_properties(self):
         client_id = {"Ref": self.client_id}
-        provider_name = {"Fn::GetAtt": [H(f"{self.name}-user-pool"), "ProviderName"]}
+        provider_name = {"Fn::GetAtt": [H(f"{self.name}-{self.pool_type}-user-pool"), "ProviderName"]}
         provider = {"ClientId": client_id,
                     "ProviderName": provider_name}
         return {

@@ -73,30 +73,6 @@ class CorsMethod(MethodBase):
         integration_response = init_integration_response(self.endpoint)
         integration
             
-class UserPoolAdminClient(UserPoolClientBase):
-
-    def __init__(self, api):
-        super().__init__(api, "admin")
-
-    @property
-    def explicit_auth_flows(self):
-        return [
-            "ALLOW_ADMIN_USER_PASSWORD_AUTH",
-            "ALLOW_REFRESH_TOKEN_AUTH"
-        ]
-
-class UserPoolWebClient(UserPoolClientBase):
-    
-    def __init__(self, api):
-        super().__init__(api, "web")
-
-    @property
-    def explicit_auth_flows(self):
-        return [
-            "ALLOW_USER_SRP_AUTH",
-            "ALLOW_REFRESH_TOKEN_AUTH"
-        ]        
-
 class IdentityPoolUnauthorizedRole(RoleBase):
 
     def __init__(self, api, permissions=None):

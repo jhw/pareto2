@@ -79,7 +79,8 @@ class Resource:
                 
     @property
     def resource_name(self):    
-        tokens=self.aws_proxy_class.split(".")
+        # tokens=self.aws_proxy_class.split(".")
+        tokens=str(self.__class__).split(".") # latest subclass
         return "%s-%s" % (self.component_name, dehungarorise(tokens[-1]))
 
     @property

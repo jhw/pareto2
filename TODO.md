@@ -1,12 +1,10 @@
 ### short 
 
 - migrate components/api method, corsmethod into aws/apigateway
-- migrate components/api cognito stuff into aws/cognito
 
 - AWS::Lambda::Permission
 - AWS::IAM::Role
 - AWS::Route53::RecordSet
-- AWS::Cognito::*
 
 - resource rendering
 - component base class
@@ -32,6 +30,8 @@
 
 ### thoughts
 
+- does dehungarorise() need to take into account initials and numbers?
+  - have to see
 - permissions, size/timeout tests?
   - not sure it adds anything
 - nest tests?
@@ -72,6 +72,9 @@
 
 ### done
 
+- AWS::Cognito::*
+- migrate components/api cognito stuff into aws/cognito
+- resource_name to reflect latest class
 - timers
 - action events
 - move aws directories
