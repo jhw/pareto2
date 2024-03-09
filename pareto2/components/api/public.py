@@ -4,6 +4,7 @@ from pareto2.aws.cognito import *
 from pareto2.aws.route53 import *
 
 from pareto2.components import Component
+from pareto2.components.api import Permission
 
 import re
 
