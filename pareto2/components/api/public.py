@@ -68,7 +68,7 @@ class PublicApi(Component):
         return resources
             
 if __name__=="__main__":
-    api=PublicApi(namespace="hello-api",
+    api=PublicApi(namespace="my",
                   endpoints=[{"action": "whatevs",
                               "method": "GET",
                               "path": "hello-get",
