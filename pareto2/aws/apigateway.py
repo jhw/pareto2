@@ -72,7 +72,7 @@ class Method(AWSResource):
 class LambdaProxyMethod(Method):
 
     def __init__(self, name, parameters = None, schema = None):
-        Method.__init__(self, name)
+        super().__init__(name)
         self.parameters = parameters
         self.schema = schema
 
@@ -104,17 +104,17 @@ class LambdaProxyMethod(Method):
 class PublicLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, name, **kwargs):
-        LambdaProxyMethod.__init__(self, name, **kwargs)
+        super().__init__(name, **kwargs)
 
 class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, name, **kwargs):
-        LambdaProxyMethod.__init__(self, name, **kwargs)
+        super().__init__(name, **kwargs)
         
 class CorsMethod(Method):
 
     def __init__(self, name, method):
-        Method.__init__(self, name)
+        super().__init__(name)
         self.method = method
 
     def _integration_response(self):
@@ -189,12 +189,12 @@ class RequestValidator(AWSResource):
 class RequestValidatorGET(RequestValidator):
 
     def __init__(self, name):
-        return RequestValidator.__init__(self, name, validate_request_parameters=True)
+        return super().__init__(name, validate_request_parameters=True)
 
 class RequestValidatorPOST(RequestValidator):
 
     def __init__(self, name):
-        return RequestValidator.__init__(self, name, validate_request_body=True)
+        return super().__init__(name, validate_request_body=True)
 
 """
 - pareto 0-7 notes say Name is "optional" but is in fact required if Method is to be able to look up model :/
@@ -242,12 +242,12 @@ class GatewayResponse(AWSResource):
 class GatewayResponse4XX(GatewayResponse):
 
     def __init__(self, name):
-        return GatewayResponse.__init__(self, name, response_type="4XX")
+        return super().__init__(name, response_type="4XX")
 
 class GatewayResponse5XX(GatewayResponse):
 
     def __init__(self, name):
-        return GatewayResponse.__init__(self, name, response_type="5XX")
+        return super().__init__(name, response_type="5XX")
         
 class DomainName(AWSResource):
 

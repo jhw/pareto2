@@ -9,7 +9,7 @@ class UserPool(Resource):
 class SimpleEmailUserPool(UserPool):
 
     def  __init__(self, name):
-        UserPool.__init__(self, name)
+        super().__init__(name)
         
     @property    
     def aws_properties(self, nmin=8):
@@ -51,7 +51,7 @@ class UserPoolClient(Resource):
 class UserPoolAdminClient(UserPoolClient):
 
     def __init__(self, name):
-        UserPoolClient.__init__(self, name)
+        super().__init__(name)
 
     @property
     def explicit_auth_flows(self):
@@ -63,7 +63,7 @@ class UserPoolAdminClient(UserPoolClient):
 class UserPoolWebClient(UserPoolClient):
     
     def __init__(self, name):
-        UserPoolClient.__init__(self, name)
+        super().__init__(name)
 
     @property
     def explicit_auth_flows(self):

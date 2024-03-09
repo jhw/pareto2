@@ -1,8 +1,7 @@
 ### short 
 
-- replace base class constructors with super()
+- complete endpoints code
 - separate public, private api classes
-- ensure all resources are instantiated using keywords
 
 - template, parameters, outputs
 - review api implementation
@@ -69,6 +68,7 @@
 
 ### done
 
+- replace base class constructors with super()
 - GatewayResponse ResponseParameters
 - endpoints list
 - check refs to AWS::StackName
