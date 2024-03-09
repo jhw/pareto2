@@ -68,10 +68,21 @@ class IdentityPoolAuthorizedRole(IdentityPoolRole):
 - Validator
 - Model [post]
 """
-    
-class PublicApi(Component):    
+
+class ApiBase(Component):
+
+    def init_GET_endpoint(self, endpoint):
+        return [APIGWResource(name=self.name,
+                              path=endpoint["path"]),
+                LambdaProxyMethod(name=self.name,
+                                  function_name="whatevs",
+                                  method=endpoint["method"],
+                                  parameters=endpoint["parameters"])]
+
+class PublicApi(ApiBase):    
 
     def __init__(self, name, endpoints):
+        super().__init__(name=name)
         for klass in [RestApi,
                       Deployment,
                       Stage,
@@ -83,13 +94,7 @@ class PublicApi(Component):
             self.append(klass(name=name))
         for endpoint in endpoints:
             if endpoint["method"].upper()=="GET":
-                for instance in [APIGWResource(name=name,
-                                               path=endpoint["path"]),
-                                 LambdaProxyMethod(name=name,
-                                                   function_name="whatevs",
-                                                   method=endpoint["method"],
-                                                   parameters=endpoint["parameters"])]:
-                    self.append(instance)
+                self += self.init_GET_endpoint(endpoint)
             elif endpoint["method"].upper()=="POST":
                 pass
             else:

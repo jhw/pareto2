@@ -1,6 +1,5 @@
 ### short 
 
-- LambdaProxyMethod authorisation
 - add separate method / subclass for endpoint initialisation
 
 - separate public, private api classes
@@ -68,6 +67,7 @@
 
 ### done
 
+- LambdaProxyMethod authorisation
 - domain stuff
 - replace base class constructors with super()
 - GatewayResponse ResponseParameters

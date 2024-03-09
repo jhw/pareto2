@@ -71,11 +71,18 @@ class Method(AWSResource):
 
 class LambdaProxyMethod(Method):
 
-    def __init__(self, name, function_name, method, parameters = None, schema = None):
+    def __init__(self,
+                 name,
+                 function_name,
+                 method,
+                 private = False,
+                 parameters = None,
+                 schema = None):
         super().__init__(name)
         self.endpoint_name = "%s-%s" % (name, function_name)
         self.function_name = function_name
         self.method = method
+        self.private = private
         self.parameters = parameters
         self.schema = schema
         
@@ -89,7 +96,11 @@ class LambdaProxyMethod(Method):
                "Integration": integration,
                "ResourceId": {"Ref": H("%s-resource" % self.endpoint_name)},
                "RestApiId": {"Ref": H("%s-rest-api" % self.name)}}
-        # props.update(authorisation)
+        if self.private:
+            props["AuthorizationType"] = "COGNITO"
+            props["Authorizer"] = {"Ref": H("%s-authorizer" % self.name)}
+        else:
+            props["AuthorizationType"]="NONE"
         if self.parameters:
             props["RequestValidatorId"]={"Ref": H("%s-validator" % self.endpoint_name)}
             props["RequestParameters"]={"method.request.querystring.%s" % param: True
