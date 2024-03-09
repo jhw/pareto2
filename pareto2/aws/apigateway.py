@@ -173,7 +173,7 @@ class Authorizer(AWSResource):
             "Type": "COGNITO_USER_POOLS"
         }
 
-class RequestValidatorBase(AWSResource):
+class RequestValidator(AWSResource):
 
     def __init__(self, name, validate_request_parameters=False, validate_request_body=False):
         self.name = name
@@ -186,15 +186,15 @@ class RequestValidatorBase(AWSResource):
                 "ValidateRequestParameters": self.validate_request_parameters,
                 "ValidateRequestBody": self.validate_request_body}
 
-class RequestValidatorGET(RequestValidatorBase):
+class RequestValidatorGET(RequestValidator):
 
     def __init__(self, name):
-        return RequestValidatorBase.__init__(self, name, validate_request_parameters=True)
+        return RequestValidator.__init__(self, name, validate_request_parameters=True)
 
-class RequestValidatorPOST(RequestValidatorBase):
+class RequestValidatorPOST(RequestValidator):
 
     def __init__(self, name):
-        return RequestValidatorBase.__init__(self, name, validate_request_body=True)
+        return RequestValidator.__init__(self, name, validate_request_body=True)
 
 """
 - pareto 0-7 notes say Name is "optional" but is in fact required if Method is to be able to look up model :/
@@ -222,7 +222,7 @@ class Model(AWSResource):
             "Schema": schema
         }
 
-class GatewayResponseBase(AWSResource):
+class GatewayResponse(AWSResource):
 
     def __init__(self, name, response_type):
         self.name = name
@@ -235,19 +235,18 @@ class GatewayResponseBase(AWSResource):
                              ("origin", "*")]}
         return {
             "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
-            "ResponseType": "DEFAULT_%s" % self.response_type,
-            "ResponseParameters": self.response_parameters()
+            "ResponseType": "DEFAULT_%s" % self.response_type
         }
 
-class GatewayResponse4XX(GatewayResponseBase):
+class GatewayResponse4XX(GatewayResponse):
 
     def __init__(self, name):
-        return GatewayResponseBase.__init__(self, name, response_code="4XX")
+        return GatewayResponse.__init__(self, name, response_type="4XX")
 
-class GatewayResponse5XX(GatewayResponseBase):
+class GatewayResponse5XX(GatewayResponse):
 
     def __init__(self, name):
-        return GatewayResponseBase.__init__(self, name, response_code="5XX")
+        return GatewayResponse.__init__(self, name, response_type="5XX")
         
 class DomainName(AWSResource):
 

@@ -64,15 +64,23 @@ class IdentityPoolAuthorizedRole(IdentityPoolRole):
 
 class PublicApi(Component):
 
-    def __init__(self, name):
+    def __init__(self, name, endpoints):
         Component.__init__(self)
         for klass in [RestApi,
                       Deployment,
-                      Stage]:
+                      Stage,
+                      GatewayResponse4XX,
+                      GatewayResponse5XX]:
             self.append(klass(name=name))
+        for endpoint in endpoints:
+            pass
 
 if __name__=="__main__":
-    api=PublicApi(name="hello-api")
+    api=PublicApi(name="hello-api",
+                  endpoints=[{"name": "hello-get",
+                              "method": "GET",
+                              "parameters": ["message"]}])
+                             
     import json
     print (json.dumps(api.render(),
                       indent=2))
