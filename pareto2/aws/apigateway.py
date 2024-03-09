@@ -17,7 +17,7 @@ class RestApi(AWSResource):
     @property
     def aws_properties(self):
         return {
-            "Name": {"Fn::Sub": H(f"{self.name}-rest-api-${{AWS::StackName}}")}
+            "Name": H(f"{self.name}-rest-api")
         }
 
 class Deployment(AWSResource):

@@ -1,10 +1,14 @@
 ### short 
 
-- restapi Fn::Sub/Name expressions looks messed up
+- add back Fn::Sub expression for RestApi Name, without using f() 
+- check refs to AWS::StackName
 
 - endpoints list
 - separate public, private api classes
-- ensure resources are called with keywords
+- ensure all resources are instantiated using keywords
+
+- template, parameters, outputs
+- review api implementation
 
 ### medium
 
@@ -68,6 +72,7 @@
 
 ### done
 
+- restapi Fn::Sub/Name expressions looks messed up
 - aws resource type case sensitivity -> "Restapi"
 - component resource keys are messed up -> "whatevs-rest-api-'->"\"
 - component base class
