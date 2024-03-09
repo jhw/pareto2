@@ -31,10 +31,10 @@ class Function(FunctionBase):
 class Role(RoleBase):
     
     def __init__(self, component, base_permissions=[], additional_permissions=None):
-        self.component_name = component["name"]
+        self.name = component["name"]
         self.base_permissions = base_permissions
         self.additional_permissions = additional_permissions or []
-        super().__init__(self.component_name, self._compile_permissions())
+        super().__init__(self.name, self._compile_permissions())
 
     def _compile_permissions(self):
         # Combine base permissions with additional ones

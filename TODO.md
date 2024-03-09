@@ -1,20 +1,12 @@
 ### short 
 
-- public api
-- private api
+- component resource keys are messed up -> "whatevs-rest-api-'->"\"
+- aws resource type case sensitivity -> "Restapi"
+- restapi Fn::Sub/Name expressions looks messed up
 
----
-
-- apigw method api vs endpoint
-- apigw per endpoint resource definition
-- apigw public, private endpoint definition
-
-- AWS::Route53::RecordSet
-- AWS::Lambda::Permission
-- AWS::IAM::Role
-
-- resource rendering
-- component base class
+- endpoints list
+- separate public, private api classes
+- ensure resources are called with keywords
 
 ### medium
 

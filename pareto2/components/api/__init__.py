@@ -1,17 +1,26 @@
-from pareto.aws.apigateway import *
-from pareto.aws.cognito import *
-from pareto.aws.iam import Role as RoleBase
-from pareto.aws.lambda import Permission as PermissionsBase
-from pareto.aws.route53 import *
+from pareto2.aws.apigateway import *
+from pareto2.aws.cognito import *
+from pareto2.aws.iam import Role as RoleBase
+
+# from pareto2.aws.lambda import Permission as PermissionsBase
+
+import importlib
+lambda_module = importlib.import_module("pareto2.aws.lambda")
+PermissionBase = lambda_module.Permission
+
+from pareto2.aws.route53 import *
+
+from pareto2.components import Component
 
 class Permission(PermissionBase):
     
     def __init__(self, name, function_name, method, path):
         source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:{name}/{method}/{path}"}
-        PermissionBase.__init__(self, name,
-                                function_name,
-                                source_arn,
-                                "apigateway.amazonaws.com")
+        PermissionBase.__init__(self,
+                                name=name,
+                                function_name=function_name,
+                                source_arn=source_arn,
+                                principal="apigateway.amazonaws.com")
 
 class IdentityPoolRole(RoleBase):
 
@@ -45,10 +54,26 @@ class IdentityPoolAuthorizedRole(IdentityPoolRole):
     def __init__(self):
         IdentityPoolRole.__init__(self,
                                   name=f"{name}-identity-pool-authorized",
-                                  permissions or ["mobileanalytics:PutEvents",
-                                                  "cognito-sync:*",
-                                                  "cognito-identity:*",
-                                                  "lambda:InvokeFunction"])
+                                  permissions=["mobileanalytics:PutEvents",
+                                               "cognito-sync:*",
+                                               "cognito-identity:*",
+                                               "lambda:InvokeFunction"])
     @property
     def policy_document(self):
         return IdentityPoolRole.policy_document(self, "authorized")
+
+class PublicApi(Component):
+
+    def __init__(self, name):
+        Component.__init__(self)
+        for klass in [RestApi,
+                      Deployment,
+                      Stage]:
+            self.append(klass(name=name))
+
+if __name__=="__main__":
+    api=PublicApi(name="hello-api")
+    import json
+    print (json.dumps(api.render(),
+                      indent=2))
+    

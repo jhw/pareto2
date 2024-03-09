@@ -21,6 +21,8 @@ def uppercase(text):
     return "_".join([tok.upper()
                      for tok in text.split("-")])
 
+AWSProxyClassFilterFn=lambda x: len(x)==4 and x[1]=="aws"
+
 class Resource:
 
     @property
@@ -40,7 +42,7 @@ class Resource:
     def resource_name(self):    
         # tokens=self.aws_proxy_class.split(".")
         tokens=str(self.__class__).split(".") # latest subclass
-        return "%s-%s" % (self.component_name, dehungarorise(tokens[-1]))
+        return "%s-%s" % (self.name, dehungarorise(tokens[-1]))
 
     @property
     def aws_resource_type(self, irregulars={"apigateway": "APIGateway"}):

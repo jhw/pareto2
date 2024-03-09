@@ -59,7 +59,7 @@ class Resource(AWSResource):
     @property
     def aws_properties(self):
         return {
-            "ParentId": {"Fn::GetAtt": [H(f"{self.name}-rest-api"), "RootResourceId"]}.
+            "ParentId": {"Fn::GetAtt": [H(f"{self.name}-rest-api"), "RootResourceId"]},
             "PathPart": self.path,
             "RestApiId": {"Ref": H(f"{self.name}-rest-api")}
         }
@@ -120,7 +120,7 @@ class CorsMethod(Method):
     def _integration_response(self):
         params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
                 for k, v in [("headers", ",".join(CorsHeaders)),
-                             ("methods", "%s,OPTIONS" % self.method]),
+                             ("methods", "%s,OPTIONS" % self.method),
                              ("origin", "*")]}
         templates={"application/json": ""}
         return {"StatusCode": 200,
