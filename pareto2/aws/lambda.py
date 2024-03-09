@@ -37,10 +37,15 @@ class Function(Resource):
             props["Layers"] = [{"Ref": layer} for layer in self.layers]        
         return props
 
+"""
+- Permission is "glue code" hence option to override default function name
+"""
+    
 class Permission(Resource):
 
-    def __init__(self, name, source_arn, principal):
+    def __init__(self, name, source_arn, principal, function_name=None):
         self.name = name
+        self.function_name = function_name or f"{name}-function"
         self.source_arn = source_arn
         self.principal = principal
     
@@ -48,21 +53,27 @@ class Permission(Resource):
     def aws_properties(self):
         return {
             "Action": "lambda:InvokeFunction",
-            "FunctionName": {"Ref": H(f"{self.name}-function")},
+            "FunctionName": {"Ref": H(self.function_name)},
             "Principal": self.principal,
             "SourceArn": self.source_arn
         }
 
+"""
+- EventSourceMapping is "glue code" hence option to override default function name
+"""
+    
 class EventSourceMapping(Resource):
     
     def __init__(self,
                  name,
                  source_arn,
+                 function_name=None,
                  batch_size=1,
                  starting_position=None,
                  maximum_batching_window_in_seconds=None,
                  maximum_retry_attempts=None):
         self.name = name
+        self.function_name = function_name or f"{name}-function"
         self.source_arn = source_arn
         self.batch_size = batch_size
         self.starting_position = starting_position
@@ -72,7 +83,7 @@ class EventSourceMapping(Resource):
     @property
     def aws_properties(self):
         props = {
-            "FunctionName": {"Ref": H(f"{self.name}-function")},
+            "FunctionName": {"Ref": H(self.function_name)},
             "EventSourceArn": self.source_arn,
             "BatchSize": self.batch_size
         }

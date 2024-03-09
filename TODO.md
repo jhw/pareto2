@@ -1,5 +1,12 @@
 ### short 
 
+- resource rendering 
+- component base class
+- public api
+- private api
+
+---
+
 - apigw method api vs endpoint
 - apigw per endpoint resource definition
 - apigw public, private endpoint definition
@@ -73,6 +80,7 @@
 
 ### done
 
+- remaining cognito role crap
 - migrate components/api method
 - corsmethod into aws/apigateway
 - AWS::Cognito::*
