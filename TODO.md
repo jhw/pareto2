@@ -3,6 +3,7 @@
 - endpoint to use explicit parent/child naming convention
 
 - Permission
+- endpoint function refs
 
 - POST endpoint demo [model, schema]
 - private api
