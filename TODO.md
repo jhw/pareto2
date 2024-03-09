@@ -1,6 +1,5 @@
 ### short 
 
-- resource rendering 
 - component base class
 - public api
 - private api
@@ -80,6 +79,7 @@
 
 ### done
 
+- resource rendering 
 - remaining cognito role crap
 - migrate components/api method
 - corsmethod into aws/apigateway
