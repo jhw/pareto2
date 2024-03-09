@@ -1,6 +1,8 @@
 ### short 
 
-- add permission resource
+- permission resource
+- authorizer resource
+
 - CORS is not being lowercased when hungarorised as part of logical id
 
 - private api

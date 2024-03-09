@@ -11,18 +11,21 @@ class PublicApi(Component):
 
     def __init__(self, namespace, endpoints):
         super().__init__(namespace=namespace)
-        for klass in [RestApi,
-                      Deployment,
-                      Stage,
-                      GatewayResponse4XX,
-                      GatewayResponse5XX,
-                      DomainName,
-                      BasePathMapping,
-                      RecordSet]:
-            self.append(klass(namespace=namespace))
+        self += self.init_api()
         for endpoint in endpoints:
             self += self.init_endpoint(endpoint)
 
+    def init_api(self):
+        return [klass(namespace=self.namespace)
+                for klass in [RestApi,
+                              Deployment,
+                              Stage,
+                              GatewayResponse4XX,
+                              GatewayResponse5XX,
+                              DomainName,
+                              BasePathMapping,
+                              RecordSet]]
+            
     def init_endpoint(self, endpoint):
         namespace="%s-%s" % (self.namespace,
                         "-".join([tok.lower()
