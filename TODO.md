@@ -1,12 +1,11 @@
 ### short 
 
-- CORS is not being lowercased when hungarorised as part of logical id
-
 - rename name as namespace
 - api proxy method to reference -function suffix (given namespace)
-
 - api permission source arn is messed up
 - add permission resource
+
+- CORS is not being lowercased when hungarorised as part of logical id
 
 - private api
 
