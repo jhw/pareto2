@@ -1,6 +1,5 @@
 ### short 
 
-- rename name as namespace
 - api proxy method to reference -function suffix (given namespace)
 - api permission source arn is messed up
 - add permission resource
@@ -73,6 +72,7 @@
 
 ### done
 
+- rename name as namespace
 - hungarorise should lowercase then capitalise
 - POST model
 - endpoint to use explicit parent/child naming convention

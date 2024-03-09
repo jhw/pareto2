@@ -3,13 +3,13 @@ from pareto2.aws import Resource
 
 class UserPool(Resource):
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, namespace):
+        self.namespace = namespace
 
 class SimpleEmailUserPool(UserPool):
 
-    def  __init__(self, name):
-        super().__init__(name)
+    def  __init__(self, namespace):
+        super().__init__(namespace)
         
     @property    
     def aws_properties(self, nmin=8):
@@ -36,22 +36,22 @@ class SimpleEmailUserPool(UserPool):
 
 class UserPoolClient(Resource):
     
-    def __init__(self, name, pool_type="simple-email"):
-        self.name = name
+    def __init__(self, namespace, pool_type="simple-email"):
+        self.namespace = namespace
         self.pool_type = pool_type
 
     @property
     def aws_properties(self):
         return {
-            "UserPoolId": {"Ref": H(f"{self.name}-{self.pool_type}-user-pool")},
+            "UserPoolId": {"Ref": H(f"{self.namespace}-{self.pool_type}-user-pool")},
             "PreventUserExistenceErrors": "ENABLED",
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
 
 class UserPoolAdminClient(UserPoolClient):
 
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, namespace):
+        super().__init__(namespace)
 
     @property
     def explicit_auth_flows(self):
@@ -62,8 +62,8 @@ class UserPoolAdminClient(UserPoolClient):
 
 class UserPoolWebClient(UserPoolClient):
     
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, namespace):
+        super().__init__(namespace)
 
     @property
     def explicit_auth_flows(self):
@@ -74,15 +74,15 @@ class UserPoolWebClient(UserPoolClient):
     
 class IdentityPool(Resource):
 
-    def __init__(self, name, client_id, pool_type="simple-email"):
-        self.name = name
+    def __init__(self, namespace, client_id, pool_type="simple-email"):
+        self.namespace = namespace
         self.client_id = client_id
         self.pool_type = pool_type
 
     @property
     def aws_properties(self):
         client_id = {"Ref": self.client_id}
-        provider_name = {"Fn::GetAtt": [H(f"{self.name}-{self.pool_type}-user-pool"), "ProviderName"]}
+        provider_name = {"Fn::GetAtt": [H(f"{self.namespace}-{self.pool_type}-user-pool"), "ProviderName"]}
         provider = {"ClientId": client_id,
                     "ProviderName": provider_name}
         return {
@@ -92,14 +92,14 @@ class IdentityPool(Resource):
 
 class IdentityPoolRoleAttachment(Resource):
     
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, namespace):
+        self.namespace = namespace
 
     @property
     def aws_properties(self):
-        identity_pool_id = {"Ref": H(f"{self.name}-identity-pool")}
-        auth_role = {"Fn::GetAtt": [H(f"{self.name}-identity-pool-authorized-role"), "Arn"]}
-        unauth_role = {"Fn::GetAtt": [H(f"{self.name}-identity-pool-unauthorized-role"), "Arn"]}
+        identity_pool_id = {"Ref": H(f"{self.namespace}-identity-pool")}
+        auth_role = {"Fn::GetAtt": [H(f"{self.namespace}-identity-pool-authorized-role"), "Arn"]}
+        unauth_role = {"Fn::GetAtt": [H(f"{self.namespace}-identity-pool-unauthorized-role"), "Arn"]}
         roles = {
             "authenticated": auth_role,
             "unauthenticated": unauth_role

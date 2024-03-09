@@ -41,7 +41,7 @@ class Resource:
     @property
     def resource_name(self):    
         tokens=self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.name, dehungarorise(tokens[-1]))
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
 
     @property
     def aws_resource_type(self, irregulars={"apigateway": "ApiGateway"}):

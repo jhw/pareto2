@@ -9,8 +9,8 @@ import re
 
 class PublicApi(Component):    
 
-    def __init__(self, name, endpoints):
-        super().__init__(name=name)
+    def __init__(self, namespace, endpoints):
+        super().__init__(namespace=namespace)
         for klass in [RestApi,
                       Deployment,
                       Stage,
@@ -19,46 +19,44 @@ class PublicApi(Component):
                       DomainName,
                       BasePathMapping,
                       RecordSet]:
-            self.append(klass(name=name))
+            self.append(klass(namespace=namespace))
         for endpoint in endpoints:
             self += self.init_endpoint(endpoint)
 
     def init_endpoint(self, endpoint):
-        name="%s-%s" % (self.name,
+        namespace="%s-%s" % (self.namespace,
                         "-".join([tok.lower()
                                   for tok in re.split("\\W", endpoint["path"])
                                   if tok!=""]))
         resources=[]
-        resources.append(APIGWResource(name=name,
+        resources.append(APIGWResource(namespace=namespace,
                                        path=endpoint["path"]))
-        resources.append(CORSMethod(name=name,
+        resources.append(CORSMethod(namespace=namespace,
                                     method=endpoint["method"]))
         if "parameters" in endpoint:
-            resources.append(ParameterRequestValidator(name=name))
-            resources.append(PublicLambdaProxyMethod(name=name,
-                                                     api_name=self.name,
-                                                     function_name="whatevs",
+            resources.append(ParameterRequestValidator(namespace=namespace))
+            resources.append(PublicLambdaProxyMethod(namespace=namespace,
+                                                     api_namespace=self.namespace,
+                                                     function_namespace="whatevs",
                                                      method=endpoint["method"],
                                                      parameters=endpoint["parameters"]))
         if "schema" in endpoint:
-            resources.append(SchemaRequestValidator(name=name))
-            resources.append(PublicLambdaProxyMethod(name=name,
-                                                     api_name=self.name,
-                                                     function_name="whatevs",
+            resources.append(SchemaRequestValidator(namespace=namespace))
+            resources.append(PublicLambdaProxyMethod(namespace=namespace,
+                                                     api_namespace=self.namespace,
+                                                     function_namespace="whatevs",
                                                      method=endpoint["method"],
                                                      schema=endpoint["schema"]))
-            resources.append(Model(name=name,
+            resources.append(Model(namespace=namespace,
                                    schema=endpoint["schema"]))
         return resources
             
 if __name__=="__main__":
-    api=PublicApi(name="hello-api",
-                  endpoints=[{"name": "hello-get",
-                              "method": "GET",
+    api=PublicApi(namespace="hello-api",
+                  endpoints=[{"method": "GET",
                               "path": "hello-get",
                               "parameters": ["message"]},
-                             {"name": "hello-post",
-                              "method": "POST",
+                             {"method": "POST",
                               "path": "hello-post",
                               "schema": {"hello": "world"}}])                             
     import json
