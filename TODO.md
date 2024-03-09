@@ -1,6 +1,5 @@
 ### short 
 
-- component base class
 - public api
 - private api
 
@@ -79,6 +78,7 @@
 
 ### done
 
+- component base class
 - resource rendering 
 - remaining cognito role crap
 - migrate components/api method
