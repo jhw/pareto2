@@ -1,6 +1,5 @@
 ### short 
 
-- component resource keys are messed up -> "whatevs-rest-api-'->"\"
 - aws resource type case sensitivity -> "Restapi"
 - restapi Fn::Sub/Name expressions looks messed up
 
@@ -70,6 +69,7 @@
 
 ### done
 
+- component resource keys are messed up -> "whatevs-rest-api-'->"\"
 - component base class
 - resource rendering 
 - remaining cognito role crap

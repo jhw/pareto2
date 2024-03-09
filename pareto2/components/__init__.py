@@ -4,6 +4,6 @@ class Component(list):
         list.__init__(self, items)
 
     def render(self):
-        resources=dict([component.render()
-                        for component in self])
+        resources=dict([resource.render()
+                        for resource in self])
         return {"Resources": resources}

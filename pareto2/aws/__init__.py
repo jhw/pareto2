@@ -40,8 +40,7 @@ class Resource:
                 
     @property
     def resource_name(self):    
-        # tokens=self.aws_proxy_class.split(".")
-        tokens=str(self.__class__).split(".") # latest subclass
+        tokens=self.class_names[-1].split(".") # latest subclass
         return "%s-%s" % (self.name, dehungarorise(tokens[-1]))
 
     @property
@@ -56,8 +55,9 @@ class Resource:
         return {}
     
     def render(self):
-        resource={"Type": self.aws_resource_type,
-                  "Properties": self.aws_properties}
+        key=hungarorise(self.resource_name)
+        body={"Type": self.aws_resource_type,
+              "Properties": self.aws_properties}
         if hasattr(self, "depends"):
-            resource["DependsOn"]=self.depends
-        return (self.resource_name, resource)
+            body["DependsOn"]=self.depends
+        return (key, body)
