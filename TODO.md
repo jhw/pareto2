@@ -1,6 +1,5 @@
 ### short 
 
-- aws resource type case sensitivity -> "Restapi"
 - restapi Fn::Sub/Name expressions looks messed up
 
 - endpoints list
@@ -69,6 +68,7 @@
 
 ### done
 
+- aws resource type case sensitivity -> "Restapi"
 - component resource keys are messed up -> "whatevs-rest-api-'->"\"
 - component base class
 - resource rendering 

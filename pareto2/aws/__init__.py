@@ -44,11 +44,11 @@ class Resource:
         return "%s-%s" % (self.name, dehungarorise(tokens[-1]))
 
     @property
-    def aws_resource_type(self, irregulars={"apigateway": "APIGateway"}):
+    def aws_resource_type(self, irregulars={"apigateway": "ApiGateway"}):
         tokens=self.aws_proxy_class.split(".")
-        return "::".join([tokens[-3].upper(),
+        return "::".join([tokens[-3].upper(), # AWS
                           irregulars[tokens[-2]] if tokens[-2] in irregulars else hungarorise(tokens[-2]),
-                          hungarorise(tokens[-1])])
+                          tokens[-1]]) # class name already hungarorised
 
     @property
     def aws_properties(self):
