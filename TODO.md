@@ -1,9 +1,7 @@
 ### short 
 
-- api proxy method to reference -function suffix (given namespace)
 - api permission source arn is messed up
 - add permission resource
-
 - CORS is not being lowercased when hungarorised as part of logical id
 
 - private api
@@ -72,6 +70,7 @@
 
 ### done
 
+- api proxy method to reference -function suffix (given namespace)
 - rename name as namespace
 - hungarorise should lowercase then capitalise
 - POST model
