@@ -1,6 +1,5 @@
 ### short 
 
-- api permission source arn is messed up
 - add permission resource
 - CORS is not being lowercased when hungarorised as part of logical id
 
@@ -70,6 +69,7 @@
 
 ### done
 
+- api permission source arn is messed up
 - api proxy method to reference -function suffix (given namespace)
 - rename name as namespace
 - hungarorise should lowercase then capitalise
