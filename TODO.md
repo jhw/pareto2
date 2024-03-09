@@ -1,8 +1,8 @@
 ### short 
 
-- add separate method / subclass for endpoint initialisation
-
 - separate public, private api classes
+- replace private parameter with class implementations
+
 - template, parameters, outputs
 
 ### medium
@@ -67,6 +67,7 @@
 
 ### done
 
+- add separate method / subclass for endpoint initialisation
 - LambdaProxyMethod authorisation
 - domain stuff
 - replace base class constructors with super()
