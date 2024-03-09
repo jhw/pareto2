@@ -95,7 +95,7 @@ class LambdaProxyMethod(Method):
         
     @property
     def aws_properties(self):
-        uri={"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H(self.function_namespace), "Arn"]}}]}
+        uri={"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
         integration={"IntegrationHttpMethod": "POST",
                      "Type": "AWS_PROXY",
                      "Uri": uri}
