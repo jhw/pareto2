@@ -4,6 +4,7 @@ from pareto2.aws.cognito import *
 from pareto2.aws.route53 import *
 
 from pareto2.components import Component
+
 from pareto2.components.api import Permission
 
 import re
@@ -37,6 +38,10 @@ class PublicApi(Component):
                                        path=endpoint["path"]))
         resources.append(CORSMethod(namespace=namespace,
                                     method=endpoint["method"]))
+        resources.append(Permission(namespace=namespace,
+                                    function_namespace="whatevs",
+                                    method=endpoint["method"],
+                                    path=endpoint["path"]))                                    
         if "parameters" in endpoint:
             resources.append(ParameterRequestValidator(namespace=namespace))
             resources.append(PublicLambdaProxyMethod(namespace=namespace,

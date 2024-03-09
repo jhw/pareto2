@@ -1,13 +1,18 @@
 ### short 
 
-- permission resource
-- authorizer resource
-
+- Permission needs api namespace to generate source arn
 - CORS is not being lowercased when hungarorised as part of logical id
 
 - private api
 
 - template, parameters, outputs
+
+### roadmap
+
+- skeleton lambda for api demos
+- website
+- lambda slack logging
+- streaming table
 
 ### medium
 
@@ -71,6 +76,8 @@
 
 ### done
 
+- permission resource
+- authorizer resource
 - api permission source arn is messed up
 - api proxy method to reference -function suffix (given namespace)
 - rename name as namespace
