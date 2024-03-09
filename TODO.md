@@ -2,10 +2,8 @@
 
 - CorsMethod
 - Permission
-- Validator
-- Model [post]
 
-
+- POST endpoint demo [model, schema]
 - private api
 
 - template, parameters, outputs
@@ -72,6 +70,7 @@
 
 ### done
 
+- Validator
 - replace private parameter with class implementations
 - separate public, private api classes
 - add separate method / subclass for endpoint initialisation

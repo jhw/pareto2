@@ -6,12 +6,15 @@ from pareto2.aws.route53 import *
 from pareto2.components import Component
 
 def init_GET_endpoint(name, endpoint):
-    return [APIGWResource(name=name,
-                          path=endpoint["path"]),
-            PublicLambdaProxyMethod(name=name,
-                                    function_name="whatevs",
-                                    method=endpoint["method"],
-                                    parameters=endpoint["parameters"])]
+    resources=[]
+    resources.append(APIGWResource(name=name,
+                                   path=endpoint["path"]))
+    resources.append(PublicLambdaProxyMethod(name=name,
+                                             function_name="whatevs",
+                                             method=endpoint["method"],
+                                             parameters=endpoint["parameters"]))
+    resources.append(RequestValidatorGET(name=name))
+    return resources
 
 class PublicApi(Component):    
 
