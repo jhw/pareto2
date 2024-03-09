@@ -1,12 +1,11 @@
 ### short 
 
-- CORS is not being lowercased when hungarorised as part of logical id
+- private api
 
 - template, parameters, outputs
 
 ### roadmap
 
-- private api
 - skeleton lambda to support apis
 - api demos
 - website
@@ -82,6 +81,7 @@
 
 ### done
 
+- CORS is not being lowercased when hungarorised as part of logical id
 - check use of AWS::Stack
 - check where comments include "required?"
 - apigw deployment must depend on all endpoints
