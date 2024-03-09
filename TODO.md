@@ -15,9 +15,11 @@
 - skeleton lambda to support apis
 - api demos
 - website
+- lambda event config
 - lambda slack logging
-- streaming table
 - bucket
+- lambda event source mapping
+- streaming table
 - events
 - queue
 - timer 
