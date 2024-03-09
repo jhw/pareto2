@@ -79,13 +79,14 @@ class LambdaProxyMethod(Method):
 
     def __init__(self,
                  name,
+                 api_name,
                  function_name,
                  method,
                  authorisation = None,
                  parameters = None,
                  schema = None):
         super().__init__(name)
-        self.endpoint_name = "%s-%s" % (name, function_name)
+        self.api_name = api_name
         self.function_name = function_name
         self.method = method
         self.authorisation = authorisation
@@ -100,16 +101,16 @@ class LambdaProxyMethod(Method):
                      "Uri": uri}
         props={"HttpMethod": self.method,
                "Integration": integration,
-               "ResourceId": {"Ref": H("%s-resource" % self.endpoint_name)},
-               "RestApiId": {"Ref": H("%s-rest-api" % self.name)}}
+               "ResourceId": {"Ref": H("%s-resource" % self.name)},
+               "RestApiId": {"Ref": H("%s-rest-api" % self.api_name)}}
         props.update(self.authorisation)
         if self.parameters:
-            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.endpoint_name)}
+            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.name)}
             props["RequestParameters"]={"method.request.querystring.%s" % param: True
                                         for param in self.parameters}
         if self.schema:
-            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.endpoint_name)}
-            props["RequestModels"]={"application/json": H("%s-model" % self.endpoint_name)}
+            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.name)}
+            props["RequestModels"]={"application/json": H("%s-model" % self.name)}
         return props
 
 class PublicLambdaProxyMethod(LambdaProxyMethod):
@@ -202,12 +203,12 @@ class RequestValidator(AWSResource):
                 "ValidateRequestParameters": self.validate_request_parameters,
                 "ValidateRequestBody": self.validate_request_body}
 
-class RequestValidatorGET(RequestValidator):
+class ParameterRequestValidator(RequestValidator):
 
     def __init__(self, name):
         return super().__init__(name, validate_request_parameters=True)
 
-class RequestValidatorPOST(RequestValidator):
+class SchemaRequestValidator(RequestValidator):
 
     def __init__(self, name):
         return super().__init__(name, validate_request_body=True)
@@ -225,6 +226,7 @@ class Model(AWSResource):
                  content_type="application/json"):
         self.name = name
         self.schema = schema
+        self.schema_type = schema_type
         if "$schema" not in self.schema:
             self.schema["$schema"] = self.schema_type
         self.content_type = content_type
@@ -235,7 +237,7 @@ class Model(AWSResource):
             "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
             "ContentType": self.content_type,
             "Name": self.name, # required?
-            "Schema": schema
+            "Schema": self.schema
         }
 
 class GatewayResponse(AWSResource):

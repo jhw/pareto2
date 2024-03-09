@@ -1,13 +1,9 @@
 ### short 
 
-- endpoint to use explicit parent/child naming convention
-
-- Permission
-- endpoint function refs
-
-- POST endpoint demo [model, schema]
+- permission
 - private api
 
+- endpoint function refs
 - template, parameters, outputs
 
 ### medium
@@ -72,6 +68,8 @@
 
 ### done
 
+- POST model
+- endpoint to use explicit parent/child naming convention
 - CorsMethod
 - Validator
 - replace private parameter with class implementations
