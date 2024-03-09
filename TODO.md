@@ -1,6 +1,5 @@
 ### short 
 
-- separate public, private api classes
 - replace private parameter with class implementations
 
 - template, parameters, outputs
@@ -67,6 +66,7 @@
 
 ### done
 
+- separate public, private api classes
 - add separate method / subclass for endpoint initialisation
 - LambdaProxyMethod authorisation
 - domain stuff
