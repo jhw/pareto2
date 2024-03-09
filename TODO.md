@@ -1,9 +1,8 @@
 ### short 
 
-- GatewayResponse ResponseParameters
+- replace base class constructors with super()
 - separate public, private api classes
 - ensure all resources are instantiated using keywords
-- replace base class constructors with super()
 
 - template, parameters, outputs
 - review api implementation
@@ -70,6 +69,7 @@
 
 ### done
 
+- GatewayResponse ResponseParameters
 - endpoints list
 - check refs to AWS::StackName
 - add back Fn::Sub expression for RestApi Name, without using f() 

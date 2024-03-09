@@ -235,7 +235,8 @@ class GatewayResponse(AWSResource):
                              ("origin", "*")]}
         return {
             "RestApiId": {"Ref": H(f"{self.name}-rest-api")},
-            "ResponseType": "DEFAULT_%s" % self.response_type
+            "ResponseType": "DEFAULT_%s" % self.response_type,
+            "ResponseParameters": params
         }
 
 class GatewayResponse4XX(GatewayResponse):
