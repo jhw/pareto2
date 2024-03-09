@@ -1,4 +1,5 @@
 from pareto2.aws.apigateway import *
+from pareto2.aws.apigateway import Resource as APIGWResource
 from pareto2.aws.cognito import *
 from pareto2.aws.iam import Role as RoleBase
 
@@ -59,7 +60,16 @@ class IdentityPoolAuthorizedRole(IdentityPoolRole):
     def policy_document(self):
         return IdentityPoolRole.policy_document(self, "authorized")
 
-class PublicApi(Component):
+"""
+- Resource
+- LambdaProxyMethod
+- CorsMethod
+- Permission
+- Validator
+- Model [post]
+"""
+    
+class PublicApi(Component):    
 
     def __init__(self, name, endpoints):
         for klass in [RestApi,
@@ -73,7 +83,13 @@ class PublicApi(Component):
             self.append(klass(name=name))
         for endpoint in endpoints:
             if endpoint["method"].upper()=="GET":
-                pass
+                for instance in [APIGWResource(name=name,
+                                               path=endpoint["path"]),
+                                 LambdaProxyMethod(name=name,
+                                                   function_name="whatevs",
+                                                   method=endpoint["method"],
+                                                   parameters=endpoint["parameters"])]:
+                    self.append(instance)
             elif endpoint["method"].upper()=="POST":
                 pass
             else:
@@ -83,6 +99,7 @@ if __name__=="__main__":
     api=PublicApi(name="hello-api",
                   endpoints=[{"name": "hello-get",
                               "method": "GET",
+                              "path": "hello",
                               "parameters": ["message"]}])
                              
     import json

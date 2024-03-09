@@ -1,10 +1,10 @@
 ### short 
 
-- endpoints stuff
-- separate public, private api classes
+- LambdaProxyMethod authorisation
+- add separate method / subclass for endpoint initialisation
 
+- separate public, private api classes
 - template, parameters, outputs
-- review api implementation
 
 ### medium
 

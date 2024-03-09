@@ -71,34 +71,32 @@ class Method(AWSResource):
 
 class LambdaProxyMethod(Method):
 
-    def __init__(self, name, parameters = None, schema = None):
+    def __init__(self, name, function_name, method, parameters = None, schema = None):
         super().__init__(name)
+        self.endpoint_name = "%s-%s" % (name, function_name)
+        self.function_name = function_name
+        self.method = method
         self.parameters = parameters
         self.schema = schema
-
-    """
-    - replace api, endpoint with constructor arg
-    - resource defined on per api or per- endpoint basis?
-    """
         
     @property
     def aws_properties(self):
-        uri={"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H("%s-function" % endpoint["action"]), "Arn"]}}]}
+        uri={"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H(self.function_name), "Arn"]}}]}
         integration={"IntegrationHttpMethod": "POST",
                      "Type": "AWS_PROXY",
                      "Uri": uri}
-        props={"HttpMethod": endpoint["method"],
+        props={"HttpMethod": self.method,
                "Integration": integration,
-               "ResourceId": {"Ref": H("%s-resource" % endpoint["name"])},
-               "RestApiId": {"Ref": H("%s-rest-api" % api["name"])}}
-        props.update(authorisation)
+               "ResourceId": {"Ref": H("%s-resource" % self.endpoint_name)},
+               "RestApiId": {"Ref": H("%s-rest-api" % self.name)}}
+        # props.update(authorisation)
         if self.parameters:
-            props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
+            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.endpoint_name)}
             props["RequestParameters"]={"method.request.querystring.%s" % param: True
                                         for param in self.parameters}
         if self.schema:
-            props["RequestValidatorId"]={"Ref": H("%s-validator" % endpoint["name"])}
-            props["RequestModels"]={"application/json": H("%s-model" % endpoint["name"])}
+            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.endpoint_name)}
+            props["RequestModels"]={"application/json": H("%s-model" % self.endpoint_name)}
         return props
 
 class PublicLambdaProxyMethod(LambdaProxyMethod):
