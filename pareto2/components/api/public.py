@@ -9,6 +9,8 @@ def init_GET_endpoint(name, endpoint):
     resources=[]
     resources.append(APIGWResource(name=name,
                                    path=endpoint["path"]))
+    resources.append(CORSMethod(name=name,
+                                method=endpoint["method"]))
     resources.append(PublicLambdaProxyMethod(name=name,
                                              function_name="whatevs",
                                              method=endpoint["method"],

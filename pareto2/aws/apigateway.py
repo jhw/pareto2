@@ -9,6 +9,12 @@ LambdaProxyMethodArn="arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/f
 
 StageName="prod"
 
+CORSHeaders=["Content-Type",
+             "X-Amz-Date",
+             "Authorization",
+             "X-Api-Key",
+             "X-Amz-Sec"]
+
 class RestApi(AWSResource):
 
     def __init__(self, name):
@@ -121,15 +127,15 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
                                         "Authorizer": {"Ref": H("%s-authorizer" % name)}},
                          **kwargs)
         
-class CorsMethod(Method):
+class CORSMethod(Method):
 
     def __init__(self, name, method):
         super().__init__(name)
         self.method = method
 
-    def _integration_response(self):
+    def _integration_response(self, cors_headers=CORSHeaders):
         params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
-                for k, v in [("headers", ",".join(CorsHeaders)),
+                for k, v in [("headers", ",".join(cors_headers)),
                              ("methods", "%s,OPTIONS" % self.method),
                              ("origin", "*")]}
         templates={"application/json": ""}

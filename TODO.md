@@ -1,6 +1,7 @@
 ### short 
 
-- CorsMethod
+- endpoint to use explicit parent/child naming convention
+
 - Permission
 
 - POST endpoint demo [model, schema]
@@ -70,6 +71,7 @@
 
 ### done
 
+- CorsMethod
 - Validator
 - replace private parameter with class implementations
 - separate public, private api classes
