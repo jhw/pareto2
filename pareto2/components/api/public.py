@@ -60,8 +60,7 @@ if __name__=="__main__":
                              {"name": "hello-post",
                               "method": "POST",
                               "path": "hello-post",
-                              "schema": {"hello": "world"}}])
-                             
+                              "schema": {"hello": "world"}}])                             
     import json
     print (json.dumps(api.render(),
                       indent=2))

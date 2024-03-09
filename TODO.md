@@ -1,9 +1,15 @@
 ### short 
 
-- permission
+- CORS is not being lowercased when hungarorised as part of logical id
+
+- rename name as namespace
+- api proxy method to reference -function suffix (given namespace)
+
+- api permission source arn is messed up
+- add permission resource
+
 - private api
 
-- endpoint function refs
 - template, parameters, outputs
 
 ### medium
@@ -68,6 +74,7 @@
 
 ### done
 
+- hungarorise should lowercase then capitalise
 - POST model
 - endpoint to use explicit parent/child naming convention
 - CorsMethod

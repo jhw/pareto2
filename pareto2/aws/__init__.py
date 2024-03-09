@@ -1,7 +1,7 @@
 import re
 
 def hungarorise(text):
-    return "".join([tok.capitalize()
+    return "".join([tok.lower().capitalize()
                     for tok in re.split("\\-|\\_", text)])
 
 def dehungarorise(text):
