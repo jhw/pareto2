@@ -1,7 +1,5 @@
 ### short 
 
-- apigw base path mapping must depend on domain
-
 - check use of AWS::Stack
 - check where comments include "required?"
 
