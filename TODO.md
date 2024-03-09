@@ -1,6 +1,12 @@
 ### short 
 
-- replace private parameter with class implementations
+- CorsMethod
+- Permission
+- Validator
+- Model [post]
+
+
+- private api
 
 - template, parameters, outputs
 
@@ -66,6 +72,7 @@
 
 ### done
 
+- replace private parameter with class implementations
 - separate public, private api classes
 - add separate method / subclass for endpoint initialisation
 - LambdaProxyMethod authorisation

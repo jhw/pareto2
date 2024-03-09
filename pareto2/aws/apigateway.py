@@ -75,14 +75,14 @@ class LambdaProxyMethod(Method):
                  name,
                  function_name,
                  method,
-                 private = False,
+                 authorisation = None,
                  parameters = None,
                  schema = None):
         super().__init__(name)
         self.endpoint_name = "%s-%s" % (name, function_name)
         self.function_name = function_name
         self.method = method
-        self.private = private
+        self.authorisation = authorisation
         self.parameters = parameters
         self.schema = schema
         
@@ -96,11 +96,7 @@ class LambdaProxyMethod(Method):
                "Integration": integration,
                "ResourceId": {"Ref": H("%s-resource" % self.endpoint_name)},
                "RestApiId": {"Ref": H("%s-rest-api" % self.name)}}
-        if self.private:
-            props["AuthorizationType"] = "COGNITO"
-            props["Authorizer"] = {"Ref": H("%s-authorizer" % self.name)}
-        else:
-            props["AuthorizationType"]="NONE"
+        props.update(self.authorisation)
         if self.parameters:
             props["RequestValidatorId"]={"Ref": H("%s-validator" % self.endpoint_name)}
             props["RequestParameters"]={"method.request.querystring.%s" % param: True
@@ -113,12 +109,17 @@ class LambdaProxyMethod(Method):
 class PublicLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, name, **kwargs):
-        super().__init__(name, **kwargs)
+        super().__init__(name,
+                         authorisation={"AuthorizationType": "NONE"},
+                         **kwargs)
 
 class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, name, **kwargs):
-        super().__init__(name, **kwargs)
+        super().__init__(name,
+                         authorisation={"Authorization": "COGNITO",
+                                        "Authorizer": {"Ref": H("%s-authorizer" % name)}},
+                         **kwargs)
         
 class CorsMethod(Method):
 

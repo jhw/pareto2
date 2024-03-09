@@ -1,11 +1,19 @@
 from pareto2.aws.apigateway import *
+from pareto2.aws.apigateway import Resource as APIGWResource
 from pareto2.aws.cognito import *
 from pareto2.aws.route53 import *
 
-from pareto2.components.api import ApiBase
+from pareto2.components import Component
 
+def init_GET_endpoint(name, endpoint):
+    return [APIGWResource(name=name,
+                          path=endpoint["path"]),
+            PublicLambdaProxyMethod(name=name,
+                                    function_name="whatevs",
+                                    method=endpoint["method"],
+                                    parameters=endpoint["parameters"])]
 
-class PublicApi(ApiBase):    
+class PublicApi(Component):    
 
     def __init__(self, name, endpoints):
         super().__init__(name=name)
@@ -20,7 +28,7 @@ class PublicApi(ApiBase):
             self.append(klass(name=name))
         for endpoint in endpoints:
             if endpoint["method"].upper()=="GET":
-                self += self.init_GET_endpoint(endpoint)
+                self += init_GET_endpoint(name, endpoint)
             elif endpoint["method"].upper()=="POST":
                 pass
             else:
