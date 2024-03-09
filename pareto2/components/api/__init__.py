@@ -73,7 +73,12 @@ class PublicApi(Component):
                       GatewayResponse5XX]:
             self.append(klass(name=name))
         for endpoint in endpoints:
-            pass
+            if endpoint["method"].upper()=="GET":
+                pass
+            elif endpoint["method"].upper()=="POST":
+                pass
+            else:
+                raise RuntimeError("endpoint method %s not recognised" % endpoint["method"])
 
 if __name__=="__main__":
     api=PublicApi(name="hello-api",
