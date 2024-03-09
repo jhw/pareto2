@@ -1,8 +1,5 @@
 ### short 
 
-- check use of AWS::Stack
-- check where comments include "required?"
-
 - CORS is not being lowercased when hungarorised as part of logical id
 
 - template, parameters, outputs
@@ -85,6 +82,8 @@
 
 ### done
 
+- check use of AWS::Stack
+- check where comments include "required?"
 - apigw deployment must depend on all endpoints
 - check refs to rest-api in endpoint- related classes
   - requires api_namespace

@@ -20,6 +20,12 @@ class RestApi(AWSResource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+    """
+    - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-restapi.html
+    - The name of the RestApi. A name is required if the REST API is not based on an OpenAPI specification
+    - generally a good idea to include AWS::StackName in case Name exists in a global namespace
+    """
+        
     @property
     def aws_properties(self):
         return {
@@ -217,9 +223,6 @@ class SchemaRequestValidator(RequestValidator):
     def __init__(self, namespace, api_namespace):
         return super().__init__(namespace, api_namespace, validate_request_body=True)
 
-"""
-- pareto 0-7 notes say Name is "optional" but is in fact required if Method is to be able to look up model :/
-"""
 
 class Model(AWSResource):
     
@@ -237,12 +240,17 @@ class Model(AWSResource):
             self.schema["$schema"] = self.schema_type
         self.content_type = content_type
 
+    """
+    - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-model.html
+    - not clear if Name parameter is required or not; 
+    """
+        
     @property
     def aws_properties(self):
         return {
             "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")},
             "ContentType": self.content_type,
-            "Name": self.namespace, # required?
+            # "Name": {"Fn::Sub": f"{self.namespace}-model-${{AWS::StackName}}"},
             "Schema": self.schema
         }
 

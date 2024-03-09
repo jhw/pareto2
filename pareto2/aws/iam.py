@@ -3,14 +3,14 @@ from pareto2.aws import Resource
 
 class Role(Resource):
 
-    def __init__(self, name, permissions=[], service="lambda.amazonaws.com"):
-        self.name = name
+    def __init__(self, namespace, permissions=[], service="lambda.amazonaws.com"):
+        self.namespace = namespace
         self.permissions = permissions
         self.service = service
 
     @property
     def aws_properties(self):
-        policy_name = H(f"{self.name}-policy-${{AWS::StackName}}")
+        policy_name = H(f"{self.namespace}-policy-${{AWS::StackName}}")
         policies = [{"PolicyDocument": self.policy_document,
                      "PolicyName": policy_name}]
         return {
