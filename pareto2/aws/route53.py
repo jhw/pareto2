@@ -12,15 +12,15 @@ class RecordSet(Resource):
             "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}, # global
             "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]} # global
         }]}
-        dnsnameref = {"Fn::GetAtt": [H(f"{self.name}-domain-name"), "DistributionDomainName"]} # APIGW
+        dnsname = {"Fn::GetAtt": [H(f"{self.name}-domain-name"), "DistributionDomainName"]} # APIGW
         hzidref = {"Fn::GetAtt": [H(f"{self.name}-domain-name"), "DistributionHostedZoneId"]} # APIGW
         aliastarget = {
-            "DNSName": dnsnameref,
+            "DNSName": dnsname,
             "EvaluateTargetHealth": False,
             "HostedZoneId": hzidref
         }
         return {
-            "HostedZoneName": hznameref,
+            "HostedZoneName": hzname,
             "Name": {"Ref": H("domain-name")}, # global
             "Type": "A",
             "AliasTarget": aliastarget

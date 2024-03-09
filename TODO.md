@@ -1,6 +1,6 @@
 ### short 
 
-- complete endpoints code
+- endpoints stuff
 - separate public, private api classes
 
 - template, parameters, outputs
@@ -68,6 +68,7 @@
 
 ### done
 
+- domain stuff
 - replace base class constructors with super()
 - GatewayResponse ResponseParameters
 - endpoints list

@@ -66,7 +66,10 @@ class PublicApi(Component):
                       Deployment,
                       Stage,
                       GatewayResponse4XX,
-                      GatewayResponse5XX]:
+                      GatewayResponse5XX,
+                      DomainName,
+                      BasePathMapping,
+                      RecordSet]:
             self.append(klass(name=name))
         for endpoint in endpoints:
             if endpoint["method"].upper()=="GET":
