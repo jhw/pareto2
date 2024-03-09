@@ -58,22 +58,24 @@ class Stage(AWSResource):
     
 class Resource(AWSResource):
 
-    def __init__(self, namespace, path):
+    def __init__(self, namespace, api_namespace, path):
         self.namespace = namespace
+        self.api_namespace = api_namespace
         self.path = path
 
     @property
     def aws_properties(self):
         return {
-            "ParentId": {"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]},
+            "ParentId": {"Fn::GetAtt": [H(f"{self.api_namespace}-rest-api"), "RootResourceId"]},
             "PathPart": self.path,
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
+            "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}
         }
 
 class Method(AWSResource):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, api_namespace):
         self.namespace = namespace
+        self.api_namespace = api_namespace
 
 class LambdaProxyMethod(Method):
 
@@ -85,8 +87,7 @@ class LambdaProxyMethod(Method):
                  authorisation = None,
                  parameters = None,
                  schema = None):
-        super().__init__(namespace)
-        self.api_namespace = api_namespace
+        super().__init__(namespace, api_namespace)
         self.function_namespace = function_namespace
         self.method = method
         self.authorisation = authorisation
@@ -115,25 +116,27 @@ class LambdaProxyMethod(Method):
 
 class PublicLambdaProxyMethod(LambdaProxyMethod):
 
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace, api_namespace, **kwargs):
         super().__init__(namespace,
+                         api_namespace,
                          authorisation={"AuthorizationType": "NONE"},
                          **kwargs)
 
 class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace, api_namespace, **kwargs):
         super().__init__(namespace,
+                         api_namespace,
                          authorisation={"Authorization": "COGNITO",
                                         "Authorizer": {"Ref": H("%s-authorizer" % namespace)}},
                          **kwargs)
         
 class CORSMethod(Method):
 
-    def __init__(self, namespace, method):
-        super().__init__(namespace)
+    def __init__(self, namespace, api_namespace, method):
+        super().__init__(namespace, api_namespace)
         self.method = method
-
+        
     def _integration_response(self, cors_headers=CORSHeaders):
         params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
                 for k, v in [("headers", ",".join(cors_headers)),
@@ -169,7 +172,7 @@ class CORSMethod(Method):
                 "Integration": integration,
                 "MethodResponses": [response],
                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")}, # API resource or endpoint resource?
-                "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
+                "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}}
         
 class Authorizer(AWSResource):
     
@@ -192,26 +195,27 @@ class Authorizer(AWSResource):
 
 class RequestValidator(AWSResource):
 
-    def __init__(self, namespace, validate_request_parameters=False, validate_request_body=False):
+    def __init__(self, namespace, api_namespace, validate_request_parameters=False, validate_request_body=False):
         self.namespace = namespace
+        self.api_namespace = api_namespace
         self.validate_request_parameters = validate_request_parameters
         self.validate_request_body = validate_request_body
 
     @property
     def aws_properties(self):
-        return {"RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
+        return {"RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")},
                 "ValidateRequestParameters": self.validate_request_parameters,
                 "ValidateRequestBody": self.validate_request_body}
 
 class ParameterRequestValidator(RequestValidator):
 
-    def __init__(self, namespace):
-        return super().__init__(namespace, validate_request_parameters=True)
+    def __init__(self, namespace, api_namespace):
+        return super().__init__(namespace, api_namespace, validate_request_parameters=True)
 
 class SchemaRequestValidator(RequestValidator):
 
-    def __init__(self, namespace):
-        return super().__init__(namespace, validate_request_body=True)
+    def __init__(self, namespace, api_namespace):
+        return super().__init__(namespace, api_namespace, validate_request_body=True)
 
 """
 - pareto 0-7 notes say Name is "optional" but is in fact required if Method is to be able to look up model :/
@@ -221,10 +225,12 @@ class Model(AWSResource):
     
     def __init__(self,
                  namespace,
+                 api_namespace,
                  schema,
                  schema_type="http://json-schema.org/draft-04/schema#",
                  content_type="application/json"):
         self.namespace = namespace
+        self.api_namespace = api_namespace
         self.schema = schema
         self.schema_type = schema_type
         if "$schema" not in self.schema:
@@ -234,7 +240,7 @@ class Model(AWSResource):
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
+            "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")},
             "ContentType": self.content_type,
             "Name": self.namespace, # required?
             "Schema": self.schema

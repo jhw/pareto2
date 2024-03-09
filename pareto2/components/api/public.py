@@ -29,43 +29,52 @@ class PublicApi(Component):
                               RecordSet]]
             
     def init_endpoint(self, endpoint):
-        namespace="%s-%s" % (self.namespace,
-                        "-".join([tok.lower()
-                                  for tok in re.split("\\W", endpoint["path"])
-                                  if tok!=""]))
+        parent_ns = self.namespace
+        child_ns ="%s-%s" % (parent_ns,
+                             "-".join([tok.lower()
+                                       for tok in re.split("\\W", endpoint["path"])
+                                       if tok != ""]))
         resources=[]
-        resources.append(APIGWResource(namespace=namespace,
+        resources.append(APIGWResource(namespace=child_ns,
+                                       api_namespace=parent_ns,
                                        path=endpoint["path"]))
-        resources.append(CORSMethod(namespace=namespace,
+        resources.append(CORSMethod(namespace=child_ns,
+                                    api_namespace=parent_ns,
                                     method=endpoint["method"]))
-        resources.append(Permission(namespace=namespace,
-                                    function_namespace="whatevs",
+        resources.append(Permission(namespace=child_ns,
+                                    api_namespace=parent_ns,
+                                    function_namespace=endpoint["action"],
                                     method=endpoint["method"],
                                     path=endpoint["path"]))                                    
         if "parameters" in endpoint:
-            resources.append(ParameterRequestValidator(namespace=namespace))
-            resources.append(PublicLambdaProxyMethod(namespace=namespace,
-                                                     api_namespace=self.namespace,
-                                                     function_namespace="whatevs",
+            resources.append(ParameterRequestValidator(namespace=child_ns,
+                                                       api_namespace=parent_ns))
+            resources.append(PublicLambdaProxyMethod(namespace=child_ns,
+                                                     api_namespace=parent_ns,
+                                                     function_namespace=endpoint["action"],
                                                      method=endpoint["method"],
                                                      parameters=endpoint["parameters"]))
         if "schema" in endpoint:
-            resources.append(SchemaRequestValidator(namespace=namespace))
-            resources.append(PublicLambdaProxyMethod(namespace=namespace,
-                                                     api_namespace=self.namespace,
-                                                     function_namespace="whatevs",
+            resources.append(SchemaRequestValidator(namespace=child_ns,
+                                                    api_namespace=parent_ns))
+            resources.append(PublicLambdaProxyMethod(namespace=child_ns,
+                                                     api_namespace=parent_ns,
+                                                     function_namespace=endpoint["action"],
                                                      method=endpoint["method"],
                                                      schema=endpoint["schema"]))
-            resources.append(Model(namespace=namespace,
+            resources.append(Model(namespace=child_ns,
+                                   api_namespace=parent_ns,
                                    schema=endpoint["schema"]))
         return resources
             
 if __name__=="__main__":
     api=PublicApi(namespace="hello-api",
-                  endpoints=[{"method": "GET",
+                  endpoints=[{"action": "whatevs",
+                              "method": "GET",
                               "path": "hello-get",
                               "parameters": ["message"]},
-                             {"method": "POST",
+                             {"action": "whatevs",
+                              "method": "POST",
                               "path": "hello-post",
                               "schema": {"hello": "world"}}])                             
     import json

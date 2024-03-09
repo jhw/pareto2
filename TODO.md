@@ -1,6 +1,12 @@
 ### short 
 
-- Permission needs api namespace to generate source arn
+- deployment depends is incorrect
+  - many need to aggregate methods and do api creation afterwards
+
+- check depends again
+- check use of AWS::Stack
+- check where comments include "required?"
+
 - CORS is not being lowercased when hungarorised as part of logical id
 
 - private api
@@ -76,6 +82,9 @@
 
 ### done
 
+- check refs to rest-api in endpoint- related classes
+  - requires api_namespace
+- Permission needs api namespace to generate source arn
 - permission resource
 - authorizer resource
 - api permission source arn is messed up
