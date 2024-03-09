@@ -1,24 +1,28 @@
 ### short 
 
-- deployment depends is incorrect
-  - many need to aggregate methods and do api creation afterwards
+- apigw deployment must depend on all endpoints
+- apigw base path mapping must depend on domain
 
-- check depends again
 - check use of AWS::Stack
 - check where comments include "required?"
 
 - CORS is not being lowercased when hungarorised as part of logical id
 
-- private api
-
 - template, parameters, outputs
 
 ### roadmap
 
-- skeleton lambda for api demos
+- private api
+- skeleton lambda to support apis
+- api demos
 - website
 - lambda slack logging
 - streaming table
+- bucket
+- events
+- queue
+- timer 
+- topic
 
 ### medium
 
