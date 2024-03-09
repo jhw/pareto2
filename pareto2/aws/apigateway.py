@@ -28,8 +28,9 @@ class RestApi(AWSResource):
 
 class Deployment(AWSResource):
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, methods):
         self.namespace = namespace
+        self.methods = methods
 
     @property
     def aws_properties(self):
@@ -39,8 +40,7 @@ class Deployment(AWSResource):
 
     @property
     def depends(self):
-        return [H(f"{self.namespace}-method"),
-                H(f"{self.namespace}-cors-method")]
+        return self.methods
                 
 class Stage(AWSResource):
 

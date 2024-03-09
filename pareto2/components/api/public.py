@@ -4,7 +4,6 @@ from pareto2.aws.cognito import *
 from pareto2.aws.route53 import *
 
 from pareto2.components import Component
-
 from pareto2.components.api import Permission
 
 import re
@@ -16,24 +15,40 @@ class PublicApi(Component):
         self += self.init_api()
         for endpoint in endpoints:
             self += self.init_endpoint(endpoint)
+        methods = self.filter_methods(endpoints)
+        self += self.init_deployment(methods)
 
     def init_api(self):
         return [klass(namespace=self.namespace)
                 for klass in [RestApi,
-                              Deployment,
                               Stage,
                               GatewayResponse4XX,
                               GatewayResponse5XX,
                               DomainName,
                               BasePathMapping,
                               RecordSet]]
-            
+
+    def filter_methods(self, endpoints):
+        methods = []
+        for endpoint in endpoints:
+            child_ns = self.endpoint_namespace(endpoint)
+            methods += [H(f"{child_ns}-public-lambda-proxy-method"),
+                        H(f"{child_ns}-cors-method")]
+        return methods
+    
+    def init_deployment(self, methods):
+        return [Deployment(namespace=self.namespace,
+                           methods=methods)]
+    
+    def endpoint_namespace(self, endpoint):
+        return "%s-%s" % (self.namespace,
+                          "-".join([tok.lower()
+                                    for tok in re.split("\\W", endpoint["path"])
+                                    if tok != ""]))
+    
     def init_endpoint(self, endpoint):
-        parent_ns = self.namespace
-        child_ns ="%s-%s" % (parent_ns,
-                             "-".join([tok.lower()
-                                       for tok in re.split("\\W", endpoint["path"])
-                                       if tok != ""]))
+        parent_ns, child_ns = (self.namespace,
+                               self.endpoint_namespace(endpoint))
         resources=[]
         resources.append(APIGWResource(namespace=child_ns,
                                        api_namespace=parent_ns,

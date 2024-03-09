@@ -1,6 +1,5 @@
 ### short 
 
-- apigw deployment must depend on all endpoints
 - apigw base path mapping must depend on domain
 
 - check use of AWS::Stack
@@ -86,6 +85,7 @@
 
 ### done
 
+- apigw deployment must depend on all endpoints
 - check refs to rest-api in endpoint- related classes
   - requires api_namespace
 - Permission needs api namespace to generate source arn
