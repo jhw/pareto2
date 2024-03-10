@@ -1,3 +1,32 @@
+### namespaces, components, parameters, templates
+
+- in addition to the below, namespaces are very powerful
+- as cloudformation operates in a single global namespace
+- so namespaces-as-prefixes are very useful
+- so logical id = #{namespace}-#{resource-name}, which can be implemented via a property
+- the nice thing about this is that a component can then include resources from different aws packages in a simple mannee, which is a core required skill
+- a component doesn't have a namespace of its own because it may need to operate across multiple namespaces, particularly parent/child as per relationship between api and multiple endpoints
+- (have to construct one namespace per endpoint)
+
+---
+
+- for parameters you have a number of options
+- 1) hardcode values in template
+- 2a) explicitly define parameter
+- 2b) auto- fill implied parameters
+- I don't think 1) is the solution as parameters are typically environment variables such as domain name or certificate arn
+- stuff which must come from outside once a template has been defined
+- think about giving the template to someone else - you wouldn't want domain name and certificate hardcoded, would you?
+- (there is then a second parameter issue of "globals" such as python version or timeouts, which needs considering)
+
+---
+
+- if you are going to auto fill, which may still be the best solution, then a template has to be separate from a component as parameters can only be inferred once a set of resources have been rendered
+- so want to roll back existing template class to a component, and turn it back into a list of resources
+- component then renders into template
+- template can auto fill parameters
+- but needs to think about external environment parameters (no defaults) and internal global parameters (has defaults)
+
 ### 0-8 philosophy
 
 - distinguish between resources and components
