@@ -1,7 +1,6 @@
 ### short 
 
 - replace component with template
-- consider overriding template.resources.append
 - lambda
 
 ### roadmap
@@ -84,6 +83,7 @@
 
 ### done
 
+- consider overriding template.resources.append
 - permissions grouping
 - yaml config
 - role

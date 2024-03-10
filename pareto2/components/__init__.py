@@ -1,9 +1,12 @@
-class Component(list):
+class Component:
 
     def __init__(self):
-        list.__init__(self, [])
+        self.resources=[]
 
+    def add(self, resource):
+        self.resources.append(resource)
+    
     def render(self):
         resources=dict([resource.render()
-                        for resource in self])
+                        for resource in self.resources])
         return {"Resources": resources}

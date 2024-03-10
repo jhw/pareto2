@@ -29,7 +29,7 @@ if __name__=="__main__":
     role=Role(namespace="backend",
               permissions=["logs:*",
                            "s3:*"])
-    component.append(role)
+    component.add(role)
     print (json.dumps(component.render(),
                       indent=2))
     
