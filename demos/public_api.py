@@ -19,6 +19,8 @@ if __name__=="__main__":
     api=PublicApi(namespace="my",
                   endpoints=Endpoints)
     template=api.render()
+    """
     print (json.dumps(template,
                       indent=2))
-    
+    """
+    print (template.node_references)

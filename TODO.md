@@ -1,9 +1,8 @@
 ### short 
 
-- template ref lookup
+- template inline refs
 - template parameter insertion
-
-- proper schema
+- proper schema for hello-post
 
 ### roadmap
 
@@ -85,6 +84,7 @@
 
 ### done
 
+- template ref lookup
 - output visible resources
 - resource visibility decorator
 - revert component to list
