@@ -1,13 +1,16 @@
 ### short 
 
-- private api
+- replace component with template
+- override template.resources.append
+- reference collection and checking
+- parameter insertion
 
-- template, parameters, outputs
+- lambda
+- role
 
 ### roadmap
 
-- skeleton lambda to support apis
-- api demos
+- private api
 - website
 - lambda event config
 - lambda slack logging
