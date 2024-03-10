@@ -1,7 +1,6 @@
 ### short 
 
 - permissions grouping
-
 - lambda
 
 ### roadmap
@@ -85,6 +84,7 @@
 
 ### done
 
+- yaml config
 - role
 - CORS is not being lowercased when hungarorised as part of logical id
 - check use of AWS::Stack

@@ -2,18 +2,24 @@ from pareto2.components.api.public import PublicApi
 
 from pareto2.aws.iam import Role
 
-import json
+import json, yaml
+
+Endpoints=yaml.safe_load("""
+- action: whatevs
+  method: GET
+  path: hello-get
+  parameters:
+  - message
+- action: whatevs
+  method: POST
+  path: hello-post
+  schema: 
+    hello: world
+""")
 
 if __name__=="__main__":
     api=PublicApi(namespace="my",
-                  endpoints=[{"action": "whatevs",
-                              "method": "GET",
-                              "path": "hello-get",
-                              "parameters": ["message"]},
-                             {"action": "whatevs",
-                              "method": "POST",
-                              "path": "hello-post",
-                              "schema": {"hello": "world"}}])
+                  endpoints=Endpoints)
     role=Role(namespace="foobar",
               permissions=["logs:*",
                            "s3:*"])
