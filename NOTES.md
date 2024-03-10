@@ -27,6 +27,14 @@
 - template can auto fill parameters
 - but needs to think about external environment parameters (no defaults) and internal global parameters (has defaults)
 
+---
+
+- component might be better named as resource list
+- outputs could be handled via visibility parameter at the resource level
+- do you really need parameter globals? this might just be an artifacts of short/medium/long/default stuff
+- might be simplier to hardcode integers at the lambda level
+- as they seem part of stack structure not environment variables
+
 ### 0-8 philosophy
 
 - distinguish between resources and components
