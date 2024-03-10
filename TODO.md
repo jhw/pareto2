@@ -1,14 +1,15 @@
 ### short 
 
+- permissions grouping
+
+- lambda
+
+### roadmap
+
 - replace component with template
 - override template.resources.append
 - reference collection and checking
 - parameter insertion
-
-- lambda
-- role
-
-### roadmap
 
 - private api
 - website
@@ -84,6 +85,7 @@
 
 ### done
 
+- role
 - CORS is not being lowercased when hungarorised as part of logical id
 - check use of AWS::Stack
 - check where comments include "required?"
