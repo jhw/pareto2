@@ -2,7 +2,6 @@
 
 - template ref lookup
 - template parameter insertion
-- output visible resources
 
 - proper schema
 
@@ -86,6 +85,7 @@
 
 ### done
 
+- output visible resources
 - resource visibility decorator
 - revert component to list
 - add notes that component is just a list of resources

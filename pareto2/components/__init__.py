@@ -1,10 +1,14 @@
+from pareto2.aws import hungarorise as H
+
 class Template(dict):
 
     def __init__(self, resources):
         dict.__init__(self, {"Parameters": {},
                              "Resources": dict([resource.render()
                                                 for resource in resources]),
-                             "Outputs": {}})
+                             "Outputs": {H(resource.resource_name): {"Value": {"Ref": H(resource.resource_name)}}
+                                         for resource in resources
+                                         if resource.visible}})
 
 """
 - a component is just a very thin wrapper around list of resources
