@@ -1,5 +1,5 @@
 from pareto2.aws.apigateway import *
-from pareto2.aws.apigateway import Resource as APIGWResource
+from pareto2.aws.apigateway import Resource as ApiGatewayResource
 from pareto2.aws.cognito import *
 from pareto2.aws.route53 import *
 
@@ -21,8 +21,8 @@ class PublicApi(Component):
     def init_api(self, namespace):
         for klass in [RestApi,
                       Stage,
-                      GatewayResponse4XX,
-                      GatewayResponse5XX,
+                      GatewayResponse4xx,
+                      GatewayResponse5xx,
                       DomainName,
                       BasePathMapping,
                       RecordSet]:
@@ -36,10 +36,10 @@ class PublicApi(Component):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(APIGWResource(namespace=child_ns,
-                                  api_namespace=parent_ns,
-                                  path=endpoint["path"]))
-        self.append(CORSMethod(namespace=child_ns,
+        self.append(ApiGatewayResource(namespace=child_ns,
+                                       api_namespace=parent_ns,
+                                       path=endpoint["path"]))
+        self.append(CorsMethod(namespace=child_ns,
                                api_namespace=parent_ns,
                                method=endpoint["method"]))
         self.append(Permission(namespace=child_ns,

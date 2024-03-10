@@ -1,12 +1,11 @@
 ### short 
 
-- populate_parameters() seems to indicate missing resources
-
 - proper schema for hello-post
+
+- lambda
 
 ### roadmap
 
-- lambda
 - private api
 - website
 - lambda event config
@@ -84,6 +83,8 @@
 
 ### done
 
+- validator reference is not including api_namespace
+- confusion between CORS and Cors
 - template inline refs
 - template parameter insertion
 - template ref lookup

@@ -9,7 +9,7 @@ LambdaProxyMethodArn="arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/f
 
 StageName="prod"
 
-CORSHeaders=["Content-Type",
+CorsHeaders=["Content-Type",
              "X-Amz-Date",
              "Authorization",
              "X-Api-Key",
@@ -116,11 +116,11 @@ class LambdaProxyMethod(Method):
                "RestApiId": {"Ref": H("%s-rest-api" % self.api_namespace)}}
         props.update(self.authorisation)
         if self.parameters:
-            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.namespace)}
+            props["RequestValidatorId"]={"Ref": H("%s-parameter-request-validator" % self.namespace)}
             props["RequestParameters"]={"method.request.querystring.%s" % param: True
                                         for param in self.parameters}
         if self.schema:
-            props["RequestValidatorId"]={"Ref": H("%s-validator" % self.namespace)}
+            props["RequestValidatorId"]={"Ref": H("%s-schema-request-validator" % self.namespace)}
             props["RequestModels"]={"application/json": H("%s-model" % self.namespace)}
         return props
 
@@ -141,13 +141,13 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
                                         "Authorizer": {"Ref": H("%s-authorizer" % namespace)}},
                          **kwargs)
         
-class CORSMethod(Method):
+class CorsMethod(Method):
 
     def __init__(self, namespace, api_namespace, method):
         super().__init__(namespace, api_namespace)
         self.method = method
         
-    def _integration_response(self, cors_headers=CORSHeaders):
+    def _integration_response(self, cors_headers=CorsHeaders):
         params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
                 for k, v in [("headers", ",".join(cors_headers)),
                              ("methods", "%s,OPTIONS" % self.method),
@@ -275,12 +275,12 @@ class GatewayResponse(AWSResource):
             "ResponseParameters": params
         }
 
-class GatewayResponse4XX(GatewayResponse):
+class GatewayResponse4xx(GatewayResponse):
 
     def __init__(self, namespace):
         return super().__init__(namespace, response_type="4XX")
 
-class GatewayResponse5XX(GatewayResponse):
+class GatewayResponse5xx(GatewayResponse):
 
     def __init__(self, namespace):
         return super().__init__(namespace, response_type="5XX")

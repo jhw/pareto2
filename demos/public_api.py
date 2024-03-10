@@ -22,3 +22,4 @@ if __name__=="__main__":
     template.populate_parameters()
     print (json.dumps(template,
                       indent=2))
+
