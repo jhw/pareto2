@@ -1,5 +1,7 @@
 from pareto2.aws import hungarorise as H
 
+import re
+
 class Template(dict):
 
     def __init__(self, resources):
@@ -10,8 +12,15 @@ class Template(dict):
                                          for resource in resources
                                          if resource.visible}})
 
+    def populate_parameters(self):
+        ids=list(self["Resources"].keys())
+        refs=self.refs
+        self["Parameters"].update({ref: {"Type": "String"}
+                                   for ref in refs
+                                   if ref not in ids})
+        
     @property
-    def node_references(self):
+    def node_refs(self):
         def is_ref(key, element):
             return (key=="Ref" and
                     type(element)==str and
@@ -45,7 +54,37 @@ class Template(dict):
         refs=set()
         filter_refs(self["Resources"], refs)
         return refs
-        
+
+    @property
+    def inline_refs(self):
+        def filter_expressions(text):
+            return [tok[2:-1]
+                    for tok in re.findall("\\$\\{\\w+\\}", text)
+                    if tok!=tok.lower()]
+        def filter_refs(element, refs):
+            if isinstance(element, list):
+                for subelement in element:
+                    if isinstance(subelement, str):
+                        refs.update(set(filter_expressions(subelement)))
+                    else:
+                        filter_refs(subelement, refs)
+            elif isinstance(element, dict):
+                for key, subelement in element.items():
+                    if isinstance(subelement, str):
+                        refs.update(set(filter_expressions(subelement)))
+                    else:
+                        filter_refs(subelement, refs)
+        refs=set()
+        filter_refs(self, refs)
+        return refs
+
+    @property
+    def refs(self):
+        refs=set()
+        refs.update(self.node_refs)
+        refs.update(self.inline_refs)
+        return refs    
+    
 """
 - a component is just a very thin wrapper around list of resources
 - it does not contain its own namespace in state because it may need to operate across a number of namespaces, particularly parent/child (eg api/endpoint)

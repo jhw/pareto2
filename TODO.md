@@ -1,7 +1,7 @@
 ### short 
 
-- template inline refs
-- template parameter insertion
+- populate_parameters() seems to indicate missing resources
+
 - proper schema for hello-post
 
 ### roadmap
@@ -84,6 +84,8 @@
 
 ### done
 
+- template inline refs
+- template parameter insertion
 - template ref lookup
 - output visible resources
 - resource visibility decorator

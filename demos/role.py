@@ -11,6 +11,7 @@ if __name__=="__main__":
                            "s3:*"])
     component.append(role)
     template=component.render()
+    template.populate_parameters()
     print (json.dumps(template,
                       indent=2))
     
