@@ -1,11 +1,11 @@
 ### short 
 
-- permissions grouping
+- replace component with template
+- consider overriding template.resources.append
 - lambda
 
 ### roadmap
 
-- replace component with template
 - override template.resources.append
 - reference collection and checking
 - parameter insertion
@@ -84,6 +84,7 @@
 
 ### done
 
+- permissions grouping
 - yaml config
 - role
 - CORS is not being lowercased when hungarorised as part of logical id

@@ -1,5 +1,7 @@
 from pareto2.components.api.public import PublicApi
 
+from pareto2.components import Component
+
 from pareto2.aws.iam import Role
 
 import json, yaml
@@ -20,11 +22,14 @@ Endpoints=yaml.safe_load("""
 if __name__=="__main__":
     api=PublicApi(namespace="my",
                   endpoints=Endpoints)
-    role=Role(namespace="foobar",
-              permissions=["logs:*",
-                           "s3:*"])
-    api.append(role)
     print (json.dumps(api.render(),
                       indent=2))
-    
+    print ()
+    component=Component()
+    role=Role(namespace="backend",
+              permissions=["logs:*",
+                           "s3:*"])
+    component.append(role)
+    print (json.dumps(component.render(),
+                      indent=2))
     

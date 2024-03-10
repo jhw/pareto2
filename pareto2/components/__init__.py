@@ -1,8 +1,7 @@
 class Component(list):
 
-    def __init__(self, namespace, items=[], **kwargs):
-        list.__init__(self, items)
-        self.namespace = namespace
+    def __init__(self):
+        list.__init__(self, [])
 
     def render(self):
         resources=dict([resource.render()

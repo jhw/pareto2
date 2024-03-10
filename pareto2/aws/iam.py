@@ -7,7 +7,7 @@ class Role(Resource):
         self.namespace = namespace
         self.permissions = permissions
         self.service = service
-
+        
     @property
     def aws_properties(self):
         policy_name = f"{self.namespace}-role-policy-${{AWS::StackName}}"
@@ -18,12 +18,21 @@ class Role(Resource):
             "Policies": policies
         }
 
+    def group_permissions(self, permissions):
+        groups={}
+        for permission in permissions:
+            service=permission.split(":")[0]
+            groups.setdefault(service, [])
+            groups[service].append(permission)
+        return list(groups.values())
+    
     @property
     def policy_document(self):
         return {"Version": "2012-10-17",
-                "Statement": [{"Action": self.permissions,
+                "Statement": [{"Action": group,
                                "Effect": "Allow",
-                               "Resource": "*"}]}
+                               "Resource": "*"}
+                              for group in self.group_permissions(self.permissions)]}
 
     @property
     def assume_role_policy_document(self):
