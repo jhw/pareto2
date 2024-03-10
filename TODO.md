@@ -1,13 +1,11 @@
 ### short 
 
-- replace component with template
-- lambda
+- simple parameter and output handling
+- add domain and certificate parameters to api
+- reference checking and validation
+- simple lambda
 
 ### roadmap
-
-- override template.resources.append
-- reference collection and checking
-- parameter insertion
 
 - private api
 - website
@@ -40,6 +38,9 @@
 - step functions
 
 ### thoughts
+
+- template reference collection and checking?
+  - not clear it adds value at this stage
 
 - does dehungarorise() need to take into account initials and numbers?
   - have to see
@@ -83,6 +84,8 @@
 
 ### done
 
+- override template.resources.append
+- replace component with template
 - consider overriding template.resources.append
 - permissions grouping
 - yaml config

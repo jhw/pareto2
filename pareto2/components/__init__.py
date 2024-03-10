@@ -1,4 +1,4 @@
-class Component:
+class Template:
 
     def __init__(self):
         self.resources=[]
@@ -9,4 +9,6 @@ class Component:
     def render(self):
         resources=dict([resource.render()
                         for resource in self.resources])
-        return {"Resources": resources}
+        return {"Parameters": {},
+                "Resources": resources,
+                "Outputs": {}}
