@@ -1,8 +1,5 @@
 ### short 
 
-- revert component to list
-- add notes that component is just a list of resources
-- component to render to template
 - resource visibility decorator
 - template ref lookup
 - template parameter insertion
@@ -88,6 +85,9 @@
 
 ### done
 
+- revert component to list
+- add notes that component is just a list of resources
+- component to render to template
 - override template.resources.append
 - replace component with template
 - consider overriding template.resources.append

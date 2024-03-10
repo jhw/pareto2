@@ -18,6 +18,7 @@ Endpoints=yaml.safe_load("""
 if __name__=="__main__":
     api=PublicApi(namespace="my",
                   endpoints=Endpoints)
-    print (json.dumps(api.render(),
+    template=api.render()
+    print (json.dumps(template,
                       indent=2))
     
