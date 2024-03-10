@@ -1,12 +1,16 @@
 ### short 
 
-- simple parameter and output handling
-- add domain and certificate parameters to api
-- reference checking and validation
-- simple lambda
+- revert component to list
+- add notes that component is just a list of resources
+- component to render to template
+- resource visibility decorator
+- template ref lookup
+- template parameter insertion
+- output visible resources
 
 ### roadmap
 
+- lambda
 - private api
 - website
 - lambda event config
