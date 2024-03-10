@@ -32,6 +32,10 @@ class RestApi(AWSResource):
             "Name": {"Fn::Sub": f"{self.namespace}-rest-api-${{AWS::StackName}}"}
         }
 
+    @property
+    def visible(self):
+        return True
+    
 class Deployment(AWSResource):
 
     def __init__(self, namespace, methods):

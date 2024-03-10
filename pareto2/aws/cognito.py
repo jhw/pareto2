@@ -6,6 +6,10 @@ class UserPool(Resource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+    @property
+    def visible(self):
+        return True
+
 class SimpleEmailUserPool(UserPool):
 
     def  __init__(self, namespace):
@@ -47,6 +51,10 @@ class UserPoolClient(Resource):
             "PreventUserExistenceErrors": "ENABLED",
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
+
+    @property
+    def visible(self):
+        return True
 
 class UserPoolAdminClient(UserPoolClient):
 
@@ -90,6 +98,10 @@ class IdentityPool(Resource):
             "CognitoIdentityProviders": [provider]
         }
 
+    @property
+    def visible(self):
+        return True
+    
 class IdentityPoolRoleAttachment(Resource):
     
     def __init__(self, namespace):

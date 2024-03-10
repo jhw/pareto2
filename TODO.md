@@ -1,9 +1,10 @@
 ### short 
 
-- resource visibility decorator
 - template ref lookup
 - template parameter insertion
 - output visible resources
+
+- proper schema
 
 ### roadmap
 
@@ -85,6 +86,7 @@
 
 ### done
 
+- resource visibility decorator
 - revert component to list
 - add notes that component is just a list of resources
 - component to render to template

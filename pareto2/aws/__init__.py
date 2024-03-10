@@ -54,6 +54,10 @@ class Resource:
     @property
     def aws_properties(self):
         return {}
+
+    @property
+    def visible(self):
+        return False
     
     def render(self):
         key=hungarorise(self.resource_name)
