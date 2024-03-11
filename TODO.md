@@ -1,30 +1,20 @@
-### short [01-cognito]
+### short
 
-- identity pool + client id
+- override simple email resource type field to reflect base class
 
-```
-resource
-def init_identitypool(api):
-    resourcename=H("%s-api-identitypool" % api["name"])
-    clientid={"Ref": H("%s-api-userpool-web-client" % api["name"])}
-    providername={"Fn::GetAtt": [H("%s-api-userpool" % api["name"]),
-                                 "ProviderName"]}
-    provider={"ClientId": clientid,
-              "ProviderName": providername}
-    props={"AllowUnauthenticatedIdentities": True,
-           "CognitoIdentityProviders": [provider]}
-    return (resourcename,
-            "AWS::Cognito::IdentityPool",
-            props)
-```
+- add notes saying why this is being done
+  - when you subclass a resource and need to reference it from other resources in the same module, it's simplest to override the resource type parameter so it refers to the base class
+   - where the subclass is not referenced by other resources in the module, but is referenced at the component level, eh endpoint stuff and gateway responses, it's more convenient to have the full class name as part of the type 
 
-- identity pool mapping
+- remove pool type field
+- check template generation
+- hardcode identity pool client id as user pool web client
+- add identity pool to component
+- add identity pool mapping to component
+- check template generation 
 
-- proper schema for hello-post
 - double curly brackets around AWS::Stack
-- userpool parameterisation
-  - harmonise pool_type parameters in apigateway and cognito?
-  - replace user_pool_type parameter with auth_namespace?
+- proper schema for hello-post
   
 ### roadmap
 
