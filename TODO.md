@@ -1,6 +1,5 @@
 ### short
 
-- add identity pool mapping to component
 - proper schema for hello-post
 
 - lambda handler
@@ -84,6 +83,7 @@
 
 ### done
 
+- add identity pool mapping to component
 - permission source arn is messed up
 
 ```

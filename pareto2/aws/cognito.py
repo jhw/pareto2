@@ -39,16 +39,13 @@ class SimpleEmailUserPool(UserPool):
         }
 
     """
-    - when you subclass a resource and need to reference it from other resources in the same module, it's simplest to override the resource_name parameter so it refers to the base class rather than the current subclass
-    - this way other resources in the same module can refence this resource using the standard aws resource name rather than the subclass name
-    - where the subclass is not referenced by other resources in the module (but is referenced at the component level - eg endpoint stuff, gateway responses) it's more convenient to have the subclass type as part of the resource name
+    - occasionally a subclassed resource might override resource_name to point to base_resource_name
+    - this is so other resources in the same module can refer to this class using standard #{namespace}-#{resource-name} nomenclature, without having to know the name of the specific subclass
     """
-    
-    @property
-    def resource_name(self):    
-        tokens=self.class_names[-2].split(".") # base class not subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
 
+    @property
+    def resource_name(self):
+        return self.base_resource_name
 
 class UserPoolClient(Resource):
     

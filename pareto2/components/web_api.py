@@ -86,7 +86,8 @@ class WebApi(Component):
                       UserPoolWebClient,
                       IdentityPool,
                       IdentityPoolAuthorizedRole,
-                      IdentityPoolUnauthorizedRole]:
+                      IdentityPoolUnauthorizedRole,
+                      IdentityPoolRoleAttachment]:
             self.append(klass(namespace=namespace))
 
     def init_api_base(self, namespace):
