@@ -1,13 +1,5 @@
 ### short
 
-- override simple email resource type field to reflect base class
-
-- add notes saying why this is being done
-  - when you subclass a resource and need to reference it from other resources in the same module, it's simplest to override the resource type parameter so it refers to the base class
-   - where the subclass is not referenced by other resources in the module, but is referenced at the component level, eh endpoint stuff and gateway responses, it's more convenient to have the full class name as part of the type 
-
-- remove pool type field
-- check template generation
 - hardcode identity pool client id as user pool web client
 - add identity pool to component
 - add identity pool mapping to component
@@ -94,6 +86,14 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- check template generation
+- remove pool type field
+- override simple email resource type field to reflect base class
+
+- add notes saying why this is being done
+  - when you subclass a resource and need to reference it from other resources in the same module, it's simplest to override the resource type parameter so it refers to the base class
+   - where the subclass is not referenced by other resources in the module, but is referenced at the component level, eh endpoint stuff and gateway responses, it's more convenient to have the full class name as part of the type 
 
 - identity pool roles
 - single web_api component

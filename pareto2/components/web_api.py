@@ -80,7 +80,7 @@ class WebApi(Component):
             
     def init_private_api(self, namespace):
         self.init_api_base(namespace)
-        for klass in [SimpleEmailAuthorizer,
+        for klass in [Authorizer,
                       SimpleEmailUserPool,
                       UserPoolAdminClient,
                       UserPoolWebClient,

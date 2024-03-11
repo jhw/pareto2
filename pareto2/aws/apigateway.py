@@ -134,11 +134,11 @@ class PublicLambdaProxyMethod(LambdaProxyMethod):
 
 class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
-    def __init__(self, namespace, api_namespace, pool_type="simple_email", **kwargs):
+    def __init__(self, namespace, api_namespace, **kwargs):
         super().__init__(namespace,
                          api_namespace,
                          authorisation={"Authorization": "COGNITO",
-                                        "Authorizer": {"Ref": H("%s-%s-authorizer" % (api_namespace, pool_type))}},
+                                        "Authorizer": {"Ref": H("%s-authorizer" % api_namespace)}},
                          **kwargs)
         
 class CorsMethod(Method):
@@ -189,11 +189,6 @@ class Authorizer(AWSResource):
     def __init__(self, namespace):
         self.namespace = namespace
 
-class SimpleEmailAuthorizer(Authorizer):
-
-    def __init__(self, namespace):
-        return super().__init__(namespace)
-       
     """
     - feels like all APIGW authentication is going to be done against a UserPool, so it's okay to make this Cognito- centric in a base class
     """
@@ -201,7 +196,7 @@ class SimpleEmailAuthorizer(Authorizer):
     @property
     def aws_properties(self):
         return {
-            "ProviderARNS": [{"Fn::GetAtt": [H(f"{self.namespace}-simple-email-user-pool"), "Arn"]}],
+            "ProviderARNS": [{"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "Arn"]}],
             "IdentitySource": "method.request.header.Authorization",
             "Name": {"Fn::Sub": f"{self.namespace}-authorizer-${{AWS::StackName}}"},
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},

@@ -1,5 +1,5 @@
 from pareto2.aws import hungarorise as H
-from pareto2.aws import Resource
+from pareto2.aws import Resource, dehungarorise
 
 class UserPool(Resource):
 
@@ -38,16 +38,27 @@ class SimpleEmailUserPool(UserPool):
             "UsernameAttributes": ["email"]
         }
 
+    """
+    - when you subclass a resource and need to reference it from other resources in the same module, it's simplest to override the resource_name parameter so it refers to the base class rather than the current subclass
+    - this way other resources in the same module can refence this resource using the standard aws resource name rather than the subclass name
+    - where the subclass is not referenced by other resources in the module (but is referenced at the component level - eg endpoint stuff, gateway responses) it's more convenient to have the subclass type as part of the resource name
+    """
+    
+    @property
+    def resource_name(self):    
+        tokens=self.class_names[-2].split(".") # base class not subclass
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
+
+
 class UserPoolClient(Resource):
     
-    def __init__(self, namespace, pool_type="simple-email"):
+    def __init__(self, namespace):
         self.namespace = namespace
-        self.pool_type = pool_type
 
     @property
     def aws_properties(self):
         return {
-            "UserPoolId": {"Ref": H(f"{self.namespace}-{self.pool_type}-user-pool")},
+            "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")},
             "PreventUserExistenceErrors": "ENABLED",
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
@@ -82,15 +93,14 @@ class UserPoolWebClient(UserPoolClient):
     
 class IdentityPool(Resource):
 
-    def __init__(self, namespace, client_id, pool_type="simple-email"):
+    def __init__(self, namespace, client_id):
         self.namespace = namespace
         self.client_id = client_id
-        self.pool_type = pool_type
 
     @property
     def aws_properties(self):
         client_id = {"Ref": self.client_id}
-        provider_name = {"Fn::GetAtt": [H(f"{self.namespace}-{self.pool_type}-user-pool"), "ProviderName"]}
+        provider_name = {"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "ProviderName"]}
         provider = {"ClientId": client_id,
                     "ProviderName": provider_name}
         return {
