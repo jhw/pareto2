@@ -17,7 +17,8 @@ Endpoints=yaml.safe_load("""
 
 if __name__=="__main__":
     api=WebApi(namespace="my",
-               endpoints=Endpoints)
+               endpoints=Endpoints,
+               auth="private")
     template=api.render()
     template.populate_parameters()
     print (json.dumps(template,

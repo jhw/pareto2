@@ -134,11 +134,11 @@ class PublicLambdaProxyMethod(LambdaProxyMethod):
 
 class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
-    def __init__(self, namespace, api_namespace, **kwargs):
+    def __init__(self, namespace, api_namespace, pool_type="simple_email", **kwargs):
         super().__init__(namespace,
                          api_namespace,
                          authorisation={"Authorization": "COGNITO",
-                                        "Authorizer": {"Ref": H("%s-authorizer" % namespace)}},
+                                        "Authorizer": {"Ref": H("%s-%s-authorizer" % (api_namespace, pool_type))}},
                          **kwargs)
         
 class CorsMethod(Method):
@@ -189,6 +189,11 @@ class Authorizer(AWSResource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+class SimpleEmailAuthorizer(Authorizer):
+
+    def __init__(self, namespace):
+        return super().__init__(namespace)
+       
     """
     - feels like all APIGW authentication is going to be done against a UserPool, so it's okay to make this Cognito- centric in a base class
     """
@@ -196,9 +201,9 @@ class Authorizer(AWSResource):
     @property
     def aws_properties(self):
         return {
-            "ProviderARNS": [{"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "Arn"]}],
+            "ProviderARNS": [{"Fn::GetAtt": [H(f"{self.namespace}-simple-email-user-pool"), "Arn"]}],
             "IdentitySource": "method.request.header.Authorization",
-            "Name": {"Fn::Sub": H(f"{self.namespace}-authorizer-${{AWS::StackName}}")},
+            "Name": {"Fn::Sub": f"{self.namespace}-authorizer-${{AWS::StackName}}"},
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
             "Type": "COGNITO_USER_POOLS"
         }
@@ -227,7 +232,6 @@ class SchemaRequestValidator(RequestValidator):
     def __init__(self, namespace, api_namespace):
         return super().__init__(namespace, api_namespace, validate_request_body=True)
 
-
 class Model(AWSResource):
     
     def __init__(self,
@@ -254,7 +258,7 @@ class Model(AWSResource):
         return {
             "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")},
             "ContentType": self.content_type,
-            # "Name": {"Fn::Sub": f"{self.namespace}-model-${{AWS::StackName}}"},
+            "Name": {"Fn::Sub": f"{self.namespace}-model-${{AWS::StackName}}"},
             "Schema": self.schema
         }
 

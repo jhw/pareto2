@@ -30,13 +30,25 @@ class WebApi(Component):
     def __init__(self, namespace, endpoints, auth="public"):
         super().__init__()
         self.auth=auth
-        self.init_api(namespace)
+        apifn=getattr(self, "init_%s_api" % self.auth)
+        apifn(namespace)
         for endpoint in endpoints:
             self.init_endpoint(namespace, endpoint)
         methods = self.filter_methods(namespace, endpoints)
         self.init_deployment(namespace, methods)
 
-    def init_api(self, namespace):
+    def init_public_api(self, namespace):
+        self.init_api_base(namespace)
+            
+    def init_private_api(self, namespace):
+        self.init_api_base(namespace)
+        for klass in [SimpleEmailAuthorizer,
+                      SimpleEmailUserPool,
+                      UserPoolAdminClient,
+                      UserPoolWebClient]:
+            self.append(klass(namespace=namespace))
+
+    def init_api_base(self, namespace):
         for klass in [RestApi,
                       Stage,
                       GatewayResponse4xx,
@@ -45,7 +57,7 @@ class WebApi(Component):
                       BasePathMapping,
                       RecordSet]:
             self.append(klass(namespace=namespace))
-    
+            
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
                           "-".join([tok.lower()

@@ -1,12 +1,15 @@
 ### short [01-cognito]
 
-- authorizer
-- userpool, user clients
-- identity pool stuff
+- identity pool roles
+- identity pool 
+- identity pool mapping
+
+- double curly brackets around AWS::Stack
+- replace user_pool_type parameter with auth_namespace?
+- harmonise pool_type parameters in apigateway and cognito?
+- proper schema for hello-post
 
 - lambda handler and role
-
-- proper schema for hello-post
 
 ### roadmap
 
