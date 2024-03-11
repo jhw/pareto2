@@ -1,6 +1,5 @@
 ### short
 
-- bucket
 - apigw website method
 - apigw root redirect method
 - website component
@@ -8,7 +7,7 @@
 
 ### roadmap
 
-- webapi function and roles
+- webapi functions, roles
 
 - worker
   - event config
@@ -84,6 +83,7 @@
 
 ### done
 
+- bucket
 - apigw restapi optional BinaryMediaTypes
 - rename web_api as webapi
 - proper schema for hello-post
