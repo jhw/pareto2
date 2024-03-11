@@ -3,14 +3,15 @@
 - hardcode identity pool client id as user pool web client
 - add identity pool to component
 - add identity pool mapping to component
-- check template generation 
 
 - double curly brackets around AWS::Stack
 - proper schema for hello-post
+
+- lambda handler
+- lambda role
   
 ### roadmap
 
-- lambda handler
 - website
 - lambda event config
 - lambda slack logging
