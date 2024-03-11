@@ -20,7 +20,7 @@ class Permission(PermissionBase):
     
     def __init__(self, namespace, api_namespace, function_namespace, method, path):
         restapiref, stageref = H(f"{api_namespace}-rest-api"), H(f"{api_namespace}-stage")
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{restapiref}}/${{stageref}}/{method}/{path}"}
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{method}/{path}"}
         super().__init__(namespace=namespace,
                          function_namespace=function_namespace,
                          source_arn=source_arn,

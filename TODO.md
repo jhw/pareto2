@@ -1,11 +1,5 @@
 ### short
 
-- permission source arn is messed up
-
-```
-  source_arn = {"Fn::Sub": "arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${%s}/${%s}/%s/%s" % (restapiref, stageref, method, path)}
-```
-
 - add identity pool mapping to component
 - proper schema for hello-post
 
@@ -89,6 +83,12 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- permission source arn is messed up
+
+```
+  source_arn = {"Fn::Sub": "arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${%s}/${%s}/%s/%s" % (restapiref, stageref, method, path)}
+```
 
 - add identity pool to component
 - hardcode identity pool client id as user pool web client
