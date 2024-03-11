@@ -93,13 +93,12 @@ class UserPoolWebClient(UserPoolClient):
     
 class IdentityPool(Resource):
 
-    def __init__(self, namespace, client_id):
+    def __init__(self, namespace):
         self.namespace = namespace
-        self.client_id = client_id
 
     @property
     def aws_properties(self):
-        client_id = {"Ref": self.client_id}
+        client_id = {"Ref": H(f"{self.namespace}-user-pool-web-client")}
         provider_name = {"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "ProviderName"]}
         provider = {"ClientId": client_id,
                     "ProviderName": provider_name}

@@ -112,16 +112,16 @@ class LambdaProxyMethod(Method):
                      "Uri": uri}
         props={"HttpMethod": self.method,
                "Integration": integration,
-               "ResourceId": {"Ref": H("%s-resource" % self.namespace)},
-               "RestApiId": {"Ref": H("%s-rest-api" % self.api_namespace)}}
+               "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
+               "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}}
         props.update(self.authorisation)
         if self.parameters:
-            props["RequestValidatorId"]={"Ref": H("%s-parameter-request-validator" % self.namespace)}
-            props["RequestParameters"]={"method.request.querystring.%s" % param: True
+            props["RequestValidatorId"]={"Ref": H(f"{self.namespace}-parameter-request-validator")}
+            props["RequestParameters"]={f"method.request.querystring.{param}": True
                                         for param in self.parameters}
         if self.schema:
-            props["RequestValidatorId"]={"Ref": H("%s-schema-request-validator" % self.namespace)}
-            props["RequestModels"]={"application/json": H("%s-model" % self.namespace)}
+            props["RequestValidatorId"]={"Ref": H(f"{self.namespace}-schema-request-validator")}
+            props["RequestModels"]={"application/json": H(f"{self.namespace}-model")}
         return props
 
 class PublicLambdaProxyMethod(LambdaProxyMethod):
@@ -138,7 +138,7 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
         super().__init__(namespace,
                          api_namespace,
                          authorisation={"Authorization": "COGNITO",
-                                        "Authorizer": {"Ref": H("%s-authorizer" % api_namespace)}},
+                                        "Authorizer": {"Ref": H(f"{api_namespace}-authorizer")}},
                          **kwargs)
         
 class CorsMethod(Method):
@@ -150,7 +150,7 @@ class CorsMethod(Method):
     def _integration_response(self, cors_headers=CorsHeaders):
         params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
                 for k, v in [("headers", ",".join(cors_headers)),
-                             ("methods", "%s,OPTIONS" % self.method),
+                             ("methods", f"{self.method},OPTIONS"),
                              ("origin", "*")]}
         templates={"application/json": ""}
         return {"StatusCode": 200,
@@ -270,7 +270,7 @@ class GatewayResponse(AWSResource):
                              ("origin", "*")]}
         return {
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
-            "ResponseType": "DEFAULT_%s" % self.response_type,
+            "ResponseType": f"DEFAULT_{self.response_type}",
             "ResponseParameters": params
         }
 

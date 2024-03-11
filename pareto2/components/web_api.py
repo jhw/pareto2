@@ -20,7 +20,7 @@ class Permission(PermissionBase):
     
     def __init__(self, namespace, api_namespace, function_namespace, method, path):
         restapiref, stageref = H(f"{api_namespace}-rest-api"), H(f"{api_namespace}-stage")
-        source_arn = {"Fn::Sub": "arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${%s}/${%s}/%s/%s" % (restapiref, stageref, method, path)}
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{restapiref}}/${{stageref}}/{method}/{path}"}
         super().__init__(namespace=namespace,
                          function_namespace=function_namespace,
                          source_arn=source_arn,
@@ -68,7 +68,7 @@ class WebApi(Component):
     def __init__(self, namespace, endpoints, auth="public"):
         super().__init__()
         self.auth=auth
-        apifn=getattr(self, "init_%s_api" % self.auth)
+        apifn=getattr(self, f"init_{self.auth}_api")
         apifn(namespace)
         for endpoint in endpoints:
             self.init_endpoint(namespace, endpoint)
@@ -123,7 +123,7 @@ class WebApi(Component):
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
 
     def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
-        methodfn=eval(H("%s-lambda-proxy-method" % self.auth))
+        methodfn=eval(H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace=child_ns,
                              api_namespace=parent_ns,
                              function_namespace=endpoint["action"],
@@ -133,7 +133,7 @@ class WebApi(Component):
                                               api_namespace=parent_ns))
 
     def init_POST_endpoint(self, parent_ns, child_ns, endpoint):
-        methodfn=eval(H("%s-lambda-proxy-method" % self.auth))
+        methodfn=eval(H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace=child_ns,
                              api_namespace=parent_ns,
                              function_namespace=endpoint["action"],
@@ -149,7 +149,7 @@ class WebApi(Component):
         methods = []
         for endpoint in endpoints:
             child_ns = self.endpoint_namespace(parent_ns, endpoint)
-            methods += [H(f"{child_ns}-%s-lambda-proxy-method" % self.auth),
+            methods += [H(f"{child_ns}-{self.auth}-lambda-proxy-method"),
                         H(f"{child_ns}-cors-method")]
         return methods
     

@@ -1,10 +1,13 @@
 ### short
 
-- hardcode identity pool client id as user pool web client
 - add identity pool to component
-- add identity pool mapping to component
+- permission source arn is messed up
 
-- double curly brackets around AWS::Stack
+```
+  source_arn = {"Fn::Sub": "arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${%s}/${%s}/%s/%s" % (restapiref, stageref, method, path)}
+```
+
+- add identity pool mapping to component
 - proper schema for hello-post
 
 - lambda handler
@@ -88,6 +91,8 @@
 
 ### done
 
+- hardcode identity pool client id as user pool web client
+- double curly brackets around AWS::Stack
 - check template generation
 - remove pool type field
 - override simple email resource type field to reflect base class
