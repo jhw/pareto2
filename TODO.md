@@ -1,8 +1,14 @@
-### short 
+### short [01-cognito]
+
+- single web_api component
+- private switch
+- authorizer
+- userpool, user clients
+- identity pool stuff
+
+- lambda handler and role
 
 - proper schema for hello-post
-
-- lambda
 
 ### roadmap
 
