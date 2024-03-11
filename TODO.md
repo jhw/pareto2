@@ -1,7 +1,5 @@
 ### short [01-cognito]
 
-- single web_api component
-- private switch
 - authorizer
 - userpool, user clients
 - identity pool stuff
@@ -89,6 +87,8 @@
 
 ### done
 
+- single web_api component
+- private switch
 - validator reference is not including api_namespace
 - confusion between CORS and Cors
 - template inline refs

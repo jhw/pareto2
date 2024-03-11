@@ -1,4 +1,4 @@
-from pareto2.components.api.public import PublicApi
+from pareto2.components.web_api import WebApi
 
 import json, yaml
 
@@ -16,8 +16,8 @@ Endpoints=yaml.safe_load("""
 """)
 
 if __name__=="__main__":
-    api=PublicApi(namespace="my",
-                  endpoints=Endpoints)
+    api=WebApi(namespace="my",
+               endpoints=Endpoints)
     template=api.render()
     template.populate_parameters()
     print (json.dumps(template,
