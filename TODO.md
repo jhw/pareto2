@@ -1,20 +1,30 @@
 ### short
 
-- lambda handler
-- lambda role
+- extend IAM role for args required by IdentityPoolRole
 
-- gist demos
-  
+- rename web_api as webapi
+- bucket
+- apigw restapi optional BinaryMediaTypes
+- apigw website method
+- apigw root redirect method
+- website component
+- website demo
+
+- lambda function
+  - code/body arg
+  - default/optional args for size (int), timeout (int), runtime, layers, envvars
+
+- extend webapi demo to create functions and roles
+
 ### roadmap
 
-- website
-  - bucket
 - worker
   - event config
   - events
   - logging
+  
 - streaming table
-- taskqueue
+- task_queue
 - timer 
 - topic
 
