@@ -1,19 +1,34 @@
 ### short [01-cognito]
 
-- identity pool roles
-- identity pool 
+- identity pool + client id
+
+```
+resource
+def init_identitypool(api):
+    resourcename=H("%s-api-identitypool" % api["name"])
+    clientid={"Ref": H("%s-api-userpool-web-client" % api["name"])}
+    providername={"Fn::GetAtt": [H("%s-api-userpool" % api["name"]),
+                                 "ProviderName"]}
+    provider={"ClientId": clientid,
+              "ProviderName": providername}
+    props={"AllowUnauthenticatedIdentities": True,
+           "CognitoIdentityProviders": [provider]}
+    return (resourcename,
+            "AWS::Cognito::IdentityPool",
+            props)
+```
+
 - identity pool mapping
 
-- double curly brackets around AWS::Stack
-- replace user_pool_type parameter with auth_namespace?
-- harmonise pool_type parameters in apigateway and cognito?
 - proper schema for hello-post
-
-- lambda handler and role
-
+- double curly brackets around AWS::Stack
+- userpool parameterisation
+  - harmonise pool_type parameters in apigateway and cognito?
+  - replace user_pool_type parameter with auth_namespace?
+  
 ### roadmap
 
-- private api
+- lambda handler
 - website
 - lambda event config
 - lambda slack logging
@@ -90,6 +105,7 @@
 
 ### done
 
+- identity pool roles
 - single web_api component
 - private switch
 - validator reference is not including api_namespace

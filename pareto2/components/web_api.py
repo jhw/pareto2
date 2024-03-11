@@ -3,6 +3,7 @@ from pareto2.aws import hungarorise as H
 from pareto2.aws.apigateway import *
 from pareto2.aws.apigateway import Resource as ApiGatewayResource
 from pareto2.aws.cognito import *
+from pareto2.aws.iam import Role as RoleBase
 from pareto2.aws.route53 import *
 
 # from pareto2.aws.lambda import Permission as PermissionBase
@@ -25,6 +26,43 @@ class Permission(PermissionBase):
                          source_arn=source_arn,
                          principal="apigateway.amazonaws.com")
 
+class IdentityPoolRole(RoleBase):
+
+    def __init__(self, namespace, permissions):
+        super().__init__(namespace, permissions)
+    
+    def policy_document(self, typestr):
+        condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{self.namespace}-identity-pool")}},
+                   "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
+        statement=[{"Effect": "Allow",
+                    "Principal": {"Federated": "cognito-identity.amazonaws.com"},
+                    "Action": ["sts:AssumeRoleWithWebIdentity"],
+                    "Condition": condition}]
+        return {"Version": "2012-10-17",
+                "Statement": statement}
+        
+class IdentityPoolUnauthorizedRole(IdentityPoolRole):
+
+    def __init__(self, namespace):
+        super().__init__(namespace=namespace,
+                         permissions=["cognito-sync:*"])
+        
+    @property
+    def policy_document(self):
+        return IdentityPoolRole.policy_document(self, "unauthorized")
+        
+class IdentityPoolAuthorizedRole(IdentityPoolRole):
+
+    def __init__(self, namespace):
+        super().__init__(namespace=namespace,
+                         permissions=["cognito-sync:*",
+                                      "cognito-identity:*",
+                                      "lambda:InvokeFunction"])
+        
+    @property
+    def policy_document(self):
+        return IdentityPoolRole.policy_document(self, "authorized")
+        
 class WebApi(Component):    
 
     def __init__(self, namespace, endpoints, auth="public"):
@@ -45,7 +83,9 @@ class WebApi(Component):
         for klass in [SimpleEmailAuthorizer,
                       SimpleEmailUserPool,
                       UserPoolAdminClient,
-                      UserPoolWebClient]:
+                      UserPoolWebClient,
+                      IdentityPoolAuthorizedRole,
+                      IdentityPoolUnauthorizedRole]:
             self.append(klass(namespace=namespace))
 
     def init_api_base(self, namespace):
