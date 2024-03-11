@@ -84,6 +84,7 @@ class WebApi(Component):
                       SimpleEmailUserPool,
                       UserPoolAdminClient,
                       UserPoolWebClient,
+                      IdentityPool,
                       IdentityPoolAuthorizedRole,
                       IdentityPoolUnauthorizedRole]:
             self.append(klass(namespace=namespace))

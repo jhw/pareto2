@@ -1,6 +1,5 @@
 ### short
 
-- add identity pool to component
 - permission source arn is messed up
 
 ```
@@ -91,6 +90,7 @@
 
 ### done
 
+- add identity pool to component
 - hardcode identity pool client id as user pool web client
 - double curly brackets around AWS::Stack
 - check template generation
