@@ -1,20 +1,20 @@
 ### short
 
-- proper schema for hello-post
-
 - lambda handler
 - lambda role
+
+- gist demos
   
 ### roadmap
 
 - website
-- lambda event config
-- lambda slack logging
-- bucket
-- lambda event source mapping
+  - bucket
+- worker
+  - event config
+  - events
+  - logging
 - streaming table
-- events
-- queue
+- taskqueue
 - timer 
 - topic
 
@@ -83,6 +83,7 @@
 
 ### done
 
+- proper schema for hello-post
 - add identity pool mapping to component
 - permission source arn is messed up
 

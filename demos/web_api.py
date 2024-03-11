@@ -3,16 +3,22 @@ from pareto2.components.web_api import WebApi
 import json, yaml
 
 Endpoints=yaml.safe_load("""
-- action: whatevs
+- action: handler
   method: GET
   path: hello-get
   parameters:
   - message
-- action: whatevs
+- action: handler
   method: POST
   path: hello-post
   schema: 
-    hello: world
+    type: object
+    properties: 
+      message:
+        type: string
+    required:
+    - message
+    additionalProperties: false
 """)
 
 if __name__=="__main__":
