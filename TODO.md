@@ -1,8 +1,5 @@
 ### short
 
-- extend IAM role for args required by IdentityPoolRole
-
-- rename web_api as webapi
 - bucket
 - apigw restapi optional BinaryMediaTypes
 - apigw website method
@@ -10,13 +7,9 @@
 - website component
 - website demo
 
-- lambda function
-  - code/body arg
-  - default/optional args for size (int), timeout (int), runtime, layers, envvars
-
-- extend webapi demo to create functions and roles
-
 ### roadmap
+
+- webapi function and roles
 
 - worker
   - event config
@@ -48,9 +41,8 @@
 
 ### thoughts
 
-- template reference collection and checking?
-  - not clear it adds value at this stage
-
+- extend IAM role for args required by IdentityPoolRole?
+  - not sure is possible as policies are too different
 - does dehungarorise() need to take into account initials and numbers?
   - have to see
 - permissions, size/timeout tests?
