@@ -1,7 +1,6 @@
 ### short
 
 - bucket
-- apigw restapi optional BinaryMediaTypes
 - apigw website method
 - apigw root redirect method
 - website component
@@ -85,6 +84,7 @@
 
 ### done
 
+- apigw restapi optional BinaryMediaTypes
 - rename web_api as webapi
 - proper schema for hello-post
 - add identity pool mapping to component
