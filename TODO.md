@@ -93,6 +93,7 @@
 
 ### done
 
+- rename web_api as webapi
 - proper schema for hello-post
 - add identity pool mapping to component
 - permission source arn is messed up
