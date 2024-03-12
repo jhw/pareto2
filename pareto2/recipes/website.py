@@ -21,6 +21,9 @@ class Website(Recipe):
                       RecordSet,                      
                       StreamingBucket]:
             self.append(klass(namespace=namespace))
+        methodref=H(f"{namespace}-s3-proxy-method")
+        self.append(Deployment(namespace=namespace,
+                               methods=[methodref]))
             
 if __name__=="__main__":
     pass

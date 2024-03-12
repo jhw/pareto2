@@ -1,7 +1,6 @@
 ### short
 
-- role
-- deployment
+- website role
 
 ### roadmap
 
@@ -81,6 +80,7 @@
 
 ### done
 
+- deployment
 - replace ${name} with inline lookup for DomainName
 - root redirect
 - fix {name} in root redirect
