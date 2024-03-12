@@ -22,12 +22,14 @@ class Role(Resource):
     def __init__(self,
                  namespace,
                  permissions=[],
-                 service="lambda.amazonaws.com",
-                 action="sts:AssumeRole"):
+                 principal={"Service": "lambda.amazonaws.com"},
+                 action=["sts:AssumeRole"],
+                 condition=None):
         self.namespace = namespace
         self.permissions = permissions
-        self.service = service
+        self.principal = principal
         self.action = action
+        self.condition = condition
         
     @property
     def aws_properties(self):
@@ -39,7 +41,17 @@ class Role(Resource):
             "Policies": policies
         }
 
-    def format_simple_statement(self, permissions):
+    @property
+    def assume_role_policy_document(self):
+        statement = [{"Effect": "Allow",
+                      "Principal": self.principal,
+                      "Action": self.action}]
+        if self.condition:
+            statement["Condition"] = self.condition
+        return {"Version": "2012-10-17",
+                "Statement": statement}
+    
+    def format_simple_policy_statement(self, permissions):
         def group_permissions(permissions):
             groups={}
             for permission in permissions:
@@ -52,34 +64,23 @@ class Role(Resource):
                  "Resource": "*"}
                 for group in group_permissions(permissions)]
 
-    def format_extended_statement(self, items):
-        def format_item(item):
-            props = {"Effect": "Allow"}
-            for k0, k1 in [("actions", "Action"),
-                           ("resource", "Resource")]:
-                if k0 in item:
-                    props[k1] = item[k0]
-            return props
-        return [format_item(item)
+    def format_extended_policy_statement(self, items):
+        return [{"Action": item["action"],
+                 "Effect": "Allow",
+                 "Resource": item["resource"] if "resource" in item else "*"}
                 for item in items]
     
-    def format_statement(self, permissions):
+    def format_policy_statement(self, permissions):
         if is_simple_format(permissions):            
-            return self.format_simple_statement(permissions)
+            return self.format_simple_policy_statement(permissions)
         elif is_extended_format(permissions):
-            return self.format_extended_statement(permissions)
+            return self.format_extended_policy_statement(permissions)
         else:
             raise RuntimeError("IAM permissions format not identified")
 
     @property
     def policy_document(self):
         return {"Version": "2012-10-17",
-                "Statement": self.format_statement(self.permissions)}
+                "Statement": self.format_policy_statement(self.permissions)}
 
-    @property
-    def assume_role_policy_document(self):
-        return {"Version": "2012-10-17",
-                "Statement": [{"Effect": "Allow",
-                               "Principal": {"Service": self.service},
-                               "Action": self.action}]}
 

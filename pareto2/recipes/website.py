@@ -11,13 +11,13 @@ class Role(RoleBase):
 
     def __init__(self,
                  namespace,
-                 service="apigateway.amazonaws.com"):
+                 principal={"Service": "apigateway.amazonaws.com"}):
         bucket_ref = H(f"{namespace}-bucket")
-        permissions=[{"actions": ["s3:GetObject"],
+        permissions=[{"action": ["s3:GetObject"],
                       "resource": {"Fn::Sub": f"arn:aws:s3:::${{{bucket_ref}}}/*"}}]
         super().__init__(namespace,
                          permissions=permissions,
-                         service=service)
+                         principal=principal)
 
 class Website(Recipe):    
 
