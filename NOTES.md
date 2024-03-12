@@ -1,4 +1,10 @@
-### namespaces, components, parameters, templates
+### component review 12/03/24
+
+- eyeball generated JSON for deficiencies, particularly in arn formation
+- check list of resources created, old _components versus new components
+- iterate through new JSON; compare construction of each resource with old _components resource
+
+### namespaces, components, parameters, templates 10/03/24
 
 - in addition to the below, namespaces are very powerful
 - as cloudformation operates in a single global namespace
@@ -35,7 +41,7 @@
 - might be simplier to hardcode integers at the lambda level
 - as they seem part of stack structure not environment variables
 
-### 0-8 philosophy
+### 0-8 philosophy xx/03/24
 
 - distinguish between resources and components
 - resources live in module/class structure which reflects their aws type
