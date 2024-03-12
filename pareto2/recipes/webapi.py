@@ -108,7 +108,8 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(ApiGatewayResource(namespace=parent_ns, # NB defined in parent_ns not child_ns
+        self.append(ApiGatewayResource(namespace=child_ns,
+                                       parent_namespace=parent_ns,
                                        path=endpoint["path"]))
         self.append(CorsMethod(namespace=child_ns,
                                parent_namespace=parent_ns,

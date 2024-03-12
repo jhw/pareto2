@@ -3,12 +3,12 @@ from pareto2.recipes.webapi import WebApi
 import json, yaml
 
 Endpoints=yaml.safe_load("""
-- action: handler
+- action: echo
   method: GET
   path: hello-get
   parameters:
   - message
-- action: handler
+- action: echo
   method: POST
   path: hello-post
   schema: 

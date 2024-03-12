@@ -72,16 +72,17 @@ class Stage(AWSResource):
     
 class Resource(AWSResource):
 
-    def __init__(self, namespace, path):
+    def __init__(self, namespace, parent_namespace, path):
         self.namespace = namespace
+        self.parent_namespace = parent_namespace
         self.path = path
 
     @property
     def aws_properties(self):
         return {
-            "ParentId": {"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]},
+            "ParentId": {"Fn::GetAtt": [H(f"{self.parent_namespace}-rest-api"), "RootResourceId"]},
             "PathPart": self.path,
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
+            "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}
         }
 
 class Method(AWSResource):
