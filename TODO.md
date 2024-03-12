@@ -1,13 +1,7 @@
 ### short
 
-- new permissions support
-  - either a list of permissions strings
-    - group together with wildcard resource
-  - or a list of (permissions, resource) tuples
-- add role policy condition
-  - see webapi identity pool role
-
-- investigate if default resource_name should actually be base_resource_name
+- iam role to support condition
+- simplify webapi role
 
 ### roadmap
 
@@ -45,6 +39,7 @@
 
 ### thoughts
 
+- investigate if default resource_name should actually be base_resource_name?
 - extend IAM role for args required by IdentityPoolRole?
   - not sure is possible as policies are too different
 - does dehungarorise() need to take into account initials and numbers?
@@ -89,6 +84,10 @@
 
 ### done
 
+- new permissions support
+  - either a list of permissions strings
+    - group together with wildcard resource
+  - or a list of (permissions, resource) tuples
 - remove permission grouping
 - website role
 - deployment
