@@ -1,7 +1,6 @@
 from pareto2.services import hungarorise as H
 
 from pareto2.services.apigateway import *
-from pareto2.services.apigateway import Resource as ApiGatewayResource
 from pareto2.services.cognito import *
 from pareto2.services.iam import Role as RoleBase
 from pareto2.services.route53 import *
@@ -108,9 +107,9 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(ApiGatewayResource(namespace=child_ns,
-                                       parent_namespace=parent_ns,
-                                       path=endpoint["path"]))
+        self.append(LambdaProxyResource(namespace=child_ns,
+                                        parent_namespace=parent_ns,
+                                        path=endpoint["path"]))
         self.append(CorsMethod(namespace=child_ns,
                                parent_namespace=parent_ns,
                                method=endpoint["method"]))
