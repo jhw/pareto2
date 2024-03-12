@@ -1,7 +1,5 @@
 ### short
 
-- replace ${name} with inline lookup for DomainName
-
 - role
 - deployment
 
@@ -83,6 +81,7 @@
 
 ### done
 
+- replace ${name} with inline lookup for DomainName
 - root redirect
 - fix {name} in root redirect
 - bucket

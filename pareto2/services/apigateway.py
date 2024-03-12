@@ -5,15 +5,15 @@ from pareto2.services import Resource as AWSResource # distinguish between aws.R
 
 import json
 
-LambdaProxyMethodArn="arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
+LambdaProxyMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
 
-StageName="prod"
+StageName = "prod"
 
-CorsHeaders=["Content-Type",
-             "X-Amz-Date",
-             "Authorization",
-             "X-Api-Key",
-             "X-Amz-Sec"]
+CorsHeaders = ["Content-Type",
+              "X-Amz-Date",
+               "Authorization",
+               "X-Api-Key",
+               "X-Amz-Sec"]
 
 class RestApi(AWSResource):
 
@@ -129,26 +129,26 @@ class RootRedirectMethod(Method):
 
     @property
     def _integration(self):
-        requests={"application/json": "{\"statusCode\" : 302}"}
-        redirecturl={"Fn::Sub": [f"'https://${{name}}/{self.path}'", # NB note single quotes
-                                 {"name": {"Ref": H("domain-name")}}]}
-        responses=[{"StatusCode": 302,
-                    "ResponseTemplates": {"application/json": "{}"},
-                    "ResponseParameters": {"method.response.header.Location": redirecturl}}]
+        request_templates = {"application/json": "{\"statusCode\" : 302}"}
+        domain_name_ref = H("domain-name")
+        redirect_url = {"Fn::Sub": f"'https://${{{domain_name_ref}}}/{self.path}'"}
+        integration_responses = [{"StatusCode": 302,
+                                  "ResponseTemplates": {"application/json": "{}"},
+                                  "ResponseParameters": {"method.response.header.Location": redirect_url}}]
         return {"Type": "MOCK",
-                "RequestTemplates": requests,
-                "IntegrationResponses": responses}      
+                "RequestTemplates": request_templates,
+                "IntegrationResponses": integration_responses}      
         
     @property
     def aws_properties(self):
-        methodresponses=[{"StatusCode": 302,
-                          "ResponseParameters": {"method.response.header.Location": True}}]
-        resourceid={"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]}
+        method_responses = [{"StatusCode": 302,
+                             "ResponseParameters": {"method.response.header.Location": True}}]
+        resource_id = {"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]}
         return {"HttpMethod": "GET",
                 "AuthorizationType": "NONE",
-                "MethodResponses": methodresponses,
+                "MethodResponses": method_responses,
                 "Integration": self._integration,
-                "ResourceId": resourceid, 
+                "ResourceId": resource_id, 
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
         
 class S3ProxyMethod(Method):
@@ -158,31 +158,31 @@ class S3ProxyMethod(Method):
 
     @property
     def _integration(self):
-        uri={"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H(f"{self.namespace}-bucket")}
-        creds={"Fn::GetAtt": [H(f"{self.namespace}-role"), "Arn"]}
-        reqparams={"integration.request.path.proxy": "method.request.path.proxy"}
-        responses=[{"StatusCode": 200,
-                    "ResponseParameters": {"method.response.header.Content-Type": "integration.response.header.Content-Type"}},
-                   {"StatusCode": 404,
-                    "SelectionPattern": "404"}]
+        uri = {"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H(f"{self.namespace}-bucket")}
+        credentials = {"Fn::GetAtt": [H(f"{self.namespace}-role"), "Arn"]}
+        request_parameters = {"integration.request.path.proxy": "method.request.path.proxy"}
+        integration_responses = [{"StatusCode": 200,
+                                  "ResponseParameters": {"method.response.header.Content-Type": "integration.response.header.Content-Type"}},
+                                 {"StatusCode": 404,
+                                  "SelectionPattern": "404"}]
         return {"IntegrationHttpMethod": "ANY",
                 "Type": "AWS",
                 "PassthroughBehavior": "WHEN_NO_MATCH",
                 "Uri": uri,
-                "Credentials": creds,
-                "RequestParameters": reqparams, 
-                "IntegrationResponses": responses}    
+                "Credentials": credentials,
+                "RequestParameters": request_parameters, 
+                "IntegrationResponses": integration_responses}    
         
     @property
     def aws_properties(self):
-        reqparams={"method.request.path.proxy": True}
-        methodresponses=[{"StatusCode": 200,
-                          "ResponseParameters": {"method.response.header.Content-Type": True}},
-                         {"StatusCode": 404}]
+        request_parameters = {"method.request.path.proxy": True}
+        method_responses = [{"StatusCode": 200,
+                             "ResponseParameters": {"method.response.header.Content-Type": True}},
+                            {"StatusCode": 404}]
         return {"HttpMethod": "GET",
                 "AuthorizationType": "NONE",
-                "RequestParameters": reqparams,
-                "MethodResponses": methodresponses,
+                "RequestParameters": request_parameters,
+                "MethodResponses": method_responses,
                 "Integration": self._integration,
                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
@@ -207,22 +207,22 @@ class LambdaProxyMethod(Method):
         
     @property
     def aws_properties(self):
-        uri={"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
-        integration={"IntegrationHttpMethod": "POST",
-                     "Type": "AWS_PROXY",
-                     "Uri": uri}
-        props={"HttpMethod": self.method,
-               "Integration": integration,
-               "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
-               "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}}
+        uri = {"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
+        integration = {"IntegrationHttpMethod": "POST",
+                       "Type": "AWS_PROXY",
+                       "Uri": uri}
+        props = {"HttpMethod": self.method,
+                 "Integration": integration,
+                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
+                 "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}}
         props.update(self.authorisation)
         if self.parameters:
-            props["RequestValidatorId"]={"Ref": H(f"{self.namespace}-parameter-request-validator")}
-            props["RequestParameters"]={f"method.request.querystring.{param}": True
+            props["RequestValidatorId"] = {"Ref": H(f"{self.namespace}-parameter-request-validator")}
+            props["RequestParameters"] = {f"method.request.querystring.{param}": True
                                         for param in self.parameters}
         if self.schema:
-            props["RequestValidatorId"]={"Ref": H(f"{self.namespace}-schema-request-validator")}
-            props["RequestModels"]={"application/json": H(f"{self.namespace}-model")}
+            props["RequestValidatorId"] = {"Ref": H(f"{self.namespace}-schema-request-validator")}
+            props["RequestModels"] = {"application/json": H(f"{self.namespace}-model")}
         return props
 
 class PublicLambdaProxyMethod(LambdaProxyMethod):
@@ -251,38 +251,38 @@ class CorsMethod(Method):
 
     @property
     def _integration_response(self, cors_headers=CorsHeaders):
-        params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
-                for k, v in [("headers", ",".join(cors_headers)),
-                             ("methods", f"{self.method},OPTIONS"),
-                             ("origin", "*")]}
-        templates={"application/json": ""}
+        parameters = {"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
+                      for k, v in [("headers", ",".join(cors_headers)),
+                                   ("methods", f"{self.method},OPTIONS"),
+                                   ("origin", "*")]}
+        templates = {"application/json": ""}
         return {"StatusCode": 200,
-                "ResponseParameters": params,
+                "ResponseParameters": parameters,
                 "ResponseTemplates": templates}
 
     @property
     def _integration(self):
-        templates={"application/json": json.dumps({"statusCode": 200})}
+        templates = {"application/json": json.dumps({"statusCode": 200})}
         return {"IntegrationResponses": [self._integration_response],
                 "PassthroughBehavior": "WHEN_NO_MATCH",
                 "RequestTemplates": templates,
                 "Type": "MOCK"}
 
     @property
-    def _response(self):
-        params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): False
-                for k in ["headers", "methods", "origin"]}
-        models={"application/json": "Empty"}
-        return {"StatusCode": 200,
-                "ResponseModels": models,
-                "ResponseParameters": params}
+    def _method_responses(self):
+        response_parameters = {"method.response.header.Access-Control-Allow-%s" % k.capitalize(): False
+                               for k in ["headers", "methods", "origin"]}
+        response_models = {"application/json": "Empty"}
+        return [{"StatusCode": 200,
+                 "ResponseModels": response_models,
+                 "ResponseParameters": response_parameters}]
         
     @property
     def aws_properties(self):
         return {"AuthorizationType": "NONE",
                 "HttpMethod": "OPTIONS",
                 "Integration": self._integration,
-                "MethodResponses": [self._response],
+                "MethodResponses": self._method_responses,
                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
                 "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}}
         
@@ -367,13 +367,13 @@ class GatewayResponse(AWSResource):
 
     @property
     def aws_properties(self):
-        params={"gatewayresponse.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
-                for k, v in [("headers", "*"),
-                             ("origin", "*")]}
+        response_parameters = {"gatewayresponse.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
+                      for k, v in [("headers", "*"),
+                                   ("origin", "*")]}
         return {
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
             "ResponseType": f"DEFAULT_{self.response_type}",
-            "ResponseParameters": params
+            "ResponseParameters": response_parameters
         }
 
 class GatewayResponse4xx(GatewayResponse):
