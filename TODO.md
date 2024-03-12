@@ -1,7 +1,5 @@
 ### short
 
-- modify index.html to be default arg in redirect method
-
 - website component
   - role
   
@@ -85,6 +83,7 @@
 
 ### done
 
+- modify index.html to be default arg in redirect method
 - website resource (proxy)
 - apigw root redirect method
 - apigw website method

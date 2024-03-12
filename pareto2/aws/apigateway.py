@@ -91,13 +91,14 @@ class Method(AWSResource):
 
 class RootRedirectMethod(Method):
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, path="index.html"):
         super().__init__(namespace)
+        self.path = path
 
     @property
     def _integration(self):
         requests={"application/json": "{\"statusCode\" : 302}"}
-        redirecturl={"Fn::Sub": ["'https://${name}/index.html'", # NB note single quotes
+        redirecturl={"Fn::Sub": [f"'https://${name}/{self.path}'", # NB note single quotes
                                  {"name": {"Ref": H("domain-name")}}]}
         responses=[{"StatusCode": 302,
                     "ResponseTemplates": {"application/json": "{}"},
