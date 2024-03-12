@@ -90,6 +90,35 @@ class Method(AWSResource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+class RootRedirectMethod(Method):
+
+    def __init__(self, namespace):
+        super().__init__(namespace)
+
+    @property
+    def _integration(self):
+        requests={"application/json": "{\"statusCode\" : 302}"}
+        redirecturl={"Fn::Sub": ["'https://${name}/index.html'", # NB note single quotes
+                                 {"name": {"Ref": H("domain-name")}}]}
+        responses=[{"StatusCode": 302,
+                    "ResponseTemplates": {"application/json": "{}"},
+                    "ResponseParameters": {"method.response.header.Location": redirecturl}}]
+        return {"Type": "MOCK",
+                "RequestTemplates": requests,
+                "IntegrationResponses": responses}      
+        
+    @property
+    def aws_properties(self):
+        methodresponses=[{"StatusCode": 302,
+                          "ResponseParameters": {"method.response.header.Location": True}}]
+        resourceid={"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]}
+        return {"HttpMethod": "GET",
+                "AuthorizationType": "NONE",
+                "MethodResponses": methodresponses,
+                "Integration": self._integration,
+                "ResourceId": resourceid, 
+                "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
+        
 class S3ProxyMethod(Method):
 
     def __init__(self, namespace):

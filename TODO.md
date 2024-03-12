@@ -1,6 +1,6 @@
 ### short
 
-- apigw root redirect method
+- website resource (proxy)
 - website component
 - website demo
 
@@ -82,6 +82,7 @@
 
 ### done
 
+- apigw root redirect method
 - apigw website method
 - bucket
 - apigw restapi optional BinaryMediaTypes
