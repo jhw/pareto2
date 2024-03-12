@@ -1,7 +1,10 @@
 ### short
 
-- website resource (proxy)
+- modify index.html to be default arg in redirect method
+
 - website component
+  - role
+  
 - website demo
 
 ### roadmap
@@ -82,6 +85,7 @@
 
 ### done
 
+- website resource (proxy)
 - apigw root redirect method
 - apigw website method
 - bucket
