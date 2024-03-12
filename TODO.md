@@ -1,5 +1,6 @@
 ### short
 
+- replace tuple- based permissions format with dict
 - iam role to support condition
 - simplify webapi role
 

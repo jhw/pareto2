@@ -49,7 +49,7 @@ class Role(Resource):
             return permissions
         else:
             raise RuntimeError("IAM permissions format not identified")
-    
+
     @property
     def policy_document(self):
         return {"Version": "2012-10-17",
