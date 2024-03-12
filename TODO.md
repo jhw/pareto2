@@ -1,7 +1,5 @@
 ### short
 
-- website role
-
 ### roadmap
 
 - webapi functions, roles
@@ -80,6 +78,7 @@
 
 ### done
 
+- website role
 - deployment
 - replace ${name} with inline lookup for DomainName
 - root redirect
