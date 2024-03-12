@@ -1,7 +1,7 @@
-from pareto2.aws import hungarorise as H
+from pareto2.services import hungarorise as H
 
-# from pareto2.aws import Resource
-from pareto2.aws import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
+# from pareto2.services import Resource
+from pareto2.services import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
 
 import json
 

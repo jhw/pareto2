@@ -1,18 +1,18 @@
-from pareto2.aws import hungarorise as H
+from pareto2.services import hungarorise as H
 
-from pareto2.aws.apigateway import *
-from pareto2.aws.apigateway import Resource as ApiGatewayResource
-from pareto2.aws.cognito import *
-from pareto2.aws.iam import Role as RoleBase
-from pareto2.aws.route53 import *
+from pareto2.services.apigateway import *
+from pareto2.services.apigateway import Resource as ApiGatewayResource
+from pareto2.services.cognito import *
+from pareto2.services.iam import Role as RoleBase
+from pareto2.services.route53 import *
 
-# from pareto2.aws.lambda import Permission as PermissionBase
+# from pareto2.services.lambda import Permission as PermissionBase
 
 import importlib
-lambda_module = importlib.import_module("pareto2.aws.lambda")
+lambda_module = importlib.import_module("pareto2.services.lambda")
 PermissionBase = lambda_module.Permission
 
-from pareto2.components import Component
+from pareto2.recipes import Recipe
 
 import re
 
@@ -63,7 +63,7 @@ class IdentityPoolAuthorizedRole(IdentityPoolRole):
     def policy_document(self):
         return IdentityPoolRole.policy_document(self, "authorized")
         
-class WebApi(Component):    
+class WebApi(Recipe):    
 
     def __init__(self, namespace, endpoints, auth="public"):
         super().__init__()

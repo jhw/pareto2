@@ -1,5 +1,5 @@
-from pareto2.aws import hungarorise as H
-from pareto2.aws import Resource, dehungarorise
+from pareto2.services import hungarorise as H
+from pareto2.services import Resource, dehungarorise
 
 class UserPool(Resource):
 

@@ -1,4 +1,4 @@
-from pareto2.components.webapi import WebApi
+from pareto2.recipes.webapi import WebApi
 
 import json, yaml
 

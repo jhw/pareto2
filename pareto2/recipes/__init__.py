@@ -1,4 +1,4 @@
-from pareto2.aws import hungarorise as H
+from pareto2.services import hungarorise as H
 
 import re
 
@@ -86,11 +86,11 @@ class Template(dict):
         return refs    
     
 """
-- a component is just a very thin wrapper around list of resources
+- a recipe is just a very thin wrapper around list of resources
 - it does not contain its own namespace in state because it may need to operate across a number of namespaces, particularly parent/child (eg api/endpoint)
 """
 
-class Component(list):
+class Recipe(list):
 
     def __init__(self):
         list.__init__(self)

@@ -21,7 +21,7 @@ def uppercase(text):
     return "_".join([tok.upper()
                      for tok in text.split("-")])
 
-AWSProxyClassFilterFn=lambda x: len(x)==4 and x[1]=="aws"
+AWSProxyClassFilterFn=lambda x: len(x)==4 and x[1]=="services"
 
 class Resource:
 
@@ -58,7 +58,7 @@ class Resource:
     def aws_resource_type(self, irregulars={"apigateway": "ApiGateway",
                                             "iam": "IAM"}):
         tokens=self.aws_proxy_class.split(".")
-        return "::".join([tokens[-3].upper(), # AWS
+        return "::".join(["AWS",
                           irregulars[tokens[-2]] if tokens[-2] in irregulars else hungarorise(tokens[-2]),
                           tokens[-1]]) # class name already hungarorised
 
