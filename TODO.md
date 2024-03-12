@@ -1,18 +1,30 @@
 ### short
 
+- remove permission grouping
+- new permissions support
+  - either a list of permissions strings
+    - group together with wildcard resource
+  - or a list of (permissions, resource) tuples
+- add role policy condition
+  - see webapi identity pool role
+
+- investigate if default resource_name should actually be base_resource_name
+
 ### roadmap
 
 - webapi functions, roles
 
 - worker
-  - event config
   - events
   - logging
+  - event config
   
 - streaming table
+  - event source mapping
+  
 - task_queue
-- timer 
 - topic
+- timer 
 
 ### medium
 
