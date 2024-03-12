@@ -1,6 +1,5 @@
 ### short
 
-- remove permission grouping
 - new permissions support
   - either a list of permissions strings
     - group together with wildcard resource
@@ -90,6 +89,7 @@
 
 ### done
 
+- remove permission grouping
 - website role
 - deployment
 - replace ${name} with inline lookup for DomainName
