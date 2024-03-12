@@ -72,8 +72,9 @@ class Stage(AWSResource):
 
 class Resource(AWSResource):
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, path):
         self.namespace = namespace
+        self.path = path
 
     @property
     def aws_properties(self):
@@ -82,7 +83,13 @@ class Resource(AWSResource):
             "PathPart": self.path,
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
         }
-        
+
+class S3ProxyResource(Resource):
+
+    def __init__(self, namespace, path="{proxy+}"):
+        super().__init__(namespace, path)
+
+    
 """
 - LambdaProxyResource doesn't use namespace directly, but still needs to live in its own namespace because a single API might have multiple endpoints, each with their own resources
 """
@@ -90,9 +97,8 @@ class Resource(AWSResource):
 class LambdaProxyResource(Resource):
 
     def __init__(self, namespace, parent_namespace, path):
-        super().__init__(namespace)
+        super().__init__(namespace, path)
         self.parent_namespace = parent_namespace
-        self.path = path
 
     """
     - occasionally a subclassed resource might override resource_name to point to base_resource_name
