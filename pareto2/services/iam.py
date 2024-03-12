@@ -18,12 +18,16 @@ class Role(Resource):
             "Policies": policies
         }
 
+    def group_permissions(self, permissions):
+        return [(permissions, "*")]
+    
     @property
     def policy_document(self):
         return {"Version": "2012-10-17",
-                "Statement": [{"Action": self.permissions,
+                "Statement": [{"Action": permissions,
                                "Effect": "Allow",
-                               "Resource": "*"}]}
+                               "Resource": resource}
+                              for permissions, resource in self.group_permissions(self.permissions)]}
 
     @property
     def assume_role_policy_document(self):
