@@ -1,6 +1,5 @@
 ### short
 
-- apigw website method
 - apigw root redirect method
 - website component
 - website demo
@@ -83,6 +82,7 @@
 
 ### done
 
+- apigw website method
 - bucket
 - apigw restapi optional BinaryMediaTypes
 - rename web_api as webapi

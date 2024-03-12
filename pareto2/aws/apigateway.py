@@ -87,10 +87,45 @@ class Resource(AWSResource):
 
 class Method(AWSResource):
     
-    def __init__(self, namespace, api_namespace):
+    def __init__(self, namespace):
         self.namespace = namespace
-        self.api_namespace = api_namespace
 
+class S3ProxyMethod(Method):
+
+    def __init__(self, namespace):
+        super().__init__(namespace)
+
+    @property
+    def _integration(self):
+        uri={"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H(f"{self.namespace}-bucket")}
+        creds={"Fn::GetAtt": [H(f"{self.namespace}-role"), "Arn"]}
+        reqparams={"integration.request.path.proxy": "method.request.path.proxy"}
+        responses=[{"StatusCode": 200,
+                    "ResponseParameters": {"method.response.header.Content-Type": "integration.response.header.Content-Type"}},
+                   {"StatusCode": 404,
+                    "SelectionPattern": "404"}]
+        return {"IntegrationHttpMethod": "ANY",
+                "Type": "AWS",
+                "PassthroughBehavior": "WHEN_NO_MATCH",
+                "Uri": uri,
+                "Credentials": creds,
+                "RequestParameters": reqparams, 
+                "IntegrationResponses": responses}    
+        
+    @property
+    def aws_properties(self):
+        reqparams={"method.request.path.proxy": True}
+        methodresponses=[{"StatusCode": 200,
+                          "ResponseParameters": {"method.response.header.Content-Type": True}},
+                         {"StatusCode": 404}]
+        return {"HttpMethod": "GET",
+                "AuthorizationType": "NONE",
+                "RequestParameters": reqparams,
+                "MethodResponses": methodresponses,
+                "Integration": self._integration,
+                "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
+                "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
+        
 class LambdaProxyMethod(Method):
 
     def __init__(self,
@@ -101,7 +136,8 @@ class LambdaProxyMethod(Method):
                  authorisation = None,
                  parameters = None,
                  schema = None):
-        super().__init__(namespace, api_namespace)
+        super().__init__(namespace)
+        self.api_namespace = api_namespace
         self.function_namespace = function_namespace
         self.method = method
         self.authorisation = authorisation
@@ -132,7 +168,7 @@ class PublicLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, namespace, api_namespace, **kwargs):
         super().__init__(namespace,
-                         api_namespace,
+                         api_namespace=api_namespace,
                          authorisation={"AuthorizationType": "NONE"},
                          **kwargs)
 
@@ -140,7 +176,7 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, namespace, api_namespace, **kwargs):
         super().__init__(namespace,
-                         api_namespace,
+                         api_namespace=api_namespace,
                          authorisation={"Authorization": "COGNITO",
                                         "Authorizer": {"Ref": H(f"{api_namespace}-authorizer")}},
                          **kwargs)
@@ -148,9 +184,11 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
 class CorsMethod(Method):
 
     def __init__(self, namespace, api_namespace, method):
-        super().__init__(namespace, api_namespace)
+        super().__init__(namespace)
+        self.api_namespace = api_namespace
         self.method = method
-        
+
+    @property
     def _integration_response(self, cors_headers=CorsHeaders):
         params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
                 for k, v in [("headers", ",".join(cors_headers)),
@@ -161,14 +199,15 @@ class CorsMethod(Method):
                 "ResponseParameters": params,
                 "ResponseTemplates": templates}
 
+    @property
     def _integration(self):
         templates={"application/json": json.dumps({"statusCode": 200})}
-        response=self._integration_response()
-        return {"IntegrationResponses": [response],
+        return {"IntegrationResponses": [self._integration_response],
                 "PassthroughBehavior": "WHEN_NO_MATCH",
                 "RequestTemplates": templates,
                 "Type": "MOCK"}
 
+    @property
     def _response(self):
         params={"method.response.header.Access-Control-Allow-%s" % k.capitalize(): False
                 for k in ["headers", "methods", "origin"]}
@@ -179,13 +218,11 @@ class CorsMethod(Method):
         
     @property
     def aws_properties(self):
-        integration=self._integration()
-        response=self._response()
         return {"AuthorizationType": "NONE",
                 "HttpMethod": "OPTIONS",
-                "Integration": integration,
-                "MethodResponses": [response],
-                "ResourceId": {"Ref": H(f"{self.namespace}-resource")}, # API resource or endpoint resource?
+                "Integration": self._integration,
+                "MethodResponses": [self._response],
+                "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
                 "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}}
         
 class Authorizer(AWSResource):
