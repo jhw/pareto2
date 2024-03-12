@@ -1,24 +1,21 @@
 from pareto2.services import hungarorise as H
 from pareto2.services import Resource
 
-SimplePermissionsMatcher = lambda item: isinstance(item, str)
+SimpleMatcher = lambda item: isinstance(item, str)
 
-ExtendedPermissionsMatcher = lambda item: (instance(item, tuple) and
-                                           len(item)==2 and
-                                           isinstance(item[0], list) and
-                                           isinstance(item[1], str))
+ExtendedMatcher = lambda item: isinstance(item, dict)
 
-def iterlist(items, matcherfn):
+def list_match(items, matcherfn):
     for item in items:
         if not matcherfn(item):
             return False
     return True
 
-def is_simple_permissons(items, matcherfn=SimplePermissionsMatcher):
-    return iterlist(items, matcherfn)
+def is_simple_format(items, matcherfn=SimpleMatcher):
+    return list_match(items, matcherfn)
 
-def is_extended_permissions(items, matcherfn=ExtendedPermissionsMatcher):
-    return iterlist(items, matcherfn)
+def is_extended_format(items, matcherfn=ExtendedMatcher):
+    return list_match(items, matcherfn)
             
 class Role(Resource):
 
@@ -42,21 +39,42 @@ class Role(Resource):
             "Policies": policies
         }
 
-    def format_permissions(self, permissions):
-        if is_simple_permissions_format(permissions):            
-            return [(permissions, "*")]
-        elif is_extended_permissions_format(permissions):
-            return permissions
+    def format_simple_statement(self, permissions):
+        def group_permissions(permissions):
+            groups={}
+            for permission in permissions:
+                service = permission.split(":")[0]
+                groups.setdefault(service, [])
+                groups[service].append(permission)
+            return list(groups.values())
+        return [{"Action": group,
+                 "Effect": "Allow",
+                 "Resource": "*"}
+                for group in group_permissions(permissions)]
+
+    def format_extended_statement(self, items):
+        def format_item(item):
+            props = {"Effect": "Allow"}
+            for k0, k1 in [("actions", "Action"),
+                           ("resource", "Resource")]:
+                if k0 in item:
+                    props[k1] = item[k0]
+            return props
+        return [format_item(item)
+                for item in items]
+    
+    def format_statement(self, permissions):
+        if is_simple_format(permissions):            
+            return self.format_simple_statement(permissions)
+        elif is_extended_format(permissions):
+            return self.format_extended_statement(permissions)
         else:
             raise RuntimeError("IAM permissions format not identified")
 
     @property
     def policy_document(self):
         return {"Version": "2012-10-17",
-                "Statement": [{"Action": permissions,
-                               "Effect": "Allow",
-                               "Resource": resource}
-                              for permissions, resource in self.format_permissions(self.permissions)]}
+                "Statement": self.format_statement(self.permissions)}
 
     @property
     def assume_role_policy_document(self):

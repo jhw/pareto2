@@ -11,21 +11,14 @@ class Role(RoleBase):
 
     def __init__(self,
                  namespace,
-                 permissions=["s3:GetObject"],
                  service="apigateway.amazonaws.com"):
+        bucket_ref = H(f"{namespace}-bucket")
+        permissions=[{"actions": ["s3:GetObject"],
+                      "resource": {"Fn::Sub": f"arn:aws:s3:::${{{bucket_ref}}}/*"}}]
         super().__init__(namespace,
                          permissions=permissions,
                          service=service)
 
-    @property
-    def policy_document(self):
-        bucket_ref = H(f"{self.namespace}-bucket")
-        resource = {"Fn::Sub": f"arn:aws:s3:::${{{bucket_ref}}}/*"}
-        return {"Version": "2012-10-17",
-                "Statement": [{"Action": self.permissions,
-                               "Effect": "Allow",
-                               "Resource": resource}]}
-        
 class Website(Recipe):    
 
     def __init__(self, namespace):

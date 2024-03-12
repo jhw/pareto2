@@ -1,12 +1,10 @@
 ### short
 
-- replace tuple- based permissions format with dict
-- iam role to support condition
-- simplify webapi role
-
-### roadmap
+- identity pool roles
 
 - webapi functions, roles
+
+### roadmap
 
 - worker
   - events
@@ -85,6 +83,10 @@
 
 ### done
 
+- remove IdentityPool permissions
+- replace tuple- based permissions format with dict
+- formatters to format statement
+- undo s3 policy document overriding
 - new permissions support
   - either a list of permissions strings
     - group together with wildcard resource
