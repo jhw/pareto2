@@ -15,6 +15,7 @@ class Website(Recipe):
                       Stage,
                       S3ProxyResource,
                       S3ProxyMethod,
+                      RootRedirectMethod,
                       DomainName,
                       BasePathMapping,
                       RecordSet,                      

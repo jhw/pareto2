@@ -84,11 +84,19 @@ class Resource(AWSResource):
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
         }
 
+    """
+    - occasionally a subclassed resource might override resource_name to point to base_resource_name
+    - this is so other resources in the same module can refer to this class using standard #{namespace}-#{resource-name} nomenclature, without having to know the name of the specific subclass
+    """
+
+    @property
+    def resource_name(self):
+        return self.base_resource_name
+    
 class S3ProxyResource(Resource):
 
     def __init__(self, namespace, path="{proxy+}"):
         super().__init__(namespace, path)
-
     
 """
 - LambdaProxyResource doesn't use namespace directly, but still needs to live in its own namespace because a single API might have multiple endpoints, each with their own resources
@@ -99,15 +107,6 @@ class LambdaProxyResource(Resource):
     def __init__(self, namespace, parent_namespace, path):
         super().__init__(namespace, path)
         self.parent_namespace = parent_namespace
-
-    """
-    - occasionally a subclassed resource might override resource_name to point to base_resource_name
-    - this is so other resources in the same module can refer to this class using standard #{namespace}-#{resource-name} nomenclature, without having to know the name of the specific subclass
-    """
-
-    @property
-    def resource_name(self):
-        return self.base_resource_name
         
     @property
     def aws_properties(self):
@@ -131,7 +130,7 @@ class RootRedirectMethod(Method):
     @property
     def _integration(self):
         requests={"application/json": "{\"statusCode\" : 302}"}
-        redirecturl={"Fn::Sub": [f"'https://${name}/{self.path}'", # NB note single quotes
+        redirecturl={"Fn::Sub": [f"'https://${{name}}/{self.path}'", # NB note single quotes
                                  {"name": {"Ref": H("domain-name")}}]}
         responses=[{"StatusCode": 302,
                     "ResponseTemplates": {"application/json": "{}"},

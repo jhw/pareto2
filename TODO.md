@@ -1,8 +1,7 @@
 ### short
 
-- fix {name} in root redirect
+- replace ${name} with inline lookup for DomainName
 
-- root redirect
 - role
 - deployment
 
@@ -84,6 +83,8 @@
 
 ### done
 
+- root redirect
+- fix {name} in root redirect
 - bucket
 - method
 - website component
