@@ -5,31 +5,39 @@ SimpleMatcher = lambda item: isinstance(item, str)
 
 ExtendedMatcher = lambda item: isinstance(item, dict)
 
-def list_match(items, matcherfn):
+def is_list(fn):
+    def wrapped(items, matcherfn):
+        if not isinstance(items, list):
+            raise RuntimeError("IAM permissions must be a list")
+        return fn(items, matcherfn)
+    return wrapped
+
+@is_list
+def list_matcher(items, matcherfn):
     for item in items:
         if not matcherfn(item):
             return False
     return True
 
-def is_simple_format(items, matcherfn=SimpleMatcher):
-    return list_match(items, matcherfn)
+def is_list_of_strings(items, matcherfn=SimpleMatcher):
+    return list_matcher(items, matcherfn)
 
-def is_extended_format(items, matcherfn=ExtendedMatcher):
-    return list_match(items, matcherfn)
+def is_list_of_dicts(items, matcherfn=ExtendedMatcher):
+    return list_matcher(items, matcherfn)
             
 class Role(Resource):
 
     def __init__(self,
                  namespace,
-                 permissions=[],
                  principal={"Service": "lambda.amazonaws.com"},
                  action=["sts:AssumeRole"],
-                 condition=None):
+                 condition=None,
+                 permissions=[]):
         self.namespace = namespace
-        self.permissions = permissions
         self.principal = principal
         self.action = action
         self.condition = condition
+        self.permissions = permissions
         
     @property
     def aws_properties(self):
@@ -51,7 +59,7 @@ class Role(Resource):
         return {"Version": "2012-10-17",
                 "Statement": statement}
     
-    def format_simple_policy_statement(self, permissions):
+    def format_simple_policies(self, permissions):
         def group_permissions(permissions):
             groups={}
             for permission in permissions:
@@ -64,23 +72,23 @@ class Role(Resource):
                  "Resource": "*"}
                 for group in group_permissions(permissions)]
 
-    def format_extended_policy_statement(self, items):
-        return [{"Action": item["action"],
+    def format_extended_policies(self, items):
+        return [{"Action": [item["action"]] if not isinstance(item["action"], list) else item["action"],
                  "Effect": "Allow",
                  "Resource": item["resource"] if "resource" in item else "*"}
                 for item in items]
     
-    def format_policy_statement(self, permissions):
-        if is_simple_format(permissions):            
-            return self.format_simple_policy_statement(permissions)
-        elif is_extended_format(permissions):
-            return self.format_extended_policy_statement(permissions)
+    def format_policies(self, permissions):
+        if is_list_of_strings(permissions):            
+            return self.format_simple_policies(permissions)
+        elif is_list_of_dicts(permissions):
+            return self.format_extended_policies(permissions)
         else:
-            raise RuntimeError("IAM permissions format not identified")
+            raise RuntimeError("IAM permissions format not recognised")
 
     @property
     def policy_document(self):
         return {"Version": "2012-10-17",
-                "Statement": self.format_policy_statement(self.permissions)}
+                "Statement": self.format_policies(self.permissions)}
 
 
