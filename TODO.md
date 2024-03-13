@@ -1,7 +1,7 @@
 ### short [01-lambda-functions]
 
-- function_kwargs(endpoint) helper
-- handler code
+- move code inline in demo
+- real handler code
 - permissions helper to handle wildcards overriding defaults
 - remove echo function namespace references
 - consider if recipes should really extend resource classes
@@ -88,6 +88,7 @@
 
 ### done
 
+- function_kwargs(endpoint) helper
 - replace default permissions with helper which extends permissions
 - extend RoleBase with Role
 - Role to generate permissions

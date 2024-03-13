@@ -106,6 +106,15 @@ class WebApi(Recipe):
                           "-".join([tok.lower()
                                     for tok in re.split("\\W", endpoint["path"])
                                     if tok != ""]))
+
+    def function_kwargs(self, endpoint):
+        kwargs = {}
+        for attr in ["memory",
+                     "timeout",
+                     "layers"]:
+            if attr in endpoint:
+                kwargs[attr] = endpoint[attr]
+        return kwargs
     
     def role_permissions(self, endpoint,
                          defaults = ["logs:CreateLogGroup",
@@ -126,7 +135,8 @@ class WebApi(Recipe):
         elif "schema" in endpoint:
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
         self.append(Function(namespace = child_ns,
-                             code = "def handler(event, context):\n  print(\"hello world\")"))
+                             code = "def handler(event, context):\n  print(\"hello world\")",
+                             **self.function_kwargs(endpoint)))
         self.append(Role(namespace = child_ns,
                          permissions = self.role_permissions(endpoint)))
         self.append(Permission(namespace = child_ns,
