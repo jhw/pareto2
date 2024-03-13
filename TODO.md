@@ -1,5 +1,7 @@
 ### short [01-lambda-functions]
 
+- pass permissions from config
+- pass layers, timeout, memory  from config
 - echo code
 - inline and s3 lambdas
 
