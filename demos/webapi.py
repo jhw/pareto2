@@ -21,14 +21,25 @@ Endpoints = yaml.safe_load("""
     additionalProperties: false
 """)
 
-SampleCodeBody="""def handler(event, context):
-    print (event)"""
+HelloGetBody="""def handler(event, context):
+    message=event["queryStringParameters"]["message"]
+    return {"statusCode": 200,
+            "headers": {"Content-Type": "text/plain"},
+            "body": f"you sent '{message}' via GET"}"""
+
+HelloPostBody="""import json
+def handler(event, context):
+    body=json.loads(event["body"])
+    message=body["message"]
+    return {"statusCode": 200,
+            "headers": {"Content-Type": "text/plain"},
+            "body": f"you sent '{message}' via POST"}"""
 
 if __name__ == "__main__":
     endpoints = {endpoint["path"]:endpoint
                  for endpoint in Endpoints}
-    endpoints["hello-get"]["code"] = SampleCodeBody
-    endpoints["hello-post"]["code"] = SampleCodeBody
+    endpoints["hello-get"]["code"] = HelloGetBody
+    endpoints["hello-post"]["code"] = HelloPostBody
     api = WebApi(namespace = "my",
                  endpoints = list(endpoints.values()),
                  auth = "private")

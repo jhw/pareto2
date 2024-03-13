@@ -1,19 +1,17 @@
 ### short [01-lambda-functions]
 
-- real handler code
-- permissions helper to handle wildcards overriding defaults
 - remove echo function namespace references
-- consider if recipes should really extend resource classes
 - inline and s3 lambdas
+- family pack mixin
+- permissions helper to handle wildcards overriding defaults
+- consider if recipes should really extend resource classes
 
 ### roadmap
 
-- family pack mixin
-
 - worker
+  - retries
   - events
   - logging
-  - event config
   
 - streaming table
   - event source mapping
@@ -87,6 +85,7 @@
 
 ### done
 
+- real handler code
 - move code inline in demo
 - function_kwargs(endpoint) helper
 - replace default permissions with helper which extends permissions
