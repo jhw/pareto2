@@ -10,14 +10,14 @@ LambdaProxyMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31
 StageName = "prod"
 
 CorsHeaders = ["Content-Type",
-              "X-Amz-Date",
+               "X-Amz-Date",
                "Authorization",
                "X-Api-Key",
                "X-Amz-Sec"]
 
 class RestApi(AWSResource):
 
-    def __init__(self, namespace, binary_media_types=None):
+    def __init__(self, namespace, binary_media_types = None):
         self.namespace = namespace
         self.binary_media_types = binary_media_types
 
@@ -58,7 +58,7 @@ class Deployment(AWSResource):
                 
 class Stage(AWSResource):
 
-    def __init__(self, namespace, stage_name=StageName):
+    def __init__(self, namespace, stage_name = StageName):
         self.namespace = namespace
         self.stage_name = stage_name
 
@@ -95,7 +95,7 @@ class Resource(AWSResource):
     
 class S3ProxyResource(Resource):
 
-    def __init__(self, namespace, path="{proxy+}"):
+    def __init__(self, namespace, path = "{proxy+}"):
         super().__init__(namespace, path)
     
 """
@@ -123,7 +123,7 @@ class Method(AWSResource):
 
 class RootRedirectMethod(Method):
 
-    def __init__(self, namespace, path="index.html"):
+    def __init__(self, namespace, path = "index.html"):
         super().__init__(namespace)
         self.path = path
 
@@ -229,17 +229,17 @@ class PublicLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, namespace, parent_namespace, **kwargs):
         super().__init__(namespace,
-                         parent_namespace=parent_namespace,
-                         authorisation={"AuthorizationType": "NONE"},
+                         parent_namespace = parent_namespace,
+                         authorisation = {"AuthorizationType": "NONE"},
                          **kwargs)
 
 class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, namespace, parent_namespace, **kwargs):
         super().__init__(namespace,
-                         parent_namespace=parent_namespace,
-                         authorisation={"Authorization": "COGNITO",
-                                        "Authorizer": {"Ref": H(f"{parent_namespace}-authorizer")}},
+                         parent_namespace = parent_namespace,
+                         authorisation = {"Authorization": "COGNITO",
+                                          "Authorizer": {"Ref": H(f"{parent_namespace}-authorizer")}},
                          **kwargs)
         
 class CorsMethod(Method):
@@ -250,7 +250,7 @@ class CorsMethod(Method):
         self.method = method
 
     @property
-    def _integration_response(self, cors_headers=CorsHeaders):
+    def _integration_response(self, cors_headers = CorsHeaders):
         parameters = {"method.response.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
                       for k, v in [("headers", ",".join(cors_headers)),
                                    ("methods", f"{self.method},OPTIONS"),
@@ -307,7 +307,7 @@ class Authorizer(AWSResource):
 
 class RequestValidator(AWSResource):
 
-    def __init__(self, namespace, parent_namespace, validate_request_parameters=False, validate_request_body=False):
+    def __init__(self, namespace, parent_namespace, validate_request_parameters = False, validate_request_body = False):
         self.namespace = namespace
         self.parent_namespace = parent_namespace
         self.validate_request_parameters = validate_request_parameters
@@ -322,12 +322,12 @@ class RequestValidator(AWSResource):
 class ParameterRequestValidator(RequestValidator):
 
     def __init__(self, namespace, parent_namespace):
-        return super().__init__(namespace, parent_namespace, validate_request_parameters=True)
+        return super().__init__(namespace, parent_namespace, validate_request_parameters = True)
 
 class SchemaRequestValidator(RequestValidator):
 
     def __init__(self, namespace, parent_namespace):
-        return super().__init__(namespace, parent_namespace, validate_request_body=True)
+        return super().__init__(namespace, parent_namespace, validate_request_body = True)
 
 class Model(AWSResource):
     
@@ -335,8 +335,8 @@ class Model(AWSResource):
                  namespace,
                  parent_namespace,
                  schema,
-                 schema_type="http://json-schema.org/draft-04/schema#",
-                 content_type="application/json"):
+                 schema_type = "http://json-schema.org/draft-04/schema#",
+                 content_type = "application/json"):
         self.namespace = namespace
         self.parent_namespace = parent_namespace
         self.schema = schema
@@ -379,12 +379,12 @@ class GatewayResponse(AWSResource):
 class GatewayResponse4xx(GatewayResponse):
 
     def __init__(self, namespace):
-        return super().__init__(namespace, response_type="4XX")
+        return super().__init__(namespace, response_type = "4XX")
 
 class GatewayResponse5xx(GatewayResponse):
 
     def __init__(self, namespace):
-        return super().__init__(namespace, response_type="5XX")
+        return super().__init__(namespace, response_type = "5XX")
         
 class DomainName(AWSResource):
 
@@ -401,7 +401,7 @@ class DomainName(AWSResource):
     
 class BasePathMapping(AWSResource):
 
-    def __init__(self, namespace, stage_name=StageName):
+    def __init__(self, namespace, stage_name = StageName):
         self.namespace = namespace
         self.stage_name = stage_name
 

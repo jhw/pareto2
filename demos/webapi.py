@@ -2,7 +2,7 @@ from pareto2.recipes.webapi import WebApi
 
 import json, yaml
 
-Endpoints=yaml.safe_load("""
+Endpoints = yaml.safe_load("""
 - action: echo
   method: GET
   path: hello-get
@@ -21,12 +21,12 @@ Endpoints=yaml.safe_load("""
     additionalProperties: false
 """)
 
-if __name__=="__main__":
-    api=WebApi(namespace="my",
-               endpoints=Endpoints,
-               auth="private")
-    template=api.render()
+if __name__ == "__main__":
+    api = WebApi(namespace = "my",
+                 endpoints = Endpoints,
+                 auth = "private")
+    template = api.render()
     template.populate_parameters()
     print (json.dumps(template,
-                      indent=2))
+                      indent = 2))
 

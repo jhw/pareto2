@@ -54,13 +54,13 @@ class Role(Resource):
 
     @property
     def assume_role_policy_document(self):
-        statement = [{"Effect": "Allow",
-                      "Principal": {"Service": self.principal} if isinstance(self.principal, str) else self.principal,
-                      "Action": listify(self.action)}]
+        policy = {"Effect": "Allow",
+                  "Principal": {"Service": self.principal} if isinstance(self.principal, str) else self.principal,
+                  "Action": listify(self.action)}
         if self.condition:
-            statement["Condition"] = self.condition
+            policy["Condition"] = self.condition
         return {"Version": "2012-10-17",
-                "Statement": statement}
+                "Statement": [policy]}
     
     def format_simple_policies(self, permissions):
         def group_permissions(permissions):

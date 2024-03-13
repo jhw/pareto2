@@ -1,9 +1,5 @@
 ### short
 
-- identity pool roles
-
-- check spacing around equals
-
 - webapi functions, roles
 
 ### roadmap
@@ -85,6 +81,8 @@
 
 ### done
 
+- check spacing around equals
+- identity pool roles
 - remove IdentityPool permissions
 - replace tuple- based permissions format with dict
 - formatters to format statement

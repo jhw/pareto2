@@ -15,6 +15,34 @@ from pareto2.recipes import Recipe
 
 import re
 
+def identity_pool_role_condition(namespace, typestr):
+    return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
+            "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
+
+class IdentityPoolUnauthorizedRole(RoleBase):
+
+    def __init__(self, namespace):
+        super().__init__(namespace,
+                         action = "sts:AssumeRoleWithWebIdentity",
+                         condition = identity_pool_role_condition(namespace,
+                                                                  typestr = "unauthorized"),
+                         principal = {"Federated": "cognito-identity.amazonaws.com"},
+                         permissions = ["mobileanalytics:PutEvents",
+                                        "cognito-sync:*"])
+
+class IdentityPoolAuthorizedRole(RoleBase):
+
+    def __init__(self, namespace):
+        super().__init__(namespace,
+                         action = "sts:AssumeRoleWithWebIdentity",
+                         condition = identity_pool_role_condition(namespace,
+                                                                  typestr = "authorized"),
+                         principal = {"Federated": "cognito-identity.amazonaws.com"},
+                         permissions = ["mobileanalytics:PutEvents",
+                                        "cognito-sync:*",
+                                        "cognito-identity:*",
+                                        "lambda:InvokeFunction"])
+
 class Permission(PermissionBase):
     
     def __init__(self, namespace, parent_namespace, function_namespace, method, path):
@@ -47,8 +75,8 @@ class WebApi(Recipe):
                       UserPoolAdminClient,
                       UserPoolWebClient,
                       IdentityPool,
-                      # IdentityPoolAuthorizedRole,
-                      # IdentityPoolUnauthorizedRole,
+                      IdentityPoolUnauthorizedRole,
+                      IdentityPoolAuthorizedRole,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
 

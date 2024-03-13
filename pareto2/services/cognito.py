@@ -16,7 +16,7 @@ class SimpleEmailUserPool(UserPool):
         super().__init__(namespace)
         
     @property    
-    def aws_properties(self, nmin=8):
+    def aws_properties(self, nmin = 8):
         password_policy = {
             "MinimumLength": nmin,
             "RequireLowercase": True,
