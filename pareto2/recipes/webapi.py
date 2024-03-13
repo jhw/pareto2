@@ -6,59 +6,24 @@ from pareto2.services.cognito import *
 from pareto2.services.iam import *
 from pareto2.services.route53 import *
 
-# from pareto2.services.lambda import Permission as PermissionBase
-
 import importlib
 lambda_module = importlib.import_module("pareto2.services.lambda")
 Function = lambda_module.InlineFunction
-PermissionBase = lambda_module.Permission
+Permission = lambda_module.Permission
 
 from pareto2.recipes import Recipe
 
 import re
 
-def identity_pool_role_condition(namespace, typestr):
-    return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
-            "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
-
-class IdentityPoolRoleBase(AltNamespaceMixin, Role):
+class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
 
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace, **kwargs)
 
-class IdentityPoolUnauthorizedRole(IdentityPoolRoleBase):
+class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
 
-    def __init__(self, namespace):
-        super().__init__(namespace,
-                         action = "sts:AssumeRoleWithWebIdentity",
-                         condition = identity_pool_role_condition(namespace,
-                                                                  typestr = "unauthorized"),
-                         principal = {"Federated": "cognito-identity.amazonaws.com"},
-                         permissions = ["mobileanalytics:PutEvents",
-                                        "cognito-sync:*"])
-
-class IdentityPoolAuthorizedRole(IdentityPoolRoleBase):
-
-    def __init__(self, namespace):
-        super().__init__(namespace,
-                         action = "sts:AssumeRoleWithWebIdentity",
-                         condition = identity_pool_role_condition(namespace,
-                                                                  typestr = "authorized"),
-                         principal = {"Federated": "cognito-identity.amazonaws.com"},
-                         permissions = ["mobileanalytics:PutEvents",
-                                        "cognito-sync:*",
-                                        "cognito-identity:*",
-                                        "lambda:InvokeFunction"])
-
-class Permission(PermissionBase):
-    
-    def __init__(self, namespace, parent_namespace, function_namespace, method, path):
-        restapiref, stageref = H(f"{parent_namespace}-rest-api"), H(f"{parent_namespace}-stage")
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{method}/{path}"}
-        super().__init__(namespace = namespace,
-                         function_namespace = function_namespace,
-                         source_arn = source_arn,
-                         principal = "apigateway.amazonaws.com")
+    def __init__(self, namespace, **kwargs):
+        super().__init__(namespace, **kwargs)
 
 class WebApi(Recipe):    
 
@@ -82,10 +47,31 @@ class WebApi(Recipe):
                       UserPoolAdminClient,
                       UserPoolWebClient,
                       IdentityPool,
-                      IdentityPoolUnauthorizedRole,
-                      IdentityPoolAuthorizedRole,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
+        self.init_identity_pool_roles(namespace)
+
+    def identity_pool_role_condition(self, namespace, typestr):
+        return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
+                "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
+        
+    def init_identity_pool_roles(self, namespace):
+        for klass, typestr, permissions in [(IdentityPoolUnauthorizedRole,
+                                             "unauthorized",
+                                             ["mobileanalytics:PutEvents",
+                                              "cognito-sync:*"]),
+                                            (IdentityPoolAuthorizedRole,
+                                             "authorized",
+                                             ["mobileanalytics:PutEvents",
+                                              "cognito-sync:*",
+                                              "cognito-identity:*",
+                                              "lambda:InvokeFunction"])]:
+            self.append(klass(namespace = namespace,
+                              action = "sts:AssumeRoleWithWebIdentity",
+                              condition = self.identity_pool_role_condition(namespace,
+                                                                            typestr = typestr),
+                              principal = {"Federated": "cognito-identity.amazonaws.com"},
+                              permissions = permissions))
 
     def init_api_base(self, namespace):
         for klass in [RestApi,
@@ -123,6 +109,15 @@ class WebApi(Recipe):
         if "permissions" in endpoint:
             permissions.update(set(endpoint["permissions"]))
         return sorted(list(permissions))
+
+    def init_permission(self, parent_ns, child_ns, endpoint):
+        restapiref, stageref = H(f"{parent_ns}-rest-api"), H(f"{parent_ns}-stage")
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{endpoint['method']}/{endpoint['path']}"}
+        return Permission(namespace = parent_ns,
+                          function_namespace = child_ns,
+                          source_arn = source_arn,
+                          principal = "apigateway.amazonaws.com")
+
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
@@ -137,11 +132,9 @@ class WebApi(Recipe):
                              **self.function_kwargs(endpoint)))
         self.append(Role(namespace = child_ns,
                          permissions = self.role_permissions(endpoint)))
-        self.append(Permission(namespace = child_ns,
-                               parent_namespace = parent_ns,
-                               function_namespace = child_ns,
-                               method = endpoint["method"],
-                               path = endpoint["path"]))
+        self.append(self.init_permission(parent_ns = parent_ns,
+                                         child_ns = child_ns,
+                                         endpoint = endpoint))
         self.append(CorsMethod(namespace = child_ns,
                                parent_namespace = parent_ns,
                                method = endpoint["method"]))

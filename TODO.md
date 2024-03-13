@@ -1,7 +1,7 @@
 ### short
 
+- move website permission generation inline
 - top- level support for S3 functions and zip paths
-- inline generation of identity pool roles
 - permissions helper to handle wildcards overriding defaults
 - plan for pre- gist reviews
 
@@ -84,6 +84,7 @@
 
 ### done
 
+- inline generation of identity pool roles
 - family pack mixin
 - remove echo function namespace references
 - inline and s3 lambdas
