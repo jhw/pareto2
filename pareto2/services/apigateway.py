@@ -1,5 +1,5 @@
 from pareto2.services import hungarorise as H
-from pareto2.services import dehungarorise
+from pareto2.services import AltNamespaceMixin
 
 # from pareto2.services import Resource
 from pareto2.services import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
@@ -108,15 +108,10 @@ class LambdaProxyResource(Resource):
             "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}
         }
 
-class Method(AWSResource):
+class Method(AltNamespaceMixin, AWSResource):
     
     def __init__(self, namespace):
         self.namespace = namespace
-
-    @property
-    def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
 
 class RootRedirectMethod(Method):
 
@@ -302,7 +297,7 @@ class Authorizer(AWSResource):
             "Type": "COGNITO_USER_POOLS"
         }
 
-class RequestValidator(AWSResource):
+class RequestValidator(AltNamespaceMixin, AWSResource):
 
     def __init__(self, namespace, parent_namespace, validate_request_parameters = False, validate_request_body = False):
         self.namespace = namespace
@@ -316,12 +311,6 @@ class RequestValidator(AWSResource):
                 "ValidateRequestParameters": self.validate_request_parameters,
                 "ValidateRequestBody": self.validate_request_body}
 
-    @property
-    def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
-
-    
 class ParameterRequestValidator(RequestValidator):
 
     def __init__(self, namespace, parent_namespace):
@@ -362,7 +351,7 @@ class Model(AWSResource):
             "Schema": self.schema
         }
 
-class GatewayResponse(AWSResource):
+class GatewayResponse(AltNamespaceMixin, AWSResource):
 
     def __init__(self, namespace, response_type):
         self.namespace = namespace
@@ -378,11 +367,6 @@ class GatewayResponse(AWSResource):
             "ResponseType": f"DEFAULT_{self.response_type}",
             "ResponseParameters": response_parameters
         }
-
-    @property
-    def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
     
 class GatewayResponse4xx(GatewayResponse):
 

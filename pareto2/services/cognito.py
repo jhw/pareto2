@@ -1,5 +1,5 @@
 from pareto2.services import hungarorise as H
-from pareto2.services import Resource, dehungarorise
+from pareto2.services import Resource, AltNamespaceMixin
 
 class UserPool(Resource):
 
@@ -38,7 +38,7 @@ class SimpleEmailUserPool(UserPool):
             "UsernameAttributes": ["email"]
         }
 
-class UserPoolClient(Resource):
+class UserPoolClient(AltNamespaceMixin, Resource):
     
     def __init__(self, namespace):
         self.namespace = namespace
@@ -51,11 +51,6 @@ class UserPoolClient(Resource):
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
 
-    @property
-    def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
-    
     @property
     def visible(self):
         return True

@@ -1,8 +1,8 @@
-### short [01-lambda-functions]
+### short
 
-- family pack mixin
 - permissions helper to handle wildcards overriding defaults
-- consider if recipes should really extend resource classes
+
+- consider if recipes should really be extending resource classes
 
 ### roadmap
 
@@ -83,6 +83,7 @@
 
 ### done
 
+- family pack mixin
 - remove echo function namespace references
 - inline and s3 lambdas
 - real handler code

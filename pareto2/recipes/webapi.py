@@ -1,4 +1,5 @@
 from pareto2.services import hungarorise as H
+from pareto2.services import AltNamespaceMixin
 
 from pareto2.services.apigateway import *
 from pareto2.services.cognito import *
@@ -20,16 +21,11 @@ def identity_pool_role_condition(namespace, typestr):
     return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
 
-class IdentityPoolRoleBase(Role):
+class IdentityPoolRoleBase(AltNamespaceMixin, Role):
 
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace, **kwargs)
 
-    @property
-    def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
-        
 class IdentityPoolUnauthorizedRole(IdentityPoolRoleBase):
 
     def __init__(self, namespace):
