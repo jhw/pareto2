@@ -22,9 +22,7 @@ class Function(Resource):
             "Runtime": self.runtime,
             "Timeout": self.timeout
         }
-
-        
-
+    
 class Permission(Resource):
 
     def __init__(self, namespace, function_namespace, source_arn, principal):
