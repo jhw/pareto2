@@ -1,8 +1,5 @@
 ### short [01-lambda-functions]
 
-- extend RoleBase with Role
-- Role to generate permissions
-
 - echo code
 - inline and s3 lambdas
 
@@ -87,6 +84,8 @@
 
 ### done
 
+- extend RoleBase with Role
+- Role to generate permissions
 - webapi roles
 - webapi functions 
 - layers

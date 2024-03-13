@@ -64,6 +64,15 @@ class Permission(PermissionBase):
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")
 
+class Role(RoleBase):
+
+    def __init__(self,
+                 namespace):
+        super().__init__(namespace,
+                         permissions = ["logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"])
+        
 class WebApi(Recipe):    
 
     def __init__(self, namespace, endpoints, auth = "public"):
@@ -118,7 +127,7 @@ class WebApi(Recipe):
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
         self.append(Function(namespace = child_ns,
                              code = "def handler(event, context):\n  print(\"hello world\")"))
-        self.append(RoleBase(namespace = child_ns))
+        self.append(Role(namespace = child_ns))
         self.append(Permission(namespace = child_ns,
                                parent_namespace = parent_ns,
                                function_namespace = endpoint["action"],
