@@ -24,7 +24,10 @@ def is_list_of_strings(items, matcherfn=SimpleMatcher):
 
 def is_list_of_dicts(items, matcherfn=ExtendedMatcher):
     return list_matcher(items, matcherfn)
-            
+
+def listify(values):
+    return [values] if not isinstance(values, list) else values
+
 class Role(Resource):
 
     def __init__(self,
@@ -73,7 +76,7 @@ class Role(Resource):
                 for group in group_permissions(permissions)]
 
     def format_extended_policies(self, items):
-        return [{"Action": [item["action"]] if not isinstance(item["action"], list) else item["action"],
+        return [{"Action": listify(item["action"]),
                  "Effect": "Allow",
                  "Resource": item["resource"] if "resource" in item else "*"}
                 for item in items]
