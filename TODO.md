@@ -1,8 +1,8 @@
 ### short
 
+- inline generation of identity pool roles
 - permissions helper to handle wildcards overriding defaults
-
-- consider if recipes should really be extending resource classes
+- plan for pre- gist reviews
 
 ### roadmap
 
