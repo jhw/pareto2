@@ -318,7 +318,6 @@ class RequestValidator(AWSResource):
 
     @property
     def resource_name(self):    
-        # tokens = self.class_names[-2].split(".") # base class
         tokens = self.class_names[-1].split(".") # latest subclass
         return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
 
