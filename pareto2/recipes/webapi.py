@@ -2,7 +2,7 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.apigateway import *
 from pareto2.services.cognito import *
-from pareto2.services.iam import Role as RoleBase
+from pareto2.services.iam import *
 from pareto2.services.route53 import *
 
 # from pareto2.services.lambda import Permission as PermissionBase
@@ -20,7 +20,7 @@ def identity_pool_role_condition(namespace, typestr):
     return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
 
-class IdentityPoolRoleBase(RoleBase):
+class IdentityPoolRoleBase(Role):
 
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace, **kwargs)
@@ -64,15 +64,6 @@ class Permission(PermissionBase):
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")
 
-class Role(RoleBase):
-
-    def __init__(self,
-                 namespace):
-        super().__init__(namespace,
-                         permissions = ["logs:CreateLogGroup",
-                                        "logs:CreateLogStream",
-                                        "logs:PutLogEvents"])
-        
 class WebApi(Recipe):    
 
     def __init__(self, namespace, endpoints, auth = "public"):
@@ -116,6 +107,15 @@ class WebApi(Recipe):
                                     for tok in re.split("\\W", endpoint["path"])
                                     if tok != ""]))
     
+    def role_permissions(self, endpoint,
+                         defaults = ["logs:CreateLogGroup",
+                                     "logs:CreateLogStream",
+                                     "logs:PutLogEvents"]):
+        permissions = set(defaults)
+        if "permissions" in endpoint:
+            permissions.update(set(endpoint["permissions"]))
+        return sorted(list(permissions))
+    
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
         self.append(LambdaProxyResource(namespace = child_ns,
@@ -127,7 +127,8 @@ class WebApi(Recipe):
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
         self.append(Function(namespace = child_ns,
                              code = "def handler(event, context):\n  print(\"hello world\")"))
-        self.append(Role(namespace = child_ns))
+        self.append(Role(namespace = child_ns,
+                         permissions = self.role_permissions(endpoint)))
         self.append(Permission(namespace = child_ns,
                                parent_namespace = parent_ns,
                                function_namespace = endpoint["action"],

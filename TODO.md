@@ -1,11 +1,10 @@
 ### short [01-lambda-functions]
 
-- replace default permissions with helper which extends permissions
-
-- add similar for function kwargs
-
-- echo code
-
+- function_kwargs(endpoint) helper
+- handler code
+- permissions helper to handle wildcards overriding defaults
+- remove echo function namespace references
+- consider if recipes should really extend resource classes
 - inline and s3 lambdas
 
 ### roadmap
@@ -89,6 +88,7 @@
 
 ### done
 
+- replace default permissions with helper which extends permissions
 - extend RoleBase with Role
 - Role to generate permissions
 - webapi roles
