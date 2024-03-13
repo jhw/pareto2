@@ -1,9 +1,8 @@
 ### short [01-lambda-functions]
 
-- webapi functions 
 - webapi roles
-
-- inline and zipped lambdas
+- echo code
+- inline and s3 lambdas
 
 ### roadmap
 
@@ -86,6 +85,7 @@
 
 ### done
 
+- webapi functions 
 - layers
 - environment
 - code

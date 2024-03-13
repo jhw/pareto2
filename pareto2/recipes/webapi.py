@@ -9,6 +9,7 @@ from pareto2.services.route53 import *
 
 import importlib
 lambda_module = importlib.import_module("pareto2.services.lambda")
+Function = lambda_module.Function
 PermissionBase = lambda_module.Permission
 
 from pareto2.recipes import Recipe
@@ -118,11 +119,13 @@ class WebApi(Recipe):
                                parent_namespace = parent_ns,
                                function_namespace = endpoint["action"],
                                method = endpoint["method"],
-                               path = endpoint["path"]))
+                               path = endpoint["path"]))        
         if "parameters" in endpoint:
             self.init_GET_endpoint(parent_ns, child_ns, endpoint)
         elif "schema" in endpoint:
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
+        self.append(Function(namespace = child_ns,
+                             code = "def handler(event, context):\n  print(\"hello world\")"))
 
     def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
         methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
