@@ -21,9 +21,16 @@ Endpoints = yaml.safe_load("""
     additionalProperties: false
 """)
 
+SampleCodeBody="""def handler(event, context):
+    print (event)"""
+
 if __name__ == "__main__":
+    endpoints = {endpoint["path"]:endpoint
+                 for endpoint in Endpoints}
+    endpoints["hello-get"]["code"] = SampleCodeBody
+    endpoints["hello-post"]["code"] = SampleCodeBody
     api = WebApi(namespace = "my",
-                 endpoints = Endpoints,
+                 endpoints = list(endpoints.values()),
                  auth = "private")
     template = api.render()
     template.populate_parameters()

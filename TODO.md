@@ -1,6 +1,5 @@
 ### short [01-lambda-functions]
 
-- move code inline in demo
 - real handler code
 - permissions helper to handle wildcards overriding defaults
 - remove echo function namespace references
@@ -88,6 +87,7 @@
 
 ### done
 
+- move code inline in demo
 - function_kwargs(endpoint) helper
 - replace default permissions with helper which extends permissions
 - extend RoleBase with Role

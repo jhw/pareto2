@@ -109,8 +109,11 @@ class WebApi(Recipe):
 
     def function_kwargs(self, endpoint):
         kwargs = {}
+        for attr in ["code"]:
+            kwargs[attr] = endpoint[attr]
         for attr in ["memory",
                      "timeout",
+                     "runtime",
                      "layers"]:
             if attr in endpoint:
                 kwargs[attr] = endpoint[attr]
@@ -135,7 +138,6 @@ class WebApi(Recipe):
         elif "schema" in endpoint:
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
         self.append(Function(namespace = child_ns,
-                             code = "def handler(event, context):\n  print(\"hello world\")",
                              **self.function_kwargs(endpoint)))
         self.append(Role(namespace = child_ns,
                          permissions = self.role_permissions(endpoint)))
