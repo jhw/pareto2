@@ -1,5 +1,6 @@
 ### short
 
+- top- level support for S3 functions and zip paths
 - inline generation of identity pool roles
 - permissions helper to handle wildcards overriding defaults
 - plan for pre- gist reviews
