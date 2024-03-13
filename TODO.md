@@ -1,9 +1,10 @@
 ### short [01-lambda-functions]
 
+- family pack
 - environment
 - layers
-
-- webapi functions, roles
+- webapi functions androles
+- inline and zipped lambdas
 
 ### roadmap
 
