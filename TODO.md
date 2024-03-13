@@ -1,12 +1,14 @@
 ### short [01-lambda-functions]
 
-- webapi roles
+- extend RoleBase with Role
+- Role to generate permissions
+
 - echo code
 - inline and s3 lambdas
 
 ### roadmap
 
-- family pack
+- family pack mixin
 
 - worker
   - events
@@ -85,6 +87,7 @@
 
 ### done
 
+- webapi roles
 - webapi functions 
 - layers
 - environment

@@ -112,43 +112,44 @@ class WebApi(Recipe):
         self.append(LambdaProxyResource(namespace = child_ns,
                                         parent_namespace = parent_ns,
                                         path = endpoint["path"]))
-        self.append(CorsMethod(namespace = child_ns,
-                               parent_namespace = parent_ns,
-                               method = endpoint["method"]))
-        self.append(Permission(namespace = child_ns,
-                               parent_namespace = parent_ns,
-                               function_namespace = endpoint["action"],
-                               method = endpoint["method"],
-                               path = endpoint["path"]))        
         if "parameters" in endpoint:
             self.init_GET_endpoint(parent_ns, child_ns, endpoint)
         elif "schema" in endpoint:
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
         self.append(Function(namespace = child_ns,
                              code = "def handler(event, context):\n  print(\"hello world\")"))
+        self.append(RoleBase(namespace = child_ns))
+        self.append(Permission(namespace = child_ns,
+                               parent_namespace = parent_ns,
+                               function_namespace = endpoint["action"],
+                               method = endpoint["method"],
+                               path = endpoint["path"]))
+        self.append(CorsMethod(namespace = child_ns,
+                               parent_namespace = parent_ns,
+                               method = endpoint["method"]))
 
     def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
+        self.append(ParameterRequestValidator(namespace = child_ns,
+                                              parent_namespace = parent_ns))
         methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
                              function_namespace = endpoint["action"],
                              method = endpoint["method"],
                              parameters = endpoint["parameters"]))
-        self.append(ParameterRequestValidator(namespace = child_ns,
-                                              parent_namespace = parent_ns))
 
     def init_POST_endpoint(self, parent_ns, child_ns, endpoint):
+        self.append(SchemaRequestValidator(namespace = child_ns,
+                                           parent_namespace = parent_ns))
+        self.append(Model(namespace = child_ns,
+                          parent_namespace = parent_ns,
+                          schema = endpoint["schema"]))
         methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
                              function_namespace = endpoint["action"],
                              method = endpoint["method"],
                              schema = endpoint["schema"]))
-        self.append(SchemaRequestValidator(namespace = child_ns,
-                                           parent_namespace = parent_ns))
-        self.append(Model(namespace = child_ns,
-                          parent_namespace = parent_ns,
-                          schema = endpoint["schema"]))
                     
     def filter_methods(self, parent_ns, endpoints):
         methods = []
