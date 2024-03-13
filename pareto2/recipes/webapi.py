@@ -9,7 +9,7 @@ from pareto2.services.route53 import *
 
 import importlib
 lambda_module = importlib.import_module("pareto2.services.lambda")
-Function = lambda_module.Function
+Function = lambda_module.InlineFunction
 PermissionBase = lambda_module.Permission
 
 from pareto2.recipes import Recipe

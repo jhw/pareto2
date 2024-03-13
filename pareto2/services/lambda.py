@@ -7,7 +7,7 @@ class Function(Resource):
     def __init__(self,
                  namespace,
                  code,
-                 handler = "index.handler",
+                 handler,
                  layers = [],
                  memory = 512,
                  runtime = "python3.10",
@@ -25,7 +25,7 @@ class Function(Resource):
     @property
     def aws_properties(self):
         props = {
-            "Code": {"ZipFile": self.code},
+            "Code": self.code,
             "Handler": self.handler,
             "MemorySize": self.memory,
             "Role": {"Fn::GetAtt": [H(f"{self.namespace}-role"), "Arn"]},
@@ -39,7 +39,24 @@ class Function(Resource):
             props["Layers"] = [{"Ref": H(f"{layername}-layer-arn")}
                                for layername in self["layers"]]
         return props
-            
+
+class InlineFunction(Function):
+
+    def __init__(self, namespace, code, **kwargs):
+        super().__init__(namespace,
+                         code = {"ZipFile": code},
+                         handler = "index.handler",
+                         **kwargs)
+
+class S3Function(Function):
+
+    def __init__(self, namespace, handler, **kwargs):
+        super().__init__(namespace,
+                         code = {"S3Bucket": H("artifacts-bucket"),
+                                 "S3Key": H("artifacts-key")},
+                         handler = handler,
+                         **kwargs)
+    
 class Permission(Resource):
 
     def __init__(self, namespace, function_namespace, source_arn, principal):
