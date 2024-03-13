@@ -3,12 +3,15 @@ from pareto2.services import Resource
 
 class Function(Resource):
 
-    def __init__(self, namespace,
+    def __init__(self,
+                 namespace,
+                 code,
                  handler = "index.handler",
                  memory = 512,
                  runtime = "python3.10",
                  timeout = 5):
         self.namespace = namespace
+        self.code = code
         self.handler = handler
         self.memory = memory
         self.runtime = runtime
@@ -17,6 +20,7 @@ class Function(Resource):
     @property
     def aws_properties(self):
         return {
+            "Code": {"ZipFile": self.code},
             "Handler": self.handler,
             "MemorySize": self.memory,
             "Role": {"Fn::GetAtt": [H(f"{self.namespace}-role"), "Arn"]},

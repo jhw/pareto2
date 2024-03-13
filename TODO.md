@@ -1,6 +1,5 @@
 ### short [01-lambda-functions]
 
-- code
 - environment
 - layers
 
@@ -85,6 +84,7 @@
 
 ### done
 
+- code
 - role
 - check spacing around equals
 - identity pool roles
