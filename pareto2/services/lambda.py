@@ -19,6 +19,7 @@ class Function(Resource):
         return {
             "Handler": self.handler,
             "MemorySize": self.memory,
+            "Role": {"Fn::GetAtt": [H(f"{self.namespace}-role"), "Arn"]},
             "Runtime": self.runtime,
             "Timeout": self.timeout
         }

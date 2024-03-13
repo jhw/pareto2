@@ -1,6 +1,5 @@
 ### short [01-lambda-functions]
 
-- role
 - code
 - environment
 - layers
@@ -86,6 +85,7 @@
 
 ### done
 
+- role
 - check spacing around equals
 - identity pool roles
 - remove IdentityPool permissions
