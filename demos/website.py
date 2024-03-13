@@ -1,11 +1,15 @@
 from pareto2.recipes.website import Website
 
-import json
+import json, os
 
 if __name__ == "__main__":
-    site = Website(namespace = "my")
+    site = Website(namespace = "app")
     template = site.render()
     template.populate_parameters()
-    print (json.dumps(template,
-                      indent = 2))
+    if not os.path.exists("tmp"):
+        os.mkdir("tmp")
+    with open("tmp/website.json", 'w') as f:
+        f.write(json.dumps(template,
+                           sort_keys = True,
+                           indent = 2))
 

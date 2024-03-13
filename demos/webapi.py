@@ -1,6 +1,6 @@
 from pareto2.recipes.webapi import WebApi
 
-import json, yaml
+import json, os, yaml
 
 Endpoints = yaml.safe_load("""
 - method: GET
@@ -38,10 +38,16 @@ if __name__ == "__main__":
                  for endpoint in Endpoints}
     endpoints["hello-get"]["code"] = HelloGetBody
     endpoints["hello-post"]["code"] = HelloPostBody
-    api = WebApi(namespace = "my",
-                 endpoints = list(endpoints.values()),
-                 auth = "private")
-    template = api.render()
-    template.populate_parameters()
-    print (json.dumps(template,
-                      indent = 2))
+    if not os.path.exists("tmp"):
+        os.mkdir("tmp")
+    for auth in ["public",
+                 "private"]:
+        api = WebApi(namespace = "app",
+                     endpoints = list(endpoints.values()),
+                     auth = auth)
+        template = api.render()
+        template.populate_parameters()
+        with open(f"tmp/webapi-{auth}.json", 'w') as f:
+            f.write(json.dumps(template,
+                               sort_keys = True,
+                               indent = 2))

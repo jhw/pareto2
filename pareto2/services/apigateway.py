@@ -43,14 +43,16 @@ class RestApi(AWSResource):
     
 class Deployment(AWSResource):
 
-    def __init__(self, namespace, methods):
+    def __init__(self, namespace, methods, stage_name = StageName):
         self.namespace = namespace
         self.methods = methods
+        self.stage_name = stage_name
 
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
+            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
+            "StageName": self.stage_name
         }
 
     @property
