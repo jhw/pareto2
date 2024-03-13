@@ -1,5 +1,6 @@
 ### short
 
+- is function_namespace an anti- pattern?
 - webapi support for S3 functions and paths
 - permissions helper to handle wildcards overriding defaults
 - plan for pre- gist reviews
