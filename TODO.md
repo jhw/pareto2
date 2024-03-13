@@ -1,4 +1,9 @@
-### short
+### short [01-lambda-functions]
+
+- role
+- code
+- environment
+- layers
 
 - webapi functions, roles
 

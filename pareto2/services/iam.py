@@ -35,7 +35,9 @@ class Role(Resource):
                  action = "sts:AssumeRole",
                  condition = None,
                  principal = "lambda.amazonaws.com",
-                 permissions = []):
+                 permissions = ["logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"]):
         self.namespace = namespace
         self.action = action
         self.condition = condition
