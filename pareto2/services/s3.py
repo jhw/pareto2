@@ -16,15 +16,6 @@ class StreamingBucket(Bucket):
         notconf = {"EventBridgeConfiguration": {"EventBridgeEnabled": True}}
         return {"NotificationConfiguration": notconf}
 
-    """
-    - occasionally a subclassed resource might override resource_name to point to base_resource_name
-    - this is so other resources in the same module can refer to this class using standard #{namespace}-#{resource-name} nomenclature, without having to know the name of the specific subclass
-    """
-
-    @property
-    def resource_name(self):
-        return self.base_resource_name
-
     @property
     def visible(self):
         return True

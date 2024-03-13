@@ -38,20 +38,9 @@ class Resource:
                 return classname
         raise RuntimeError("AWS proxy class not found for %s" % classnames[-1])
 
-    """
-    - occasionally a subclassed resource might override resource_name to point to base_resource_name
-    - this is so other resources in the same module can refer to this class using standard #{namespace}-#{resource-name} nomenclature, without having to know the name of the specific subclass
-    - most common example is SimpleEmailUserPool
-    """
-    
-    @property
-    def base_resource_name(self):    
-        tokens = self.class_names[-2].split(".") # base class
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
-    
     @property
     def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
+        tokens = self.class_names[2].split(".") # base class
         return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
 
     @property

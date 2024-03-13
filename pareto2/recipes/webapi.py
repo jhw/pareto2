@@ -19,7 +19,17 @@ def identity_pool_role_condition(namespace, typestr):
     return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
 
-class IdentityPoolUnauthorizedRole(RoleBase):
+class IdentityPoolRoleBase(RoleBase):
+
+    def __init__(self, namespace, **kwargs):
+        super().__init__(namespace, **kwargs)
+
+    @property
+    def resource_name(self):    
+        tokens = self.class_names[-1].split(".") # latest subclass
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
+        
+class IdentityPoolUnauthorizedRole(IdentityPoolRoleBase):
 
     def __init__(self, namespace):
         super().__init__(namespace,
@@ -30,7 +40,7 @@ class IdentityPoolUnauthorizedRole(RoleBase):
                          permissions = ["mobileanalytics:PutEvents",
                                         "cognito-sync:*"])
 
-class IdentityPoolAuthorizedRole(RoleBase):
+class IdentityPoolAuthorizedRole(IdentityPoolRoleBase):
 
     def __init__(self, namespace):
         super().__init__(namespace,

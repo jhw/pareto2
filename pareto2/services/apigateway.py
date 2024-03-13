@@ -1,4 +1,5 @@
 from pareto2.services import hungarorise as H
+from pareto2.services import dehungarorise
 
 # from pareto2.services import Resource
 from pareto2.services import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
@@ -84,15 +85,6 @@ class Resource(AWSResource):
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
         }
 
-    """
-    - occasionally a subclassed resource might override resource_name to point to base_resource_name
-    - this is so other resources in the same module can refer to this class using standard #{namespace}-#{resource-name} nomenclature, without having to know the name of the specific subclass
-    """
-
-    @property
-    def resource_name(self):
-        return self.base_resource_name
-    
 class S3ProxyResource(Resource):
 
     def __init__(self, namespace, path = "{proxy+}"):
@@ -120,6 +112,11 @@ class Method(AWSResource):
     
     def __init__(self, namespace):
         self.namespace = namespace
+
+    @property
+    def resource_name(self):    
+        tokens = self.class_names[-1].split(".") # latest subclass
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
 
 class RootRedirectMethod(Method):
 
@@ -319,6 +316,13 @@ class RequestValidator(AWSResource):
                 "ValidateRequestParameters": self.validate_request_parameters,
                 "ValidateRequestBody": self.validate_request_body}
 
+    @property
+    def resource_name(self):    
+        # tokens = self.class_names[-2].split(".") # base class
+        tokens = self.class_names[-1].split(".") # latest subclass
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
+
+    
 class ParameterRequestValidator(RequestValidator):
 
     def __init__(self, namespace, parent_namespace):
@@ -376,6 +380,11 @@ class GatewayResponse(AWSResource):
             "ResponseParameters": response_parameters
         }
 
+    @property
+    def resource_name(self):    
+        tokens = self.class_names[-1].split(".") # latest subclass
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
+    
 class GatewayResponse4xx(GatewayResponse):
 
     def __init__(self, namespace):

@@ -38,15 +38,6 @@ class SimpleEmailUserPool(UserPool):
             "UsernameAttributes": ["email"]
         }
 
-    """
-    - occasionally a subclassed resource might override resource_name to point to base_resource_name
-    - this is so other resources in the same module can refer to this class using standard #{namespace}-#{resource-name} nomenclature, without having to know the name of the specific subclass
-    """
-
-    @property
-    def resource_name(self):
-        return self.base_resource_name
-
 class UserPoolClient(Resource):
     
     def __init__(self, namespace):
@@ -60,6 +51,11 @@ class UserPoolClient(Resource):
             "ExplicitAuthFlows": self.explicit_auth_flows
         }
 
+    @property
+    def resource_name(self):    
+        tokens = self.class_names[-1].split(".") # latest subclass
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
+    
     @property
     def visible(self):
         return True
