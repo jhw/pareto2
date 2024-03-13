@@ -20,17 +20,17 @@ class Permission(PermissionBase):
     def __init__(self, namespace, parent_namespace, function_namespace, method, path):
         restapiref, stageref = H(f"{parent_namespace}-rest-api"), H(f"{parent_namespace}-stage")
         source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{method}/{path}"}
-        super().__init__(namespace=namespace,
-                         function_namespace=function_namespace,
-                         source_arn=source_arn,
-                         principal="apigateway.amazonaws.com")
+        super().__init__(namespace = namespace,
+                         function_namespace = function_namespace,
+                         source_arn = source_arn,
+                         principal = "apigateway.amazonaws.com")
 
 class WebApi(Recipe):    
 
-    def __init__(self, namespace, endpoints, auth="public"):
+    def __init__(self, namespace, endpoints, auth = "public"):
         super().__init__()
-        self.auth=auth
-        apifn=getattr(self, f"init_{self.auth}_api")
+        self.auth = auth
+        apifn = getattr(self, f"init_{self.auth}_api")
         apifn(namespace)
         for endpoint in endpoints:
             self.init_endpoint(namespace, endpoint)
@@ -50,7 +50,7 @@ class WebApi(Recipe):
                       # IdentityPoolAuthorizedRole,
                       # IdentityPoolUnauthorizedRole,
                       IdentityPoolRoleAttachment]:
-            self.append(klass(namespace=namespace))
+            self.append(klass(namespace = namespace))
 
     def init_api_base(self, namespace):
         for klass in [RestApi,
@@ -60,7 +60,7 @@ class WebApi(Recipe):
                       DomainName,
                       BasePathMapping,
                       RecordSet]:
-            self.append(klass(namespace=namespace))
+            self.append(klass(namespace = namespace))
             
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
@@ -70,44 +70,44 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(LambdaProxyResource(namespace=child_ns,
-                                        parent_namespace=parent_ns,
-                                        path=endpoint["path"]))
-        self.append(CorsMethod(namespace=child_ns,
-                               parent_namespace=parent_ns,
-                               method=endpoint["method"]))
-        self.append(Permission(namespace=child_ns,
-                               parent_namespace=parent_ns,
-                               function_namespace=endpoint["action"],
-                               method=endpoint["method"],
-                               path=endpoint["path"]))
+        self.append(LambdaProxyResource(namespace = child_ns,
+                                        parent_namespace = parent_ns,
+                                        path = endpoint["path"]))
+        self.append(CorsMethod(namespace = child_ns,
+                               parent_namespace = parent_ns,
+                               method = endpoint["method"]))
+        self.append(Permission(namespace = child_ns,
+                               parent_namespace = parent_ns,
+                               function_namespace = endpoint["action"],
+                               method = endpoint["method"],
+                               path = endpoint["path"]))
         if "parameters" in endpoint:
             self.init_GET_endpoint(parent_ns, child_ns, endpoint)
         elif "schema" in endpoint:
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
 
     def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
-        methodfn=eval(H(f"{self.auth}-lambda-proxy-method"))
-        self.append(methodfn(namespace=child_ns,
-                             parent_namespace=parent_ns,
-                             function_namespace=endpoint["action"],
-                             method=endpoint["method"],
-                             parameters=endpoint["parameters"]))
-        self.append(ParameterRequestValidator(namespace=child_ns,
-                                              parent_namespace=parent_ns))
+        methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
+        self.append(methodfn(namespace = child_ns,
+                             parent_namespace = parent_ns,
+                             function_namespace = endpoint["action"],
+                             method = endpoint["method"],
+                             parameters = endpoint["parameters"]))
+        self.append(ParameterRequestValidator(namespace = child_ns,
+                                              parent_namespace = parent_ns))
 
     def init_POST_endpoint(self, parent_ns, child_ns, endpoint):
-        methodfn=eval(H(f"{self.auth}-lambda-proxy-method"))
-        self.append(methodfn(namespace=child_ns,
-                             parent_namespace=parent_ns,
-                             function_namespace=endpoint["action"],
-                             method=endpoint["method"],
-                             schema=endpoint["schema"]))
-        self.append(SchemaRequestValidator(namespace=child_ns,
-                                           parent_namespace=parent_ns))
-        self.append(Model(namespace=child_ns,
-                          parent_namespace=parent_ns,
-                          schema=endpoint["schema"]))
+        methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
+        self.append(methodfn(namespace = child_ns,
+                             parent_namespace = parent_ns,
+                             function_namespace = endpoint["action"],
+                             method = endpoint["method"],
+                             schema = endpoint["schema"]))
+        self.append(SchemaRequestValidator(namespace = child_ns,
+                                           parent_namespace = parent_ns))
+        self.append(Model(namespace = child_ns,
+                          parent_namespace = parent_ns,
+                          schema = endpoint["schema"]))
                     
     def filter_methods(self, parent_ns, endpoints):
         methods = []
@@ -118,10 +118,10 @@ class WebApi(Recipe):
         return methods
     
     def init_deployment(self, namespace, methods):
-        self.append(Deployment(namespace=namespace,
-                               methods=methods))
+        self.append(Deployment(namespace = namespace,
+                               methods = methods))
             
-if __name__=="__main__":
+if __name__ == "__main__":
     pass
 
     

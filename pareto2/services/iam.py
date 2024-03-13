@@ -19,10 +19,10 @@ def list_matcher(items, matcherfn):
             return False
     return True
 
-def is_list_of_strings(items, matcherfn=SimpleMatcher):
+def is_list_of_strings(items, matcherfn = SimpleMatcher):
     return list_matcher(items, matcherfn)
 
-def is_list_of_dicts(items, matcherfn=ExtendedMatcher):
+def is_list_of_dicts(items, matcherfn = ExtendedMatcher):
     return list_matcher(items, matcherfn)
 
 def listify(values):
@@ -32,14 +32,14 @@ class Role(Resource):
 
     def __init__(self,
                  namespace,
-                 principal={"Service": "lambda.amazonaws.com"},
-                 action=["sts:AssumeRole"],
-                 condition=None,
-                 permissions=[]):
+                 action = "sts:AssumeRole",
+                 condition = None,
+                 principal = "lambda.amazonaws.com",
+                 permissions = []):
         self.namespace = namespace
-        self.principal = principal
         self.action = action
         self.condition = condition
+        self.principal = principal
         self.permissions = permissions
         
     @property
@@ -55,8 +55,8 @@ class Role(Resource):
     @property
     def assume_role_policy_document(self):
         statement = [{"Effect": "Allow",
-                      "Principal": self.principal,
-                      "Action": self.action}]
+                      "Principal": {"Service": self.principal} if isinstance(self.principal, str) else self.principal,
+                      "Action": listify(self.action)}]
         if self.condition:
             statement["Condition"] = self.condition
         return {"Version": "2012-10-17",
@@ -64,7 +64,7 @@ class Role(Resource):
     
     def format_simple_policies(self, permissions):
         def group_permissions(permissions):
-            groups={}
+            groups = {}
             for permission in permissions:
                 service = permission.split(":")[0]
                 groups.setdefault(service, [])

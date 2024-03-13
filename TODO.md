@@ -1,6 +1,9 @@
 ### short
 
 - identity pool roles
+
+- check spacing around equals
+
 - webapi functions, roles
 
 ### roadmap

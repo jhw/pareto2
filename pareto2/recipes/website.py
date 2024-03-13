@@ -11,13 +11,13 @@ class Role(RoleBase):
 
     def __init__(self,
                  namespace,
-                 principal={"Service": "apigateway.amazonaws.com"}):
+                 principal = "apigateway.amazonaws.com"):
         bucket_ref = H(f"{namespace}-bucket")
-        permissions=[{"action": ["s3:GetObject"],
-                      "resource": {"Fn::Sub": f"arn:aws:s3:::${{{bucket_ref}}}/*"}}]
+        permissions = [{"action": "s3:GetObject",
+                        "resource": {"Fn::Sub": f"arn:aws:s3:::${{{bucket_ref}}}/*"}}]
         super().__init__(namespace,
-                         permissions=permissions,
-                         principal=principal)
+                         permissions = permissions,
+                         principal = principal)
 
 class Website(Recipe):    
 
@@ -33,13 +33,13 @@ class Website(Recipe):
                       BasePathMapping,
                       RecordSet,                      
                       StreamingBucket]:
-            self.append(klass(namespace=namespace))
+            self.append(klass(namespace = namespace))
         method_refs = [H(f"{namespace}-s3-proxy-method"),
                        H(f"{namespace}-root-redirect-method")]
-        self.append(Deployment(namespace=namespace,
-                               methods=method_refs))
+        self.append(Deployment(namespace = namespace,
+                               methods = method_refs))
             
-if __name__=="__main__":
+if __name__ == "__main__":
     pass
 
     
