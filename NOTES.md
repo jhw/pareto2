@@ -1,3 +1,16 @@
+### family multi pack mixin 13/03/24
+
+- FamilyMultiPackMixin allows subclasses to be referenced via their subclass names rather than their base class names
+- it's normally more useful to reference from base class names, but there are a couople of cases where subclass naming is useful
+- generally where -
+- a) you have more than one subclass of a particular resource
+- b) you need instances of more than one subclass in a particular namespace
+- examples -
+- 1) apigateway 4XX|5XX gateway responses
+- 2) website recipe requiring S3 proxy method and also root redirect method
+- note that a simple has-many relationship (eg endpoints to apis in webapi receipe) doesn't strictly meet condition b)
+- but since method includes family pack to help website pattern, it's useful for webapi endpoints to follow this pattern also
+
 ### component review 12/03/24
 
 - eyeball generated JSON for deficiencies, particularly in arn formation

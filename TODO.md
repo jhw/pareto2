@@ -1,12 +1,12 @@
 ### short [01-lambda-functions]
 
-- family pack
-- environment
 - layers
-- webapi functions androles
+- webapi functions and roles
 - inline and zipped lambdas
 
 ### roadmap
+
+- family pack
 
 - worker
   - events
@@ -85,6 +85,7 @@
 
 ### done
 
+- environment
 - code
 - role
 - check spacing around equals

@@ -1,4 +1,5 @@
 from pareto2.services import hungarorise as H
+from pareto2.services import uppercase as U
 from pareto2.services import Resource
 
 class Function(Resource):
@@ -19,7 +20,7 @@ class Function(Resource):
 
     @property
     def aws_properties(self):
-        return {
+        props = {
             "Code": {"ZipFile": self.code},
             "Handler": self.handler,
             "MemorySize": self.memory,
@@ -27,7 +28,11 @@ class Function(Resource):
             "Runtime": self.runtime,
             "Timeout": self.timeout
         }
-    
+        if self.variables != []:            
+            props["Environment"] = {"Variables": {U(k): {"Ref": H(k)}
+                                                  for k in self.variables}}
+        return props
+            
 class Permission(Resource):
 
     def __init__(self, namespace, function_namespace, source_arn, principal):
