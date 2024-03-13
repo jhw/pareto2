@@ -1,8 +1,11 @@
 ### short [01-lambda-functions]
 
-- pass permissions from config
-- pass layers, timeout, memory  from config
+- replace default permissions with helper which extends permissions
+
+- add similar for function kwargs
+
 - echo code
+
 - inline and s3 lambdas
 
 ### roadmap
