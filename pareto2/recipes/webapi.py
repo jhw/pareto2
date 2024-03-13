@@ -1,4 +1,5 @@
 from pareto2.services import hungarorise as H
+
 from pareto2.services import AltNamespaceMixin
 
 from pareto2.services.apigateway import *
@@ -6,14 +7,11 @@ from pareto2.services.cognito import *
 from pareto2.services.iam import *
 from pareto2.services.route53 import *
 
-import importlib
-lambda_module = importlib.import_module("pareto2.services.lambda")
-Function = lambda_module.InlineFunction
-Permission = lambda_module.Permission
-
 from pareto2.recipes import Recipe
 
-import re
+import importlib, re
+
+lambda_module = importlib.import_module("pareto2.services.lambda")
 
 class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
 
@@ -55,21 +53,22 @@ class WebApi(Recipe):
         return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
                 "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
         
-    def init_identity_pool_roles(self, namespace):
-        for klass, typestr, permissions in [(IdentityPoolUnauthorizedRole,
-                                             "unauthorized",
-                                             ["mobileanalytics:PutEvents",
-                                              "cognito-sync:*"]),
-                                            (IdentityPoolAuthorizedRole,
-                                             "authorized",
-                                             ["mobileanalytics:PutEvents",
-                                              "cognito-sync:*",
-                                              "cognito-identity:*",
-                                              "lambda:InvokeFunction"])]:
+    def init_identity_pool_roles(self, namespace,
+                                 roleconfig = [(IdentityPoolUnauthorizedRole,
+                                                "unauthorized",
+                                                ["mobileanalytics:PutEvents",
+                                                 "cognito-sync:*"]),
+                                               (IdentityPoolAuthorizedRole,
+                                                "authorized",
+                                                ["mobileanalytics:PutEvents",
+                                                 "cognito-sync:*",
+                                                 "cognito-identity:*",
+                                                 "lambda:InvokeFunction"])]):
+        for klass, typestr, permissions in roleconfig:
             self.append(klass(namespace = namespace,
                               action = "sts:AssumeRoleWithWebIdentity",
                               condition = self.identity_pool_role_condition(namespace,
-                                                                            typestr = typestr),
+                                                                             typestr = typestr),
                               principal = {"Federated": "cognito-identity.amazonaws.com"},
                               permissions = permissions))
 
@@ -113,11 +112,10 @@ class WebApi(Recipe):
     def init_permission(self, parent_ns, child_ns, endpoint):
         restapiref, stageref = H(f"{parent_ns}-rest-api"), H(f"{parent_ns}-stage")
         source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{endpoint['method']}/{endpoint['path']}"}
-        return Permission(namespace = parent_ns,
-                          function_namespace = child_ns,
-                          source_arn = source_arn,
-                          principal = "apigateway.amazonaws.com")
-
+        return lambda_module.Permission(namespace = parent_ns,
+                                        function_namespace = child_ns,
+                                        source_arn = source_arn,
+                                        principal = "apigateway.amazonaws.com")
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
@@ -128,8 +126,8 @@ class WebApi(Recipe):
             self.init_GET_endpoint(parent_ns, child_ns, endpoint)
         elif "schema" in endpoint:
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
-        self.append(Function(namespace = child_ns,
-                             **self.function_kwargs(endpoint)))
+        self.append(lambda_module.InlineFunction(namespace = child_ns,
+                                                 **self.function_kwargs(endpoint)))
         self.append(Role(namespace = child_ns,
                          permissions = self.role_permissions(endpoint)))
         self.append(self.init_permission(parent_ns = parent_ns,

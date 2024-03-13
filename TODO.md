@@ -1,7 +1,6 @@
 ### short
 
-- move website permission generation inline
-- top- level support for S3 functions and zip paths
+- webapi support for S3 functions and paths
 - permissions helper to handle wildcards overriding defaults
 - plan for pre- gist reviews
 
@@ -13,11 +12,10 @@
   - logging
   
 - streaming table
-  - event source mapping
-  
 - task_queue
 - topic
 - timer 
+- builder
 
 ### medium
 
@@ -84,6 +82,7 @@
 
 ### done
 
+- move website permission generation inline
 - inline generation of identity pool roles
 - family pack mixin
 - remove echo function namespace references
