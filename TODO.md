@@ -1,6 +1,5 @@
 ### short [01-lambda-functions]
 
-- remove echo function namespace references
 - family pack mixin
 - permissions helper to handle wildcards overriding defaults
 - consider if recipes should really extend resource classes
@@ -84,6 +83,7 @@
 
 ### done
 
+- remove echo function namespace references
 - inline and s3 lambdas
 - real handler code
 - move code inline in demo

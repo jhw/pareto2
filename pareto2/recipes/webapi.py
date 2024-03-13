@@ -143,7 +143,7 @@ class WebApi(Recipe):
                          permissions = self.role_permissions(endpoint)))
         self.append(Permission(namespace = child_ns,
                                parent_namespace = parent_ns,
-                               function_namespace = endpoint["action"],
+                               function_namespace = child_ns,
                                method = endpoint["method"],
                                path = endpoint["path"]))
         self.append(CorsMethod(namespace = child_ns,
@@ -156,7 +156,7 @@ class WebApi(Recipe):
         methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
-                             function_namespace = endpoint["action"],
+                             function_namespace = child_ns,
                              method = endpoint["method"],
                              parameters = endpoint["parameters"]))
 
@@ -169,7 +169,7 @@ class WebApi(Recipe):
         methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
-                             function_namespace = endpoint["action"],
+                             function_namespace = child_ns, 
                              method = endpoint["method"],
                              schema = endpoint["schema"]))
                     
