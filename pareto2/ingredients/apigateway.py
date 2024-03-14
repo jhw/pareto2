@@ -341,7 +341,8 @@ class Model(AWSResource):
 
     """
     - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-model.html
-    - not clear if Name parameter is required or not; 
+    - docs say Name is not required, but experiments suggest it is very much required, and must be alphanumeric is no punctuation
+    - hence hungarorised resource name probably the best option; don't include ${AWS::StackName} as can't be sure that the format is valid for Name 
     """
         
     @property
@@ -349,7 +350,7 @@ class Model(AWSResource):
         return {
             "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")},
             "ContentType": self.content_type,
-            "Name": {"Fn::Sub": f"{self.namespace}-model-${{AWS::StackName}}"},
+            "Name": H("{self.namespace}-model"),
             "Schema": self.schema
         }
 
