@@ -389,7 +389,6 @@ class DomainName(AWSResource):
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
             "DomainName": {"Ref": H("domain-name")},
             "CertificateArn": {"Ref": H("certificate-arn")}
         }
