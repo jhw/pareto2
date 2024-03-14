@@ -1,9 +1,6 @@
 ### short
 
-- method AuthorizerId not Authorizer
 - ProviderARNs not ProviderARNS
-- cognito auth value is COGNITO_USER_POOLS
-- apigw cognito auth should use AuthorizationType property not Authorization
 
 ### issues
 
@@ -83,6 +80,9 @@
 
 ### done
 
+- cognito auth value is COGNITO_USER_POOLS
+- apigw cognito auth should use AuthorizationType property not Authorization
+- method AuthorizerId not Authorizer
 - webapp lambda proxy permission needs to be on a per- endpoint basis!
 - IAM role policy name needs to be in Fn::Sub
 - ensure website can override index.html root path

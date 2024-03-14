@@ -235,8 +235,8 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
     def __init__(self, namespace, parent_namespace, **kwargs):
         super().__init__(namespace,
                          parent_namespace = parent_namespace,
-                         authorisation = {"Authorization": "COGNITO",
-                                          "Authorizer": {"Ref": H(f"{parent_namespace}-authorizer")}},
+                         authorisation = {"AuthorizationType": "COGNITO_USER_POOLS",
+                                          "AuthorizerId": {"Ref": H(f"{parent_namespace}-authorizer")}},
                          **kwargs)
         
 class CorsMethod(Method):
