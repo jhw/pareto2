@@ -1,6 +1,11 @@
 ### short
 
-- apigw gist
+- webapp lambda proxy permission needs to be on a per- endpoint basis!
+- Model needs a name and must be alphanumeric, so hungarorise resource name is best
+- remove StageName from Deployment
+- IAM role policy name needs to be in Fn::Sub
+- AWS::ApiGateway::DomainName does not have RestApiId
+- ensure website can override index.html root path
 
 ### roadmap
 
