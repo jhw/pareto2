@@ -1,7 +1,6 @@
 ### short
 
 - rename services as ingredients
-- permissions helper to handle wildcards overriding defaults
 - plan for pre- gist reviews
 
 ### roadmap
@@ -82,6 +81,7 @@
 
 ### done
 
+- permissions helper to handle wildcards overriding defaults
 - webapi support for S3 functions and paths
 - deployment should include stage
 - move website permission generation inline

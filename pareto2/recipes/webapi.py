@@ -147,7 +147,19 @@ class WebApi(Recipe):
         fn = lambda_module.InlineFunction if "code" in endpoint else lambda_module.S3Function
         return fn(namespace = namespace,
                   **self.function_kwargs(endpoint))
+
+    def wildcard_override(fn):
+        def wrapped(self, *args, **kwargs):
+            permissions=fn(self, *args, **kwargs)
+            wildcards=set([permission.split(":")[0]
+                           for permission in permissions
+                           if permission.endswith(":*")])
+            return [permission for permission in permissions
+                    if (permission.endswith(":*") or
+                        permission.split(":")[0] not in wildcards)]
+        return wrapped
     
+    @wildcard_override
     def role_permissions(self, endpoint,
                          defaults = ["logs:CreateLogGroup",
                                      "logs:CreateLogStream",
