@@ -40,19 +40,22 @@ class RestApi(AWSResource):
     @property
     def visible(self):
         return True
+
+"""
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-deployment.html
+- Deployment has a StageName property, but Cloudformation complains if you try and use it ("stage already created")
+"""
     
 class Deployment(AWSResource):
 
-    def __init__(self, namespace, methods, stage_name = StageName):
+    def __init__(self, namespace, methods):
         self.namespace = namespace
         self.methods = methods
-        self.stage_name = stage_name
 
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
-            "StageName": self.stage_name
+            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
         }
 
     @property

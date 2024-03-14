@@ -1,7 +1,6 @@
 ### short
 
 - webapp lambda proxy permission needs to be on a per- endpoint basis!
-- remove StageName from Deployment
 - IAM role policy name needs to be in Fn::Sub
 - ensure website can override index.html root path
 
@@ -79,6 +78,7 @@
 
 ### done
 
+- remove StageName from Deployment
 - AWS::ApiGateway::DomainName does not have RestApiId
 - Model needs a name and must be alphanumeric, so hungarorise resource name is best
 - rename services as ingredients
