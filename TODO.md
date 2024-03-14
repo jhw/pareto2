@@ -1,5 +1,14 @@
 ### short
 
+- method AuthorizerId not Authorizer
+- ProviderARNs not ProviderARNS
+- cognito auth value is COGNITO_USER_POOLS
+- apigw cognito auth should use AuthorizationType property not Authorization
+
+### issues
+
+- feels like POST model is not being called
+
 ### roadmap
 
 - worker
