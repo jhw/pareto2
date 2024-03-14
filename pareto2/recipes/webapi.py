@@ -173,7 +173,7 @@ class WebApi(Recipe):
     def init_lambda_permission(self, parent_ns, child_ns, endpoint):
         restapiref, stageref = H(f"{parent_ns}-rest-api"), H(f"{parent_ns}-stage")
         source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{endpoint['method']}/{endpoint['path']}"}
-        return lambda_module.Permission(namespace = parent_ns,
+        return lambda_module.Permission(namespace = child_ns,    
                                         function_namespace = child_ns,
                                         source_arn = source_arn,
                                         principal = "apigateway.amazonaws.com")
