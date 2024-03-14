@@ -133,9 +133,9 @@ class WebApi(Recipe):
 
     def function_kwargs(self, endpoint):
         kwargs = {}
-        for attr in ["code"]:
-            kwargs[attr] = endpoint[attr]
-        for attr in ["memory",
+        for attr in ["code",
+                     "handler",
+                     "memory",
                      "timeout",
                      "runtime",
                      "layers"]:
@@ -144,8 +144,9 @@ class WebApi(Recipe):
         return kwargs
 
     def init_function(self, namespace, endpoint):
-        return lambda_module.InlineFunction(namespace = namespace,
-                                            **self.function_kwargs(endpoint))
+        fn = lambda_module.InlineFunction if "code" in endpoint else lambda_module.S3Function
+        return fn(namespace = namespace,
+                  **self.function_kwargs(endpoint))
     
     def role_permissions(self, endpoint,
                          defaults = ["logs:CreateLogGroup",

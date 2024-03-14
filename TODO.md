@@ -1,7 +1,6 @@
 ### short
 
-- rename sevices as ingredients
-- webapi support for S3 functions and paths
+- rename services as ingredients
 - permissions helper to handle wildcards overriding defaults
 - plan for pre- gist reviews
 
@@ -83,6 +82,7 @@
 
 ### done
 
+- webapi support for S3 functions and paths
 - deployment should include stage
 - move website permission generation inline
 - inline generation of identity pool roles
