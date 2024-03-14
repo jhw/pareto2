@@ -183,7 +183,20 @@ class S3ProxyMethod(Method):
                 "Integration": self._integration,
                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
-        
+
+"""
+A Lambda function bound to instance of LambdaProxyMethod must return a response in the following format (JSON example) - 
+
+```
+{
+    "statusCode": 200,
+     "headers": {"Content-Type": "application/json"},
+     "body": json.dumps(response)
+}
+```
+
+"""
+    
 class LambdaProxyMethod(Method):
 
     def __init__(self,
@@ -238,6 +251,16 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
                          authorisation = {"AuthorizationType": "COGNITO_USER_POOLS",
                                           "AuthorizerId": {"Ref": H(f"{parent_namespace}-authorizer")}},
                          **kwargs)
+
+"""
+If a Lambda function is exposed to the web via LambdaProxyMethod and the endpoint to which this method is bound is CORS- enabled using CorsMethod, then the Lambda function *must* return the following additional headers if CORS is to work properly -
+
+- "Access-Control-Allow-Origin": "*"
+- "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent"
+- Access-Control-Allow-Methods": "OPTIONS,GET" // change second of these according to LambdaProxyMethod HTTP method
+
+(see also response format required by LambdaProxyMethod)
+"""
         
 class CorsMethod(Method):
 
