@@ -49,6 +49,16 @@ class WebApi(Recipe):
             self.append(klass(namespace = namespace))
         self.init_identity_pool_roles(namespace)
 
+    def init_api_base(self, namespace):
+        for klass in [RestApi,
+                      Stage,
+                      GatewayResponse4xx,
+                      GatewayResponse5xx,
+                      DomainName,
+                      BasePathMapping,
+                      RecordSet]:
+            self.append(klass(namespace = namespace))
+
     def identity_pool_role_condition(self, namespace, typestr):
         return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
                 "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
@@ -71,51 +81,12 @@ class WebApi(Recipe):
                                                                              typestr = typestr),
                               principal = {"Federated": "cognito-identity.amazonaws.com"},
                               permissions = permissions))
-
-    def init_api_base(self, namespace):
-        for klass in [RestApi,
-                      Stage,
-                      GatewayResponse4xx,
-                      GatewayResponse5xx,
-                      DomainName,
-                      BasePathMapping,
-                      RecordSet]:
-            self.append(klass(namespace = namespace))
             
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
                           "-".join([tok.lower()
                                     for tok in re.split("\\W", endpoint["path"])
                                     if tok != ""]))
-
-    def function_kwargs(self, endpoint):
-        kwargs = {}
-        for attr in ["code"]:
-            kwargs[attr] = endpoint[attr]
-        for attr in ["memory",
-                     "timeout",
-                     "runtime",
-                     "layers"]:
-            if attr in endpoint:
-                kwargs[attr] = endpoint[attr]
-        return kwargs
-    
-    def role_permissions(self, endpoint,
-                         defaults = ["logs:CreateLogGroup",
-                                     "logs:CreateLogStream",
-                                     "logs:PutLogEvents"]):
-        permissions = set(defaults)
-        if "permissions" in endpoint:
-            permissions.update(set(endpoint["permissions"]))
-        return sorted(list(permissions))
-
-    def init_permission(self, parent_ns, child_ns, endpoint):
-        restapiref, stageref = H(f"{parent_ns}-rest-api"), H(f"{parent_ns}-stage")
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{endpoint['method']}/{endpoint['path']}"}
-        return lambda_module.Permission(namespace = parent_ns,
-                                        function_namespace = child_ns,
-                                        source_arn = source_arn,
-                                        principal = "apigateway.amazonaws.com")
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
@@ -126,10 +97,10 @@ class WebApi(Recipe):
             self.init_GET_endpoint(parent_ns, child_ns, endpoint)
         elif "schema" in endpoint:
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
-        self.append(lambda_module.InlineFunction(namespace = child_ns,
-                                                 **self.function_kwargs(endpoint)))
-        self.append(Role(namespace = child_ns,
-                         permissions = self.role_permissions(endpoint)))
+        self.append(self.init_function(namespace = child_ns,
+                                       endpoint = endpoint))
+        self.append(self.init_role(namespace = child_ns,
+                                   endpoint = endpoint))
         self.append(self.init_permission(parent_ns = parent_ns,
                                          child_ns = child_ns,
                                          endpoint = endpoint))
@@ -159,7 +130,44 @@ class WebApi(Recipe):
                              function_namespace = child_ns, 
                              method = endpoint["method"],
                              schema = endpoint["schema"]))
-                    
+
+    def function_kwargs(self, endpoint):
+        kwargs = {}
+        for attr in ["code"]:
+            kwargs[attr] = endpoint[attr]
+        for attr in ["memory",
+                     "timeout",
+                     "runtime",
+                     "layers"]:
+            if attr in endpoint:
+                kwargs[attr] = endpoint[attr]
+        return kwargs
+
+    def init_function(self, namespace, endpoint):
+        return lambda_module.InlineFunction(namespace = namespace,
+                                            **self.function_kwargs(endpoint))
+    
+    def role_permissions(self, endpoint,
+                         defaults = ["logs:CreateLogGroup",
+                                     "logs:CreateLogStream",
+                                     "logs:PutLogEvents"]):
+        permissions = set(defaults)
+        if "permissions" in endpoint:
+            permissions.update(set(endpoint["permissions"]))
+        return sorted(list(permissions))
+
+    def init_role(self, namespace, endpoint):
+        return Role(namespace = namespace,
+                    permissions = self.role_permissions(endpoint))
+    
+    def init_permission(self, parent_ns, child_ns, endpoint):
+        restapiref, stageref = H(f"{parent_ns}-rest-api"), H(f"{parent_ns}-stage")
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{endpoint['method']}/{endpoint['path']}"}
+        return lambda_module.Permission(namespace = parent_ns,
+                                        function_namespace = child_ns,
+                                        source_arn = source_arn,
+                                        principal = "apigateway.amazonaws.com")
+        
     def filter_methods(self, parent_ns, endpoints):
         methods = []
         for endpoint in endpoints:
