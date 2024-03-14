@@ -353,7 +353,7 @@ class Model(AWSResource):
         return {
             "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")},
             "ContentType": self.content_type,
-            "Name": H("{self.namespace}-model"),
+            "Name": H(f"{self.namespace}-model"),
             "Schema": self.schema
         }
 
