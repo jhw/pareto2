@@ -295,7 +295,7 @@ class Authorizer(AWSResource):
     @property
     def aws_properties(self):
         return {
-            "ProviderARNS": [{"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "Arn"]}],
+            "ProviderARNs": [{"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "Arn"]}],
             "IdentitySource": "method.request.header.Authorization",
             "Name": {"Fn::Sub": f"{self.namespace}-authorizer-${{AWS::StackName}}"},
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
