@@ -21,7 +21,7 @@ def uppercase(text):
     return "_".join([tok.upper()
                      for tok in text.split("-")])
 
-AWSProxyClassFilterFn = lambda x: len(x) == 4 and x[1] == "services"
+AWSProxyClassFilterFn = lambda x: len(x) == 4 and x[1] == "ingredients"
 
 class Resource:
 

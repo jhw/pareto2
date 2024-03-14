@@ -1,5 +1,5 @@
-from pareto2.services import hungarorise as H
-from pareto2.services import Resource, AltNamespaceMixin
+from pareto2.ingredients import hungarorise as H
+from pareto2.ingredients import Resource, AltNamespaceMixin
 
 class UserPool(Resource):
 

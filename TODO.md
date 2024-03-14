@@ -1,15 +1,10 @@
 ### short
 
-- rename services as ingredients
-- plan for pre- gist reviews
+- apigw gist
 
 ### roadmap
 
 - worker
-  - retries
-  - events
-  - logging
-  
 - streaming table
 - task_queue
 - topic
@@ -81,6 +76,7 @@
 
 ### done
 
+- rename services as ingredients
 - permissions helper to handle wildcards overriding defaults
 - webapi support for S3 functions and paths
 - deployment should include stage

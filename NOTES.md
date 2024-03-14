@@ -1,3 +1,10 @@
+### worker roadmap 14/03/24
+
+- event config to stop retries
+- subscription filter, log group, log stream
+- SlackWebookFunction loads inline code
+- bucket, table, topic, builder events
+
 ### family multi pack mixin 13/03/24
 
 - FamilyMultiPackMixin allows subclasses to be referenced via their subclass names rather than their base class names

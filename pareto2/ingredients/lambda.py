@@ -1,6 +1,6 @@
-from pareto2.services import hungarorise as H
-from pareto2.services import uppercase as U
-from pareto2.services import Resource
+from pareto2.ingredients import hungarorise as H
+from pareto2.ingredients import uppercase as U
+from pareto2.ingredients import Resource
 
 class Function(Resource):
 
