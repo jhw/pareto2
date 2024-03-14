@@ -44,7 +44,7 @@ class Role(Resource):
         
     @property
     def aws_properties(self):
-        policy_name = f"{self.namespace}-role-policy-${{AWS::StackName}}"
+        policy_name = {"Fn::Sub": f"{self.namespace}-role-policy-${{AWS::StackName}}"}
         policies = [{"PolicyDocument": self.policy_document,
                      "PolicyName": policy_name}]
         return {
