@@ -349,6 +349,11 @@ class SchemaRequestValidator(RequestValidator):
     def __init__(self, namespace, parent_namespace):
         return super().__init__(namespace, parent_namespace, validate_request_body = True)
 
+"""
+- a Model only gets called if the request contains a ContentType header which matches one of the entries in the RequestModels attribute of the connected Method
+- else everything will be waived through by the AWS_PROXY integration method type :/
+"""
+    
 class Model(AWSResource):
     
     def __init__(self,

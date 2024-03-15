@@ -4,12 +4,6 @@
 - rename webapi as webapp
 - worker roadmap
 
-### pending
-
-- POST model not being called
-  - https://stackoverflow.com/questions/78165982/apigateway-http-post-request-body-validation-model-apparently-not-being-called
-  - https://support.console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=171049629001925&language=en
-
 ### roadmap
 
 - streaming table
@@ -82,6 +76,10 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- POST model not being called
+  - https://stackoverflow.com/questions/78165982/apigateway-http-post-request-body-validation-model-apparently-not-being-called
+  - https://support.console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=171049629001925&language=en
 
 - ProviderARNs not ProviderARNS
 - cognito auth value is COGNITO_USER_POOLS
