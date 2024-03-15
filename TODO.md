@@ -1,12 +1,17 @@
 ### short
 
-### issues
+- hypenate webxxx recipes and demos
+- rename webapi as webapp
+- worker roadmap
 
-- feels like POST model is not being called
+### pending
+
+- POST model not being called
+  - https://stackoverflow.com/questions/78165982/apigateway-http-post-request-body-validation-model-apparently-not-being-called
+  - https://support.console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=171049629001925&language=en
 
 ### roadmap
 
-- worker
 - streaming table
 - task_queue
 - topic
