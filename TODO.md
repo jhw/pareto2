@@ -1,6 +1,5 @@
 ### short
 
-- consider removing Proxy in names
 - move cors into apigw subdir
 - move slack function into slack subdir with inline_code.py
 - check event_worker demo still works
@@ -90,6 +89,7 @@
 
 ### done
 
+- consider removing Proxy in names
 - move redirect method to s3 and rename
 - add identity pool condition helper
 - allow subclassing of roles and permissions in ingredients packages

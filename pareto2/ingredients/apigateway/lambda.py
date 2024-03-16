@@ -12,7 +12,7 @@ LambdaProxyMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31
 - LambdaProxyResource doesn't use namespace directly, but still needs to live in its own namespace because a single API might have multiple endpoints, each with their own resources
 """
         
-class LambdaProxyResource(Resource):
+class LambdaResource(Resource):
 
     def __init__(self, namespace, parent_namespace, path):
         super().__init__(namespace, path)

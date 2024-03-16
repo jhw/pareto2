@@ -56,9 +56,9 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(apigateway_lambda_module.LambdaProxyResource(namespace = child_ns,
-                                                                 parent_namespace = parent_ns,
-                                                                 path = endpoint["path"]))
+        self.append(apigateway_lambda_module.LambdaResource(namespace = child_ns,
+                                                            parent_namespace = parent_ns,
+                                                            path = endpoint["path"]))
         if "parameters" in endpoint:
             self.init_GET_endpoint(parent_ns, child_ns, endpoint)
         elif "schema" in endpoint:
