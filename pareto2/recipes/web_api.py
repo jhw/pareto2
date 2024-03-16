@@ -1,9 +1,7 @@
 from pareto2.ingredients import hungarorise as H
-from pareto2.ingredients import AltNamespaceMixin
 
 from pareto2.ingredients.apigateway import *
 from pareto2.ingredients.cognito import *
-from pareto2.ingredients.iam import *
 from pareto2.ingredients.route53 import *
 
 from pareto2.recipes import Recipe
@@ -12,16 +10,6 @@ import importlib, re
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 apigateway_lambda_module = importlib.import_module("pareto2.ingredients.apigateway.lambda")
-
-class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
-
-    def __init__(self, namespace, **kwargs):
-        super().__init__(namespace, **kwargs)
-
-class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
-
-    def __init__(self, namespace, **kwargs):
-        super().__init__(namespace, **kwargs)
 
 class WebApi(Recipe):    
 
@@ -45,9 +33,10 @@ class WebApi(Recipe):
                       UserPoolAdminClient,
                       UserPoolWebClient,
                       IdentityPool,
+                      IdentityPoolAuthorizedRole,
+                      IdentityPoolUnauthorizedRole,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
-        self.init_identity_pool_roles(namespace)
 
     def init_api_base(self, namespace):
         for klass in [RestApi,
@@ -59,22 +48,6 @@ class WebApi(Recipe):
                       RecordSet]:
             self.append(klass(namespace = namespace))
 
-    def init_identity_pool_roles(self, namespace, roleconfig = [("unauthorized",
-                                                                 ["cognito-sync:*"]),
-                                                                ("authorized",
-                                                                 ["cognito-sync:*",
-                                                                  "cognito-identity:*",
-                                                                  "lambda:InvokeFunction"])]):
-        for typestr, permissions in roleconfig:            
-            condition = {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
-                         "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
-            klass = eval(H(f"identity-pool-{typestr}-role"))                        
-            self.append(klass(namespace = namespace,
-                              action = "sts:AssumeRoleWithWebIdentity",
-                              condition = condition,
-                              principal = {"Federated": "cognito-identity.amazonaws.com"},
-                              permissions = permissions))
-            
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
                           "-".join([tok.lower()

@@ -1,5 +1,6 @@
 from pareto2.ingredients import hungarorise as H
 from pareto2.ingredients import Resource, AltNamespaceMixin
+from pareto2.ingredients.iam import Role
 
 class UserPool(Resource):
 
@@ -98,6 +99,30 @@ class IdentityPool(Resource):
     @property
     def visible(self):
         return True
+
+class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
+
+    def __init__(self, namespace, **kwargs):
+        condition = {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
+                     "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authorized"}}
+        super().__init__(namespace,
+                         action = "sts:AssumeRoleWithWebIdentity",
+                         condition = condition,
+                         principal = {"Federated": "cognito-identity.amazonaws.com"},
+                         permissions = ["cognito-sync:*",
+                                        "cognito-identity:*",
+                                        "lambda:InvokeFunction"])
+
+class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
+
+    def __init__(self, namespace, **kwargs):
+        condition = {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
+                     "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "unauthorized"}}
+        super().__init__(namespace,
+                         action = "sts:AssumeRoleWithWebIdentity",
+                         condition = condition,
+                         principal = {"Federated": "cognito-identity.amazonaws.com"},
+                         permissions = ["cognito-sync:*"])
     
 class IdentityPoolRoleAttachment(Resource):
     
