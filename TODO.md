@@ -1,5 +1,7 @@
 ### short
 
+- remove "Proxy" in class names?
+
 - lambda slack subdirectory
 - move SlackWebhookFunction into slack subdir
 - move inline directory into slack/inline_code.py
