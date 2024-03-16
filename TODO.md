@@ -1,5 +1,8 @@
 ### short
 
+- [recipes] slack webhook permission?
+- [recipes] logs role ?
+
 - [recipes] event worker function
 - [recipes] event worker role
 - [recipes] event worker logs resources
@@ -8,9 +11,6 @@
 
 - [ingredients] events core
 - [ingredients] events subclasses
-
-- [recipes] slack webhook permission?
-- [recipes] logs role ?
 
 ### roadmap
 
@@ -85,6 +85,7 @@
 
 ### done
 
+- move cognito role crap
 - logs subscription filter
 - error, warning subscription filters
 - logs group, logs stream
