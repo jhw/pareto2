@@ -10,7 +10,8 @@ class EventWorker(Recipe):
 
     def __init__(self, namespace, logging_namespace = LoggingNamespace):
         super().__init__()
-        for klass in [slack_module.SlackWebhookFunction]:
+        for klass in [slack_module.SlackWebhookFunction,
+                      slack_module.SlackWebhookRole]:
             self.append(klass(namespace = logging_namespace))
             
 if __name__ == "__main__":

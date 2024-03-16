@@ -1,14 +1,17 @@
 ### short
 
-- add slack webhook role
-- add slack webhook logs permission
-- add role and permission to event_worker demo
+- slack webhook logs permission
 
-- [recipes] event worker function
-- [recipes] event worker role
-- [recipes] event worker logs resources
+- don't you need per logging level slack functions?
+- how are env variables passed to slack functions?
 
 - [ingredients] lambda event invocation config
+
+- [recipes] event worker function
+- [recipes] event worked invocation config
+- [recipes] event worker role
+
+- [recipes] event worker logs resources
 
 - [ingredients] events core
 - [ingredients] events subclasses
@@ -86,6 +89,8 @@
 
 ### done
 
+- add slack webhook role
+- add role and permission to event_worker demo
 - move slack function into slack subdir with inline_code.py
 - check event_worker demo still works
 - move cors into apigw subdir
