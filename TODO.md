@@ -1,13 +1,14 @@
 ### short
 
-- remove "Proxy" in class names?
-
-- lambda slack subdirectory
-- move SlackWebhookFunction into slack subdir
-- move inline directory into slack/inline_code.py
-- SlackRole with logs permissions
-- SlackPermission giving logs ability to invoke Lambda function
-- demos to create all this
+- add identity pool condition helper
+- move redirect method to s3 and rename
+- move cors into apigw subdir
+- consider removing Proxy in names
+- move slack function into slack subdir with inline_code.py
+- check event_worker demo still works
+- add slack webhook role
+- add slack webhook logs permission
+- add role and permission to event_worker demo
 
 - [recipes] event worker function
 - [recipes] event worker role
