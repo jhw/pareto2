@@ -13,10 +13,10 @@ class WebSite(Recipe):
         super().__init__()
         for klass in [RestApi,
                       Stage,
-                      S3ProxyResource,
+                      S3Resource,
                       S3ProxyMethod,
                       S3ProxyRole,
-                      RootRedirectMethod,
+                      S3RedirectMethod,
                       DomainName,
                       BasePathMapping,
                       RecordSet,                      
@@ -27,7 +27,7 @@ class WebSite(Recipe):
 
     def init_deployment(self, namespace):        
         method_refs = [H(f"{namespace}-s3-proxy-method"),
-                       H(f"{namespace}-root-redirect-method")]
+                       H(f"{namespace}-s3-redirect-method")]
         return Deployment(namespace = namespace,
                           methods = method_refs)
             

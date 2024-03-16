@@ -93,35 +93,6 @@ class Method(AltNamespaceMixin, AWSResource):
     def __init__(self, namespace):
         self.namespace = namespace
 
-class RootRedirectMethod(Method):
-
-    def __init__(self, namespace, path = "index.html"):
-        super().__init__(namespace)
-        self.path = path
-
-    @property
-    def _integration(self):
-        request_templates = {"application/json": "{\"statusCode\" : 302}"}
-        domain_name_ref = H("domain-name")
-        redirect_url = {"Fn::Sub": f"'https://${{{domain_name_ref}}}/{self.path}'"}
-        integration_responses = [{"StatusCode": 302,
-                                  "ResponseTemplates": {"application/json": "{}"},
-                                  "ResponseParameters": {"method.response.header.Location": redirect_url}}]
-        return {"Type": "MOCK",
-                "RequestTemplates": request_templates,
-                "IntegrationResponses": integration_responses}      
-        
-    @property
-    def aws_properties(self):
-        method_responses = [{"StatusCode": 302,
-                             "ResponseParameters": {"method.response.header.Location": True}}]
-        resource_id = {"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]}
-        return {"HttpMethod": "GET",
-                "AuthorizationType": "NONE",
-                "MethodResponses": method_responses,
-                "Integration": self._integration,
-                "ResourceId": resource_id, 
-                "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
         
 """
 If a Lambda function is exposed to the web via LambdaProxyMethod and the endpoint to which this method is bound is CORS- enabled using CorsMethod, then the Lambda function *must* return the following additional headers if CORS is to work properly -

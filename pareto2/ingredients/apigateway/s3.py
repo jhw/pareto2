@@ -3,11 +3,42 @@ from pareto2.ingredients import hungarorise as H
 from pareto2.ingredients.apigateway import Resource, Method
 from pareto2.ingredients.iam import Role
 
-class S3ProxyResource(Resource):
+class S3Resource(Resource):
 
     def __init__(self, namespace, path = "{proxy+}"):
         super().__init__(namespace, path)
-    
+
+class S3RedirectMethod(Method):
+
+    def __init__(self, namespace, path = "index.html"):
+        super().__init__(namespace)
+        self.path = path
+
+    @property
+    def _integration(self):
+        request_templates = {"application/json": "{\"statusCode\" : 302}"}
+        domain_name_ref = H("domain-name")
+        redirect_url = {"Fn::Sub": f"'https://${{{domain_name_ref}}}/{self.path}'"}
+        integration_responses = [{"StatusCode": 302,
+                                  "ResponseTemplates": {"application/json": "{}"},
+                                  "ResponseParameters": {"method.response.header.Location": redirect_url}}]
+        return {"Type": "MOCK",
+                "RequestTemplates": request_templates,
+                "IntegrationResponses": integration_responses}      
+        
+    @property
+    def aws_properties(self):
+        method_responses = [{"StatusCode": 302,
+                             "ResponseParameters": {"method.response.header.Location": True}}]
+        resource_id = {"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]}
+        return {"HttpMethod": "GET",
+                "AuthorizationType": "NONE",
+                "MethodResponses": method_responses,
+                "Integration": self._integration,
+                "ResourceId": resource_id, 
+                "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
+
+        
 class S3ProxyMethod(Method):
 
     def __init__(self, namespace):
@@ -43,7 +74,7 @@ class S3ProxyMethod(Method):
                 "Integration": self._integration,
                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
-
+    
 class S3ProxyRole(Role):
 
     def __init__(self, namespace):
