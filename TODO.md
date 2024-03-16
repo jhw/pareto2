@@ -1,7 +1,5 @@
 ### short
 
-- change lambda to a directory to allow room for inline code
-
 - slack webhook function
 - slack webhook permission?
 - logs subscription filter
@@ -84,6 +82,7 @@
 
 ### done
 
+- change lambda to a directory to allow room for inline code
 - rename webapi, website
 
 - POST model not being called
