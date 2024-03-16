@@ -1,6 +1,7 @@
 from pareto2.ingredients import hungarorise as H
 
 from pareto2.ingredients.apigateway import Resource, Method
+from pareto2.ingredients.iam import Role
 
 class S3ProxyResource(Resource):
 
@@ -43,3 +44,12 @@ class S3ProxyMethod(Method):
                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
 
+class S3ProxyRole(Role):
+
+    def __init__(self, namespace):
+        bucket_ref = H(f"{namespace}-bucket")
+        permissions = [{"action": "s3:GetObject",
+                        "resource": {"Fn::Sub": f"arn:aws:s3:::${{{bucket_ref}}}/*"}}]
+        super().__init__(namespace = namespace,
+                         permissions = permissions,
+                         principal = "apigateway.amazonaws.com")
