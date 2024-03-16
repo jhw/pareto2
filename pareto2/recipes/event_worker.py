@@ -4,6 +4,10 @@ import importlib
 
 slack_module = importlib.import_module("pareto2.ingredients.lambda.slack")
 
+"""
+- LogNamespace is a singleton namespace 
+"""
+
 LogNamespace, LogLevels = "logs", ["warning", "error"]
 
 class EventWorker(Recipe):    

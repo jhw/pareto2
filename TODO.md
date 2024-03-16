@@ -1,15 +1,11 @@
 ### short
 
-- [ingredients] lambda event invocation config
+- lambda event invocation config
 
-- [recipes] event worker function
-- [recipes] event worked invocation config
-- [recipes] event worker role
+- [recipes] event worker function / role / invocation config
+- [recipes] event worker subscription logs / log group / log stream
 
-- [recipes] event worker logs resources
-
-- [ingredients] events core
-- [ingredients] events subclasses
+- [ingredients] events core and subclasses
 
 ### roadmap
 
