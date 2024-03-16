@@ -19,7 +19,7 @@ def dehungarorise(text):
     
 def uppercase(text):
     return "_".join([tok.upper()
-                     for tok in text.split("-")])
+                     for tok in re.split("\\-|\\_", text)])
 
 AWSProxyClassFilterFn = lambda x: len(x) == 4 and x[1] == "ingredients"
 

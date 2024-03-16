@@ -6,9 +6,10 @@ lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 
 class SlackWebhookFunction(lambda_module.InlineFunction):
 
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace, log_level, **kwargs):
         super().__init__(namespace,
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
+                         variables = {"slack-logging-level": log_level},
                          **kwargs)
 
 class SlackWebhookRole(Role):

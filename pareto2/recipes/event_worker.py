@@ -15,10 +15,10 @@ class EventWorker(Recipe):
     def init_logs(self, parent_ns, log_levels = LogLevels):
         for log_level in log_levels:
             child_ns = f"{parent_ns}-{log_level}"
-            for klass in [slack_module.SlackWebhookFunction,
-                          slack_module.SlackWebhookRole,
-                          slack_module.SlackWebhookPermission]:
-                self.append(klass(namespace = child_ns))
+            self.append(slack_module.SlackWebhookFunction(namespace = child_ns,
+                                                          log_level = log_level))
+            self.append(slack_module.SlackWebhookRole(namespace = child_ns))
+            self.append(slack_module.SlackWebhookPermission(namespace = child_ns))
             
 if __name__ == "__main__":
     pass
