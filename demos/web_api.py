@@ -53,7 +53,7 @@ if __name__ == "__main__":
                      auth = auth)
         template = api.render()
         template.populate_parameters()
-        with open(f"tmp/webapi-{auth}.json", 'w') as f:
+        with open(f"tmp/web-api-{auth}.json", 'w') as f:
             f.write(json.dumps(template,
                                sort_keys = True,
                                indent = 2))

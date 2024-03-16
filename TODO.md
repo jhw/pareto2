@@ -1,6 +1,5 @@
 ### short
 
-- slack webhook function
 - slack webhook permission?
 - logs subscription filter
 - logs group, logs stream
@@ -8,6 +7,8 @@
 - lambda event invocation config
 - event core
 - event subclasses
+
+- logs role
 
 ### roadmap
 
@@ -82,6 +83,7 @@
 
 ### done
 
+- slack webhook function
 - change lambda to a directory to allow room for inline code
 - rename webapi, website
 
