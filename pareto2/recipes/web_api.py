@@ -1,5 +1,4 @@
 from pareto2.ingredients import hungarorise as H
-
 from pareto2.ingredients import AltNamespaceMixin
 
 from pareto2.ingredients.apigateway import *
@@ -12,6 +11,7 @@ from pareto2.recipes import Recipe
 import importlib, re
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
+apigateway_lambda_module = importlib.import_module("pareto2.ingredients.apigateway.lambda")
 
 class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
 
@@ -83,9 +83,9 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(LambdaProxyResource(namespace = child_ns,
-                                        parent_namespace = parent_ns,
-                                        path = endpoint["path"]))
+        self.append(apigateway_lambda_module.LambdaProxyResource(namespace = child_ns,
+                                                                 parent_namespace = parent_ns,
+                                                                 path = endpoint["path"]))
         if "parameters" in endpoint:
             self.init_GET_endpoint(parent_ns, child_ns, endpoint)
         elif "schema" in endpoint:
@@ -104,7 +104,7 @@ class WebApi(Recipe):
     def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
         self.append(ParameterRequestValidator(namespace = child_ns,
                                               parent_namespace = parent_ns))
-        methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
+        methodfn = eval("apigateway_lambda_module.%s" % H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
                              function_namespace = child_ns,
@@ -117,7 +117,7 @@ class WebApi(Recipe):
         self.append(Model(namespace = child_ns,
                           parent_namespace = parent_ns,
                           schema = endpoint["schema"]))
-        methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
+        methodfn = eval("apigateway_lambda_module.%s" % H(f"{self.auth}-lambda-proxy-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
                              function_namespace = child_ns, 

@@ -1,6 +1,7 @@
 from pareto2.ingredients import hungarorise as H
 
 from pareto2.ingredients.apigateway import *
+from pareto2.ingredients.apigateway.s3 import *
 from pareto2.ingredients.iam import *
 from pareto2.ingredients.route53 import *
 from pareto2.ingredients.s3 import *

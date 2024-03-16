@@ -1,3 +1,5 @@
+from pareto2.ingredients import hungarorise as H
+
 from pareto2.ingredients.apigateway import Resource, Method
 
 LambdaProxyMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"

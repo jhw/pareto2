@@ -1,3 +1,5 @@
+from pareto2.ingredients import hungarorise as H
+
 from pareto2.ingredients.apigateway import Resource, Method
 
 class S3ProxyResource(Resource):
