@@ -1,6 +1,5 @@
 ### short
 
-- renane webapi, website
 - change lambda to a directory to allow room for inline code
 
 - slack webhook function
@@ -31,12 +30,12 @@
 
 ### features
 
-- lambda alarms 
 - apigateway2
+- step functions
+- lambda alarms 
 - federated auth
 - passwordless auth
 - secrets
-- step functions
 
 ### thoughts
 
@@ -84,6 +83,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- rename webapi, website
 
 - POST model not being called
   - https://stackoverflow.com/questions/78165982/apigateway-http-post-request-body-validation-model-apparently-not-being-called

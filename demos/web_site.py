@@ -1,9 +1,9 @@
-from pareto2.recipes.website import Website
+from pareto2.recipes.web_site import WebSite
 
 import json, os
 
 if __name__ == "__main__":
-    site = Website(namespace = "app")
+    site = WebSite(namespace = "app")
     template = site.render()
     template.populate_parameters()
     if not os.path.exists("tmp"):

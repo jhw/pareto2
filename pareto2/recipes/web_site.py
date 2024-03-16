@@ -7,7 +7,7 @@ from pareto2.ingredients.s3 import *
 
 from pareto2.recipes import Recipe
 
-class Website(Recipe):    
+class WebSite(Recipe):    
 
     def __init__(self, namespace):
         super().__init__()
