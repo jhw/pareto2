@@ -1,7 +1,7 @@
 ### short
 
-- per- level slack logs function
 - pass logging level as env variable into slack function
+
 - pass webhook url as env variable into slack function
 
 - [ingredients] lambda event invocation config
@@ -88,6 +88,7 @@
 
 ### done
 
+- per- level slack logs function
 - slack webhook logs permission
 - add slack webhook role
 - add role and permission to event_worker demo
