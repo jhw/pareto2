@@ -1,7 +1,8 @@
 ### short
 
-- don't you need per logging level slack functions?
-- how are env variables passed to slack functions?
+- per- level slack logs function
+- pass logging level as env variable into slack function
+- pass webhook url as env variable into slack function
 
 - [ingredients] lambda event invocation config
 
