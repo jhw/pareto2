@@ -1,6 +1,5 @@
 ### short
 
-- add identity pool condition helper
 - move redirect method to s3 and rename
 - move cors into apigw subdir
 - consider removing Proxy in names
@@ -92,6 +91,7 @@
 
 ### done
 
+- add identity pool condition helper
 - allow subclassing of roles and permissions in ingredients packages
 
 - move cognito role crap
