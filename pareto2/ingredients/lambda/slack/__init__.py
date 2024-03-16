@@ -19,3 +19,10 @@ class SlackWebhookRole(Role):
                                         "logs:CreateLogStream",
                                         "logs:PutLogEvents"])
 
+class SlackWebhookPermission(lambda_module.Permission):
+
+    def __init__(self, namespace):
+        super().__init__(namespace,
+                         function_namespace = namespace,
+                         principal = "logs.amazon.com")
+

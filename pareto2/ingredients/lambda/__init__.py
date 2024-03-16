@@ -59,19 +59,21 @@ class S3Function(Function):
     
 class Permission(Resource):
 
-    def __init__(self, namespace, function_namespace, source_arn, principal):
+    def __init__(self, namespace, function_namespace, principal, source_arn = None):
         self.namespace = namespace
         self.function_namespace = function_namespace
-        self.source_arn = source_arn
         self.principal = principal
+        self.source_arn = source_arn
     
     @property
     def aws_properties(self):
-        return {
+        props = {
             "Action": "lambda:InvokeFunction",
             "FunctionName": {"Ref": H(f"{self.function_namespace}-function")},
             "Principal": self.principal,
-            "SourceArn": self.source_arn
         }
+        if self.source_arn:
+            props["SourceArn"] = self.source_arn
+        return props
 
 

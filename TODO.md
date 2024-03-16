@@ -1,7 +1,5 @@
 ### short
 
-- slack webhook logs permission
-
 - don't you need per logging level slack functions?
 - how are env variables passed to slack functions?
 
@@ -89,6 +87,7 @@
 
 ### done
 
+- slack webhook logs permission
 - add slack webhook role
 - add role and permission to event_worker demo
 - move slack function into slack subdir with inline_code.py
