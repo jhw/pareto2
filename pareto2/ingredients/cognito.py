@@ -1,6 +1,5 @@
 from pareto2.ingredients import hungarorise as H
 from pareto2.ingredients import Resource, AltNamespaceMixin
-from pareto2.ingredients.iam import Role
 
 class UserPool(Resource):
 
@@ -99,16 +98,6 @@ class IdentityPool(Resource):
     @property
     def visible(self):
         return True
-
-class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
-
-    def __init__(self, namespace, **kwargs):
-        super().__init__(namespace, **kwargs)
-
-class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
-
-    def __init__(self, namespace, **kwargs):
-        super().__init__(namespace, **kwargs)
     
 class IdentityPoolRoleAttachment(Resource):
     

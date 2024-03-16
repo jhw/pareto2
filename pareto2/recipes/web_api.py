@@ -4,6 +4,7 @@ from pareto2.ingredients import AltNamespaceMixin
 
 from pareto2.ingredients.apigateway import *
 from pareto2.ingredients.cognito import *
+from pareto2.ingredients.iam import *
 from pareto2.ingredients.route53 import *
 
 from pareto2.recipes import Recipe
@@ -11,6 +12,16 @@ from pareto2.recipes import Recipe
 import importlib, re
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
+
+class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
+
+    def __init__(self, namespace, **kwargs):
+        super().__init__(namespace, **kwargs)
+
+class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
+
+    def __init__(self, namespace, **kwargs):
+        super().__init__(namespace, **kwargs)
 
 class WebApi(Recipe):    
 

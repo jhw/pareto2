@@ -14,6 +14,8 @@
 
 ### roadmap
 
+- allow subclassing of roles and permissions in ingredients packages
+
 - streaming table
 - queue worker
 - topic worker
