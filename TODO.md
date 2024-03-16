@@ -1,14 +1,16 @@
 ### short
 
-- slack webhook permission?
-- logs subscription filter
-- logs group, logs stream
-- error, warning subscription filters
-- lambda event invocation config
-- event core
-- event subclasses
+- [recipes] event worker function
+- [recipes] event worker role
+- [recipes] event worker logs resources
 
-- logs role
+- [ingredients] lambda event invocation config
+
+- [ingredients] events core
+- [ingredients] events subclasses
+
+- [recipes] slack webhook permission?
+- [recipes] logs role ?
 
 ### roadmap
 
@@ -83,6 +85,9 @@
 
 ### done
 
+- logs subscription filter
+- error, warning subscription filters
+- logs group, logs stream
 - slack webhook function
 - change lambda to a directory to allow room for inline code
 - rename webapi, website

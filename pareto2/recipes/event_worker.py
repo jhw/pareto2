@@ -4,14 +4,14 @@ import importlib, re
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 
-LogsNamespace = "logs"
+LoggingNamespace = "logs"
 
 class EventWorker(Recipe):    
 
-    def __init__(self, namespace, logs_namespace = LogsNamespace):
+    def __init__(self, namespace, logging_namespace = LoggingNamespace):
         super().__init__()
         for klass in [lambda_module.SlackWebhookFunction]:
-            self.append(klass(namespace = logs_namespace))
+            self.append(klass(namespace = logging_namespace))
             
 if __name__ == "__main__":
     pass
