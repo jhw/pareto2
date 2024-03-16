@@ -1,16 +1,24 @@
 ### short
 
-- hypenate webxxx recipes and demos
-- rename webapi as webapp
-- worker roadmap
+- renane webapi, website
+- change lambda to a directory to allow room for inline code
+
+- slack webhook function
+- slack webhook permission?
+- logs subscription filter
+- logs group, logs stream
+- error, warning subscription filters
+- lambda event invocation config
+- event core
+- event subclasses
 
 ### roadmap
 
 - streaming table
-- task_queue
-- topic
-- timer 
-- builder
+- queue worker
+- topic worker
+- event timer
+- layer builder
 
 ### medium
 
