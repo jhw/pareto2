@@ -2,6 +2,10 @@ from pareto2.ingredients import hungarorise as H
 
 from pareto2.ingredients.apigateway import Resource, Method
 
+import importlib
+
+lambda_module = importlib.import_module("pareto2.ingredients.lambda")
+
 LambdaProxyMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
 
 """
@@ -77,3 +81,12 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
                                           "AuthorizerId": {"Ref": H(f"{parent_namespace}-authorizer")}},
                          **kwargs)
 
+class LambdaProxyPermission(lambda_module.Permission):
+
+    def __init__(self, namespace, function_namespace, method, path):
+        restapiref, stageref = H(f"{namespace}-rest-api"), H(f"{namespace}-stage")
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{method}/{path}"}
+        super().__init__(namespace = function_namespace,    
+                         function_namespace = function_namespace,
+                         source_arn = source_arn,
+                         principal = "apigateway.amazonaws.com")

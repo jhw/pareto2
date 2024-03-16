@@ -1,7 +1,11 @@
 ### short
 
-- [recipes] slack webhook permission?
-- [recipes] logs role ?
+- lambda slack subdirectory
+- move SlackWebhookFunction into slack subdir
+- move inline directory into slack/inline_code.py
+- SlackRole with logs permissions
+- SlackPermission giving logs ability to invoke Lambda function
+- demos to create all this
 
 - [recipes] event worker function
 - [recipes] event worker role
@@ -13,8 +17,6 @@
 - [ingredients] events subclasses
 
 ### roadmap
-
-- allow subclassing of roles and permissions in ingredients packages
 
 - streaming table
 - queue worker
@@ -86,6 +88,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- allow subclassing of roles and permissions in ingredients packages
 
 - move cognito role crap
 - logs subscription filter
