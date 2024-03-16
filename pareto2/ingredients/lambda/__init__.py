@@ -32,9 +32,9 @@ class Function(Resource):
             "Runtime": self.runtime,
             "Timeout": self.timeout
         }
-        if self.variables != {}:            
-            props["Environment"] = {"Variables": {U(k): v}
-                                                  for k, v in self.variables.items()}
+        if self.variables != {}:
+            props["Environment"] = {"Variables": {U(k): v
+                                                  for k, v in self.variables.items()}}
         if self.layers != []:
             props["Layers"] = [{"Ref": H(f"{layername}-layer-arn")}
                                for layername in self["layers"]]
