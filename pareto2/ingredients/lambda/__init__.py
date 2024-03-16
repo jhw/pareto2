@@ -48,13 +48,6 @@ class InlineFunction(Function):
                          handler = "index.handler",
                          **kwargs)
 
-class SlackWebhookFunction(InlineFunction):
-
-    def __init__(self, namespace, **kwargs):
-        super().__init__(namespace,
-                         code = open("/".join(__file__.split("/")[:-1]+["inline", "slack_webhook.py"])).read(),
-                         **kwargs)
-        
 class S3Function(Function):
 
     def __init__(self, namespace, handler, **kwargs):

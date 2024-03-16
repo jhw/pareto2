@@ -1,7 +1,5 @@
 ### short
 
-- move slack function into slack subdir with inline_code.py
-- check event_worker demo still works
 - add slack webhook role
 - add slack webhook logs permission
 - add role and permission to event_worker demo
@@ -88,6 +86,8 @@
 
 ### done
 
+- move slack function into slack subdir with inline_code.py
+- check event_worker demo still works
 - move cors into apigw subdir
 - consider removing Proxy in names
 - move redirect method to s3 and rename
