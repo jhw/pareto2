@@ -1,16 +1,19 @@
 ### short
 
+- check log group classes
 - lambda event invocation config
+- event worker function
+- event worker event invocation config
+- event worker role
+- event worker log group and log stream
+- event worker subscription filters
 
-- [recipes] event worker function / role / invocation config
-- [recipes] event worker subscription logs / log group / log stream
-
-- [ingredients] events core and subclasses
+- events
 
 ### roadmap
 
 - streaming table
-- queue worker
+- task queue
 - topic worker
 - event timer
 - layer builder
