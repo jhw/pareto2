@@ -1,6 +1,5 @@
 ### short
 
-- event worker role
 - event worker log group and log stream
 - event worker subscription filters
 
@@ -79,6 +78,7 @@
 
 ### done
 
+- event worker role
 - event worker function
 - event worker event invocation config
 - lambda event invocation config

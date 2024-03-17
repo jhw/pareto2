@@ -7,6 +7,8 @@ Endpoints = yaml.safe_load("""
   path: hello-get
   parameters:
   - message
+  permissions:
+  - s3:GetObject
 - method: POST
   path: hello-post
   schema: 
@@ -17,6 +19,9 @@ Endpoints = yaml.safe_load("""
     required:
     - message
     additionalProperties: false
+  permissions:
+  - s3:GetObject
+  - s3:PutObject
 """)
 
 HelloGetBody="""def handler(event, context):

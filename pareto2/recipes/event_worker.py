@@ -1,3 +1,7 @@
+from pareto2.ingredients import hungarorise as H
+
+from pareto2.ingredients.iam import *
+
 from pareto2.recipes import Recipe
 
 import importlib
@@ -24,6 +28,8 @@ class EventWorker(Recipe):
         self.append(self.init_function(namespace = namespace,
                                        worker = worker))
         self.append(lambda_module.EventInvokeConfig(namespace = namespace))
+        self.append(self.init_role(namespace = namespace,
+                                   worker = worker))
         
     def function_kwargs(self, worker):
         kwargs = {}
@@ -41,6 +47,31 @@ class EventWorker(Recipe):
         fn = lambda_module.InlineFunction if "code" in worker else lambda_module.S3Function
         return (fn(namespace = namespace,
                    **self.function_kwargs(worker)))
+
+    def wildcard_override(fn):
+        def wrapped(self, *args, **kwargs):
+            permissions=fn(self, *args, **kwargs)
+            wildcards=set([permission.split(":")[0]
+                           for permission in permissions
+                           if permission.endswith(":*")])
+            return [permission for permission in permissions
+                    if (permission.endswith(":*") or
+                        permission.split(":")[0] not in wildcards)]
+        return wrapped
+    
+    @wildcard_override
+    def role_permissions(self, worker,
+                         defaults = ["logs:CreateLogGroup",
+                                     "logs:CreateLogStream",
+                                     "logs:PutLogEvents"]):
+        permissions = set(defaults)
+        if "permissions" in worker:
+            permissions.update(set(worker["permissions"]))
+        return sorted(list(permissions))
+
+    def init_role(self, namespace, worker):
+        return Role(namespace = namespace,
+                    permissions = self.role_permissions(worker))
         
     def init_logs(self, parent_ns, log_levels = LogLevels):
         for log_level in log_levels:
