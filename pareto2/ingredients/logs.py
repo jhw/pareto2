@@ -35,7 +35,11 @@ class ErrorSubscriptionFilter(SubscriptionFilter):
         super().__init__(namespace = namespace,
                          logging_namespace = logging_namespace,
                          filter_pattern = filter_pattern)
-            
+
+"""
+- LogGroup and LogStream don't seem to need explicit refs to their parent function; must be connected implicitly via the LogGroupName (which contains function name)
+"""
+        
 class LogGroup(Resource):
 
     def __init__(self, namespace, retention_days = 3):
