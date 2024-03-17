@@ -1,6 +1,5 @@
 ### short
 
-- lambda event invocation config
 - event worker function
 - event worker event invocation config
 - event worker role
@@ -82,6 +81,7 @@
 
 ### done
 
+- lambda event invocation config
 - subscription filter filter pattern and destination arn
 - check log group classes
 - pass webhook url as env variable into slack function

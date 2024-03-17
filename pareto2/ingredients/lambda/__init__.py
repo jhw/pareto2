@@ -56,7 +56,21 @@ class S3Function(Function):
                                  "S3Key": H("artifacts-key")},
                          handler = handler,
                          **kwargs)
+
+class EventInvokeConfig(Resource):
+
+    def __init__(self, namespace, retries = 0):
+        self.namespace = namespace
+        self.retries = retries
     
+    @property
+    def aws_properties(self):
+        return {
+            "FunctionName": {"Ref": H(f"{self.namespace}-function")},
+            "Qualifier": "$LATEST",
+            "MaximumRetryAttempts": self.retries
+        }
+        
 class Permission(Resource):
 
     def __init__(self, namespace, function_namespace, principal, source_arn = None):
