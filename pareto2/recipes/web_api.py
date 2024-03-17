@@ -99,43 +99,10 @@ class WebApi(Recipe):
                              method = endpoint["method"],
                              schema = endpoint["schema"]))
 
-    def function_kwargs(self, endpoint):
-        kwargs = {}
-        for attr in ["code",
-                     "handler",
-                     "memory",
-                     "timeout",
-                     "runtime",
-                     "layers"]:
-            if attr in endpoint:
-                kwargs[attr] = endpoint[attr]
-        return kwargs
-
     def init_function(self, namespace, endpoint):
         fn = lambda_module.InlineFunction if "code" in endpoint else lambda_module.S3Function
         return fn(namespace = namespace,
                   **self.function_kwargs(endpoint))
-
-    def wildcard_override(fn):
-        def wrapped(self, *args, **kwargs):
-            permissions=fn(self, *args, **kwargs)
-            wildcards=set([permission.split(":")[0]
-                           for permission in permissions
-                           if permission.endswith(":*")])
-            return [permission for permission in permissions
-                    if (permission.endswith(":*") or
-                        permission.split(":")[0] not in wildcards)]
-        return wrapped
-    
-    @wildcard_override
-    def role_permissions(self, endpoint,
-                         defaults = ["logs:CreateLogGroup",
-                                     "logs:CreateLogStream",
-                                     "logs:PutLogEvents"]):
-        permissions = set(defaults)
-        if "permissions" in endpoint:
-            permissions.update(set(endpoint["permissions"]))
-        return sorted(list(permissions))
 
     def init_role(self, namespace, endpoint):
         return Role(namespace = namespace,

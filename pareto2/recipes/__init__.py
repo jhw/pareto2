@@ -97,4 +97,36 @@ class Recipe(list):
 
     def render(self):
         return Template(self)
-                
+
+    def function_kwargs(self, endpoint):
+        kwargs = {}
+        for attr in ["code",
+                     "handler",
+                     "memory",
+                     "timeout",
+                     "runtime",
+                     "layers"]:
+            if attr in endpoint:
+                kwargs[attr] = endpoint[attr]
+        return kwargs
+    
+    def wildcard_override(fn):
+        def wrapped(self, *args, **kwargs):
+            permissions=fn(self, *args, **kwargs)
+            wildcards=set([permission.split(":")[0]
+                           for permission in permissions
+                           if permission.endswith(":*")])
+            return [permission for permission in permissions
+                    if (permission.endswith(":*") or
+                        permission.split(":")[0] not in wildcards)]
+        return wrapped
+    
+    @wildcard_override
+    def role_permissions(self, worker,
+                         defaults = ["logs:CreateLogGroup",
+                                     "logs:CreateLogStream",
+                                     "logs:PutLogEvents"]):
+        permissions = set(defaults)
+        if "permissions" in worker:
+            permissions.update(set(worker["permissions"]))
+        return sorted(list(permissions))

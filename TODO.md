@@ -1,7 +1,5 @@
 ### short
 
-- common Recipe  function and permissions helpers
-
 - refactor "worker" name passed to event_worker
 
 - events
@@ -81,6 +79,7 @@
 
 ### done
 
+- common Recipe  function and permissions helpers
 - subscription filter namespacing is incorrect
 - event worker subscription filters
 - subscription filter depends

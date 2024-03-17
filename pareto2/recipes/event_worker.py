@@ -42,43 +42,10 @@ class EventWorker(Recipe):
         self.append(LogGroup(namespace = namespace))
         self.append(LogStream(namespace = namespace))
         
-    def function_kwargs(self, worker):
-        kwargs = {}
-        for attr in ["code",
-                     "handler",
-                     "memory",
-                     "timeout",
-                     "runtime",
-                     "layers"]:
-            if attr in worker:
-                kwargs[attr] = worker[attr]
-        return kwargs
-
     def init_function(self, namespace, worker):
         fn = lambda_module.InlineFunction if "code" in worker else lambda_module.S3Function
         return (fn(namespace = namespace,
                    **self.function_kwargs(worker)))
-
-    def wildcard_override(fn):
-        def wrapped(self, *args, **kwargs):
-            permissions=fn(self, *args, **kwargs)
-            wildcards=set([permission.split(":")[0]
-                           for permission in permissions
-                           if permission.endswith(":*")])
-            return [permission for permission in permissions
-                    if (permission.endswith(":*") or
-                        permission.split(":")[0] not in wildcards)]
-        return wrapped
-    
-    @wildcard_override
-    def role_permissions(self, worker,
-                         defaults = ["logs:CreateLogGroup",
-                                     "logs:CreateLogStream",
-                                     "logs:PutLogEvents"]):
-        permissions = set(defaults)
-        if "permissions" in worker:
-            permissions.update(set(worker["permissions"]))
-        return sorted(list(permissions))
     
     def init_role(self, namespace, worker):
         return Role(namespace = namespace,
