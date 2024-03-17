@@ -1,7 +1,5 @@
 ### short
 
-- event worker function
-- event worker event invocation config
 - event worker role
 - event worker log group and log stream
 - event worker subscription filters
@@ -81,6 +79,8 @@
 
 ### done
 
+- event worker function
+- event worker event invocation config
 - lambda event invocation config
 - subscription filter filter pattern and destination arn
 - check log group classes

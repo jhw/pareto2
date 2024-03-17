@@ -1,9 +1,21 @@
 from pareto2.recipes.event_worker import EventWorker
 
-import json, os
+import json, os, yaml
+
+Worker = yaml.safe_load("""
+{}
+""")
+
+CodeBody="""
+def handler(event, context=None):
+    print (event)
+"""
 
 if __name__ == "__main__":
-    worker = EventWorker(namespace = "my")
+    _worker = Worker
+    _worker["code"] = CodeBody
+    worker = EventWorker(namespace = "my",
+                         worker = _worker)
     template = worker.render()
     template.populate_parameters()
     if not os.path.exists("tmp"):

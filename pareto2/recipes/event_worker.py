@@ -2,6 +2,7 @@ from pareto2.recipes import Recipe
 
 import importlib
 
+lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 slack_module = importlib.import_module("pareto2.ingredients.lambda.slack")
 
 """
@@ -12,10 +13,35 @@ LogNamespace, LogLevels = "logs", ["warning", "error"]
 
 class EventWorker(Recipe):    
 
-    def __init__(self, namespace, logging_namespace = LogNamespace):
+    def __init__(self, namespace, worker, logging_namespace = LogNamespace):
         super().__init__()
+        self.init_worker(namespace = namespace,
+                         worker = worker)
         self.init_logs(parent_ns = logging_namespace)
 
+
+    def init_worker(self, namespace, worker):
+        self.append(self.init_function(namespace = namespace,
+                                       worker = worker))
+        self.append(lambda_module.EventInvokeConfig(namespace = namespace))
+        
+    def function_kwargs(self, worker):
+        kwargs = {}
+        for attr in ["code",
+                     "handler",
+                     "memory",
+                     "timeout",
+                     "runtime",
+                     "layers"]:
+            if attr in worker:
+                kwargs[attr] = worker[attr]
+        return kwargs
+
+    def init_function(self, namespace, worker):
+        fn = lambda_module.InlineFunction if "code" in worker else lambda_module.S3Function
+        return (fn(namespace = namespace,
+                   **self.function_kwargs(worker)))
+        
     def init_logs(self, parent_ns, log_levels = LogLevels):
         for log_level in log_levels:
             child_ns = f"{parent_ns}-{log_level}"
