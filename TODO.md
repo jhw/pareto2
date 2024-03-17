@@ -1,6 +1,6 @@
 ### short
 
-- event worker subscription filters
+- subscription filter namespacing is incorrect
 
 - refactor "worker" name passed to event_worker
 
@@ -79,6 +79,7 @@
 
 ### done
 
+- event worker subscription filters
 - subscription filter depends
 - how do log group and log stream know their functions?
 - event worker log group and log stream

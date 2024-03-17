@@ -25,7 +25,7 @@ class SubscriptionFilter(Resource):
     @property
     def depends(self):
         return [H(f"{self.namespace}-log-stream"),
-                H(f"{self.logging_namespace}-permissions")]
+                H(f"{self.logging_namespace}-permission")]
 
     
 class WarningSubscriptionFilter(SubscriptionFilter):

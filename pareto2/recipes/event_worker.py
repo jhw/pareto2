@@ -18,12 +18,19 @@ LogNamespace, LogLevels = "logs", ["warning", "error"]
 
 class EventWorker(Recipe):    
 
-    def __init__(self, namespace, worker, logging_namespace = LogNamespace):
+    def __init__(self,
+                 namespace,
+                 worker,
+                 logging_namespace = LogNamespace,
+                 log_levels = LogLevels):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
-        self.init_logs(parent_ns = logging_namespace)
-
+        self.init_log_subscriptions(parent_ns = namespace,
+                                    worker = worker,
+                                    log_levels = log_levels)
+        self.init_logs(parent_ns = logging_namespace,
+                       log_levels = log_levels)
 
     def init_worker(self, namespace, worker):
         self.append(self.init_function(namespace = namespace,
@@ -75,8 +82,15 @@ class EventWorker(Recipe):
     def init_role(self, namespace, worker):
         return Role(namespace = namespace,
                     permissions = self.role_permissions(worker))
-        
-    def init_logs(self, parent_ns, log_levels = LogLevels):
+
+    def init_log_subscriptions(self, parent_ns, worker, log_levels):
+        for log_level in log_levels:        
+            child_ns = f"{parent_ns}-{log_level}"
+            subscriptionfn = eval(H(f"{log_level}-subscription-filter"))
+            self.append(subscriptionfn(namespace = parent_ns,
+                                       logging_namespace = child_ns))
+    
+    def init_logs(self, parent_ns, log_levels):
         for log_level in log_levels:
             child_ns = f"{parent_ns}-{log_level}"
             self.append(slack_module.SlackWebhookFunction(namespace = child_ns,
