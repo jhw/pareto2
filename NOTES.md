@@ -1,3 +1,16 @@
+### task quque 17/03/24
+
+- lightbulb moment
+- queue should push to eventbridge
+- that way a queue is handled in a manner similar to the streaming table
+- it means all the sync lambdas are handler in a similar manner, via inline lambdas 
+- it therefore means at the worker level, everything is async
+- either eventbridge or sns
+- means queue can be handled inline and you probably don't have to worry about retry behaviour 
+- as queue to lambda to eventbridge is not going to fail
+- big change is that you can no longer define a queue at the lambda level
+- instead you have to define it at the app level and you may need to define multiple queue 
+
 ### worker roadmap 14/03/24
 
 - event config to stop retries
