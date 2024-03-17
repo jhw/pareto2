@@ -1,6 +1,5 @@
 ### short
 
-- check log group classes
 - lambda event invocation config
 - event worker function
 - event worker event invocation config
@@ -83,6 +82,8 @@
 
 ### done
 
+- subscription filter filter pattern and destination arn
+- check log group classes
 - pass webhook url as env variable into slack function
 - pass logging level as env variable into slack function
 - per- level slack logs function

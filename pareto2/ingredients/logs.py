@@ -17,7 +17,9 @@ class SubscriptionFilter(Resource):
     @property
     def aws_properties(self):
         return {
-            "LogGroupName": {"Fn::Sub": f"/aws/lambda/{self.namespace}-function"}
+            "LogGroupName": {"Fn::Sub": f"/aws/lambda/{self.namespace}-function"},
+            "FilterPattern": self.filter_pattern,
+            "DestinationArn": {"Fn::GetAtt": [H(f"{self.logging_namespace}-function"), "Arn"]},
         }
 
 class WarningSubscriptionFilter(SubscriptionFilter):
