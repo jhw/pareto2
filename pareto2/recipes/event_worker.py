@@ -26,7 +26,8 @@ class EventWorker(Recipe):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
-        self.init_log_subscriptions(parent_ns = namespace,
+        self.init_log_subscriptions(namespace = namespace,
+                                    logging_namespace = logging_namespace,
                                     worker = worker,
                                     log_levels = log_levels)
         self.init_logs(parent_ns = logging_namespace,
@@ -78,18 +79,22 @@ class EventWorker(Recipe):
         if "permissions" in worker:
             permissions.update(set(worker["permissions"]))
         return sorted(list(permissions))
-
+    
     def init_role(self, namespace, worker):
         return Role(namespace = namespace,
                     permissions = self.role_permissions(worker))
 
-    def init_log_subscriptions(self, parent_ns, worker, log_levels):
-        for log_level in log_levels:        
-            child_ns = f"{parent_ns}-{log_level}"
+    def init_log_subscriptions(self, namespace, logging_namespace, worker, log_levels):
+        for log_level in log_levels:
+            child_logging_ns = f"{logging_namespace}-{log_level}"
             subscriptionfn = eval(H(f"{log_level}-subscription-filter"))
-            self.append(subscriptionfn(namespace = parent_ns,
-                                       logging_namespace = child_ns))
-    
+            self.append(subscriptionfn(namespace = namespace,
+                                       logging_namespace = child_logging_ns))
+
+    """
+    - logs are created entirely in the logging namespace
+    """
+            
     def init_logs(self, parent_ns, log_levels):
         for log_level in log_levels:
             child_ns = f"{parent_ns}-{log_level}"

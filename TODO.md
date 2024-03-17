@@ -1,6 +1,6 @@
 ### short
 
-- subscription filter namespacing is incorrect
+- common Recipe  function and permissions helpers
 
 - refactor "worker" name passed to event_worker
 
@@ -10,8 +10,10 @@
 
 - streaming table
 - task queue
+
 - topic worker
 - event timer
+
 - layer builder
 
 ### medium
@@ -79,6 +81,7 @@
 
 ### done
 
+- subscription filter namespacing is incorrect
 - event worker subscription filters
 - subscription filter depends
 - how do log group and log stream know their functions?
