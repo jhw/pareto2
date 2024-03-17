@@ -1,6 +1,7 @@
 from pareto2.ingredients import hungarorise as H
 
 from pareto2.ingredients.iam import *
+from pareto2.ingredients.logs import *
 
 from pareto2.recipes import Recipe
 
@@ -30,6 +31,8 @@ class EventWorker(Recipe):
         self.append(lambda_module.EventInvokeConfig(namespace = namespace))
         self.append(self.init_role(namespace = namespace,
                                    worker = worker))
+        self.append(LogGroup(namespace = namespace))
+        self.append(LogStream(namespace = namespace))
         
     def function_kwargs(self, worker):
         kwargs = {}

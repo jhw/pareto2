@@ -46,7 +46,7 @@ class LogGroup(Resource):
     def aws_properties(self):
         return {
             "LogGroupName": {"Fn::Sub": f"/aws/lambda/{self.namespace}-function"},
-            "RetentionInDays": retention_days
+            "RetentionInDays": self.retention_days
         }
 
 class LogStream(Resource):

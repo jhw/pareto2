@@ -1,7 +1,10 @@
 ### short
 
-- event worker log group and log stream
+- how do log group and log stream know their functions?
+
 - event worker subscription filters
+
+- refactor "worker" name passed to event_worker
 
 - events
 
@@ -78,6 +81,7 @@
 
 ### done
 
+- event worker log group and log stream
 - event worker role
 - event worker function
 - event worker event invocation config
