@@ -22,6 +22,12 @@ class SubscriptionFilter(Resource):
             "DestinationArn": {"Fn::GetAtt": [H(f"{self.logging_namespace}-function"), "Arn"]},
         }
 
+    @property
+    def depends(self):
+        return [H(f"{self.namespace}-log-stream"),
+                H(f"{self.logging_namespace}-permissions")]
+
+    
 class WarningSubscriptionFilter(SubscriptionFilter):
 
     def __init__(self, namespace, logging_namespace, filter_pattern = "%WARNING|Task timed out%"):

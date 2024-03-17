@@ -1,6 +1,5 @@
 ### short
 
-- subscription filter depends
 - event worker subscription filters
 
 - refactor "worker" name passed to event_worker
@@ -80,6 +79,7 @@
 
 ### done
 
+- subscription filter depends
 - how do log group and log stream know their functions?
 - event worker log group and log stream
 - event worker role
