@@ -1,4 +1,35 @@
-### task quque 17/03/24
+### events 17/03/24
+
+- i start to think the existing pareto events paradigm is an antipattern
+- particularly the way the bindings to internal table and bucket are done
+- because it then seems to necessitate subclasses with different source bindings
+- which doesn't feel good.n a pareto 7 world 
+- it feels like it might be better to have a single events class for now in which the client has to specify the raw event payload
+- detail, detail type, source and all 
+- remember you may need multiple events per worker
+- so each event needs a name and must live in a child namespace
+- the function/event relationship is very like the API/endpoint relationship 
+- this in turn should make things easier to test
+- because you don't have bindings
+- so you could define a worker which simply logs warnings to slack
+- or you could do the simple adding function from statsbomb to trigger both warnings and errors 
+- then is triggered by a simple eventbridge client which pushes messages to eventbridge
+
+---
+
+- so binding sources in pareto is probably an antipattern 
+- instead this should be done at the expander level 
+- event could be defined as table bucket queue or global/inbound 
+- expander finds the source arn and includes it in the pattern
+- this is done at the dsl runner level 
+- or maybe the templater level as has to be a ref rather than a string value 
+- so general trend is that pareto dsl is probably doing too much, and more stuff should be moved into expander
+- so by the time you split pareto2 DSL into global and local elements, each might be quite small
+- expander should also do JSON schema validation
+- this extension of expander is a good reason to try and implement API gateway 2
+- because you can remove redeployer and have a smaller footprint 
+
+### task queue 17/03/24
 
 - lightbulb moment
 - queue should push to eventbridge

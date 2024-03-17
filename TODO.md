@@ -1,18 +1,34 @@
 ### short
 
-- refactor "worker" name passed to event_worker
+- event class
+  - namespace
+    - child of function_namespace
+	- see apis and endpoints
+  - pattern
+  - target
+    - function binding
 
-- events
+- event permission class
+ 
+- add sample event list to event_worker demo
+- event_worker recipe to bind list of events to function
+- event_worker demo to use logging.warn
+  - or use code from add demo
+  
+- gist to test pattern
+- slack webhook url
+- ping script to push args to eventbridge
+- check slack endpoint
 
 ### roadmap
 
 - streaming table
 - task queue
-
 - topic worker
 - event timer
-
 - layer builder
+- apigateway2
+- bindings
 
 ### medium
 
@@ -34,6 +50,7 @@
 
 ### thoughts
 
+- refactor "worker" name passed to event_worker?
 - investigate if default resource_name should actually be base_resource_name?
 - extend IAM role for args required by IdentityPoolRole?
   - not sure is possible as policies are too different
