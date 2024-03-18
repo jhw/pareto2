@@ -3,6 +3,10 @@ from pareto2.recipes.event_worker import EventWorker
 import json, os, yaml
 
 Worker = yaml.safe_load("""
+  events:
+  - name: foobar
+    pattern:
+      hello: world
   permissions:
   - s3:GetObject
 """)

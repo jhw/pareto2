@@ -1,5 +1,6 @@
 from pareto2.ingredients import hungarorise as H
 
+from pareto2.ingredients.events import *
 from pareto2.ingredients.iam import *
 from pareto2.ingredients.logs import *
 
@@ -39,6 +40,9 @@ class EventWorker(Recipe):
         self.append(lambda_module.EventInvokeConfig(namespace = namespace))
         self.append(self.init_role(namespace = namespace,
                                    worker = worker))
+        for event in worker["events"]:
+            self.init_event_rule(parent_ns = namespace,
+                                 event = event)
         self.append(LogGroup(namespace = namespace))
         self.append(LogStream(namespace = namespace))
         
@@ -51,6 +55,12 @@ class EventWorker(Recipe):
         return Role(namespace = namespace,
                     permissions = self.role_permissions(worker))
 
+    def init_event_rule(self, parent_ns, event):
+        child_ns = f"{parent_ns}-{event['name']}"
+        self.append(Rule(namespace = child_ns,
+                         function_namespace = parent_ns,
+                         pattern = event["pattern"]))
+    
     def init_log_subscriptions(self, namespace, logging_namespace, worker, log_levels):
         for log_level in log_levels:
             child_logging_ns = f"{logging_namespace}-{log_level}"
