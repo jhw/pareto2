@@ -55,11 +55,18 @@ class EventWorker(Recipe):
         return Role(namespace = namespace,
                     permissions = self.role_permissions(worker))
 
+    """
+    - Permission here is pareto2.ingredients.events.Permission
+    - there is no conflict with lambda Permission name as that is safely contained in lambda_module namespace
+    """
+    
     def init_event_rule(self, parent_ns, event):
         child_ns = f"{parent_ns}-{event['name']}"
         self.append(Rule(namespace = child_ns,
                          function_namespace = parent_ns,
                          pattern = event["pattern"]))
+        self.append(Permission(namespace = child_ns,
+                               function_namespace = parent_ns))
     
     def init_log_subscriptions(self, namespace, logging_namespace, worker, log_levels):
         for log_level in log_levels:

@@ -1,14 +1,12 @@
 ### short
 
-- event_worker rule permission
-
-- event_worker demo to use logging.warn
-  - or use code from add demo
-  
+- review event worker template
 - gist to test pattern
 - slack webhook url
 - ping script to push args to eventbridge
 - check slack endpoint
+
+- extend demo to use add() example
 
 ### roadmap
 
@@ -86,6 +84,7 @@
 
 ### done
 
+- event_worker rule permission
 - events rule permission class
 - add sample event list to event_worker demo
 - event_worker recipe to bind list of events to function

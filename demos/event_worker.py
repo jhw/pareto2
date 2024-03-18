@@ -12,8 +12,13 @@ Worker = yaml.safe_load("""
 """)
 
 CodeBody="""
+import logging
+
+logger=logging.getLogger()
+logger.setLevel(logging.INFO)
+
 def handler(event, context=None):
-    print (event)
+    logger.warning(str(event))
 """
 
 if __name__ == "__main__":
