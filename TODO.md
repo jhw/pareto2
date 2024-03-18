@@ -1,7 +1,5 @@
 ### short
 
-- event permission class
- 
 - add sample event list to event_worker demo
 - event_worker recipe to bind list of events to function
 - event_worker demo to use logging.warn
@@ -88,6 +86,8 @@
 
 ### done
 
+- event permission class
+ 
 - event class
   - namespace
     - child of function_namespace
