@@ -1,13 +1,5 @@
 ### short
 
-- event class
-  - namespace
-    - child of function_namespace
-	- see apis and endpoints
-  - pattern
-  - target
-    - function binding
-
 - event permission class
  
 - add sample event list to event_worker demo
@@ -95,6 +87,14 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- event class
+  - namespace
+    - child of function_namespace
+	- see apis and endpoints
+  - pattern
+  - target
+    - function binding
 
 - common Recipe  function and permissions helpers
 - subscription filter namespacing is incorrect
