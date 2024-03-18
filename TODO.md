@@ -1,6 +1,5 @@
 ### short
 
-- review event worker template
 - gist to test pattern
 - slack webhook url
 - ping script to push args to eventbridge
@@ -84,6 +83,7 @@
 
 ### done
 
+- review event worker template
 - event_worker rule permission
 - events rule permission class
 - add sample event list to event_worker demo
