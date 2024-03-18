@@ -1,6 +1,10 @@
 from pareto2.ingredients import hungarorise as H
 from pareto2.ingredients import Resource
 
+import importlib
+
+lambda_module = importlib.import_module("pareto2.ingredients.lambda")
+
 class Rule(Resource):
 
     def __init__(self, namespace, function_namespace, pattern):
@@ -26,3 +30,12 @@ class Rule(Resource):
             "EventPattern": self.pattern,        
             "State": "ENABLED"
         }
+
+class Permission(lambda_module.Permission):
+
+    def __init__(self, namespace, function_namespace):
+        sourcearn={"Fn::GetAtt": [H(f"{self.namespace}-rule"), "Arn"]}
+        super().__init__(namespace = function_namespace,    
+                         function_namespace = function_namespace,
+                         source_arn = source_arn,
+                         principal = "events.amazonaws.com")

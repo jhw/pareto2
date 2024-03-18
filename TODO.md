@@ -1,6 +1,5 @@
 ### short
 
-- events rule permission class
 - event_worker rule permission
 
 - event_worker demo to use logging.warn
@@ -87,6 +86,7 @@
 
 ### done
 
+- events rule permission class
 - add sample event list to event_worker demo
 - event_worker recipe to bind list of events to function
 - event permission class
