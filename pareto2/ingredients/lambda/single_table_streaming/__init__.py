@@ -15,12 +15,18 @@ class SingleTableStreamingRole(Role):
     
     def __init__(self, namespace):
         super().__init__(namespace = namespace,
-                         permissions = ["logs:CreateLogGroup",
+                         permissions = ["dynamodb:GetRecords",
+                                        "dynamodb:GetShardIterator",
+                                        "dynamodb:DescribeStream",
+                                        "dynamodb:ListStreams",
+                                        "events:PutEvents",
+                                        "logs:CreateLogGroup",
                                         "logs:CreateLogStream",
                                         "logs:PutLogEvents"])
 
 class SingleTableStreamingEventSourceMapping(lambda_module.EventSourceMapping):
 
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace):
         super.__init__(namespace = namespace,
-                       function_namespace = function_namespace)
+                       function_namespace = namespace
+                       source_arn = {"Fn::GetAtt": [H(f"{namespace}-table"), "StreamArn"]})

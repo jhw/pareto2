@@ -2,10 +2,9 @@
 
 ##### ingredients
 
-- table event source mapping
 - basic table
-- single table
-- streaming
+- single table design
+- streaming config
 
 ##### recipe
 
@@ -92,6 +91,8 @@
 
 ### done
 
+- ddb lookback permissions
+- table event source mapping
 - consistent approach to use of **kwargs
 - all super() calls to specify args
 - event source mapping
