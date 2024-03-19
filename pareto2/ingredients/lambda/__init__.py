@@ -90,4 +90,30 @@ class Permission(Resource):
             props["SourceArn"] = self.source_arn
         return props
 
+class EventSourceMapping(Resource):
+
+    def __init__(self,
+                 namespace,
+                 function_namespace,
+                 source_arn, 
+                 retries = 3,
+                 batching_window = 1, # seconds
+                 starting_position = "LATEST"):
+        self.namespace = namespace
+        self.function_namespace = function_namespace
+        self.retries = retries
+        self.batching_window = batching_window
+        self.starting_position = starting_position
+                
+    @property
+    def aws_properties(self):
+        return {
+            "EventSourceArn": self.source_arn,
+            "FunctionName": {"Ref": H(f"{self.function_namespace}-function")},
+            "MaximumRetryAttempts": retries,
+            "MaximumBatchingWindowInSeconds": self.batching_window,
+            "StartingPosition": self.starting_position
+        }            
+
+
 

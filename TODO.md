@@ -2,9 +2,10 @@
 
 ##### ingredients
 
-- event source mapping
+- table event source mapping
 - basic table
-- table streaming
+- single table
+- streaming
 
 ##### recipe
 
@@ -91,6 +92,7 @@
 
 ### done
 
+- event source mapping
 - lambda/table
 - check template will pick up mis- specified inline function refs from logs
 - event-worker demo requires detail as part of pattern
