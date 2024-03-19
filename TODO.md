@@ -3,7 +3,6 @@
 - event-worker demo requires detail as part of pattern
 - logs aws/lambda/${{FunctionName}} not /aws/lambda/{FunctionName}
 - apigw default binary media types is none
-- logs.amazonaws.com not logs.amazon.com
 
 ### roadmap
 
@@ -81,6 +80,7 @@
 
 ### done
 
+- logs.amazonaws.com not logs.amazon.com
 - review event worker template
 - event_worker rule permission
 - events rule permission class
