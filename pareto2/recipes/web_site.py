@@ -11,8 +11,9 @@ class WebSite(Recipe):
 
     def __init__(self, namespace):
         super().__init__()
-        for klass in [RestApi,
-                      Stage,
+        for fn in [self.init_rest_api]:
+            self.append(fn(namespace))
+        for klass in [Stage,
                       S3Resource,
                       S3ProxyMethod,
                       S3ProxyRole,
@@ -25,6 +26,10 @@ class WebSite(Recipe):
         for fn in [self.init_deployment]:
             self.append(fn(namespace))
 
+    def init_rest_api(self, namespace):
+        return RestApi(namespace = namespace,
+                       binary_media_types = "*/*")
+            
     def init_deployment(self, namespace):        
         method_refs = [H(f"{namespace}-s3-proxy-method"),
                        H(f"{namespace}-s3-redirect-method")]
