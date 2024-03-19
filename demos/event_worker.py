@@ -6,8 +6,9 @@ Worker = yaml.safe_load("""
   events:
   - name: foobar
     pattern:
-      hello: 
-      - world
+      detail:
+        hello: 
+        - world
   permissions:
   - s3:GetObject
 """)
