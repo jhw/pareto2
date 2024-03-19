@@ -1,7 +1,5 @@
 ### short [01-streaming-table]
 
-- GSI support
-
 - recipe skeleton
 
 - recipe
@@ -81,6 +79,7 @@
 
 ### done
 
+- GSI support
 - what does table streaming function do for DetailType and Source?
 - ddb lookback permissions
 - table event source mapping
