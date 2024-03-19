@@ -1,17 +1,16 @@
 ### short [01-streaming-table]
 
-##### ingredients
+- GSI support
 
-- core table
-- single table design
-- streaming config
+- recipe skeleton
 
-##### recipe
-
-- table
-- streaming function
-- streaming role
-- event source mapping
+- recipe
+  - table
+  - function
+  - role
+  - event source mapping
+  
+- demo
 
 ### roadmap
 
