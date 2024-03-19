@@ -13,8 +13,9 @@ class Key:
                              self.eventname)
 
 """
-- NB record["eventName"] is used as DetailType
-- NB context.function_name is used as Source
+- EventBridge required fields are Source, DetailType, Detail
+- record["eventName"] is used as DetailType
+- context.function_name is used as Source
 """
     
 class Entry:
