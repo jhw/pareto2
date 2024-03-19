@@ -1,6 +1,9 @@
-### short
+### short [01-streaming-table]
 
-- streaming table
+- basic table
+- table streaming
+- event source mapping
+- streaming lambda code
 
 ### roadmap
 
