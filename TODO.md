@@ -1,9 +1,17 @@
 ### short [01-streaming-table]
 
+##### ingredients
+
+- lambda/table
 - basic table
 - table streaming
 - event source mapping
-- streaming lambda code
+
+##### recipe
+
+- table
+- role
+- event source mapping
 
 ### roadmap
 
