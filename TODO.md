@@ -1,11 +1,9 @@
 ### short
 
-- gist to test pattern
-- slack webhook url
-- ping script to push args to eventbridge
-- check slack endpoint
-
-- extend demo to use add() example
+- event-worker demo requires detail as part of pattern
+- logs aws/lambda/${{FunctionName}} not /aws/lambda/{FunctionName}
+- apigw default binary media types is none
+- logs.amazonaws.com not logs.amazon.com
 
 ### roadmap
 
