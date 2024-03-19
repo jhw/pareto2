@@ -106,7 +106,7 @@ def identity_pool_role_condition(namespace, typestr):
     
 class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
 
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace):
         super().__init__(namespace = namespace,
                          action = "sts:AssumeRoleWithWebIdentity",
                          condition = identity_pool_role_condition(namespace, typestr = "authorized"),
@@ -117,7 +117,7 @@ class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
 
 class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
 
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace):
         super().__init__(namespace = namespace,
                          action = "sts:AssumeRoleWithWebIdentity",
                          condition = identity_pool_role_condition(namespace, typestr = "unauthorized"),

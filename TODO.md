@@ -1,7 +1,5 @@
 ### short [01-streaming-table]
 
-- consistent approach to use of **kwargs
-
 ##### ingredients
 
 - table event source mapping
@@ -94,6 +92,7 @@
 
 ### done
 
+- consistent approach to use of **kwargs
 - all super() calls to specify args
 - event source mapping
 - lambda/table
