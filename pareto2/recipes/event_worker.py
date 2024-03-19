@@ -9,7 +9,7 @@ from pareto2.recipes import Recipe
 import importlib
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
-slack_module = importlib.import_module("pareto2.ingredients.lambda.slack")
+slack_module = importlib.import_module("pareto2.ingredients.lambda.slack_webhook")
 
 """
 - LogNamespace is a singleton namespace 

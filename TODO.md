@@ -2,13 +2,14 @@
 
 ##### ingredients
 
+- event source mapping
 - basic table
 - table streaming
-- event source mapping
 
 ##### recipe
 
 - table
+- function
 - role
 - event source mapping
 
