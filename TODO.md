@@ -1,11 +1,8 @@
 ### short [01-streaming-table]
 
-- recipe
-  - function
-  - role
-  - event source mapping
-  
-- demo
+- streaming function and role etc need to be in a different namespace from table
+
+- demo to create event worker to test
 
 ### roadmap
 
@@ -76,6 +73,9 @@
 
 ### done
 
+- event source mapping
+- function
+- role
 - table
 - recipe skeleton
 - GSI support
