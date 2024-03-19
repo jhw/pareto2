@@ -12,6 +12,11 @@ class Key:
                              self.sk,
                              self.eventname)
 
+"""
+- NB record["eventName"] is used as DetailType
+- NB context.function_name is used as Source
+"""
+    
 class Entry:
 
     def __init__(self, key, records, context):

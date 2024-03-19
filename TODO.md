@@ -31,20 +31,11 @@
 - federated auth
 - passwordless auth
 - secrets
-
-### medium
-
-- replace website binary media types with `*/*`
-- replace default/medium/long for size/timeout with integer values
-- remove dsl.expand globals arg
-- index which references table doesn't force table to exist
-- see if script component properties can be genericised
-- replace setup.py with pyproject.toml
-
-### features
+- rockset
 
 ### thoughts
 
+- table streaming code should use table as source (not function?)
 - refactor "worker" name passed to event_worker?
 - investigate if default resource_name should actually be base_resource_name?
 - extend IAM role for args required by IdentityPoolRole?
@@ -91,6 +82,7 @@
 
 ### done
 
+- what does table streaming function do for DetailType and Source?
 - ddb lookback permissions
 - table event source mapping
 - consistent approach to use of **kwargs
