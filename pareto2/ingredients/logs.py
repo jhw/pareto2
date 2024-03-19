@@ -16,8 +16,9 @@ class SubscriptionFilter(AltNamespaceMixin, Resource):
 
     @property
     def aws_properties(self):
+        function_ref = H(f"{self.namespace}-function")
         return {
-            "LogGroupName": {"Fn::Sub": f"/aws/lambda/{self.namespace}-function"},
+            "LogGroupName": {"Fn::Sub": f"/aws/lambda/${{{function_ref}}}"},
             "FilterPattern": self.filter_pattern,
             "DestinationArn": {"Fn::GetAtt": [H(f"{self.logging_namespace}-function"), "Arn"]},
         }
@@ -54,8 +55,9 @@ class LogGroup(Resource):
 
     @property
     def aws_properties(self):
+        function_ref = H(f"{self.namespace}-function")
         return {
-            "LogGroupName": {"Fn::Sub": f"/aws/lambda/{self.namespace}-function"},
+            "LogGroupName": {"Fn::Sub": f"/aws/lambda/${{{function_ref}}}"},
             "RetentionInDays": self.retention_days
         }
 
@@ -66,8 +68,9 @@ class LogStream(Resource):
 
     @property
     def aws_properties(self):
+        function_ref = H(f"{self.namespace}-function")
         return {
-            "LogGroupName": {"Fn::Sub": f"/aws/lambda/{self.namespace}-function"}
+            "LogGroupName": {"Fn::Sub": f"/aws/lambda/${{{function_ref}}}"}
         }
 
     @property

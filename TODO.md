@@ -1,7 +1,8 @@
 ### short
 
 - event-worker demo requires detail as part of pattern
-- logs aws/lambda/${{FunctionName}} not /aws/lambda/{FunctionName}
+
+- check template will pick up mis- specified inline function refs from logs
 
 ### roadmap
 
@@ -79,6 +80,7 @@
 
 ### done
 
+- logs aws/lambda/${{FunctionName}} not /aws/lambda/{FunctionName}
 - apigw default binary media types is none
 - logs.amazonaws.com not logs.amazon.com
 - review event worker template
