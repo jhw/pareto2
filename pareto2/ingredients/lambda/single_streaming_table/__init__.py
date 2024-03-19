@@ -26,7 +26,6 @@ class SingleStreamingTableRole(Role):
 
 class SingleStreamingTableEventSourceMapping(lambda_module.EventSourceMapping):
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,
-                         function_namespace = namespace,
-                         source_arn = {"Fn::GetAtt": [H(f"{namespace}-table"), "StreamArn"]})
+                         source_arn = {"Fn::GetAtt": [H(f"{table_namespace}-table"), "StreamArn"]})

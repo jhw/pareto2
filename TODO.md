@@ -1,6 +1,6 @@
 ### short [01-streaming-table]
 
-- streaming function and role etc need to be in a different namespace from table
+- Permission shouldn't need function_namespace arg as should be created in same namespace
 
 - demo to create event worker to test
 
@@ -73,6 +73,8 @@
 
 ### done
 
+- non- table resources should be created in child namespace
+- event source mapping to be passed function namespace equal to child namespace
 - event source mapping
 - function
 - role
