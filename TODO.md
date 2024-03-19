@@ -2,7 +2,6 @@
 
 ##### ingredients
 
-- lambda/table
 - basic table
 - table streaming
 - event source mapping
@@ -91,6 +90,7 @@
 
 ### done
 
+- lambda/table
 - check template will pick up mis- specified inline function refs from logs
 - event-worker demo requires detail as part of pattern
 - logs aws/lambda/${{FunctionName}} not /aws/lambda/{FunctionName}
