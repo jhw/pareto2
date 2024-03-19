@@ -30,6 +30,5 @@ class SlackWebhookPermission(lambda_module.Permission):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace,
-                         function_namespace = namespace,
                          principal = "logs.amazonaws.com")
 

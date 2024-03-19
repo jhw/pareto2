@@ -35,7 +35,6 @@ class Permission(lambda_module.Permission):
 
     def __init__(self, namespace, function_namespace):
         source_arn = {"Fn::GetAtt": [H(f"{namespace}-rule"), "Arn"]}
-        super().__init__(namespace = namespace,    
-                         function_namespace = function_namespace,
+        super().__init__(namespace = function_namespace,    
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")

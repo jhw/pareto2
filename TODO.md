@@ -1,7 +1,5 @@
 ### short [01-streaming-table]
 
-- Permission shouldn't need function_namespace arg as should be created in same namespace
-
 - demo to create event worker to test
 
 ### roadmap
@@ -73,6 +71,7 @@
 
 ### done
 
+- Permission shouldn't need function_namespace arg as should be created in same namespace
 - non- table resources should be created in child namespace
 - event source mapping to be passed function namespace equal to child namespace
 - event source mapping

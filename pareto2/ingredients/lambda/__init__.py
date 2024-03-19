@@ -73,9 +73,8 @@ class EventInvokeConfig(Resource):
         
 class Permission(Resource):
 
-    def __init__(self, namespace, function_namespace, principal, source_arn = None):
+    def __init__(self, namespace, principal, source_arn = None):
         self.namespace = namespace
-        self.function_namespace = function_namespace
         self.principal = principal
         self.source_arn = source_arn
     
@@ -83,7 +82,7 @@ class Permission(Resource):
     def aws_properties(self):
         props = {
             "Action": "lambda:InvokeFunction",
-            "FunctionName": {"Ref": H(f"{self.function_namespace}-function")},
+            "FunctionName": {"Ref": H(f"{self.namespace}-function")},
             "Principal": self.principal,
         }
         if self.source_arn:

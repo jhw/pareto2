@@ -88,6 +88,5 @@ class LambdaProxyPermission(lambda_module.Permission):
         restapiref, stageref = H(f"{namespace}-rest-api"), H(f"{namespace}-stage")
         source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{method}/{path}"}
         super().__init__(namespace = function_namespace,    
-                         function_namespace = function_namespace,
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")
