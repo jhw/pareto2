@@ -11,6 +11,16 @@
 - layer builder
 - bindings
 
+### long
+
+- react website demo
+- cross- account deployments
+- step functions
+- lambda alarms 
+- federated auth
+- passwordless auth
+- secrets
+
 ### medium
 
 - replace website binary media types with `*/*`
@@ -21,13 +31,6 @@
 - replace setup.py with pyproject.toml
 
 ### features
-
-- apigateway2
-- step functions
-- lambda alarms 
-- federated auth
-- passwordless auth
-- secrets
 
 ### thoughts
 
