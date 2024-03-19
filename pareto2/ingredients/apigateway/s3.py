@@ -6,12 +6,13 @@ from pareto2.ingredients.iam import Role
 class S3Resource(Resource):
 
     def __init__(self, namespace, path = "{proxy+}"):
-        super().__init__(namespace, path)
+        super().__init__(namespace = namespace,
+                         path = path)
 
 class S3RedirectMethod(Method):
 
     def __init__(self, namespace, path = "index.html"):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
         self.path = path
 
     @property
@@ -42,7 +43,7 @@ class S3RedirectMethod(Method):
 class S3ProxyMethod(Method):
 
     def __init__(self, namespace):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
 
     @property
     def _integration(self):

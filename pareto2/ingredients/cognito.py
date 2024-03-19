@@ -14,7 +14,7 @@ class UserPool(Resource):
 class SimpleEmailUserPool(UserPool):
 
     def  __init__(self, namespace):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
         
     @property    
     def aws_properties(self, nmin = 8):
@@ -59,7 +59,7 @@ class UserPoolClient(AltNamespaceMixin, Resource):
 class UserPoolAdminClient(UserPoolClient):
 
     def __init__(self, namespace):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
 
     @property
     def explicit_auth_flows(self):
@@ -71,7 +71,7 @@ class UserPoolAdminClient(UserPoolClient):
 class UserPoolWebClient(UserPoolClient):
     
     def __init__(self, namespace):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
 
     @property
     def explicit_auth_flows(self):
@@ -107,7 +107,7 @@ def identity_pool_role_condition(namespace, typestr):
 class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
 
     def __init__(self, namespace, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          action = "sts:AssumeRoleWithWebIdentity",
                          condition = identity_pool_role_condition(namespace, typestr = "authorized"),
                          principal = {"Federated": "cognito-identity.amazonaws.com"},
@@ -118,7 +118,7 @@ class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
 class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
 
     def __init__(self, namespace, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          action = "sts:AssumeRoleWithWebIdentity",
                          condition = identity_pool_role_condition(namespace, typestr = "unauthorized"),
                          principal = {"Federated": "cognito-identity.amazonaws.com"},

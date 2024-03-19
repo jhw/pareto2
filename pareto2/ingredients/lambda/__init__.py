@@ -43,7 +43,7 @@ class Function(Resource):
 class InlineFunction(Function):
 
     def __init__(self, namespace, code, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          code = {"ZipFile": code},
                          handler = "index.handler",
                          **kwargs)
@@ -51,7 +51,7 @@ class InlineFunction(Function):
 class S3Function(Function):
 
     def __init__(self, namespace, handler, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          code = {"S3Bucket": H("artifacts-bucket"),
                                  "S3Key": H("artifacts-key")},
                          handler = handler,

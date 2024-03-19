@@ -8,7 +8,7 @@ lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 class SingleTableStreamingFunction(lambda_module.InlineFunction):
     
     def __init__(self, namespace, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
                          **kwargs)
 
@@ -21,3 +21,9 @@ class SingleTableStreamingRole(Role):
                                         "logs:PutLogEvents"])
 
 
+class SingleTableStreamingEventSourceMapping(lambda_module.EventSourceMapping):
+
+    def __init__(self, namespace, function_namespace, **kwargs):
+        super.__init__(namespace = namespace,
+                       function_namespace = function_namespace,
+                       **kwargs)

@@ -29,7 +29,7 @@ If a Lambda function is exposed to the web via LambdaProxyMethod and the endpoin
 class CorsMethod(Method):
 
     def __init__(self, namespace, parent_namespace, method):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
         self.parent_namespace = parent_namespace
         self.method = method
 

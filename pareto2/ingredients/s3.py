@@ -9,7 +9,7 @@ class Bucket(Resource):
 class StreamingBucket(Bucket):
 
     def __init__(self, namespace):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
          
     @property
     def aws_properties(self):

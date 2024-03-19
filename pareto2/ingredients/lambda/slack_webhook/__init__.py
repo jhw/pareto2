@@ -13,7 +13,7 @@ lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 class SlackWebhookFunction(lambda_module.InlineFunction):
 
     def __init__(self, namespace, log_level, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
                          variables = {"slack-logging-level": log_level,
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}},
@@ -30,7 +30,7 @@ class SlackWebhookRole(Role):
 class SlackWebhookPermission(lambda_module.Permission):
 
     def __init__(self, namespace):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          function_namespace = namespace,
                          principal = "logs.amazonaws.com")
 

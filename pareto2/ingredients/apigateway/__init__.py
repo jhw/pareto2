@@ -121,12 +121,16 @@ class RequestValidator(AltNamespaceMixin, AWSResource):
 class ParameterRequestValidator(RequestValidator):
 
     def __init__(self, namespace, parent_namespace):
-        return super().__init__(namespace, parent_namespace, validate_request_parameters = True)
+        return super().__init__(namespace = namespace,
+                                parent_namespace = parent_namespace,
+                                validate_request_parameters = True)
 
 class SchemaRequestValidator(RequestValidator):
 
     def __init__(self, namespace, parent_namespace):
-        return super().__init__(namespace, parent_namespace, validate_request_body = True)
+        return super().__init__(namespace = namespace,
+                                parent_namespace = parent_namespace,
+                                validate_request_body = True)
 
 """
 - a Model only gets called if the request contains a ContentType header which matches one of the entries in the RequestModels attribute of the connected Method
@@ -184,12 +188,14 @@ class GatewayResponse(AltNamespaceMixin, AWSResource):
 class GatewayResponse4xx(GatewayResponse):
 
     def __init__(self, namespace):
-        return super().__init__(namespace, response_type = "4XX")
+        return super().__init__(namespace = namespace,
+                                response_type = "4XX")
 
 class GatewayResponse5xx(GatewayResponse):
 
     def __init__(self, namespace):
-        return super().__init__(namespace, response_type = "5XX")
+        return super().__init__(namespace = namespace,
+                                response_type = "5XX")
         
 class DomainName(AWSResource):
 

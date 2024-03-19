@@ -15,7 +15,8 @@ LambdaProxyMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31
 class LambdaResource(Resource):
 
     def __init__(self, namespace, parent_namespace, path):
-        super().__init__(namespace, path)
+        super().__init__(namespace = namespace,
+                         path = path)
         self.parent_namespace = parent_namespace
         
     @property
@@ -36,7 +37,7 @@ class LambdaProxyMethod(Method):
                  authorisation = None,
                  parameters = None,
                  schema = None):
-        super().__init__(namespace)
+        super().__init__(namespace = namespace)
         self.parent_namespace = parent_namespace
         self.function_namespace = function_namespace
         self.method = method
@@ -67,7 +68,7 @@ class LambdaProxyMethod(Method):
 class PublicLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, namespace, parent_namespace, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          parent_namespace = parent_namespace,
                          authorisation = {"AuthorizationType": "NONE"},
                          **kwargs)
@@ -75,7 +76,7 @@ class PublicLambdaProxyMethod(LambdaProxyMethod):
 class PrivateLambdaProxyMethod(LambdaProxyMethod):
 
     def __init__(self, namespace, parent_namespace, **kwargs):
-        super().__init__(namespace,
+        super().__init__(namespace = namespace,
                          parent_namespace = parent_namespace,
                          authorisation = {"AuthorizationType": "COGNITO_USER_POOLS",
                                           "AuthorizerId": {"Ref": H(f"{parent_namespace}-authorizer")}},
