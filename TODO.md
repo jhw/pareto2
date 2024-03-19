@@ -1,17 +1,14 @@
 ### short
 
-- event-worker demo requires detail as part of pattern
-
-- check template will pick up mis- specified inline function refs from logs
+- streaming table
 
 ### roadmap
 
-- streaming table
 - task queue
 - topic worker
 - event timer
-- layer builder
 - apigateway2
+- layer builder
 - bindings
 
 ### medium
@@ -80,6 +77,8 @@
 
 ### done
 
+- check template will pick up mis- specified inline function refs from logs
+- event-worker demo requires detail as part of pattern
 - logs aws/lambda/${{FunctionName}} not /aws/lambda/{FunctionName}
 - apigw default binary media types is none
 - logs.amazonaws.com not logs.amazon.com
