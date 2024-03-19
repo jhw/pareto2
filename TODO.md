@@ -2,15 +2,15 @@
 
 ##### ingredients
 
-- basic table
+- core table
 - single table design
 - streaming config
 
 ##### recipe
 
 - table
-- function
-- role
+- streaming function
+- streaming role
 - event source mapping
 
 ### roadmap
