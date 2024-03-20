@@ -53,6 +53,10 @@ def batch_records(records):
     return [(key, groups[strkey])
             for strkey, key in keys.items()]
 
+"""
+- EventBridge max batch size is 10
+"""
+
 def handler(event, context, batchsize = 10):
     source = os.environ["TABLE_NAME"]
     batchsize = int(batchsize)

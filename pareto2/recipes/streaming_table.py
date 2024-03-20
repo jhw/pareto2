@@ -13,14 +13,16 @@ class StreamingTable(Recipe):
     def __init__(self,
                  namespace):
         super().__init__()
-        child_ns = f"{namespace}-streaming-table"
         self.append(SingleStreamingTable(namespace = namespace))
-        self.append(sst_module.SingleStreamingTableFunction(namespace = child_ns,
-                                                            table_namespace = namespace))
-        self.append(sst_module.SingleStreamingTableRole(namespace = child_ns,
-                                                        table_namespace = namespace))
-        self.append(sst_module.SingleStreamingTableEventSourceMapping(namespace = child_ns,
-                                                                      table_namespace = namespace))
+        self.init_streaming(parent_ns = namespace)        
+
+    def init_streaming(self, parent_ns):
+        child_ns = f"{parent_ns}-streaming-table"        
+        for fn in [sst_module.SingleStreamingTableFunction,
+                   sst_module.SingleStreamingTableRole,
+                   sst_module.SingleStreamingTableEventSourceMapping]:
+            self.append(fn(namespace = child_ns,
+                           table_namespace = parent_ns))
             
 if __name__ == "__main__":
     pass
