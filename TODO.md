@@ -1,8 +1,5 @@
 ### short [01-streaming-table]
 
-- DynamoDB not Dynamodb
-  - likely requires irregular
-
 ### roadmap
 
 - task queue
@@ -75,6 +72,8 @@
 
 ### done
 
+- DynamoDB not Dynamodb
+  - likely requires irregular
 - streaming role needs table stream arn not table arn
 
 ```

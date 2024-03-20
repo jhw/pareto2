@@ -45,6 +45,7 @@ class Resource:
 
     @property
     def aws_resource_type(self, irregulars = {"apigateway": "ApiGateway",
+                                              "dynamodb": "DynamoDB",
                                               "iam": "IAM"}):
         tokens = self.aws_proxy_class.split(".")
         return "::".join(["AWS",
