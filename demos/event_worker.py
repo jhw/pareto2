@@ -23,11 +23,10 @@ def handler(event, context=None):
 """
 
 if __name__ == "__main__":
-    _worker = Worker
-    _worker["code"] = CodeBody
-    worker = EventWorker(namespace = "my",
-                         worker = _worker)
-    template = worker.render()
+    worker = Worker
+    worker["code"] = CodeBody
+    template = EventWorker(namespace = "my",
+                           worker = worker).render()
     template.populate_parameters()
     if not os.path.exists("tmp"):
         os.mkdir("tmp")

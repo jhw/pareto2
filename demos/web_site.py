@@ -3,8 +3,7 @@ from pareto2.recipes.web_site import WebSite
 import json, os
 
 if __name__ == "__main__":
-    site = WebSite(namespace = "app")
-    template = site.render()
+    template = WebSite(namespace = "app").render()
     template.populate_parameters()
     if not os.path.exists("tmp"):
         os.mkdir("tmp")

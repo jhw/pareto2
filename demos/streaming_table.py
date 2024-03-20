@@ -32,10 +32,10 @@ def handler(event, context=None):
 
 if __name__ == "__main__":
     recipe = StreamingTable(namespace = "app")
-    _worker = Worker
-    _worker["code"] = CodeBody
+    worker = Worker
+    worker["code"] = CodeBody
     recipe += EventWorker(namespace = "demo",
-                          worker = _worker)
+                          worker = worker)
     template = recipe.render()
     template.populate_parameters()
     if not os.path.exists("tmp"):

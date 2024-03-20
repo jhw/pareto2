@@ -53,10 +53,9 @@ if __name__ == "__main__":
         os.mkdir("tmp")
     for auth in ["public",
                  "private"]:
-        api = WebApi(namespace = "app",
-                     endpoints = list(endpoints.values()),
-                     auth = auth)
-        template = api.render()
+        template = WebApi(namespace = "app",
+                          endpoints = list(endpoints.values()),
+                          auth = auth).render()
         template.populate_parameters()
         with open(f"tmp/web-api-{auth}.json", 'w') as f:
             f.write(json.dumps(template,

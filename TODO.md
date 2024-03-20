@@ -77,6 +77,7 @@
 
 ### done
 
+- used recipe naming in other demos
 - check table ref is in a list
 - table role permissions should include table reference
 - hardcode table ref in worker event pattern
