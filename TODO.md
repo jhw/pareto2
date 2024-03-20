@@ -1,7 +1,18 @@
 ### short [01-streaming-table]
 
-- gist to test streaming table
-- script to push record to dynamodb
+- change demo detail to use {pk: [{prefix: LEAGUE}]}
+- table not visible
+- streaming role needs table stream arn not table arn
+
+```
+"Resource": {
+	"Fn::GetAtt": ["AppTable", "StreamArn"]
+}
+
+```
+
+- DynamoDB not Dynamodb
+  - likely requires irregular
 
 ### roadmap
 

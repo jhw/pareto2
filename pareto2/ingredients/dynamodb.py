@@ -54,3 +54,7 @@ class SingleStreamingTable(Table):
                                     {"name": "sk",
                                      "type": "RANGE"}],
                          stream_type = "NEW_AND_OLD_IMAGES")
+
+    @property
+    def visible(self):
+        return True
