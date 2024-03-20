@@ -4,13 +4,12 @@ import json, os, yaml
 
 Worker = yaml.safe_load("""
   events:
-  - name: foobar
+  - name: whatevs
     pattern:
       detail:
-        hello: 
-        - world
-  permissions:
-  - s3:GetObject
+        pk:
+         prefix:
+         - LEAGUE
 """)
 
 CodeBody="""

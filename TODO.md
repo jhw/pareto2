@@ -1,7 +1,9 @@
 ### short [01-streaming-table]
 
-- add worker to streaming table demo
 - hardcode table ref in worker event pattern
+- table role permissions should include table reference
+- gist to test streaming table
+- script to push record to dynamodb
 
 ### roadmap
 
@@ -28,7 +30,7 @@
 
 ### thoughts
 
-- table streaming code should use table as source (not function?)
+- rename single streaming table
 - refactor "worker" name passed to event_worker?
 - investigate if default resource_name should actually be base_resource_name?
 - extend IAM role for args required by IdentityPoolRole?
@@ -75,6 +77,8 @@
 
 ### done
 
+- modify demo pattern detail
+- add worker to streaming table demo
 - script to use TABLE_NAME rather than function context as source
 - add notes relating to structure of message; also that Detail, DetailType and Source are required by Eventbridge
 - pass TABLE_NAME as lambda environment variable
