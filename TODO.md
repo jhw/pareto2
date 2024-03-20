@@ -1,5 +1,6 @@
 ### short [01-streaming-table]
 
+- used recipe naming in other demos
 - simplify recipe workflow to include init_streaming
 - gist to test streaming table
 - script to push record to dynamodb
@@ -76,6 +77,7 @@
 
 ### done
 
+- check table ref is in a list
 - table role permissions should include table reference
 - hardcode table ref in worker event pattern
 - modify demo pattern detail

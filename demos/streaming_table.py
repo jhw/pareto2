@@ -15,8 +15,7 @@ Worker = yaml.safe_load("""
         hello: 
         - world
       source:
-        Ref:
-        - AppTable
+      - Ref: AppTable
   permissions:
   - s3:GetObject
 """)
