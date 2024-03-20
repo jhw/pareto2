@@ -15,14 +15,12 @@ class SingleStreamingTableFunction(lambda_module.InlineFunction):
 class SingleStreamingTableRole(Role):
     
     def __init__(self, namespace, table_namespace):
-        table_ref = H(f"{table_namespace}-table")
-        table_resource =  {"Fn::Sub": f"arn:aws:dynamodb:${{AWS::Region}}:${{AWS::AccountId}}:table/${{{table_ref}}}"}
         super().__init__(namespace = namespace,
                          permissions = [{"action": ["dynamodb:GetRecords",
                                                     "dynamodb:GetShardIterator",
                                                     "dynamodb:DescribeStream",
                                                     "dynamodb:ListStreams"],
-                                         "resource": table_resource},
+                                         "resource": {"Fn::GetAtt": [H(f"{table_namespace}-table"), "StreamArn"]}},
                                         {"action": "events:PutEvents"},
                                         {"action": ["logs:CreateLogGroup",
                                                     "logs:CreateLogStream",

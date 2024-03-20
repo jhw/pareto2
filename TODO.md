@@ -1,14 +1,5 @@
 ### short [01-streaming-table]
 
-- streaming role needs table stream arn not table arn
-
-```
-"Resource": {
-	"Fn::GetAtt": ["AppTable", "StreamArn"]
-}
-
-```
-
 - DynamoDB not Dynamodb
   - likely requires irregular
 
@@ -83,6 +74,14 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- streaming role needs table stream arn not table arn
+
+```
+"Resource": {
+	"Fn::GetAtt": ["AppTable", "StreamArn"]
+}
+```
 
 - table not visible
 - change demo detail to use {pk: [{prefix: LEAGUE}]}
