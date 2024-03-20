@@ -1,6 +1,9 @@
 ### short [01-streaming-table]
 
-- demo to create event worker to test
+- script to use TABLE_NAME rather than function context as source
+- add notes relating to structure of message; also that Detail, DetailType and Source are required by Eventbridge
+- add worker to streaming table demo
+- hardcode table ref in worker event pattern
 
 ### roadmap
 
@@ -13,6 +16,7 @@
 
 ### long
 
+- pareto8 migration script
 - react website demo
 - cross- account deployments
 - step functions
@@ -20,6 +24,8 @@
 - federated auth
 - passwordless auth
 - secrets
+- s3 multipart uploads
+- appsync
 - rockset
 
 ### thoughts
@@ -71,6 +77,7 @@
 
 ### done
 
+- pass TABLE_NAME as lambda environment variable
 - Permission shouldn't need function_namespace arg as should be created in same namespace
 - non- table resources should be created in child namespace
 - event source mapping to be passed function namespace equal to child namespace

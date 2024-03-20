@@ -7,9 +7,10 @@ lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 
 class SingleStreamingTableFunction(lambda_module.InlineFunction):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,
-                         code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read())
+                         code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
+                         variables = {"table-name": {"Ref": H(f"{table_namespace}-table")}})
 
 class SingleStreamingTableRole(Role):
     
