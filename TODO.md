@@ -1,7 +1,5 @@
 ### short [01-streaming-table]
 
-- script to use TABLE_NAME rather than function context as source
-- add notes relating to structure of message; also that Detail, DetailType and Source are required by Eventbridge
 - add worker to streaming table demo
 - hardcode table ref in worker event pattern
 
@@ -77,6 +75,8 @@
 
 ### done
 
+- script to use TABLE_NAME rather than function context as source
+- add notes relating to structure of message; also that Detail, DetailType and Source are required by Eventbridge
 - pass TABLE_NAME as lambda environment variable
 - Permission shouldn't need function_namespace arg as should be created in same namespace
 - non- table resources should be created in child namespace

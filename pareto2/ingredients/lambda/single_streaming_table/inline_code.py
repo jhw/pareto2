@@ -15,15 +15,15 @@ class Key:
 """
 - EventBridge required fields are Source, DetailType, Detail
 - record["eventName"] is used as DetailType
-- context.function_name is used as Source
+- eventName could be INSERT, MODIFY, DELETE
 """
     
 class Entry:
 
-    def __init__(self, key, records, context):
+    def __init__(self, key, records, source):
         self.key = key
         self.records = records
-        self.context = context
+        self.source = source
 
     @property
     def entry(self):        
@@ -31,9 +31,8 @@ class Entry:
                   "sk": self.key.sk,
                   "eventName": self.key.eventname,
                   "records": self.records}
-        source = self.context.function_name
         detailtype = self.key.eventname
-        return {"Source": source,
+        return {"Source": self.source,
                 "DetailType": detailtype,
                 "Detail": json.dumps(detail)}
 
@@ -55,10 +54,11 @@ def batch_records(records):
             for strkey, key in keys.items()]
 
 def handler(event, context, batchsize = 10):
+    source = os.environ["TABLE_NAME"]
     batchsize = int(batchsize)
     events = boto3.client("events")
     groups = batch_records(event["Records"])
-    entries = [Entry(k, v, context).entry
+    entries = [Entry(k, v, source).entry
                for k, v in groups]
     if entries! = []:
         nbatches = math.ceil(len(entries)/batchsize)
