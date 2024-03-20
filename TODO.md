@@ -1,5 +1,6 @@
 ### short [01-streaming-table]
 
+- simplify recipe workflow to include init_streaming
 - gist to test streaming table
 - script to push record to dynamodb
 
