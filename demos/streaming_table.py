@@ -12,8 +12,8 @@ Worker = yaml.safe_load("""
   - name: foobar
     pattern:
       detail:
-        hello: 
-        - world
+        pk: 
+        - prefix: LEAGUE
       source:
       - Ref: AppTable
   permissions:

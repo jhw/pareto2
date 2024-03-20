@@ -1,7 +1,5 @@
 ### short [01-streaming-table]
 
-- change demo detail to use {pk: [{prefix: LEAGUE}]}
-- table not visible
 - streaming role needs table stream arn not table arn
 
 ```
@@ -86,6 +84,8 @@
 
 ### done
 
+- table not visible
+- change demo detail to use {pk: [{prefix: LEAGUE}]}
 - simplify recipe workflow to include init_streaming
 - used recipe naming in other demos
 - check table ref is in a list
