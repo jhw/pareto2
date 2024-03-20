@@ -1,13 +1,13 @@
-### short [01-streaming-table]
+### short 
+
+- task queue
 
 ### roadmap
 
-- task queue
 - topic worker
 - event timer
 - apigateway2
 - layer builder
-- bindings
 
 ### long
 

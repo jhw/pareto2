@@ -7,6 +7,8 @@ Worker = yaml.safe_load("""
   - name: whatevs
     pattern:
       detail:
+        eventName:
+         - INSERT
         pk:
          prefix:
          - LEAGUE
