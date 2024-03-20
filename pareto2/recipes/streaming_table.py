@@ -17,7 +17,8 @@ class StreamingTable(Recipe):
         self.append(SingleStreamingTable(namespace = namespace))
         self.append(sst_module.SingleStreamingTableFunction(namespace = child_ns,
                                                             table_namespace = namespace))
-        self.append(sst_module.SingleStreamingTableRole(namespace = child_ns))
+        self.append(sst_module.SingleStreamingTableRole(namespace = child_ns,
+                                                        table_namespace = namespace))
         self.append(sst_module.SingleStreamingTableEventSourceMapping(namespace = child_ns,
                                                                       table_namespace = namespace))
             
