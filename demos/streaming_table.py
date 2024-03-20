@@ -3,6 +3,10 @@ from pareto2.recipes.event_worker import EventWorker
 
 import json, os, yaml
 
+"""
+NB source value is expected to be inserted into pattern at expanded/CI level and not provided by app definition
+"""
+
 Worker = yaml.safe_load("""
   events:
   - name: foobar
@@ -10,6 +14,9 @@ Worker = yaml.safe_load("""
       detail:
         hello: 
         - world
+      source:
+        Ref:
+        - AppTable
   permissions:
   - s3:GetObject
 """)

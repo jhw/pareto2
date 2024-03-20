@@ -1,6 +1,5 @@
 ### short [01-streaming-table]
 
-- hardcode table ref in worker event pattern
 - table role permissions should include table reference
 - gist to test streaming table
 - script to push record to dynamodb
@@ -77,6 +76,7 @@
 
 ### done
 
+- hardcode table ref in worker event pattern
 - modify demo pattern detail
 - add worker to streaming table demo
 - script to use TABLE_NAME rather than function context as source
