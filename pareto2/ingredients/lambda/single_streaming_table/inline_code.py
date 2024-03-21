@@ -59,12 +59,11 @@ def batch_records(records):
 
 def handler(event, context, batchsize = 10):
     source = os.environ["TABLE_NAME"]
-    batchsize = int(batchsize)
-    events = boto3.client("events")
     groups = batch_records(event["Records"])
     entries = [Entry(k, v, source).entry
                for k, v in groups]
     if entries != []:
+        events = boto3.client("events")
         nbatches = math.ceil(len(entries)/batchsize)
         for i in range(nbatches):
             batch = entries[i*batchsize: (i+1)*batchsize]

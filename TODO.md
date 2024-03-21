@@ -1,6 +1,5 @@
 ### short [01-task-queue]
 
-- inline role
 - sqs resources
 - recipe
 - demo
@@ -79,6 +78,7 @@
 
 ### done
 
+- inline code
 - lambda extensions
 
 - DynamoDB not Dynamodb
