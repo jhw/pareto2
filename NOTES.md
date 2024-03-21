@@ -1,3 +1,16 @@
+### apigatewayV2 21/03/24
+
+- Replace AWS::ApiGateway::RestApi with AWS::ApiGatewayV2::Api.
+- Replace AWS::ApiGateway::Stage with AWS::ApiGatewayV2::Stage.
+- Replace AWS::ApiGateway::BasePathMapping with AWS::ApiGatewayV2::ApiMapping.
+- Replace AWS::ApiGateway::Method with AWS::ApiGatewayV2::Route.
+- Replace AWS::ApiGateway::Deployment with AWS::ApiGatewayV2::Deployment.
+
+- methods replaced by routes and integrations
+- domain name has an endpoint type
+- validation looks to be the same 
+- cors is an integration
+
 ### events 17/03/24
 
 - i start to think the existing pareto events paradigm is an antipattern
