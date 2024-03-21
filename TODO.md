@@ -4,9 +4,12 @@
 
 ### roadmap
 
+- apigateway2
+
+- separate roles and policies
+
 - topic worker
 - event timer
-- apigateway2
 - layer builder
 
 ### long
