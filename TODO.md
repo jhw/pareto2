@@ -1,6 +1,5 @@
 ### short [01-task-queue]
 
-- sqs resources
 - recipe
 - demo
 - gist
@@ -78,6 +77,7 @@
 
 ### done
 
+- sqs resources
 - inline code
 - lambda extensions
 

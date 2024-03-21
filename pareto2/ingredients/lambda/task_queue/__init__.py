@@ -26,6 +26,15 @@ class TaskQueueRole(Role):
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
 
+"""
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#cfn-lambda-eventsourcemapping-batchsize
+---
+- BatchSize
+  - The maximum number of records in each batch that Lambda pulls from your stream or queue and sends to your function. Lambda passes all of the records in the batch to the function in a single call, up to the payload limit for synchronous invocation (6 MB).
+  - Amazon Simple Queue Service – Default 10. For standard queues the max is 10,000. For FIFO queues the max is 10.
+  - BatchSize was formerly set at 1 but given inline_code.py iterates over Records and pushes one at a time into EventBridge this doesn't seem to matter any more
+"""
+        
 class TaskQueueEventSourceMapping(lambda_module.EventSourceMapping):
 
     def __init__(self, namespace, queue_namespace):

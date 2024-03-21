@@ -28,7 +28,7 @@ class SingleStreamingTableRole(Role):
                                                     "logs:PutLogEvents"]}])
 
 """
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#cfn-lambda-eventsourcemapping-maximumretryattempts
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#cfn-lambda-eventsourcemapping-maximumretryattempts
 ---
 - MaximumBatchingWindowInSeconds
   - The maximum amount of time, in seconds, that Lambda spends gathering records before invoking the function.
