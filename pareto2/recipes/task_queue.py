@@ -23,7 +23,7 @@ class TaskQueue(Recipe):
                    "TaskQueueEventSourceMapping"]:
             fn = getattr(task_queue_module, attr)
             self.append(fn(namespace = child_ns,
-                           table_namespace = parent_ns))
+                           queue_namespace = parent_ns))
             
 if __name__ == "__main__":
     pass

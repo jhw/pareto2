@@ -1,6 +1,5 @@
 ### short [01-task-queue]
 
-- demo
 - gist
 
 ### roadmap
@@ -76,6 +75,7 @@
 
 ### done
 
+- demo
 - recipe
 - sqs resources
 - inline code
