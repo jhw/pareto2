@@ -1,9 +1,10 @@
 ### short
 
+- separate roles and policies
+
 ### roadmap
 
 - apigateway2
-- separate roles and policies
 - event timer
 - binding script
 - migration script
