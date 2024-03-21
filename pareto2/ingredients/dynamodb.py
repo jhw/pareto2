@@ -41,7 +41,7 @@ class Table(Resource):
             props["StreamSpecification"] = {"StreamViewType": self.stream_type}
         return props
 
-class SingleStreamingTable(Table):
+class StreamingTable(Table):
     
     def __init__(self, namespace):
         super().__init__(namespace = namespace,

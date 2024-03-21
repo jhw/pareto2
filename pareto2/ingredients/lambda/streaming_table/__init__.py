@@ -6,14 +6,14 @@ import importlib
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 
-class SingleStreamingTableFunction(lambda_module.InlineFunction):
+class StreamingTableFunction(lambda_module.InlineFunction):
     
     def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
                          variables = {"table-name": {"Ref": H(f"{table_namespace}-table")}})
 
-class SingleStreamingTableRole(Role):
+class StreamingTableRole(Role):
     
     def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,
@@ -43,7 +43,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lamb
     - AT_TIMESTAMP - Specify a time from which to start reading records.
 """
         
-class SingleStreamingTableEventSourceMapping(lambda_module.EventSourceMapping):
+class StreamingTableEventSourceMapping(lambda_module.EventSourceMapping):
 
     def __init__(self,
                  namespace,
