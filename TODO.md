@@ -1,20 +1,16 @@
-### short [01-task-queue]
-
-- gist
+### short
 
 ### roadmap
 
 - apigateway2
-
 - separate roles and policies
-
-- topic worker
 - event timer
+- binding script
+- migration script
 - layer builder
 
 ### long
 
-- pareto8 migration script
 - react website demo
 - cross- account deployments
 - step functions
@@ -28,6 +24,8 @@
 
 ### thoughts
 
+- topic worker?
+  - think it's an anti- pattern
 - rename single streaming table
 - refactor "worker" name passed to event_worker?
 - investigate if default resource_name should actually be base_resource_name?
@@ -75,6 +73,7 @@
 
 ### done
 
+- gist
 - demo
 - recipe
 - sqs resources
