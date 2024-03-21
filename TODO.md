@@ -1,6 +1,10 @@
-### short 
+### short [01-task-queue]
 
-- task queue
+- inline role
+- sqs resources
+- recipe
+- demo
+- gist
 
 ### roadmap
 
@@ -74,6 +78,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- lambda extensions
 
 - DynamoDB not Dynamodb
   - likely requires irregular
