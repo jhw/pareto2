@@ -7,9 +7,9 @@ from pareto2.recipes import Recipe
 
 import importlib
 
-lambda_module = importlib.import_module("pareto2.services.lambda")
+L = importlib.import_module("pareto2.services.lambda")
 
-class StreamingFunction(lambda_module.InlineFunction):
+class StreamingFunction(L.InlineFunction):
     
     def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,
@@ -46,7 +46,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lamb
     - AT_TIMESTAMP - Specify a time from which to start reading records.
 """
         
-class StreamingEventSourceMapping(lambda_module.EventSourceMapping):
+class StreamingEventSourceMapping(L.EventSourceMapping):
 
     def __init__(self,
                  namespace,

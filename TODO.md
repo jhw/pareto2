@@ -1,6 +1,7 @@
 ### short [01-roles-and-permissions]
 
 - eliminate unnecessary classes in web_xxx.py demos
+- move cognito crap into web_api submodule
 
 - re- test gists
 
@@ -78,6 +79,7 @@
 
 ### done
 
+- rename lambda_module
 - rename ingredients as services
 - move events permission into event worker
 - add sub directories to web_api recipe

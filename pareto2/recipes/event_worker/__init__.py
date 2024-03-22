@@ -8,7 +8,7 @@ from pareto2.recipes import Recipe
 
 import importlib
 
-lambda_module = importlib.import_module("pareto2.services.lambda")
+L = importlib.import_module("pareto2.services.lambda")
 
 """
 - LogNamespace is a singleton namespace 
@@ -21,7 +21,7 @@ LogNamespace, LogLevels = "logs", ["warning", "error"]
 - remember one Slack webhook per application
 """
 
-class SlackFunction(lambda_module.InlineFunction):
+class SlackFunction(L.InlineFunction):
 
     def __init__(self, namespace, log_level):
         super().__init__(namespace = namespace,
@@ -29,7 +29,7 @@ class SlackFunction(lambda_module.InlineFunction):
                          variables = {"slack-logging-level": log_level,
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
 
-class EventPermission(lambda_module.Permission):
+class EventPermission(L.Permission):
 
     def __init__(self, namespace, function_namespace):
         source_arn = {"Fn::GetAtt": [H(f"{namespace}-rule"), "Arn"]}
@@ -57,7 +57,7 @@ class EventWorker(Recipe):
     def init_worker(self, namespace, worker):
         self.append(self.init_function(namespace = namespace,
                                        worker = worker))
-        self.append(lambda_module.EventInvokeConfig(namespace = namespace))
+        self.append(L.EventInvokeConfig(namespace = namespace))
         self += self.init_role_and_policy(namespace = namespace,
                                           worker = worker)
         for event in worker["events"]:
@@ -67,7 +67,7 @@ class EventWorker(Recipe):
         self.append(LogStream(namespace = namespace))
         
     def init_function(self, namespace, worker):
-        fn = lambda_module.InlineFunction if "code" in worker else lambda_module.S3Function
+        fn = L.InlineFunction if "code" in worker else L.S3Function
         return (fn(namespace = namespace,
                    **self.function_kwargs(worker)))
     
@@ -104,7 +104,7 @@ class EventWorker(Recipe):
                                       log_level = log_level))
             self.append(Role(namespace = child_ns))
             self.append(Policy(namespace = child_ns))
-            self.append(lambda_module.Permission(namespace = child_ns,
+            self.append(L.Permission(namespace = child_ns,
                                                  principal = "logs.amazonaws.com"))
             
 if __name__ == "__main__":

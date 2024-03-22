@@ -11,7 +11,7 @@ from pareto2.recipes.web_api.cors import CorsMethod
 
 import importlib, re
 
-lambda_module = importlib.import_module("pareto2.services.lambda")
+L = importlib.import_module("pareto2.services.lambda")
 
 LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
 
@@ -89,7 +89,7 @@ class PrivateLambdaMethod(LambdaMethod):
                                           "AuthorizerId": {"Ref": H(f"{parent_namespace}-authorizer")}},
                          **kwargs)
 
-class LambdaPermission(lambda_module.Permission):
+class LambdaPermission(L.Permission):
 
     def __init__(self, namespace, function_namespace, method, path):
         restapiref, stageref = H(f"{namespace}-rest-api"), H(f"{namespace}-stage")
@@ -187,7 +187,7 @@ class WebApi(Recipe):
                              schema = endpoint["schema"]))
 
     def init_function(self, namespace, endpoint):
-        fn = lambda_module.InlineFunction if "code" in endpoint else lambda_module.S3Function
+        fn = L.InlineFunction if "code" in endpoint else L.S3Function
         return fn(namespace = namespace,
                   **self.function_kwargs(endpoint))
 

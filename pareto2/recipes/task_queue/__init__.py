@@ -7,9 +7,9 @@ from pareto2.recipes import Recipe
 
 import importlib
 
-lambda_module = importlib.import_module("pareto2.services.lambda")
+L = importlib.import_module("pareto2.services.lambda")
 
-class QueueFunction(lambda_module.InlineFunction):
+class QueueFunction(L.InlineFunction):
     
     def __init__(self, namespace, queue_namespace):
         super().__init__(namespace = namespace,
@@ -38,7 +38,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lamb
   - BatchSize was formerly set at 1 but given inline_code.py iterates over Records and pushes one at a time into EventBridge this doesn't seem to matter any more
 """
         
-class QueueEventSourceMapping(lambda_module.EventSourceMapping):
+class QueueEventSourceMapping(L.EventSourceMapping):
 
     def __init__(self, namespace, queue_namespace):
         super().__init__(namespace = namespace,
