@@ -1,7 +1,7 @@
 ### short [01-roles-and-permissions]
 
-- default logs permissiosn
-- eliminate unnecessary classes in web_xxx demos
+- eliminate unnecessary classes in web_xxx.py demos
+
 - re- test gists
 
 ### roadmap

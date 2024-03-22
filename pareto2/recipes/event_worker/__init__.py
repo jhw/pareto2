@@ -103,10 +103,7 @@ class EventWorker(Recipe):
             self.append(SlackFunction(namespace = child_ns,
                                       log_level = log_level))
             self.append(Role(namespace = child_ns))
-            self.append(Policy(namespace = child_ns,
-                               permissions = ["logs:CreateLogGroup",
-                                              "logs:CreateLogStream",
-                                              "logs:PutLogEvents"]))
+            self.append(Policy(namespace = child_ns))
             self.append(lambda_module.Permission(namespace = child_ns,
                                                  principal = "logs.amazonaws.com"))
             

@@ -60,7 +60,9 @@ class Policy(Resource):
 
     def __init__(self,
                  namespace,
-                 permissions = []):
+                 permissions = ["logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"]):
         self.namespace = namespace
         self.permissions = permissions
         
