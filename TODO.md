@@ -1,8 +1,9 @@
 ### short [01-roles-and-permissions]
 
-- move apigw subclasses inline and refactor
-- move lambda subclasses inline and refactor
-- replace classes which do nothing but parameterise
+- add sub directories to web_api recipe
+- move cognito subclasses into web_api subdirs
+- rename ingredients as sevices
+- simplify recipe classes and naming
 - add default role and policy
 - re- test gists
 
@@ -78,6 +79,8 @@
 
 ### done
 
+- move apigw subclasses inline and refactor
+- move lambda subclasses inline and refactor
 - review generated roles and policies for bad stuff
 - every recipe which creates role to also create a policy
 - run demos

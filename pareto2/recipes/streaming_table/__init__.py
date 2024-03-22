@@ -1,6 +1,6 @@
 from pareto2.ingredients import hungarorise as H
 
-from pareto2.ingredients.dynamodb import StreamingTable as StreamingTableResource
+from pareto2.ingredients.dynamodb import StreamingTable as _StreamingTable
 from pareto2.ingredients.iam import *
 
 from pareto2.recipes import Recipe
@@ -9,20 +9,20 @@ import importlib
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 
-class StreamingTableFunction(lambda_module.InlineFunction):
+class StreamingFunction(lambda_module.InlineFunction):
     
     def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
                          variables = {"table-name": {"Ref": H(f"{table_namespace}-table")}})
 
-class StreamingTableRole(Role):
+class StreamingRole(Role):
     
     def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace)
 
         
-class StreamingTablePolicy(Policy):
+class StreamingPolicy(Policy):
     
     def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,
@@ -52,7 +52,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lamb
     - AT_TIMESTAMP - Specify a time from which to start reading records.
 """
         
-class StreamingTableEventSourceMapping(lambda_module.EventSourceMapping):
+class StreamingEventSourceMapping(lambda_module.EventSourceMapping):
 
     def __init__(self,
                  namespace,
@@ -81,15 +81,15 @@ class StreamingTable(Recipe):
     def __init__(self,
                  namespace):
         super().__init__()
-        self.append(StreamingTableResource(namespace = namespace))
+        self.append(_StreamingTable(namespace = namespace))
         self.init_streaming(parent_ns = namespace)        
 
     def init_streaming(self, parent_ns):
         child_ns = f"{parent_ns}-streaming-table"        
-        for klass in [StreamingTableFunction,
-                      StreamingTableRole,
-                      StreamingTablePolicy,
-                      StreamingTableEventSourceMapping]:
+        for klass in [StreamingFunction,
+                      StreamingRole,
+                      StreamingPolicy,
+                      StreamingEventSourceMapping]:
             self.append(klass(namespace = child_ns,
                               table_namespace = parent_ns))
             

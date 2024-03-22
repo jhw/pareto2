@@ -61,3 +61,4 @@ if __name__ == "__main__":
             f.write(json.dumps(template,
                                sort_keys = True,
                                indent = 2))
+        print ("%s: %s" % (auth, ", ".join(list(template["Parameters"].keys()))))

@@ -36,4 +36,5 @@ if __name__ == "__main__":
         f.write(json.dumps(template,
                            sort_keys = True,
                            indent = 2))
+    print (", ".join(list(template["Parameters"].keys())))
 

@@ -12,7 +12,7 @@ import importlib, json, re
 
 lambda_module = importlib.import_module("pareto2.ingredients.lambda")
 
-LambdaProxyMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
+LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
 
 CorsHeaders = ["Content-Type",
                "X-Amz-Date",
@@ -21,13 +21,13 @@ CorsHeaders = ["Content-Type",
                "X-Amz-Sec"]
 
 """
-If a Lambda function is exposed to the web via LambdaProxyMethod and the endpoint to which this method is bound is CORS- enabled using CorsMethod, then the Lambda function *must* return the following additional headers if CORS is to work properly -
+If a Lambda function is exposed to the web via LambdaMethod and the endpoint to which this method is bound is CORS- enabled using CorsMethod, then the Lambda function *must* return the following additional headers if CORS is to work properly -
 
 - "Access-Control-Allow-Origin": "*"
 - "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent"
-- Access-Control-Allow-Methods": "OPTIONS,GET" // change second of these according to LambdaProxyMethod HTTP method
+- Access-Control-Allow-Methods": "OPTIONS,GET" // change second of these according to LambdaMethod HTTP method
 
-(see also response format required by LambdaProxyMethod)
+(see also response format required by LambdaMethod)
 """
 
 class CorsMethod(Method):
@@ -75,7 +75,7 @@ class CorsMethod(Method):
                 "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}}
 
 """
-- LambdaProxyResource doesn't use namespace directly, but still needs to live in its own namespace because a single API might have multiple endpoints, each with their own resources
+- LambdaResource doesn't use namespace directly, but still needs to live in its own namespace because a single API might have multiple endpoints, each with their own resources
 """
         
 class LambdaResource(APIGWResource):
@@ -93,7 +93,7 @@ class LambdaResource(APIGWResource):
             "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}
         }
 
-class LambdaProxyMethod(Method):
+class LambdaMethod(Method):
 
     def __init__(self,
                  namespace,
@@ -113,7 +113,7 @@ class LambdaProxyMethod(Method):
         
     @property
     def aws_properties(self):
-        uri = {"Fn::Sub": [LambdaProxyMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
+        uri = {"Fn::Sub": [LambdaMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
         integration = {"IntegrationHttpMethod": "POST",
                        "Type": "AWS_PROXY",
                        "Uri": uri}
@@ -131,7 +131,7 @@ class LambdaProxyMethod(Method):
             props["RequestModels"] = {"application/json": H(f"{self.namespace}-model")}
         return props
 
-class PublicLambdaProxyMethod(LambdaProxyMethod):
+class PublicLambdaMethod(LambdaMethod):
 
     def __init__(self, namespace, parent_namespace, **kwargs):
         super().__init__(namespace = namespace,
@@ -139,7 +139,7 @@ class PublicLambdaProxyMethod(LambdaProxyMethod):
                          authorisation = {"AuthorizationType": "NONE"},
                          **kwargs)
 
-class PrivateLambdaProxyMethod(LambdaProxyMethod):
+class PrivateLambdaMethod(LambdaMethod):
 
     def __init__(self, namespace, parent_namespace, **kwargs):
         super().__init__(namespace = namespace,
@@ -148,7 +148,7 @@ class PrivateLambdaProxyMethod(LambdaProxyMethod):
                                           "AuthorizerId": {"Ref": H(f"{parent_namespace}-authorizer")}},
                          **kwargs)
 
-class LambdaProxyPermission(lambda_module.Permission):
+class LambdaPermission(lambda_module.Permission):
 
     def __init__(self, namespace, function_namespace, method, path):
         restapiref, stageref = H(f"{namespace}-rest-api"), H(f"{namespace}-stage")
@@ -225,7 +225,7 @@ class WebApi(Recipe):
     def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
         self.append(ParameterRequestValidator(namespace = child_ns,
                                               parent_namespace = parent_ns))
-        methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
+        methodfn = eval(H(f"{self.auth}-lambda-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
                              function_namespace = child_ns,
@@ -238,7 +238,7 @@ class WebApi(Recipe):
         self.append(Model(namespace = child_ns,
                           parent_namespace = parent_ns,
                           schema = endpoint["schema"]))
-        methodfn = eval(H(f"{self.auth}-lambda-proxy-method"))
+        methodfn = eval(H(f"{self.auth}-lambda-method"))
         self.append(methodfn(namespace = child_ns,
                              parent_namespace = parent_ns,
                              function_namespace = child_ns, 
@@ -258,16 +258,16 @@ class WebApi(Recipe):
         ]
     
     def init_lambda_permission(self, parent_ns, child_ns, endpoint):
-        return LambdaProxyPermission(namespace = parent_ns,
-                                     function_namespace = child_ns,
-                                     method = endpoint["method"],
-                                     path = endpoint["path"])
+        return LambdaPermission(namespace = parent_ns,
+                                function_namespace = child_ns,
+                                method = endpoint["method"],
+                                path = endpoint["path"])
         
     def filter_methods(self, parent_ns, endpoints):
         methods = []
         for endpoint in endpoints:
             child_ns = self.endpoint_namespace(parent_ns, endpoint)
-            methods += [H(f"{child_ns}-{self.auth}-lambda-proxy-method"),
+            methods += [H(f"{child_ns}-{self.auth}-lambda-method"),
                         H(f"{child_ns}-cors-method")]
         return methods
     

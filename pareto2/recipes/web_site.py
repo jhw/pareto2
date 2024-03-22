@@ -14,7 +14,7 @@ class S3Resource(APIGWResource):
         super().__init__(namespace = namespace,
                          path = path)
 
-class S3RedirectMethod(Method):
+class RedirectMethod(Method):
 
     def __init__(self, namespace, path = "index.html"):
         super().__init__(namespace = namespace)
@@ -43,9 +43,8 @@ class S3RedirectMethod(Method):
                 "Integration": self._integration,
                 "ResourceId": resource_id, 
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
-
         
-class S3ProxyMethod(Method):
+class ProxyMethod(Method):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace)
@@ -81,13 +80,13 @@ class S3ProxyMethod(Method):
                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
     
-class S3ProxyRole(Role):
+class ProxyRole(Role):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace,
                          principal = "apigateway.amazonaws.com")
 
-class S3ProxyPolicy(Policy):
+class ProxyPolicy(Policy):
 
     def __init__(self, namespace):
         bucket_ref = H(f"{namespace}-bucket")
@@ -104,10 +103,10 @@ class WebSite(Recipe):
             self.append(fn(namespace))
         for klass in [Stage,
                       S3Resource,
-                      S3ProxyMethod,
-                      S3ProxyRole,
-                      S3ProxyPolicy,
-                      S3RedirectMethod,
+                      ProxyMethod,
+                      ProxyRole,
+                      ProxyPolicy,
+                      RedirectMethod,
                       DomainName,
                       BasePathMapping,
                       RecordSet,                      
@@ -121,8 +120,8 @@ class WebSite(Recipe):
                        binary_media_types = "*/*")
             
     def init_deployment(self, namespace):        
-        method_refs = [H(f"{namespace}-s3-proxy-method"),
-                       H(f"{namespace}-s3-redirect-method")]
+        method_refs = [H(f"{namespace}-proxy-method"),
+                       H(f"{namespace}-redirect-method")]
         return Deployment(namespace = namespace,
                           methods = method_refs)
             
