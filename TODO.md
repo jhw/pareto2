@@ -1,7 +1,5 @@
 ### short [01-roles-and-permissions]
 
-- move events permission into event worker
-
 - rename ingredients as services
 
 - simplify recipe classes and naming
@@ -83,6 +81,7 @@
 
 ### done
 
+- move events permission into event worker
 - add sub directories to web_api recipe
 - move apigw subclasses inline and refactor
 - move lambda subclasses inline and refactor

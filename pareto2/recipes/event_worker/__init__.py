@@ -41,12 +41,20 @@ class SlackPolicy(Policy):
                          permissions = ["logs:CreateLogGroup",
                                         "logs:CreateLogStream",
                                         "logs:PutLogEvents"])
-
+        
 class SlackPermission(lambda_module.Permission):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace,
                          principal = "logs.amazonaws.com")
+
+class EventPermission(lambda_module.Permission):
+
+    def __init__(self, namespace, function_namespace):
+        source_arn = {"Fn::GetAtt": [H(f"{namespace}-rule"), "Arn"]}
+        super().__init__(namespace = function_namespace,    
+                         source_arn = source_arn,
+                         principal = "events.amazonaws.com")
 
 class EventWorker(Recipe):    
 
@@ -89,19 +97,14 @@ class EventWorker(Recipe):
                    permissions = self.policy_permissions(worker))
         ]
 
-    """
-    - Permission here is pareto2.ingredients.events.Permission
-    - there is no conflict with lambda Permission name as that is safely contained in lambda_module namespace
-    """
-    
     def init_event_rule(self, parent_ns, event):
         child_ns = f"{parent_ns}-{event['name']}"
         self.append(Rule(namespace = child_ns,
                          function_namespace = parent_ns,
                          pattern = event["pattern"]))
-        self.append(Permission(namespace = child_ns,
-                               function_namespace = parent_ns))
-    
+        self.append(EventPermission(namespace = child_ns,
+                                    function_namespace = parent_ns))
+        
     def init_log_subscriptions(self, namespace, logging_namespace, worker, log_levels):
         for log_level in log_levels:
             child_logging_ns = f"{logging_namespace}-{log_level}"
