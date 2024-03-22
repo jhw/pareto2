@@ -1,8 +1,8 @@
-from pareto2.ingredients import hungarorise as H
-from pareto2.ingredients import AltNamespaceMixin
+from pareto2.services import hungarorise as H
+from pareto2.services import AltNamespaceMixin
 
-# from pareto2.ingredients import Resource
-from pareto2.ingredients import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
+# from pareto2.services import Resource
+from pareto2.services import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
 
 StageName = "prod"
 

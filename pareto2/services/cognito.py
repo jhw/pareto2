@@ -1,7 +1,7 @@
-from pareto2.ingredients import hungarorise as H
-from pareto2.ingredients import Resource, AltNamespaceMixin
+from pareto2.services import hungarorise as H
+from pareto2.services import Resource, AltNamespaceMixin
 
-from pareto2.ingredients.iam import *
+from pareto2.services.iam import *
 
 class UserPool(Resource):
 
@@ -84,7 +84,7 @@ class UserPoolWebClient(UserPoolClient):
 """
 You should be able to use a User pool without an Identity pool, but experience of the Flutter Amplify libraries suggests an Identity pool is always required, even if not used
 
-All this Identity pool code is therefore boilerplate; not really clear if it should live in ingredients or recipes; for now, keep it in the former
+All this Identity pool code is therefore boilerplate; not really clear if it should live in services or recipes; for now, keep it in the former
 """
 
 class IdentityPool(Resource):

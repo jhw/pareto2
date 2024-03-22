@@ -1,13 +1,13 @@
-from pareto2.ingredients import hungarorise as H
+from pareto2.services import hungarorise as H
 
-from pareto2.ingredients.dynamodb import StreamingTable as _StreamingTable
-from pareto2.ingredients.iam import *
+from pareto2.services.dynamodb import StreamingTable as _StreamingTable
+from pareto2.services.iam import *
 
 from pareto2.recipes import Recipe
 
 import importlib
 
-lambda_module = importlib.import_module("pareto2.ingredients.lambda")
+lambda_module = importlib.import_module("pareto2.services.lambda")
 
 class StreamingFunction(lambda_module.InlineFunction):
     

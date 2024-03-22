@@ -1,7 +1,5 @@
 ### short [01-roles-and-permissions]
 
-- rename ingredients as services
-
 - simplify recipe classes and naming
 - add default role and policy
 
@@ -81,6 +79,7 @@
 
 ### done
 
+- rename ingredients as services
 - move events permission into event worker
 - add sub directories to web_api recipe
 - move apigw subclasses inline and refactor

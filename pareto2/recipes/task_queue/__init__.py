@@ -1,13 +1,13 @@
-from pareto2.ingredients import hungarorise as H
+from pareto2.services import hungarorise as H
 
-from pareto2.ingredients.iam import *
-from pareto2.ingredients.sqs import *
+from pareto2.services.iam import *
+from pareto2.services.sqs import *
 
 from pareto2.recipes import Recipe
 
 import importlib
 
-lambda_module = importlib.import_module("pareto2.ingredients.lambda")
+lambda_module = importlib.import_module("pareto2.services.lambda")
 
 class QueueFunction(lambda_module.InlineFunction):
     

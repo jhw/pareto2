@@ -1,17 +1,17 @@
-from pareto2.ingredients import hungarorise as H
+from pareto2.services import hungarorise as H
 
-from pareto2.ingredients.apigateway import *
-from pareto2.ingredients.apigateway import Resource as APIGWResource
-from pareto2.ingredients.cognito import *
-from pareto2.ingredients.iam import *
-from pareto2.ingredients.route53 import *
+from pareto2.services.apigateway import *
+from pareto2.services.apigateway import Resource as APIGWResource
+from pareto2.services.cognito import *
+from pareto2.services.iam import *
+from pareto2.services.route53 import *
 
 from pareto2.recipes import Recipe
 from pareto2.recipes.web_api.cors import CorsMethod
 
 import importlib, re
 
-lambda_module = importlib.import_module("pareto2.ingredients.lambda")
+lambda_module = importlib.import_module("pareto2.services.lambda")
 
 LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
 
