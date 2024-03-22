@@ -1,7 +1,5 @@
 ### short [01-roles-and-permissions]
 
-- check identity pool role namespacing and refactor
-- check s3 role namespacing and refactor
 - move apigw subclasses inline and refactor
 - move lambda subclasses inline and refactor
 - replace classes which do nothing but parameterise

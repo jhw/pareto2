@@ -101,40 +101,45 @@ class IdentityPool(Resource):
     def visible(self):
         return True
 
-def identity_pool_role_condition(namespace, typestr):
-    return {"StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
-            "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": typestr}}
-    
-class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
+class IdentityPoolRoleBase(Role):
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace,
                          action = "sts:AssumeRoleWithWebIdentity",
-                         condition = identity_pool_role_condition(namespace, typestr = "authorized"),
-                         principal = {"Federated": "cognito-identity.amazonaws.com"})
+                         principal =  {"Federated": "cognito-identity.amazonaws.com"},                       
+                         **kwargs)
 
-class IdentityPoolAuthorizedPolicy(AltNamespaceMixin, Policy):
+class IdentityPoolAuthorizedRole(IdentityPoolRoleBase):
 
     def __init__(self, namespace):
-        super().__init__(namespace = namespace,
+        super().__init__(namespace = f"{namespace}-identity-pool-authorized",
+                         condition = {
+                             "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
+                             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authorized"}
+                         })
+
+class IdentityPoolAuthorizedPolicy(Policy):
+
+    def __init__(self, namespace):
+        super().__init__(namespace =  f"{namespace}-identity-pool-authorized",
                          permissions = ["cognito-sync:*",
                                         "cognito-identity:*",
                                         "lambda:InvokeFunction"])
 
-class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
+class IdentityPoolUnauthorizedRole(IdentityPoolRoleBase):
 
     def __init__(self, namespace):
-        super().__init__(namespace = namespace,
-                         action = "sts:AssumeRoleWithWebIdentity",
-                         condition = identity_pool_role_condition(namespace, typestr = "unauthorized"),
-                         principal = {"Federated": "cognito-identity.amazonaws.com"})
+        super().__init__(namespace = f"{namespace}-identity-pool-unauthorized",
+                         condition = {
+                             "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
+                             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "unauthorized"}
+                         })
 
-class IdentityPoolUnauthorizedPolicy(AltNamespaceMixin, Policy):
+class IdentityPoolUnauthorizedPolicy(Policy):
 
     def __init__(self, namespace):
-        super().__init__(namespace = namespace,
+        super().__init__(namespace = f"{namespace}-identity-pool-unauthorized",
                          permissions = ["cognito-sync:*"])
-
     
 class IdentityPoolRoleAttachment(Resource):
     
