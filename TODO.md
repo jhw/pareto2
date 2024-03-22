@@ -1,10 +1,13 @@
 ### short [01-roles-and-permissions]
 
-- don't like namespacing of identity pool roles and s3 role
-- move iam list stuff inline
+- review generated roles and policies for bad stuff
+- check identity pool role namespacing and refactor
+- check s3 role namespacing and refactor
+- move apigw subclasses inline and refactor
+- move lambda subclasses inline and refactor
+- replace classes which do nothing but parameterise
 - add default role and policy
-- remove classes which do nothing but parameterise, especially in lambda
-- test gist deployment of demo
+- re- test gists
 
 ### roadmap
 
