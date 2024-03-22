@@ -1,10 +1,12 @@
 ### short [01-roles-and-permissions]
 
-- add sub directories to web_api recipe
-- move cognito subclasses into web_api subdirs
-- rename ingredients as sevices
+- move events permission into event worker
+
+- rename ingredients as services
+
 - simplify recipe classes and naming
 - add default role and policy
+
 - re- test gists
 
 ### roadmap
@@ -30,6 +32,8 @@
 
 ### thoughts
 
+- move cognito subclasses into web_api subdirs?
+  - it's just not clear where this crap should live
 - topic worker?
   - think it's an anti- pattern
 - rename single streaming table
@@ -79,6 +83,7 @@
 
 ### done
 
+- add sub directories to web_api recipe
 - move apigw subclasses inline and refactor
 - move lambda subclasses inline and refactor
 - review generated roles and policies for bad stuff

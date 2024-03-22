@@ -8,12 +8,6 @@ from pareto2.ingredients.s3 import *
 
 from pareto2.recipes import Recipe
 
-class S3Resource(APIGWResource):
-
-    def __init__(self, namespace, path = "{proxy+}"):
-        super().__init__(namespace = namespace,
-                         path = path)
-
 class RedirectMethod(Method):
 
     def __init__(self, namespace, path = "index.html"):
@@ -44,6 +38,12 @@ class RedirectMethod(Method):
                 "ResourceId": resource_id, 
                 "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
         
+class ProxyResource(APIGWResource):
+
+    def __init__(self, namespace, path = "{proxy+}"):
+        super().__init__(namespace = namespace,
+                         path = path)
+
 class ProxyMethod(Method):
 
     def __init__(self, namespace):
@@ -102,7 +102,7 @@ class WebSite(Recipe):
         for fn in [self.init_rest_api]:
             self.append(fn(namespace))
         for klass in [Stage,
-                      S3Resource,
+                      ProxyResource,
                       ProxyMethod,
                       ProxyRole,
                       ProxyPolicy,
