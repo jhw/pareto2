@@ -1,7 +1,6 @@
 ### short [01-roles-and-permissions]
 
-- eliminate unnecessary classes in web_xxx.py demos
-- move cognito crap into web_api submodule
+- user scripts
 
 - re- test gists
 
@@ -28,6 +27,10 @@
 
 ### thoughts
 
+- move cognito crap into web_api submodule
+  - not convinced
+- eliminate unnecessary classes in web_xxx.py demos
+  - not convinced
 - move cognito subclasses into web_api subdirs?
   - it's just not clear where this crap should live
 - topic worker?
