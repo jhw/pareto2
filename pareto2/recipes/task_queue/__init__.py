@@ -16,11 +16,6 @@ class QueueFunction(lambda_module.InlineFunction):
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
                          variables = {"queue-url": {"Ref": H(f"{queue_namespace}-queue")}})
 
-class QueueRole(Role):
-    
-    def __init__(self, namespace, queue_namespace):
-        super().__init__(namespace = namespace)
-        
 class QueuePolicy(Policy):
     
     def __init__(self, namespace, queue_namespace):
@@ -54,17 +49,17 @@ class TaskQueue(Recipe):
     def __init__(self,
                  namespace):
         super().__init__()
+        child_ns = f"{namespace}-task-queue"        
         self.append(Queue(namespace = namespace))
-        self.init_streaming(parent_ns = namespace)        
+        self.append(QueueFunction(namespace = child_ns,
+                                  queue_namespace = namespace))
+        self.append(Role(namespace = child_ns))
+        self.append(QueuePolicy(namespace = child_ns,
+                                queue_namespace = namespace))
+        self.append(QueueEventSourceMapping(namespace = child_ns,
+                                            queue_namespace = namespace))
 
-    def init_streaming(self, parent_ns):
-        child_ns = f"{parent_ns}-task-queue"        
-        for klass in [QueueFunction,
-                      QueueRole,
-                      QueuePolicy,
-                      QueueEventSourceMapping]:
-            self.append(klass(namespace = child_ns,
-                              queue_namespace = parent_ns))
+
             
 if __name__ == "__main__":
     pass

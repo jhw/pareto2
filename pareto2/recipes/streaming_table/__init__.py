@@ -16,12 +16,6 @@ class StreamingFunction(lambda_module.InlineFunction):
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
                          variables = {"table-name": {"Ref": H(f"{table_namespace}-table")}})
 
-class StreamingRole(Role):
-    
-    def __init__(self, namespace, table_namespace):
-        super().__init__(namespace = namespace)
-
-        
 class StreamingPolicy(Policy):
     
     def __init__(self, namespace, table_namespace):
@@ -78,20 +72,17 @@ class StreamingEventSourceMapping(lambda_module.EventSourceMapping):
         
 class StreamingTable(Recipe):    
 
-    def __init__(self,
-                 namespace):
+    def __init__(self, namespace):
         super().__init__()
+        child_ns = f"{namespace}-streaming-table"        
         self.append(_StreamingTable(namespace = namespace))
-        self.init_streaming(parent_ns = namespace)        
-
-    def init_streaming(self, parent_ns):
-        child_ns = f"{parent_ns}-streaming-table"        
-        for klass in [StreamingFunction,
-                      StreamingRole,
-                      StreamingPolicy,
-                      StreamingEventSourceMapping]:
-            self.append(klass(namespace = child_ns,
-                              table_namespace = parent_ns))
+        self.append(StreamingFunction(namespace = child_ns,
+                                      table_namespace = namespace))
+        self.append(Role(namespace = child_ns))
+        self.append(StreamingPolicy(namespace = child_ns,
+                                    table_namespace = namespace))
+        self.append(StreamingEventSourceMapping(namespace = child_ns,
+                                                table_namespace = namespace))
             
 if __name__ == "__main__":
     pass

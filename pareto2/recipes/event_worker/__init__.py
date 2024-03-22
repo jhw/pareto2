@@ -29,25 +29,6 @@ class SlackFunction(lambda_module.InlineFunction):
                          variables = {"slack-logging-level": log_level,
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
 
-class SlackRole(Role):
-
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace)
-        
-class SlackPolicy(Policy):
-
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace,
-                         permissions = ["logs:CreateLogGroup",
-                                        "logs:CreateLogStream",
-                                        "logs:PutLogEvents"])
-        
-class SlackPermission(lambda_module.Permission):
-
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace,
-                         principal = "logs.amazonaws.com")
-
 class EventPermission(lambda_module.Permission):
 
     def __init__(self, namespace, function_namespace):
@@ -121,9 +102,13 @@ class EventWorker(Recipe):
             child_ns = f"{parent_ns}-{log_level}"
             self.append(SlackFunction(namespace = child_ns,
                                       log_level = log_level))
-            self.append(SlackRole(namespace = child_ns))
-            self.append(SlackPolicy(namespace = child_ns))
-            self.append(SlackPermission(namespace = child_ns))
+            self.append(Role(namespace = child_ns))
+            self.append(Policy(namespace = child_ns,
+                               permissions = ["logs:CreateLogGroup",
+                                              "logs:CreateLogStream",
+                                              "logs:PutLogEvents"]))
+            self.append(lambda_module.Permission(namespace = child_ns,
+                                                 principal = "logs.amazonaws.com"))
             
 if __name__ == "__main__":
     pass

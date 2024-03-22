@@ -1,8 +1,7 @@
 ### short [01-roles-and-permissions]
 
-- simplify recipe classes and naming
-- add default role and policy
-
+- default logs permissiosn
+- eliminate unnecessary classes in web_xxx demos
 - re- test gists
 
 ### roadmap
