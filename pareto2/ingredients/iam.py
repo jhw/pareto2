@@ -70,7 +70,7 @@ class Policy(Resource):
             "Roles": [
                 {"Ref": H(f"{self.namespace}-role")},
             ],
-            "PolicyName": {"Fn::Sub": f"{self.namespace}-role-policy-${{AWS::StackName}}"},
+            "PolicyName": {"Fn::Sub": f"{self.namespace}-policy-${{AWS::StackName}}"},
             "PolicyDocument": {
                 "Version": "2012-10-17",
                 "Statement": self.init_statement(self.permissions)

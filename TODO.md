@@ -1,6 +1,5 @@
 ### short [01-roles-and-permissions]
 
-- review generated roles and policies for bad stuff
 - check identity pool role namespacing and refactor
 - check s3 role namespacing and refactor
 - move apigw subclasses inline and refactor
@@ -81,6 +80,7 @@
 
 ### done
 
+- review generated roles and policies for bad stuff
 - every recipe which creates role to also create a policy
 - run demos
 - separate role and permission
