@@ -122,10 +122,10 @@ class Recipe(list):
         return wrapped
     
     @wildcard_override
-    def role_permissions(self, worker,
-                         defaults = ["logs:CreateLogGroup",
-                                     "logs:CreateLogStream",
-                                     "logs:PutLogEvents"]):
+    def policy_permissions(self, worker,
+                           defaults = ["logs:CreateLogGroup",
+                                       "logs:CreateLogStream",
+                                       "logs:PutLogEvents"]):
         permissions = set(defaults)
         if "permissions" in worker:
             permissions.update(set(worker["permissions"]))

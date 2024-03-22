@@ -36,7 +36,9 @@ class WebApi(Recipe):
                       UserPoolWebClient,
                       IdentityPool,
                       IdentityPoolAuthorizedRole,
+                      IdentityPoolAuthorizedPolicy,
                       IdentityPoolUnauthorizedRole,
+                      IdentityPoolUnauthorizedPolicy,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
 
@@ -67,8 +69,8 @@ class WebApi(Recipe):
             self.init_POST_endpoint(parent_ns, child_ns, endpoint)
         self.append(self.init_function(namespace = child_ns,
                                        endpoint = endpoint))
-        self.append(self.init_role(namespace = child_ns,
-                                   endpoint = endpoint))
+        self += self.init_role_and_policy(namespace = child_ns,
+                                          endpoint = endpoint)
         self.append(self.init_lambda_permission(parent_ns = parent_ns,
                                                 child_ns = child_ns,
                                                 endpoint = endpoint))
@@ -104,9 +106,12 @@ class WebApi(Recipe):
         return fn(namespace = namespace,
                   **self.function_kwargs(endpoint))
 
-    def init_role(self, namespace, endpoint):
-        return Role(namespace = namespace,
-                    permissions = self.role_permissions(endpoint))
+    def init_role_and_policy(self, namespace, endpoint):
+        return [
+            Role(namespace),
+            Policy(namespace = namespace,
+                   permissions = self.policy_permissions(endpoint))
+        ]
     
     def init_lambda_permission(self, parent_ns, child_ns, endpoint):
         return apigateway_lambda_module.LambdaProxyPermission(namespace = parent_ns,

@@ -1,14 +1,18 @@
-### short
+### short [01-roles-and-permissions]
 
-- separate roles and policies
+- don't like namespacing of identity pool roles and s3 role
+- move iam list stuff inline
+- add default role and policy
+- remove classes which do nothing but parameterise, especially in lambda
+- test gist deployment of demo
 
 ### roadmap
 
 - apigateway2
 - event timer
+- layer builder
 - binding script
 - migration script
-- layer builder
 
 ### long
 
@@ -73,6 +77,11 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- every recipe which creates role to also create a policy
+- run demos
+- separate role and permission
+- separate policy from role for all ingredients
 
 - gist
 - demo

@@ -19,8 +19,9 @@ class TaskQueue(Recipe):
     def init_streaming(self, parent_ns):
         child_ns = f"{parent_ns}-task-queue"        
         for attr in ["TaskQueueFunction",
-                   "TaskQueueRole",
-                   "TaskQueueEventSourceMapping"]:
+                     "TaskQueueRole",
+                     "TaskQueuePolicy",
+                     "TaskQueueEventSourceMapping"]:
             fn = getattr(task_queue_module, attr)
             self.append(fn(namespace = child_ns,
                            queue_namespace = parent_ns))

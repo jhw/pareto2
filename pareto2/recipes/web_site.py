@@ -17,6 +17,7 @@ class WebSite(Recipe):
                       S3Resource,
                       S3ProxyMethod,
                       S3ProxyRole,
+                      S3ProxyPolicy,
                       S3RedirectMethod,
                       DomainName,
                       BasePathMapping,

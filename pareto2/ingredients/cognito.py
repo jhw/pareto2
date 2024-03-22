@@ -1,7 +1,7 @@
 from pareto2.ingredients import hungarorise as H
 from pareto2.ingredients import Resource, AltNamespaceMixin
 
-from pareto2.ingredients.iam import Role
+from pareto2.ingredients.iam import Role, Policy
 
 class UserPool(Resource):
 
@@ -111,7 +111,12 @@ class IdentityPoolAuthorizedRole(AltNamespaceMixin, Role):
         super().__init__(namespace = namespace,
                          action = "sts:AssumeRoleWithWebIdentity",
                          condition = identity_pool_role_condition(namespace, typestr = "authorized"),
-                         principal = {"Federated": "cognito-identity.amazonaws.com"},
+                         principal = {"Federated": "cognito-identity.amazonaws.com"})
+
+class IdentityPoolAuthorizedPolicy(AltNamespaceMixin, Policy):
+
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace,
                          permissions = ["cognito-sync:*",
                                         "cognito-identity:*",
                                         "lambda:InvokeFunction"])
@@ -122,8 +127,14 @@ class IdentityPoolUnauthorizedRole(AltNamespaceMixin, Role):
         super().__init__(namespace = namespace,
                          action = "sts:AssumeRoleWithWebIdentity",
                          condition = identity_pool_role_condition(namespace, typestr = "unauthorized"),
-                         principal = {"Federated": "cognito-identity.amazonaws.com"},
+                         principal = {"Federated": "cognito-identity.amazonaws.com"})
+
+class IdentityPoolUnauthorizedPolicy(AltNamespaceMixin, Policy):
+
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace,
                          permissions = ["cognito-sync:*"])
+
     
 class IdentityPoolRoleAttachment(Resource):
     

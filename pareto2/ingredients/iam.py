@@ -1,10 +1,6 @@
 from pareto2.ingredients import hungarorise as H
 from pareto2.ingredients import Resource
 
-SimpleMatcher = lambda item: isinstance(item, str)
-
-ExtendedMatcher = lambda item: isinstance(item, dict)
-
 def is_list(fn):
     def wrapped(items, matcherfn):
         if not isinstance(items, list):
@@ -19,10 +15,10 @@ def list_matcher(items, matcherfn):
             return False
     return True
 
-def is_list_of_strings(items, matcherfn = SimpleMatcher):
+def is_list_of_strings(items, matcherfn = lambda x: isinstance(x, str)):
     return list_matcher(items, matcherfn)
 
-def is_list_of_dicts(items, matcherfn = ExtendedMatcher):
+def is_list_of_dicts(items, matcherfn =  lambda x: isinstance(x, dict)):
     return list_matcher(items, matcherfn)
 
 def listify(values):
@@ -34,35 +30,62 @@ class Role(Resource):
                  namespace,
                  action = "sts:AssumeRole",
                  condition = None,
-                 principal = "lambda.amazonaws.com",
-                 permissions = []):
+                 principal = "lambda.amazonaws.com"):
         self.namespace = namespace
         self.action = action
         self.condition = condition
         self.principal = principal
+
+    @property
+    def aws_properties(self):
+        return {
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [self.statement]
+            }
+        }
+    
+    @property
+    def statement(self):
+        statement= {
+            "Effect": "Allow",
+            "Principal": {"Service": self.principal} if isinstance(self.principal, str) else self.principal,
+            "Action": listify(self.action)
+        }
+        if self.condition:
+            statement["Condition"] = self.condition
+        return statement
+        
+class Policy(Resource):
+
+    def __init__(self,
+                 namespace,
+                 permissions = []):
+        self.namespace = namespace
         self.permissions = permissions
         
     @property
     def aws_properties(self):
-        policy_name = {"Fn::Sub": f"{self.namespace}-role-policy-${{AWS::StackName}}"}
-        policies = [{"PolicyDocument": self.policy_document,
-                     "PolicyName": policy_name}]
         return {
-            "AssumeRolePolicyDocument": self.assume_role_policy_document,
-            "Policies": policies
+            "Roles": [
+                {"Ref": H(f"{self.namespace}-role")},
+            ],
+            "PolicyName": {"Fn::Sub": f"{self.namespace}-role-policy-${{AWS::StackName}}"},
+            "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": self.init_statement(self.permissions)
+            }
         }
 
-    @property
-    def assume_role_policy_document(self):
-        policy = {"Effect": "Allow",
-                  "Principal": {"Service": self.principal} if isinstance(self.principal, str) else self.principal,
-                  "Action": listify(self.action)}
-        if self.condition:
-            policy["Condition"] = self.condition
-        return {"Version": "2012-10-17",
-                "Statement": [policy]}
+    def init_statement(self, permissions):
+        if is_list_of_strings(permissions):            
+            return self.simple_permissions(permissions)
+        elif is_list_of_dicts(permissions):
+            return self.expanded_permissions(permissions)
+        else:
+            raise RuntimeError("IAM permissions format not recognised")
     
-    def format_simple_policies(self, permissions):
+    def simple_permissions(self, permissions):
         def group_permissions(permissions):
             groups = {}
             for permission in permissions:
@@ -75,23 +98,9 @@ class Role(Resource):
                  "Resource": "*"}
                 for group in group_permissions(permissions)]
 
-    def format_extended_policies(self, items):
+    def expanded_permissions(self, items):
         return [{"Action": listify(item["action"]),
                  "Effect": "Allow",
                  "Resource": item["resource"] if "resource" in item else "*"}
                 for item in items]
     
-    def format_policies(self, permissions):
-        if is_list_of_strings(permissions):            
-            return self.format_simple_policies(permissions)
-        elif is_list_of_dicts(permissions):
-            return self.format_extended_policies(permissions)
-        else:
-            raise RuntimeError("IAM permissions format not recognised")
-
-    @property
-    def policy_document(self):
-        return {"Version": "2012-10-17",
-                "Statement": self.format_policies(self.permissions)}
-
-

@@ -1,6 +1,6 @@
 from pareto2.ingredients import hungarorise as H
 
-from pareto2.ingredients.iam import Role
+from pareto2.ingredients.iam import Role, Policy
 
 import importlib
 
@@ -14,6 +14,11 @@ class TaskQueueFunction(lambda_module.InlineFunction):
                          variables = {"queue-url": {"Ref": H(f"{queue_namespace}-queue")}})
 
 class TaskQueueRole(Role):
+    
+    def __init__(self, namespace, queue_namespace):
+        super().__init__(namespace = namespace)
+        
+class TaskQueuePolicy(Policy):
     
     def __init__(self, namespace, queue_namespace):
         super().__init__(namespace = namespace,

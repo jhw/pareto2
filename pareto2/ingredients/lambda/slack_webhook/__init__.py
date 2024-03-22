@@ -1,6 +1,6 @@
 from pareto2.ingredients import hungarorise as H
 
-from pareto2.ingredients.iam import Role
+from pareto2.ingredients.iam import Role, Policy
 
 import importlib
 
@@ -20,6 +20,11 @@ class SlackWebhookFunction(lambda_module.InlineFunction):
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
 
 class SlackWebhookRole(Role):
+
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace)
+        
+class SlackWebhookPolicy(Policy):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace,

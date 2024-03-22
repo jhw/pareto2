@@ -20,6 +20,7 @@ class StreamingTable(Recipe):
         child_ns = f"{parent_ns}-streaming-table"        
         for attr in ["StreamingTableFunction",
                      "StreamingTableRole",
+                     "StreamingTablePolicy",
                      "StreamingTableEventSourceMapping"]:
             fn = getattr(streaming_table_module, attr)
             self.append(fn(namespace = child_ns,

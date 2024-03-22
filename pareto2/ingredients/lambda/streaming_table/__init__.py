@@ -1,6 +1,6 @@
 from pareto2.ingredients import hungarorise as H
 
-from pareto2.ingredients.iam import Role
+from pareto2.ingredients.iam import Role, Policy
 
 import importlib
 
@@ -14,6 +14,12 @@ class StreamingTableFunction(lambda_module.InlineFunction):
                          variables = {"table-name": {"Ref": H(f"{table_namespace}-table")}})
 
 class StreamingTableRole(Role):
+    
+    def __init__(self, namespace, table_namespace):
+        super().__init__(namespace = namespace)
+
+        
+class StreamingTablePolicy(Policy):
     
     def __init__(self, namespace, table_namespace):
         super().__init__(namespace = namespace,

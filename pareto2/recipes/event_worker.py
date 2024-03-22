@@ -38,8 +38,8 @@ class EventWorker(Recipe):
         self.append(self.init_function(namespace = namespace,
                                        worker = worker))
         self.append(lambda_module.EventInvokeConfig(namespace = namespace))
-        self.append(self.init_role(namespace = namespace,
-                                   worker = worker))
+        self += self.init_role_and_policy(namespace = namespace,
+                                          worker = worker)
         for event in worker["events"]:
             self.init_event_rule(parent_ns = namespace,
                                  event = event)
@@ -51,9 +51,12 @@ class EventWorker(Recipe):
         return (fn(namespace = namespace,
                    **self.function_kwargs(worker)))
     
-    def init_role(self, namespace, worker):
-        return Role(namespace = namespace,
-                    permissions = self.role_permissions(worker))
+    def init_role_and_policy(self, namespace, worker):
+        return  [
+            Role(namespace = namespace),
+            Policy(namespace = namespace,
+                   permissions = self.policy_permissions(worker))
+        ]
 
     """
     - Permission here is pareto2.ingredients.events.Permission
@@ -85,6 +88,7 @@ class EventWorker(Recipe):
             self.append(slack_module.SlackWebhookFunction(namespace = child_ns,
                                                           log_level = log_level))
             self.append(slack_module.SlackWebhookRole(namespace = child_ns))
+            self.append(slack_module.SlackWebhookPolicy(namespace = child_ns))
             self.append(slack_module.SlackWebhookPermission(namespace = child_ns))
             
 if __name__ == "__main__":
