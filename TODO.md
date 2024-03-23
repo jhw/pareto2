@@ -1,7 +1,10 @@
 ### short
 
-- [website] either binary media types or root redirect
-- [website] binary media types must be an array
+- [event-worker] demo event to be hello world
+
+- [web-site] either binary media types or root redirect
+- [web-site] binary media types must be an array
+
 - user scripts
 
 ### medium
