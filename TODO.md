@@ -1,16 +1,22 @@
 ### short
 
+- complete gist tests
+
+- revert to empty default iam permissions
+
 - [streaming-table] add eventName INSERT to sample pattern
 
 - [web-site] either binary media types or root redirect
 - [web-site] binary media types must be an array
 
-- add slack logging to streaming table and task queue patterns
+- logs to be implemented via decorator at Recipe.render() level
+  - look for subscription filters
+
+- add error logging to streaming_table, task_queue recipes
+
 - user scripts
 
 ### medium
-
-
 
 - apigateway2
 - lambda alarms 
