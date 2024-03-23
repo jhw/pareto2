@@ -1,7 +1,5 @@
 ### short
 
-- sqs irregular
-
 - logging to be implemented in Recipe subclass SlackLoggingRecipe
 - logging to check for existence of subscription filters before adding
 - add error logging to streaming table and task queue
@@ -87,6 +85,7 @@
 
 ### done
 
+- sqs irregular
 - complete gist tests
 
 - [web-site] either binary media types or root redirect

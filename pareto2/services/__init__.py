@@ -46,7 +46,9 @@ class Resource:
     @property
     def aws_resource_type(self, irregulars = {"apigateway": "ApiGateway",
                                               "dynamodb": "DynamoDB",
-                                              "iam": "IAM"}):
+                                              "iam": "IAM",
+                                              "sns": "SNS",
+                                              "sqs": "SQS"}):
         tokens = self.aws_proxy_class.split(".")
         return "::".join(["AWS",
                           irregulars[tokens[-2]] if tokens[-2] in irregulars else hungarorise(tokens[-2]),
