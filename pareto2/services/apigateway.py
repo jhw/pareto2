@@ -8,7 +8,7 @@ StageName = "prod"
 
 class RestApi(AWSResource):
 
-    def __init__(self, namespace, binary_media_types = None):
+    def __init__(self, namespace, binary_media_types = []):
         self.namespace = namespace
         self.binary_media_types = binary_media_types
 
@@ -23,7 +23,7 @@ class RestApi(AWSResource):
         props = {
             "Name": {"Fn::Sub": f"{self.namespace}-rest-api-${{AWS::StackName}}"}
         }
-        if self.binary_media_types:
+        if self.binary_media_types != []:
             props["BinaryMediaTypes"] = self.binary_media_types
         return props
 

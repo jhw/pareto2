@@ -2,8 +2,7 @@
 
 - complete gist tests
 
-- [web-site] either binary media types or root redirect
-- [web-site] binary media types must be an array
+- allow apigw binary media types */* but disable root redirect if enabled
 
 - logs to be implemented via decorator at Recipe.render() level
   - look for subscription filters
@@ -90,6 +89,8 @@
 
 ### done
 
+- [web-site] either binary media types or root redirect
+- [web-site] binary media types must be an array
 - [streaming-table] add eventName INSERT to sample pattern
 - revert to empty default iam permissions
 - [event-worker] demo event to be hello world
