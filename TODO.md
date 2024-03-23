@@ -1,26 +1,26 @@
-### short [01-roles-and-permissions]
+### short
 
+- website root redirect returns HTTP 500
 - binary media types must be an array
-
 - user scripts
 
-### roadmap
+### medium
 
 - apigateway2
+- lambda alarms 
 - event timer
 - layer builder
+- react website demo
+- secrets
 - binding script
 - migration script
 
 ### long
 
-- react website demo
 - cross- account deployments
 - step functions
-- lambda alarms 
 - federated auth
 - passwordless auth
-- secrets
 - s3 multipart uploads
 - appsync
 - rockset
