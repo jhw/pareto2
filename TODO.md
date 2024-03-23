@@ -1,8 +1,8 @@
 ### short [01-roles-and-permissions]
 
-- user scripts
+- binary media types must be an array
 
-- re- test gists
+- user scripts
 
 ### roadmap
 
