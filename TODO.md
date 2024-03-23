@@ -2,8 +2,6 @@
 
 - complete gist tests
 
-- revert to empty default iam permissions
-
 - [streaming-table] add eventName INSERT to sample pattern
 
 - [web-site] either binary media types or root redirect
@@ -94,6 +92,7 @@
 
 ### done
 
+- revert to empty default iam permissions
 - [event-worker] demo event to be hello world
 
 - rename lambda_module
