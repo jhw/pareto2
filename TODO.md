@@ -1,7 +1,7 @@
 ### short
 
-- website root redirect returns HTTP 500
-- binary media types must be an array
+- [website] either binary media types or root redirect
+- [website] binary media types must be an array
 - user scripts
 
 ### medium
