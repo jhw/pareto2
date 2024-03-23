@@ -4,11 +4,7 @@ from pareto2.services.events import *
 from pareto2.services.iam import *
 from pareto2.services.logs import *
 
-# from pareto2.recipes import Recipe
-
-from pareto2.recipes import SlackLoggingRecipe
-
-from pareto2.recipes import LogNamespace, LogLevels
+from pareto2.recipes.slack_logging import SlackLoggingRecipe, LogNamespace, LogLevels
 
 import importlib
 
