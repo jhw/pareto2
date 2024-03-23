@@ -1,7 +1,5 @@
 ### short
 
-- [event-worker] demo event to be hello world
-
 - [web-site] either binary media types or root redirect
 - [web-site] binary media types must be an array
 
@@ -84,6 +82,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- [event-worker] demo event to be hello world
 
 - rename lambda_module
 - rename ingredients as services
