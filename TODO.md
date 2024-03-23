@@ -1,15 +1,12 @@
 ### short
 
-- complete gist tests
+- sqs irregular
+
+- logging to be implemented in Recipe subclass SlackLoggingRecipe
+- logging to check for existence of subscription filters before adding
+- add error logging to streaming table and task queue
 
 - allow apigw binary media types */* but disable root redirect if enabled
-
-- logs to be implemented via decorator at Recipe.render() level
-  - look for subscription filters
-
-- add error logging to streaming_table, task_queue recipes
-
-- user scripts
 
 ### medium
 
@@ -17,10 +14,11 @@
 - lambda alarms 
 - event timer
 - layer builder
-- react website demo
 - secrets
 - binding script
 - migration script
+- user scripts
+- react website demo
 
 ### long
 
@@ -88,6 +86,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- complete gist tests
 
 - [web-site] either binary media types or root redirect
 - [web-site] binary media types must be an array

@@ -55,12 +55,18 @@ class Role(Resource):
         if self.condition:
             statement["Condition"] = self.condition
         return statement
-        
+
+"""
+It's good to have some default permissions specified as Cloudformation will fail with empty list
+"""
+    
 class Policy(Resource):
 
     def __init__(self,
                  namespace,
-                 permissions = []):
+                 permissions = ["logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"]):
         self.namespace = namespace
         self.permissions = permissions
         
