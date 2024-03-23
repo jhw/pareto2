@@ -4,30 +4,15 @@ from pareto2.services.events import *
 from pareto2.services.iam import *
 from pareto2.services.logs import *
 
-from pareto2.recipes import Recipe
+# from pareto2.recipes import Recipe
+
+from pareto2.recipes import SlackLoggingRecipe
+
+from pareto2.recipes import LogNamespace, LogLevels
 
 import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
-
-"""
-- LogNamespace is a singleton namespace 
-"""
-
-LogNamespace, LogLevels = "logs", ["warning", "error"]
-
-"""
-- NB slack-webhook-url defined declaratively / as a Ref, so appears as a top level Parameter
-- remember one Slack webhook per application
-"""
-
-class SlackFunction(L.InlineFunction):
-
-    def __init__(self, namespace, log_level):
-        super().__init__(namespace = namespace,
-                         code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
-                         variables = {"slack-logging-level": log_level,
-                                      "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
 
 class EventPermission(L.Permission):
 
@@ -37,7 +22,7 @@ class EventPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
-class EventWorker(Recipe):    
+class EventWorker(SlackLoggingRecipe):    
 
     def __init__(self,
                  namespace,
@@ -92,20 +77,6 @@ class EventWorker(Recipe):
             subscriptionfn = eval(H(f"{log_level}-subscription-filter"))
             self.append(subscriptionfn(namespace = namespace,
                                        logging_namespace = child_logging_ns))
-
-    """
-    - logs are created entirely in the logging namespace
-    """
-            
-    def init_logs(self, parent_ns, log_levels):
-        for log_level in log_levels:
-            child_ns = f"{parent_ns}-{log_level}"
-            self.append(SlackFunction(namespace = child_ns,
-                                      log_level = log_level))
-            self.append(Role(namespace = child_ns))
-            self.append(Policy(namespace = child_ns))
-            self.append(L.Permission(namespace = child_ns,
-                                                 principal = "logs.amazonaws.com"))
             
 if __name__ == "__main__":
     pass
