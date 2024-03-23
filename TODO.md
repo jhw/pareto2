@@ -2,8 +2,6 @@
 
 - complete gist tests
 
-- [streaming-table] add eventName INSERT to sample pattern
-
 - [web-site] either binary media types or root redirect
 - [web-site] binary media types must be an array
 
@@ -92,6 +90,7 @@
 
 ### done
 
+- [streaming-table] add eventName INSERT to sample pattern
 - revert to empty default iam permissions
 - [event-worker] demo event to be hello world
 

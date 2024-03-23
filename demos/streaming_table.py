@@ -12,6 +12,8 @@ Worker = yaml.safe_load("""
   - name: foobar
     pattern:
       detail:
+        eventName:
+        - INSERT
         pk: 
         - prefix: LEAGUE
       source:
