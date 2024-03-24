@@ -3,18 +3,24 @@
 - add error logging to streaming table 
 - add error logging to task queue
 
-- allow apigw binary media types */* but disable root redirect if enabled
+- test gists
 
 ### medium
 
 - apigateway2
+
+- script to filter lambda logs
+- allow apigw binary media types */* but disable root redirect if enabled
+
 - lambda alarms 
 - event timer
 - layer builder
 - secrets
+
 - binding script
 - migration script
 - user scripts
+
 - react website demo
 
 ### long

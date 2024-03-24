@@ -13,6 +13,8 @@ L = importlib.import_module("pareto2.services.lambda")
 - remember one Slack webhook per application
 """
 
+SlackNamespace = "slack"
+
 class SlackFunction(L.InlineFunction):
 
     def __init__(self, namespace, log_level):
@@ -21,7 +23,7 @@ class SlackFunction(L.InlineFunction):
                          variables = {"slack-logging-level": log_level,
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
     
-class SlackLoggingRecipe(Recipe):
+class SlackRecipe(Recipe):
 
     def __init__(self):
         super().__init__()
