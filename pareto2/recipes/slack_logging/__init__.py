@@ -1,6 +1,7 @@
 from pareto2.services import hungarorise as H
 
 from pareto2.services.iam import *
+from pareto2.services.logs import *
 
 from pareto2.recipes import Recipe
 
@@ -28,16 +29,21 @@ class SlackRecipe(Recipe):
     def __init__(self):
         super().__init__()
 
+    def init_logs_subscriptions(self, namespace, logging_namespace, log_levels):
+        self.append(LogGroup(namespace = namespace))
+        self.append(LogStream(namespace = namespace))
+        for log_level in log_levels:
+            child_logging_ns = f"{logging_namespace}-{log_level}"
+            subscriptionfn = eval(H(f"{log_level}-subscription-filter"))
+            self.append(subscriptionfn(namespace = namespace,
+                                       logging_namespace = child_logging_ns))
+
     @property
     def log_levels(self):
         return list(set([resource.resource_name.split("-")[-3]
                          for resource in self
                          if resource.aws_resource_type == "AWS::Logs::SubscriptionFilter"]))
-                
-    """
-    - logs are created entirely in the logging namespace
-    """
-            
+
     def init_slack_logs(self, parent_ns):
         for log_level in self.log_levels:
             child_ns = f"{parent_ns}-{log_level}"

@@ -2,7 +2,6 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.events import *
 from pareto2.services.iam import *
-from pareto2.services.logs import *
 
 from pareto2.recipes.slack_logging import SlackRecipe, SlackNamespace
 
@@ -30,10 +29,9 @@ class EventWorker(SlackRecipe):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
-        self.init_log_subscriptions(namespace = namespace,
-                                    logging_namespace = logging_namespace,
-                                    worker = worker,
-                                    log_levels = log_levels)
+        self.init_logs_subscriptions(namespace = namespace,
+                                     logging_namespace = logging_namespace,
+                                     log_levels = log_levels)
         self.init_slack_logs(parent_ns = logging_namespace)
 
     def init_worker(self, namespace, worker):
@@ -45,8 +43,6 @@ class EventWorker(SlackRecipe):
         for event in worker["events"]:
             self.init_event_rule(parent_ns = namespace,
                                  event = event)
-        self.append(LogGroup(namespace = namespace))
-        self.append(LogStream(namespace = namespace))
         
     def init_function(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
@@ -67,14 +63,7 @@ class EventWorker(SlackRecipe):
                          pattern = event["pattern"]))
         self.append(EventPermission(namespace = child_ns,
                                     function_namespace = parent_ns))
-        
-    def init_log_subscriptions(self, namespace, logging_namespace, worker, log_levels):
-        for log_level in log_levels:
-            child_logging_ns = f"{logging_namespace}-{log_level}"
-            subscriptionfn = eval(H(f"{log_level}-subscription-filter"))
-            self.append(subscriptionfn(namespace = namespace,
-                                       logging_namespace = child_logging_ns))
-            
+                    
 if __name__ == "__main__":
     pass
 
