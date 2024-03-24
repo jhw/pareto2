@@ -44,7 +44,7 @@ class Resource:
         return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
 
     @property
-    def aws_resource_type(self, irregulars = {"apigateway": "ApiGateway",
+    def aws_resource_type(self, irregulars = {"apigatewayv2": "ApiGatewayV2",
                                               "dynamodb": "DynamoDB",
                                               "iam": "IAM",
                                               "sns": "SNS",

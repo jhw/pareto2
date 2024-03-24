@@ -1,10 +1,13 @@
-### short
+### short [01-apigw-v2]
 
-- apigateway2
+- remove restapi binary media types
+- replace restapi and associated refs with api
+- replace BasePathMapping with ApiMapping
+- remove resources
 
 ### medium
 
-- allow apigw binary media types */* but disable root redirect if enabled
+- apigwv2 binary media types
 
 - lambda alarms 
 - event timer
@@ -85,6 +88,8 @@
 
 ### done
 
+- add apigatewayv2 irregular
+- rename apigateway as apigatewayv2
 - script to filter lambda logs
 - add error logging to task queue
 - add error logging to streaming table 
