@@ -1,12 +1,9 @@
 ### short
 
-- re- test streaming_table, task_queue gists
+- apigateway2
 
 ### medium
 
-- apigateway2
-
-- script to filter lambda logs
 - allow apigw binary media types */* but disable root redirect if enabled
 
 - lambda alarms 
@@ -27,6 +24,7 @@
 - federated auth
 - passwordless auth
 - s3 multipart uploads
+- tracing and xrays
 - appsync
 - rockset
 
@@ -87,6 +85,7 @@
 
 ### done
 
+- script to filter lambda logs
 - add error logging to task queue
 - add error logging to streaming table 
 - logging to check for existence of subscription filters before adding
