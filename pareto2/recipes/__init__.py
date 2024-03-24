@@ -8,12 +8,6 @@ L = importlib.import_module("pareto2.services.lambda")
 
 import re
 
-"""
-- LogNamespace is a singleton namespace 
-"""
-
-LogNamespace, LogLevels = "logs", ["warning", "error"]
-
 class Template(dict):
 
     def __init__(self, resources):

@@ -4,11 +4,13 @@ from pareto2.services.events import *
 from pareto2.services.iam import *
 from pareto2.services.logs import *
 
-from pareto2.recipes.slack_logging import SlackLoggingRecipe, LogNamespace, LogLevels
+from pareto2.recipes.slack_logging import SlackLoggingRecipe
 
 import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
+
+LogNamespace, LogLevels = "logs", ["warning", "error"]
 
 class EventPermission(L.Permission):
 
@@ -32,8 +34,7 @@ class EventWorker(SlackLoggingRecipe):
                                     logging_namespace = logging_namespace,
                                     worker = worker,
                                     log_levels = log_levels)
-        self.init_logs(parent_ns = logging_namespace,
-                       log_levels = log_levels)
+        self.init_slack_logs(parent_ns = logging_namespace)
 
     def init_worker(self, namespace, worker):
         self.append(self.init_function(namespace = namespace,

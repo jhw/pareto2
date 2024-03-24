@@ -1,7 +1,8 @@
 ### short
 
-- logging to check for existence of subscription filters before adding
-- add error logging to streaming table and task queue
+- add error logging to streaming table 
+- add error logging to task queue
+
 - allow apigw binary media types */* but disable root redirect if enabled
 
 ### medium
@@ -83,6 +84,7 @@
 
 ### done
 
+- logging to check for existence of subscription filters before adding
 - logging to be implemented in Recipe subclass SlackLoggingRecipe
 
 - sqs irregular
