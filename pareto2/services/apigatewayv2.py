@@ -55,7 +55,12 @@ class Stage(Resource):
             "ApiId": {"Ref": H(f"{self.namespace}-api")}
         }
 
-class Method(AltNamespaceMixin, Resource):
+class Route(AltNamespaceMixin, Resource):
+    
+    def __init__(self, namespace):
+        self.namespace = namespace
+
+class Integration(AltNamespaceMixin, Resource):
     
     def __init__(self, namespace):
         self.namespace = namespace

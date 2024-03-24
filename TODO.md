@@ -1,10 +1,13 @@
 ### short [01-apigw-v2]
 
-- replace method base class with route and integration
+- check validation
+- check gateway responses
 
-- lambda method
+- lambda method implementation
+
 - cors
-- cognito
+- auth
+
 - s3 proxy
 - s3 redirect
 
@@ -93,6 +96,7 @@
 
 ### done
 
+- replace method base class with route and integration
 - replace BasePathMapping with ApiMapping
 - remove restapi binary media types
 - replace restapi and associated refs with api
