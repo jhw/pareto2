@@ -34,15 +34,15 @@
 
 ### thoughts
 
-- move cognito crap into web_api submodule
-  - not convinced
-- eliminate unnecessary classes in web_xxx.py demos
+- refactor policy_permissions helper?
+  - not clear how
+- eliminate unnecessary classes in web_xxx.py demos?
   - not convinced
 - move cognito subclasses into web_api subdirs?
   - it's just not clear where this crap should live
 - topic worker?
   - think it's an anti- pattern
-- rename single streaming table
+- rename single streaming table?
 - refactor "worker" name passed to event_worker?
 - investigate if default resource_name should actually be base_resource_name?
 - extend IAM role for args required by IdentityPoolRole?
