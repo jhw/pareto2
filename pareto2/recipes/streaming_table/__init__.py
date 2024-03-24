@@ -1,9 +1,9 @@
 from pareto2.services import hungarorise as H
 
-from pareto2.services.dynamodb import StreamingTable as _StreamingTable
+from pareto2.services.dynamodb import StreamingTable as StreamingTableResource
 from pareto2.services.iam import *
 
-from pareto2.recipes import Recipe
+from pareto2.recipes.slack_logging import SlackRecipe
 
 import importlib
 
@@ -70,18 +70,29 @@ class StreamingEventSourceMapping(L.EventSourceMapping):
         })
         return props
         
-class StreamingTable(Recipe):    
+class StreamingTable(SlackRecipe):    
 
-    def __init__(self, namespace):
+    def __init__(self,
+                 namespace,
+                 logging_namespace = "slack",
+                 log_levels = ["error"]):
         super().__init__()
-        child_ns = f"{namespace}-streaming-table"        
-        self.append(_StreamingTable(namespace = namespace))
-        self.append(StreamingFunction(namespace = child_ns,
+        streaming_namespace = f"{namespace}-streaming-table"        
+        self.append(StreamingTableResource(namespace = namespace))
+        self.init_streaming(namespace = namespace,
+                            streaming_namespace = streaming_namespace)
+        self.init_logs_subscriptions(namespace = streaming_namespace,
+                                     logging_namespace = logging_namespace,
+                                     log_levels = log_levels)
+        self.init_slack_logs(namespace = logging_namespace)
+
+    def init_streaming(self, namespace, streaming_namespace):
+        self.append(StreamingFunction(namespace = streaming_namespace,
                                       table_namespace = namespace))
-        self.append(Role(namespace = child_ns))
-        self.append(StreamingPolicy(namespace = child_ns,
+        self.append(Role(namespace = streaming_namespace))
+        self.append(StreamingPolicy(namespace = streaming_namespace,
                                     table_namespace = namespace))
-        self.append(StreamingEventSourceMapping(namespace = child_ns,
+        self.append(StreamingEventSourceMapping(namespace = streaming_namespace,
                                                 table_namespace = namespace))
             
 if __name__ == "__main__":

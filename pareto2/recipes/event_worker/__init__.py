@@ -3,13 +3,11 @@ from pareto2.services import hungarorise as H
 from pareto2.services.events import *
 from pareto2.services.iam import *
 
-from pareto2.recipes.slack_logging import SlackRecipe, SlackNamespace
+from pareto2.recipes.slack_logging import SlackRecipe
 
 import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
-
-LogLevels = ["warning", "error"]
 
 class EventPermission(L.Permission):
 
@@ -24,15 +22,15 @@ class EventWorker(SlackRecipe):
     def __init__(self,
                  namespace,
                  worker,
-                 logging_namespace = SlackNamespace,
-                 log_levels = LogLevels):
+                 logging_namespace = "slack",
+                 log_levels = ["warning", "error"]):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
         self.init_logs_subscriptions(namespace = namespace,
                                      logging_namespace = logging_namespace,
                                      log_levels = log_levels)
-        self.init_slack_logs(parent_ns = logging_namespace)
+        self.init_slack_logs(namespace = logging_namespace)
 
     def init_worker(self, namespace, worker):
         self.append(self.init_function(namespace = namespace,
