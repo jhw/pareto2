@@ -1,7 +1,6 @@
 ### short [01-apigw-v2]
 
 - remove restapi binary media types
-- replace restapi and associated refs with api
 - replace BasePathMapping with ApiMapping
 
 ### medium
@@ -87,6 +86,7 @@
 
 ### done
 
+- replace restapi and associated refs with api
 - remove resources
 - add apigatewayv2 irregular
 - rename apigateway as apigatewayv2

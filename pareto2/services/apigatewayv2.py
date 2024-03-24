@@ -5,22 +5,16 @@ from pareto2.services import Resource
 
 StageName = "prod"
 
-class RestApi(Resource):
+class Api(Resource):
 
     def __init__(self, namespace, binary_media_types = []):
         self.namespace = namespace
         self.binary_media_types = binary_media_types
 
-    """
-    - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-restapi.html
-    - The name of the RestApi. A name is required if the REST API is not based on an OpenAPI specification
-    - generally a good idea to include AWS::StackName in case Name exists in a global namespace
-    """
-        
     @property
     def aws_properties(self):
         props = {
-            "Name": {"Fn::Sub": f"{self.namespace}-rest-api-${{AWS::StackName}}"}
+            "Name": {"Fn::Sub": f"{self.namespace}-api-${{AWS::StackName}}"}
         }
         if self.binary_media_types != []:
             props["BinaryMediaTypes"] = self.binary_media_types
@@ -44,7 +38,7 @@ class Deployment(Resource):
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
+            "ApiId": {"Ref": H(f"{self.namespace}-api")}
         }
 
     @property
@@ -62,7 +56,7 @@ class Stage(Resource):
         return {
             "StageName": self.stage_name,
             "DeploymentId": {"Ref": H(f"{self.namespace}-deployment")},
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
+            "ApiId": {"Ref": H(f"{self.namespace}-api")}
         }
 
 class Method(AltNamespaceMixin, Resource):
@@ -85,7 +79,7 @@ class Authorizer(Resource):
             "ProviderARNs": [{"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "Arn"]}],
             "IdentitySource": "method.request.header.Authorization",
             "Name": {"Fn::Sub": f"{self.namespace}-authorizer-${{AWS::StackName}}"},
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
+            "ApiId": {"Ref": H(f"{self.namespace}-api")},
             "Type": "COGNITO_USER_POOLS"
         }
 
@@ -99,7 +93,7 @@ class RequestValidator(AltNamespaceMixin, Resource):
 
     @property
     def aws_properties(self):
-        return {"RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")},
+        return {"ApiId": {"Ref": H(f"{self.parent_namespace}-api")},
                 "ValidateRequestParameters": self.validate_request_parameters,
                 "ValidateRequestBody": self.validate_request_body}
 
@@ -147,7 +141,7 @@ class Model(Resource):
     @property
     def aws_properties(self):
         return {
-            "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")},
+            "ApiId": {"Ref": H(f"{self.parent_namespace}-api")},
             "ContentType": self.content_type,
             "Name": H(f"{self.namespace}-model"),
             "Schema": self.schema
@@ -165,7 +159,7 @@ class GatewayResponse(AltNamespaceMixin, Resource):
                       for k, v in [("headers", "*"),
                                    ("origin", "*")]}
         return {
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
+            "ApiId": {"Ref": H(f"{self.namespace}-api")},
             "ResponseType": f"DEFAULT_{self.response_type}",
             "ResponseParameters": response_parameters
         }
@@ -204,7 +198,7 @@ class BasePathMapping(Resource):
     def aws_properties(self):
         return {
             "DomainName": {"Ref": H("domain-name")},
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")},
+            "ApiId": {"Ref": H(f"{self.namespace}-api")},
             "Stage": self.stage_name
         }
 
