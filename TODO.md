@@ -3,7 +3,6 @@
 - remove restapi binary media types
 - replace restapi and associated refs with api
 - replace BasePathMapping with ApiMapping
-- remove resources
 
 ### medium
 
@@ -88,6 +87,7 @@
 
 ### done
 
+- remove resources
 - add apigatewayv2 irregular
 - rename apigateway as apigatewayv2
 - script to filter lambda logs

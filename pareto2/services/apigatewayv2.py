@@ -1,12 +1,11 @@
 from pareto2.services import hungarorise as H
 from pareto2.services import AltNamespaceMixin
 
-# from pareto2.services import Resource
-from pareto2.services import Resource as AWSResource # distinguish between aws.Resource and apigw.Resource
+from pareto2.services import Resource
 
 StageName = "prod"
 
-class RestApi(AWSResource):
+class RestApi(Resource):
 
     def __init__(self, namespace, binary_media_types = []):
         self.namespace = namespace
@@ -36,7 +35,7 @@ class RestApi(AWSResource):
 - Deployment has a StageName property, but Cloudformation complains if you try and use it ("stage already created")
 """
     
-class Deployment(AWSResource):
+class Deployment(Resource):
 
     def __init__(self, namespace, methods):
         self.namespace = namespace
@@ -52,7 +51,7 @@ class Deployment(AWSResource):
     def depends(self):
         return self.methods
                 
-class Stage(AWSResource):
+class Stage(Resource):
 
     def __init__(self, namespace, stage_name = StageName):
         self.namespace = namespace
@@ -66,26 +65,12 @@ class Stage(AWSResource):
             "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
         }
 
-class Resource(AWSResource):
-
-    def __init__(self, namespace, path):
-        self.namespace = namespace
-        self.path = path
-
-    @property
-    def aws_properties(self):
-        return {
-            "ParentId": {"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]},
-            "PathPart": self.path,
-            "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}
-        }
-
-class Method(AltNamespaceMixin, AWSResource):
+class Method(AltNamespaceMixin, Resource):
     
     def __init__(self, namespace):
         self.namespace = namespace
 
-class Authorizer(AWSResource):
+class Authorizer(Resource):
     
     def __init__(self, namespace):
         self.namespace = namespace
@@ -104,7 +89,7 @@ class Authorizer(AWSResource):
             "Type": "COGNITO_USER_POOLS"
         }
 
-class RequestValidator(AltNamespaceMixin, AWSResource):
+class RequestValidator(AltNamespaceMixin, Resource):
 
     def __init__(self, namespace, parent_namespace, validate_request_parameters = False, validate_request_body = False):
         self.namespace = namespace
@@ -137,7 +122,7 @@ class SchemaRequestValidator(RequestValidator):
 - else everything will be waived through by the AWS_PROXY integration method type :/
 """
     
-class Model(AWSResource):
+class Model(Resource):
     
     def __init__(self,
                  namespace,
@@ -168,7 +153,7 @@ class Model(AWSResource):
             "Schema": self.schema
         }
 
-class GatewayResponse(AltNamespaceMixin, AWSResource):
+class GatewayResponse(AltNamespaceMixin, Resource):
 
     def __init__(self, namespace, response_type):
         self.namespace = namespace
@@ -197,7 +182,7 @@ class GatewayResponse5xx(GatewayResponse):
         return super().__init__(namespace = namespace,
                                 response_type = "5XX")
         
-class DomainName(AWSResource):
+class DomainName(Resource):
 
     def __init__(self, namespace):
         self.namespace = namespace
@@ -209,7 +194,7 @@ class DomainName(AWSResource):
             "CertificateArn": {"Ref": H("certificate-arn")}
         }
     
-class BasePathMapping(AWSResource):
+class BasePathMapping(Resource):
 
     def __init__(self, namespace, stage_name = StageName):
         self.namespace = namespace
