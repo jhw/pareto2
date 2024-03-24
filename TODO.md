@@ -1,9 +1,11 @@
 ### short [01-apigw-v2]
 
-- check validation
 - check gateway responses
 
 - lambda method implementation
+
+- route/integration GET parameter validation
+- route/integration POST schema enforcement
 
 - cors
 - auth
@@ -96,6 +98,7 @@
 
 ### done
 
+- check validation
 - replace method base class with route and integration
 - replace BasePathMapping with ApiMapping
 - remove restapi binary media types
