@@ -3,7 +3,7 @@ from pareto2.services import hungarorise as H
 from pareto2.services.iam import *
 from pareto2.services.sqs import *
 
-from pareto2.recipes import Recipe
+from pareto2.recipes.slack_logging import SlackRecipe
 
 import importlib
 
@@ -44,19 +44,29 @@ class QueueEventSourceMapping(L.EventSourceMapping):
         super().__init__(namespace = namespace,
                          source_arn = {"Fn::GetAtt": [H(f"{queue_namespace}-queue"), "Arn"]})
 
-class TaskQueue(Recipe):    
+class TaskQueue(SlackRecipe):    
 
     def __init__(self,
-                 namespace):
+                 namespace,
+                 logging_namespace = "slack",
+                 log_levels = ["error"]):
         super().__init__()
-        child_ns = f"{namespace}-task-queue"        
+        streaming_namespace = f"{namespace}-task-queue"        
         self.append(Queue(namespace = namespace))
-        self.append(QueueFunction(namespace = child_ns,
+        self.init_streaming(namespace = namespace,
+                            streaming_namespace = streaming_namespace)
+        self.init_logs_subscriptions(namespace = streaming_namespace,
+                                     logging_namespace = logging_namespace,
+                                     log_levels = log_levels)
+        self.init_slack_logs(namespace = logging_namespace)
+
+    def init_streaming(self, namespace, streaming_namespace):
+        self.append(QueueFunction(namespace = streaming_namespace,
                                   queue_namespace = namespace))
-        self.append(Role(namespace = child_ns))
-        self.append(QueuePolicy(namespace = child_ns,
+        self.append(Role(namespace = streaming_namespace))
+        self.append(QueuePolicy(namespace = streaming_namespace,
                                 queue_namespace = namespace))
-        self.append(QueueEventSourceMapping(namespace = child_ns,
+        self.append(QueueEventSourceMapping(namespace = streaming_namespace,
                                             queue_namespace = namespace))
 
 

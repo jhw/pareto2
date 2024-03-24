@@ -1,8 +1,6 @@
 ### short
 
-- add error logging to task queue
-
-- test gists
+- re- test streaming_table, task_queue gists
 
 ### medium
 
@@ -89,6 +87,7 @@
 
 ### done
 
+- add error logging to task queue
 - add error logging to streaming table 
 - logging to check for existence of subscription filters before adding
 - logging to be implemented in Recipe subclass SlackLoggingRecipe
