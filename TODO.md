@@ -1,6 +1,14 @@
 ### short [01-apigw-v2]
 
-- replace BasePathMapping with ApiMapping
+- replace method base class with route and integration
+
+- lambda method
+- cors
+- cognito
+- s3 proxy
+- s3 redirect
+
+- update recipes for new service resources
 
 ### medium
 
@@ -85,6 +93,7 @@
 
 ### done
 
+- replace BasePathMapping with ApiMapping
 - remove restapi binary media types
 - replace restapi and associated refs with api
 - remove resources

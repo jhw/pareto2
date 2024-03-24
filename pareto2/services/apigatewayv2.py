@@ -184,7 +184,7 @@ class DomainName(Resource):
             "CertificateArn": {"Ref": H("certificate-arn")}
         }
     
-class BasePathMapping(Resource):
+class ApiMapping(Resource):
 
     def __init__(self, namespace, stage_name = StageName):
         self.namespace = namespace
