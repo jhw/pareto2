@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- check gateway responses
-
 - lambda method implementation
 
 - route/integration GET parameter validation
@@ -14,6 +12,8 @@
 - s3 redirect
 
 - update recipes for new service resources
+- define public/private auth at the api level
+- single web-api example
 
 ### medium
 
@@ -98,6 +98,7 @@
 
 ### done
 
+- check gateway responses
 - check validation
 - replace method base class with route and integration
 - replace BasePathMapping with ApiMapping
