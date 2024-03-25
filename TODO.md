@@ -1,6 +1,5 @@
 ### short [01-apigw-v2]
 
-- bad ref to AppRestApi
 - add back deployment method filtering by iterating over methods
 - filter auth parameters and only add private stuff if you have a private method
 - add apigw v2 authorizer
@@ -96,6 +95,7 @@
 
 ### done
 
+- bad ref to AppRestApi
 - check web app pattern runs
 - consider sns-to-slack pattern
 - add back 1.0 interval to streaming-table

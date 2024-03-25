@@ -14,8 +14,8 @@ L = importlib.import_module("pareto2.services.lambda")
 class LambdaPermission(L.Permission):
 
     def __init__(self, namespace, function_namespace, method, path):
-        restapiref, stageref = H(f"{namespace}-rest-api"), H(f"{namespace}-stage")
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{restapiref}}}/${{{stageref}}}/{method}/{path}"}
+        apiref, stageref = H(f"{namespace}-api"), H(f"{namespace}-stage")
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{apiref}}}/${{{stageref}}}/{method}/{path}"}
         super().__init__(namespace = function_namespace,    
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")
