@@ -15,8 +15,6 @@
 - apigw v2 website
   - binary media types
 
-- add back 1.0 interval to streaming-table
-
 - lambda alarms 
 - event timer
 - layer builder
@@ -96,6 +94,7 @@
 
 ### done
 
+- add back 1.0 interval to streaming-table
 - redefine web-api demo to remove auth
 - refactor web-api to use single private example
 - remove existing validation code

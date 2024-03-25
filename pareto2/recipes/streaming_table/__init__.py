@@ -45,13 +45,19 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lamb
     - TRIM_HORIZON - Process all available records.
     - AT_TIMESTAMP - Specify a time from which to start reading records.
 """
-        
+
+"""
+Actually am having some problems with this pattern; sometimes you can put an item to DynamoDB and somehow the streaming function doesn't get triggered; but at other times it works just fine
+
+I am wondering if this is somehow related to the batching window parameter; it feels like whatever is happening or going wrong, it's happening at the EventSourceMapping level; no for now am reverting to the parameters used in pareto2 0.7.x
+"""
+
 class StreamingEventSourceMapping(L.EventSourceMapping):
 
     def __init__(self,
                  namespace,
                  table_namespace,
-                 batch_window = 0,
+                 batch_window = 1, # NB
                  starting_position = "LATEST",
                  retries = 0):
         super().__init__(namespace = namespace,
