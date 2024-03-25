@@ -86,9 +86,13 @@ class WebApi(Recipe):
                                 function_namespace = child_ns,
                                 method = endpoint["method"],
                                 path = endpoint["path"])
-        
+
     def filter_methods(self, parent_ns, endpoints):
-        return []
+        methods = []
+        for endpoint in endpoints:
+            child_ns = self.endpoint_namespace(parent_ns, endpoint)
+            methods += [H(f"{child_ns}-route"),
+                        H(f"{child_ns}-integration")]
     
     def init_deployment(self, namespace, methods):
         self.append(Deployment(namespace = namespace,
