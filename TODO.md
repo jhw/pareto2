@@ -1,16 +1,21 @@
 ### short [01-apigw-v2]
 
-- public/private route subclassing
+- route route key
+- route target
 
-- complete route implementation
+- assert understanding of parameter, schema validation with chatgpt
+- route parameter validation
+
 - complete authorizer implementation
 
 - implement routes and integrations at web_api recipe layer
 
 - check auto deployment
 
+- assert cors understanding with chatgpt
 - add cors support to top level api
-- add cognito link for private endpoints
+
+- check chatgpt for new props included in top- level classes
 
 - ensure recipes always pass named arguments
 - refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
@@ -99,6 +104,7 @@
 
 ### done
 
+- public/private route subclassing
 - complete integration implementation
 - skeleton routines to add route and integration for each endpoint
 - check authorizer implementation

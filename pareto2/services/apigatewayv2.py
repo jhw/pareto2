@@ -105,8 +105,15 @@ AppHelloGetRoute:
     
 class Route(AltNamespaceMixin, Resource):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, function_namespace):
         self.namespace = namespace
+        self.function_namespace = function_namespace
+
+    @property
+    def aws_properties(self):
+         return {
+            "ApiId": {"Ref": H(f"{self.namespace}-api")}
+         }        
 
 class Integration(AltNamespaceMixin, Resource):
     
@@ -117,15 +124,13 @@ class Integration(AltNamespaceMixin, Resource):
     @property
     def aws_properties(self):
         integration_uri = {"Fn::Sub": [LambdaMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
-        props = {
+        return {
             "ApiId": {"Ref": H(f"{self.namespace}-api")},
             "IntegrationType": "AWS_PROXY",
             "IntegrationUri": integration_uri,
             "PayloadFormatVersion": "2.0",
             "IntegrationMethod": "POST"            
         }
-        return props
-
         
 """
    "AppAuthorizer": {

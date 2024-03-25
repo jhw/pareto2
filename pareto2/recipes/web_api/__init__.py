@@ -20,6 +20,79 @@ class LambdaPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")
 
+
+"""
+AppHelloGetRoute:
+  Type: AWS::ApiGatewayV2::Route
+  Properties:
+    ApiId: !Ref AppHttpApi
+    RouteKey: GET /hello-get
+    AuthorizationType: NONE
+    Target: !Join 
+      - "/"
+      - - "integrations"
+        - !Ref AppHelloGetLambdaIntegration
+    RequestParameters:
+      querystrings.message:
+        Required: true
+"""
+
+"""
+AppHelloPostRoute:
+  Type: AWS::ApiGatewayV2::Route
+  Properties:
+    ApiId: !Ref AppHttpApi
+    RouteKey: POST /hello-post
+    AuthorizationType: NONE
+    Target: !Join 
+      - "/"
+      - - "integrations"
+        - !Ref AppHelloPostLambdaIntegration
+"""
+
+"""
+AppHelloGetRoute:
+  Type: AWS::ApiGatewayV2::Route
+  Properties:
+    ApiId: !Ref AppHttpApi
+    RouteKey: GET /hello-get
+    AuthorizationType: JWT
+    AuthorizerId: !Ref MyCognitoAuthorizer
+    Target: !Join 
+      - "/"
+      - - "integrations"
+        - !Ref AppHelloGetLambdaIntegration
+    RequestParameters:
+      querystrings.message:
+        Required: true
+"""
+        
+class PublicRoute(Route):
+
+    def __init__(self, namespace, function_namespace):
+        super().__init__(namespace = namespace,
+                         function_namespace = function_namespace)
+
+    @property
+    def aws_properties(self):
+        props = super().aws_properties        
+        return props
+        
+class PrivateRoute(Route):
+
+    def __init__(self, namespace, function_namespace):
+        super().__init__(namespace = namespace,
+                         function_namespace = function_namespace)
+
+    @property
+    def aws_properties(self):
+        props = super().aws_properties
+        props.update({
+            "AuthorizationType": "JWT",
+            "AuthorizerId": {"Ref": H(f"{self.namespace}-authorizer")}
+        })
+        return props
+                
 class WebApi(Recipe):    
 
     def __init__(self, namespace, endpoints):
@@ -72,7 +145,9 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(Route(namespace = child_ns))
+        routeclass = eval("%sRoute" % endpoint["auth"].capitalize())
+        self.append(routeclass(namespace = parent_ns,
+                               function_namespace = child_ns))
         self.append(Integration(namespace = parent_ns,
                                 function_namespace = child_ns))
         self.append(self.init_function(namespace = child_ns,
