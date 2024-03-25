@@ -1,16 +1,21 @@
 ### short [01-apigw-v2]
 
-- redefine auth on a per- endpoint basis
+- consider sns-to-slack pattern
 
+- add back deployment method filtering by iterating over methods
+- filter auth parameters and only add private stuff if you have a private method
+- add apigw v2 authorizer
+- inclide new apigw v2 authorizer if private methods declared
 - add cors support to top level api
-
-- website
-- binary media types
+- add apigw v2 route and integration
+- define routes and integrations for each method
 
 ### medium
 
+- apigw v2 website
+  - binary media types
+
 - add back 1.0 interval to streaming-table
-- consider sns-to-slack pattern
 
 - lambda alarms 
 - event timer
