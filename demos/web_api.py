@@ -5,12 +5,14 @@ import json, os, yaml
 Endpoints = yaml.safe_load("""
 - method: GET
   path: hello-get
+  auth: public
   parameters:
   - message
   permissions:
   - s3:GetObject
 - method: POST
   path: hello-post
+  auth: public
   schema: 
     type: object
     properties: 
@@ -22,6 +24,13 @@ Endpoints = yaml.safe_load("""
   permissions:
   - s3:GetObject
   - s3:PutObject
+- method: GET
+  path: hello-get-private
+  auth: private
+  parameters:
+  - message
+  permissions:
+  - s3:GetObject
 """)
 
 HelloGetBody="""def handler(event, context):
@@ -49,6 +58,7 @@ if __name__ == "__main__":
                  for endpoint in Endpoints}
     endpoints["hello-get"]["code"] = HelloGetBody
     endpoints["hello-post"]["code"] = HelloPostBody
+    endpoints["hello-get-private"]["code"] = HelloGetBody
     if not os.path.exists("tmp"):
         os.mkdir("tmp")
     template = WebApi(namespace = "app",
