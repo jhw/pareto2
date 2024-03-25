@@ -51,14 +51,11 @@ if __name__ == "__main__":
     endpoints["hello-post"]["code"] = HelloPostBody
     if not os.path.exists("tmp"):
         os.mkdir("tmp")
-    for auth in ["public",
-                 "private"]:
-        template = WebApi(namespace = "app",
-                          endpoints = list(endpoints.values()),
-                          auth = auth).render()
-        template.populate_parameters()
-        with open(f"tmp/web-api-{auth}.json", 'w') as f:
-            f.write(json.dumps(template,
-                               sort_keys = True,
-                               indent = 2))
-        print ("%s: %s" % (auth, ", ".join(list(template["Parameters"].keys()))))
+    template = WebApi(namespace = "app",
+                      endpoints = list(endpoints.values())).render()
+    template.populate_parameters()
+    with open(f"tmp/web-api.json", 'w') as f:
+        f.write(json.dumps(template,
+                           sort_keys = True,
+                           indent = 2))
+    print (", ".join(list(template["Parameters"].keys())))

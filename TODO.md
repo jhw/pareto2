@@ -1,9 +1,7 @@
 ### short [01-apigw-v2]
 
-- refactor web-api to use single private example
 - redefine auth on a per- endpoint basis
-- remove existing validation code
-- remove existing auth code
+
 - add cors support to top level api
 
 - website
@@ -93,6 +91,10 @@
 
 ### done
 
+- redefine web-api demo to remove auth
+- refactor web-api to use single private example
+- remove existing validation code
+- remove existing auth code
 - remove existing cors code
 - check gateway responses
 - check validation

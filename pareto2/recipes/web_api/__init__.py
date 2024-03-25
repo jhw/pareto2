@@ -1,7 +1,6 @@
 from pareto2.services import hungarorise as H
 
 from pareto2.services.apigateway import *
-from pareto2.services.apigateway import Resource as APIGWResource
 from pareto2.services.cognito import *
 from pareto2.services.iam import *
 from pareto2.services.route53 import *
@@ -11,82 +10,6 @@ from pareto2.recipes import Recipe
 import importlib, re
 
 L = importlib.import_module("pareto2.services.lambda")
-
-LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
-
-"""
-- LambdaResource doesn't use namespace directly, but still needs to live in its own namespace because a single API might have multiple endpoints, each with their own resources
-"""
-        
-class LambdaResource(APIGWResource):
-
-    def __init__(self, namespace, parent_namespace, path):
-        super().__init__(namespace = namespace,
-                         path = path)
-        self.parent_namespace = parent_namespace
-        
-    @property
-    def aws_properties(self):
-        return {
-            "ParentId": {"Fn::GetAtt": [H(f"{self.parent_namespace}-rest-api"), "RootResourceId"]},
-            "PathPart": self.path,
-            "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}
-        }
-
-class LambdaMethod(Method):
-
-    def __init__(self,
-                 namespace,
-                 parent_namespace,
-                 function_namespace,
-                 method,
-                 authorisation = None,
-                 parameters = None,
-                 schema = None):
-        super().__init__(namespace = namespace)
-        self.parent_namespace = parent_namespace
-        self.function_namespace = function_namespace
-        self.method = method
-        self.authorisation = authorisation
-        self.parameters = parameters
-        self.schema = schema
-        
-    @property
-    def aws_properties(self):
-        uri = {"Fn::Sub": [LambdaMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
-        integration = {"IntegrationHttpMethod": "POST",
-                       "Type": "AWS_PROXY",
-                       "Uri": uri}
-        props = {"HttpMethod": self.method,
-                 "Integration": integration,
-                 "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
-                 "RestApiId": {"Ref": H(f"{self.parent_namespace}-rest-api")}}
-        props.update(self.authorisation)
-        if self.parameters:
-            props["RequestValidatorId"] = {"Ref": H(f"{self.namespace}-parameter-request-validator")}
-            props["RequestParameters"] = {f"method.request.querystring.{param}": True
-                                        for param in self.parameters}
-        if self.schema:
-            props["RequestValidatorId"] = {"Ref": H(f"{self.namespace}-schema-request-validator")}
-            props["RequestModels"] = {"application/json": H(f"{self.namespace}-model")}
-        return props
-
-class PublicLambdaMethod(LambdaMethod):
-
-    def __init__(self, namespace, parent_namespace, **kwargs):
-        super().__init__(namespace = namespace,
-                         parent_namespace = parent_namespace,
-                         authorisation = {"AuthorizationType": "NONE"},
-                         **kwargs)
-
-class PrivateLambdaMethod(LambdaMethod):
-
-    def __init__(self, namespace, parent_namespace, **kwargs):
-        super().__init__(namespace = namespace,
-                         parent_namespace = parent_namespace,
-                         authorisation = {"AuthorizationType": "COGNITO_USER_POOLS",
-                                          "AuthorizerId": {"Ref": H(f"{parent_namespace}-authorizer")}},
-                         **kwargs)
 
 class LambdaPermission(L.Permission):
 
@@ -99,22 +22,30 @@ class LambdaPermission(L.Permission):
 
 class WebApi(Recipe):    
 
-    def __init__(self, namespace, endpoints, auth = "public"):
+    def __init__(self, namespace, endpoints):
         super().__init__()
-        self.auth = auth
-        apifn = getattr(self, f"init_{self.auth}_api")
-        apifn(namespace)
+        self.init_api(namespace = namespace)
         for endpoint in endpoints:
-            self.init_endpoint(namespace, endpoint)
-        methods = self.filter_methods(namespace, endpoints)
-        self.init_deployment(namespace, methods)
+            self.init_endpoint(namespace = namespace
+                               endpoint = endpoint)
+        methods = self.filter_methods(namespace = namespace,
+                                      endpoints = endpoints)
+        # START TEMP CODE
+        if methods == []:
+            raise RuntimeError("no methods found")
+        # END TEMP CODE
+        self.init_deployment(namespace = namespace,
+                             methods = methods)
 
-    def init_public_api(self, namespace):
-        self.init_api_base(namespace)
-            
-    def init_private_api(self, namespace):
-        self.init_api_base(namespace)
-        for klass in [Authorizer,
+    def init_api(self, namespace):
+        for klass in [RestApi,
+                      Stage,
+                      GatewayResponse4xx,
+                      GatewayResponse5xx,
+                      DomainName,
+                      BasePathMapping,
+                      RecordSet,
+                      Authorizer,
                       SimpleEmailUserPool,
                       UserPoolAdminClient,
                       UserPoolWebClient,
@@ -126,16 +57,6 @@ class WebApi(Recipe):
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
 
-    def init_api_base(self, namespace):
-        for klass in [RestApi,
-                      Stage,
-                      GatewayResponse4xx,
-                      GatewayResponse5xx,
-                      DomainName,
-                      BasePathMapping,
-                      RecordSet]:
-            self.append(klass(namespace = namespace))
-
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
                           "-".join([tok.lower()
@@ -144,13 +65,6 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
-        self.append(LambdaResource(namespace = child_ns,
-                                   parent_namespace = parent_ns,
-                                   path = endpoint["path"]))
-        if "parameters" in endpoint:
-            self.init_GET_endpoint(parent_ns, child_ns, endpoint)
-        elif "schema" in endpoint:
-            self.init_POST_endpoint(parent_ns, child_ns, endpoint)
         self.append(self.init_function(namespace = child_ns,
                                        endpoint = endpoint))
         self += self.init_role_and_policy(namespace = child_ns,
@@ -158,29 +72,6 @@ class WebApi(Recipe):
         self.append(self.init_lambda_permission(parent_ns = parent_ns,
                                                 child_ns = child_ns,
                                                 endpoint = endpoint))
-
-    def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
-        self.append(ParameterRequestValidator(namespace = child_ns,
-                                              parent_namespace = parent_ns))
-        methodfn = eval(H(f"{self.auth}-lambda-method"))
-        self.append(methodfn(namespace = child_ns,
-                             parent_namespace = parent_ns,
-                             function_namespace = child_ns,
-                             method = endpoint["method"],
-                             parameters = endpoint["parameters"]))
-
-    def init_POST_endpoint(self, parent_ns, child_ns, endpoint):
-        self.append(SchemaRequestValidator(namespace = child_ns,
-                                           parent_namespace = parent_ns))
-        self.append(Model(namespace = child_ns,
-                          parent_namespace = parent_ns,
-                          schema = endpoint["schema"]))
-        methodfn = eval(H(f"{self.auth}-lambda-method"))
-        self.append(methodfn(namespace = child_ns,
-                             parent_namespace = parent_ns,
-                             function_namespace = child_ns, 
-                             method = endpoint["method"],
-                             schema = endpoint["schema"]))
 
     def init_function(self, namespace, endpoint):
         fn = L.InlineFunction if "code" in endpoint else L.S3Function
@@ -201,11 +92,7 @@ class WebApi(Recipe):
                                 path = endpoint["path"])
         
     def filter_methods(self, parent_ns, endpoints):
-        methods = []
-        for endpoint in endpoints:
-            child_ns = self.endpoint_namespace(parent_ns, endpoint)
-            methods += [H(f"{child_ns}-{self.auth}-lambda-method")]
-        return methods
+        return []
     
     def init_deployment(self, namespace, methods):
         self.append(Deployment(namespace = namespace,
