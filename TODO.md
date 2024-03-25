@@ -1,7 +1,6 @@
 ### short [01-apigw-v2]
 
-- consider sns-to-slack pattern
-
+- bad ref to AppRestApi
 - add back deployment method filtering by iterating over methods
 - filter auth parameters and only add private stuff if you have a private method
 - add apigw v2 authorizer
@@ -9,6 +8,9 @@
 - add cors support to top level api
 - add apigw v2 route and integration
 - define routes and integrations for each method
+
+- ensure recipes always pass named arguments
+- refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
 
 ### medium
 
@@ -94,6 +96,8 @@
 
 ### done
 
+- check web app pattern runs
+- consider sns-to-slack pattern
 - add back 1.0 interval to streaming-table
 - redefine web-api demo to remove auth
 - refactor web-api to use single private example

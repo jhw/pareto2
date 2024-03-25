@@ -1,6 +1,6 @@
 from pareto2.services import hungarorise as H
 
-from pareto2.services.apigateway import *
+from pareto2.services.apigatewayv2 import *
 from pareto2.services.cognito import *
 from pareto2.services.iam import *
 from pareto2.services.route53 import *
@@ -26,24 +26,20 @@ class WebApi(Recipe):
         super().__init__()
         self.init_api(namespace = namespace)
         for endpoint in endpoints:
-            self.init_endpoint(namespace = namespace
+            self.init_endpoint(parent_ns = namespace,
                                endpoint = endpoint)
-        methods = self.filter_methods(namespace = namespace,
+        methods = self.filter_methods(parent_ns = namespace,
                                       endpoints = endpoints)
-        # START TEMP CODE
-        if methods == []:
-            raise RuntimeError("no methods found")
-        # END TEMP CODE
         self.init_deployment(namespace = namespace,
                              methods = methods)
 
     def init_api(self, namespace):
-        for klass in [RestApi,
+        for klass in [Api,
                       Stage,
                       GatewayResponse4xx,
                       GatewayResponse5xx,
                       DomainName,
-                      BasePathMapping,
+                      ApiMapping,
                       RecordSet,
                       Authorizer,
                       SimpleEmailUserPool,
