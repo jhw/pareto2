@@ -1,3 +1,15 @@
+### sns to slack 25/03/24
+
+- proposal is to send notifications to sns, along with level, and have a single slack handler which sends to slack
+- but not sure this makes a lot of sense
+- you already have a method of indirection facilitated by cloudwatch and the subscription filters
+- these are effectively taking the role of sns
+- just logging.warn() instead of sending to sns
+- yes you have two slack handlers with duplicate slack code
+- but you'll never need more than that
+- eg alarm code just needs to logging.warn() and the existing handlers will pick it up
+- so you can see in this way that cloudwatch is effectively a notification system
+
 ### apigatewayV2 21/03/24
 
 - Replace AWS::ApiGateway::RestApi with AWS::ApiGatewayV2::Api.
