@@ -24,7 +24,9 @@ class WebApi(Recipe):
 
     def __init__(self, namespace, endpoints):
         super().__init__()
-        self.init_api(namespace = namespace)
+        self.init_api_base(namespace = namespace)
+        if self.has_private_endpoint(endpoints):
+            self.init_private_api(namespace = namespace)
         for endpoint in endpoints:
             self.init_endpoint(parent_ns = namespace,
                                endpoint = endpoint)
@@ -33,15 +35,24 @@ class WebApi(Recipe):
         self.init_deployment(namespace = namespace,
                              methods = methods)
 
-    def init_api(self, namespace):
+    def has_private_endpoint(self, endpoints):
+        for endpoint in endpoints:
+            if endpoint["auth"] == "private":
+                return True
+        return False
+        
+    def init_api_base(self, namespace):
         for klass in [Api,
                       Stage,
                       GatewayResponse4xx,
                       GatewayResponse5xx,
                       DomainName,
                       ApiMapping,
-                      RecordSet,
-                      Authorizer,
+                      RecordSet]:
+            self.append(klass(namespace = namespace))
+        
+    def init_private_api(self, namespace):
+        for klass in [Authorizer,
                       SimpleEmailUserPool,
                       UserPoolAdminClient,
                       UserPoolWebClient,

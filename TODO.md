@@ -1,9 +1,11 @@
 ### short [01-apigw-v2]
 
-- add back init_public/private api methods
-- filter auth parameters and only add private stuff if you have a private method
-- add apigw v2 authorizer
-- inclide new apigw v2 authorizer if private methods declared
+- rename hello examples as public/private
+- add private POST example
+
+- check authorizer implementation
+- skeleton routines to add route and integration for each endpoint
+
 - add cors support to top level api
 - add apigw v2 route and integration
 - define routes and integrations for each method
@@ -95,6 +97,7 @@
 
 ### done
 
+- filter auth parameters and only add private stuff if you have a private method
 - add back deployment method filtering by iterating over methods
 - bad ref to AppRestApi
 - check web app pattern runs
