@@ -55,15 +55,157 @@ class Stage(Resource):
             "ApiId": {"Ref": H(f"{self.namespace}-api")}
         }
 
+"""
+AppHelloGetRoute:
+  Type: AWS::ApiGatewayV2::Route
+  Properties:
+    ApiId: !Ref AppHttpApi
+    RouteKey: GET /hello-get
+    AuthorizationType: NONE
+    Target: !Join 
+      - "/"
+      - - "integrations"
+        - !Ref AppHelloGetLambdaIntegration
+    RequestParameters:
+      querystrings.message:
+        Required: true
+"""
+
+"""
+AppHelloPostRoute:
+  Type: AWS::ApiGatewayV2::Route
+  Properties:
+    ApiId: !Ref AppHttpApi
+    RouteKey: POST /hello-post
+    AuthorizationType: NONE
+    Target: !Join 
+      - "/"
+      - - "integrations"
+        - !Ref AppHelloPostLambdaIntegration
+"""
+
+"""
+AppHelloGetRoute:
+  Type: AWS::ApiGatewayV2::Route
+  Properties:
+    ApiId: !Ref AppHttpApi
+    RouteKey: GET /hello-get
+    AuthorizationType: JWT
+    AuthorizerId: !Ref MyCognitoAuthorizer
+    Target: !Join 
+      - "/"
+      - - "integrations"
+        - !Ref AppHelloGetLambdaIntegration
+    RequestParameters:
+      querystrings.message:
+        Required: true
+"""
+    
 class Route(AltNamespaceMixin, Resource):
     
     def __init__(self, namespace):
         self.namespace = namespace
 
+"""
+AppHelloGetLambdaIntegration:
+  Type: AWS::ApiGatewayV2::Integration
+  Properties:
+    ApiId: !Ref AppHttpApi
+    IntegrationType: AWS_PROXY
+    IntegrationUri: !Sub 
+      - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppHelloGetFunction.Arn}/invocations"
+      - AppHelloGetFunction: !Ref AppHelloGetFunction
+    PayloadFormatVersion: "2.0"
+    IntegrationMethod: POST
+"""
+
+"""
+AppHelloPostLambdaIntegration:
+  Type: AWS::ApiGatewayV2::Integration
+  Properties:
+    ApiId: !Ref AppHttpApi
+    IntegrationType: AWS_PROXY
+    IntegrationUri: !Sub 
+      - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppHelloPostFunction.Arn}/invocations"
+      - AppHelloPostFunction: !Ref AppHelloPostFunction
+    PayloadFormatVersion: "2.0"
+    IntegrationMethod: POST
+"""
+
 class Integration(AltNamespaceMixin, Resource):
     
     def __init__(self, namespace):
-        self.namespace = namespace
+        self.nameespace = namespace
+
+    @property
+    def aws_properties(self):
+        props = {
+            "ApiId": {"Ref": H(f"{self.namespace}-api")},
+            "IntegrationType": "AWS_PROXY",
+            "PayloadFormatVersion": "2.0",
+            "IntegrationMethod": "POST"            
+        }
+        return props
+
+        
+"""
+   "AppAuthorizer": {
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppRestApi"
+        },
+        "Name": {
+          "Fn::Sub": "app-authorizer-${AWS::StackName}"
+        },
+        "Type": "JWT",
+        "JwtConfiguration": {
+          "Audience": [
+            {
+              "Fn::GetAtt": [
+                "AppUserPoolWebClient",
+                "UserPoolClientName"
+              ]
+            }
+          ],
+          "Issuer": {
+            "Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/${AppUserPool}"
+          }
+        }
+      },
+      "Type": "AWS::ApiGatewayV2::Authorizer"
+    },
+"""
+
+"""
+"MyAuthorizer": {
+  "Type": "AWS::ApiGatewayV2::Authorizer",
+  "Properties": {
+    "ApiId": "YourApiId",
+    "Name": "MyCognitoAuthorizer",
+    "AuthorizerType": "JWT",
+    "IdentitySource": ["$request.header.Authorization"],
+    "JwtConfiguration": {
+      "Audience": ["YourCognitoUserPoolClientId"],
+      "Issuer": "YourCognitoUserPoolIssuer"
+    }
+  }
+}
+"""
+
+"""
+MyCognitoAuthorizer:
+  Type: AWS::ApiGatewayV2::Authorizer
+  Properties:
+    ApiId: !Ref AppHttpApi
+    AuthorizerType: JWT
+    IdentitySource:
+      - $request.header.Authorization
+    JwtConfiguration:
+      Audience:
+        - <Your Cognito User Pool App Client ID>
+      Issuer: <Your Cognito User Pool Issuer URL>
+    Name: MyCognitoAuthorizer
+"""
 
 class Authorizer(Resource):
     

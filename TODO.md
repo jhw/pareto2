@@ -1,10 +1,13 @@
 ### short [01-apigw-v2]
 
-- extend route and integrations for base classes
-- define routes and integrations for each method
+- complete route implementation
+- complete integration implementation
+- complete authorizer implementation
 
-- add cognito link for private endpoints
+- implement routes and integrations at web_api recipe later
+
 - add cors support to top level api
+- add cognito link for private endpoints
 
 - ensure recipes always pass named arguments
 - refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
