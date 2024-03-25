@@ -1,11 +1,12 @@
 ### short [01-apigw-v2]
 
-- check authorizer implementation
 - skeleton routines to add route and integration for each endpoint
 
-- add cors support to top level api
-- add apigw v2 route and integration
+- extend route and integrations for base classes
 - define routes and integrations for each method
+
+- add cognito link for private endpoints
+- add cors support to top level api
 
 - ensure recipes always pass named arguments
 - refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
@@ -94,6 +95,7 @@
 
 ### done
 
+- check authorizer implementation
 - rename hello examples as public/private
 - add private POST example
 - filter auth parameters and only add private stuff if you have a private method
