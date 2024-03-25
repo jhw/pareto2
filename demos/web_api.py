@@ -4,36 +4,34 @@ import json, os, yaml
 
 Endpoints = yaml.safe_load("""
 - method: GET
-  path: hello-get
+  path: public-get
   auth: public
   parameters:
   - message
   permissions:
   - s3:GetObject
 - method: POST
-  path: hello-post
+  path: public-post
   auth: public
-  schema: 
-    type: object
-    properties: 
-      message:
-        type: string
-    required:
-    - message
-    additionalProperties: false
   permissions:
   - s3:GetObject
   - s3:PutObject
 - method: GET
-  path: hello-get-private
+  path: private-get
   auth: private
   parameters:
   - message
   permissions:
   - s3:GetObject
+- method: POST
+  path: private-post
+  auth: private
+  permissions:
+  - s3:GetObject
+  - s3:PutObject
 """)
 
-HelloGetBody="""def handler(event, context):
+EchoGetBody="""def handler(event, context):
     message=event["queryStringParameters"]["message"]
     return {"statusCode": 200,
             "headers": {"Content-Type": "text/plain",
@@ -42,7 +40,7 @@ HelloGetBody="""def handler(event, context):
                         "Access-Control-Allow-Methods": "OPTIONS,GET"},
             "body": f"you sent '{message}' via GET"}"""
 
-HelloPostBody="""import json
+EchoPostBody="""import json
 def handler(event, context):
     body=json.loads(event["body"])
     message=body["message"]
@@ -54,18 +52,25 @@ def handler(event, context):
             "body": f"you sent '{message}' via POST"}"""
 
 if __name__ == "__main__":
-    endpoints = {endpoint["path"]:endpoint
-                 for endpoint in Endpoints}
-    endpoints["hello-get"]["code"] = HelloGetBody
-    endpoints["hello-post"]["code"] = HelloPostBody
-    endpoints["hello-get-private"]["code"] = HelloGetBody
-    if not os.path.exists("tmp"):
-        os.mkdir("tmp")
-    template = WebApi(namespace = "app",
-                      endpoints = list(endpoints.values())).render()
-    template.populate_parameters()
-    with open(f"tmp/web-api.json", 'w') as f:
-        f.write(json.dumps(template,
-                           sort_keys = True,
-                           indent = 2))
-    print (", ".join(list(template["Parameters"].keys())))
+    try:
+        endpoints = {endpoint["path"]:endpoint
+                     for endpoint in Endpoints}
+        for path, endpoint in endpoints.items():
+            if "get" in path:
+                endpoint["code"] = EchoGetBody
+            elif "post" in path:
+                endpoint["code"] = EchoPostBody
+            else:
+                raise RuntimeError("couldn't embed code body for endpoint %s" % path)
+        if not os.path.exists("tmp"):
+            os.mkdir("tmp")
+        template = WebApi(namespace = "app",
+                          endpoints = list(endpoints.values())).render()
+        template.populate_parameters()
+        with open(f"tmp/web-api.json", 'w') as f:
+            f.write(json.dumps(template,
+                               sort_keys = True,
+                               indent = 2))
+        print (", ".join(list(template["Parameters"].keys())))
+    except RuntimeError as error:
+        print ("Error: %s" % str(error))

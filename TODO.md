@@ -1,8 +1,5 @@
 ### short [01-apigw-v2]
 
-- rename hello examples as public/private
-- add private POST example
-
 - check authorizer implementation
 - skeleton routines to add route and integration for each endpoint
 
@@ -97,6 +94,8 @@
 
 ### done
 
+- rename hello examples as public/private
+- add private POST example
 - filter auth parameters and only add private stuff if you have a private method
 - add back deployment method filtering by iterating over methods
 - bad ref to AppRestApi
