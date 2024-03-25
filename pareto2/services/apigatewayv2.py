@@ -3,6 +3,8 @@ from pareto2.services import AltNamespaceMixin
 
 from pareto2.services import Resource
 
+LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
+
 StageName = "prod"
 
 class Api(Resource):
@@ -106,42 +108,19 @@ class Route(AltNamespaceMixin, Resource):
     def __init__(self, namespace):
         self.namespace = namespace
 
-"""
-AppHelloGetLambdaIntegration:
-  Type: AWS::ApiGatewayV2::Integration
-  Properties:
-    ApiId: !Ref AppHttpApi
-    IntegrationType: AWS_PROXY
-    IntegrationUri: !Sub 
-      - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppHelloGetFunction.Arn}/invocations"
-      - AppHelloGetFunction: !Ref AppHelloGetFunction
-    PayloadFormatVersion: "2.0"
-    IntegrationMethod: POST
-"""
-
-"""
-AppHelloPostLambdaIntegration:
-  Type: AWS::ApiGatewayV2::Integration
-  Properties:
-    ApiId: !Ref AppHttpApi
-    IntegrationType: AWS_PROXY
-    IntegrationUri: !Sub 
-      - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AppHelloPostFunction.Arn}/invocations"
-      - AppHelloPostFunction: !Ref AppHelloPostFunction
-    PayloadFormatVersion: "2.0"
-    IntegrationMethod: POST
-"""
-
 class Integration(AltNamespaceMixin, Resource):
     
-    def __init__(self, namespace):
-        self.nameespace = namespace
+    def __init__(self, namespace, function_namespace):
+        self.namespace = namespace
+        self.function_namespace = function_namespace
 
     @property
     def aws_properties(self):
+        integration_uri = {"Fn::Sub": [LambdaMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
         props = {
             "ApiId": {"Ref": H(f"{self.namespace}-api")},
             "IntegrationType": "AWS_PROXY",
+            "IntegrationUri": integration_uri,
             "PayloadFormatVersion": "2.0",
             "IntegrationMethod": "POST"            
         }

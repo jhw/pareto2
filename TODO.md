@@ -1,10 +1,13 @@
 ### short [01-apigw-v2]
 
+- public/private route subclassing
+
 - complete route implementation
-- complete integration implementation
 - complete authorizer implementation
 
-- implement routes and integrations at web_api recipe later
+- implement routes and integrations at web_api recipe layer
+
+- check auto deployment
 
 - add cors support to top level api
 - add cognito link for private endpoints
@@ -96,6 +99,7 @@
 
 ### done
 
+- complete integration implementation
 - skeleton routines to add route and integration for each endpoint
 - check authorizer implementation
 - rename hello examples as public/private
