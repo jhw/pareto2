@@ -72,6 +72,8 @@ class WebApi(Recipe):
     
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
+        self.append(Route(namespace = child_ns))
+        self.append(Integration(namespace = child_ns))
         self.append(self.init_function(namespace = child_ns,
                                        endpoint = endpoint))
         self += self.init_role_and_policy(namespace = child_ns,

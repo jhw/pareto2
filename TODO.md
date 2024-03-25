@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- skeleton routines to add route and integration for each endpoint
-
 - extend route and integrations for base classes
 - define routes and integrations for each method
 
@@ -95,6 +93,7 @@
 
 ### done
 
+- skeleton routines to add route and integration for each endpoint
 - check authorizer implementation
 - rename hello examples as public/private
 - add private POST example
