@@ -7,7 +7,6 @@ from pareto2.services.iam import *
 from pareto2.services.route53 import *
 
 from pareto2.recipes import Recipe
-from pareto2.recipes.web_api.cors import CorsMethod
 
 import importlib, re
 
@@ -159,9 +158,6 @@ class WebApi(Recipe):
         self.append(self.init_lambda_permission(parent_ns = parent_ns,
                                                 child_ns = child_ns,
                                                 endpoint = endpoint))
-        self.append(CorsMethod(namespace = child_ns,
-                               parent_namespace = parent_ns,
-                               method = endpoint["method"]))
 
     def init_GET_endpoint(self, parent_ns, child_ns, endpoint):
         self.append(ParameterRequestValidator(namespace = child_ns,
@@ -208,8 +204,7 @@ class WebApi(Recipe):
         methods = []
         for endpoint in endpoints:
             child_ns = self.endpoint_namespace(parent_ns, endpoint)
-            methods += [H(f"{child_ns}-{self.auth}-lambda-method"),
-                        H(f"{child_ns}-cors-method")]
+            methods += [H(f"{child_ns}-{self.auth}-lambda-method")]
         return methods
     
     def init_deployment(self, namespace, methods):

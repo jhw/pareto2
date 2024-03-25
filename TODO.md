@@ -1,23 +1,18 @@
 ### short [01-apigw-v2]
 
-- lambda method implementation
+- refactor web-api to use single private example
+- redefine auth on a per- endpoint basis
+- remove existing validation code
+- remove existing auth code
+- add cors support to top level api
 
-- route/integration GET parameter validation
-- route/integration POST schema enforcement
-
-- cors
-- auth
-
-- s3 proxy
-- s3 redirect
-
-- update recipes for new service resources
-- define public/private auth at the api level
-- single web-api example
+- website
+- binary media types
 
 ### medium
 
-- apigwv2 binary media types
+- add back 1.0 interval to streaming-table
+- consider sns-to-slack pattern
 
 - lambda alarms 
 - event timer
@@ -98,6 +93,7 @@
 
 ### done
 
+- remove existing cors code
 - check gateway responses
 - check validation
 - replace method base class with route and integration
