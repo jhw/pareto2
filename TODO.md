@@ -1,6 +1,6 @@
 ### short [01-apigw-v2]
 
-- check chatgpt for new props included in top- level classes
+- Domain Name is changed
 
 - assert cors understanding with chatgpt
 - add cors support to top level api
@@ -92,6 +92,7 @@
 
 ### done
 
+- Api "ProtocolType" "HTTP"
 - check whether Name fields are really quired
 - remove deployment
 - check auto deployment

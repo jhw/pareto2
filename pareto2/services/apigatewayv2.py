@@ -19,6 +19,7 @@ class Api(Resource):
     def aws_properties(self):
         return {
             "Name": {"Fn::Sub": f"{self.namespace}-api-${{AWS::StackName}}"},
+            "ProtocolType": "HTTP",
             "AutoDeploy": True
         }
 
