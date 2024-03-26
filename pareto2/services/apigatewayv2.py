@@ -112,12 +112,14 @@ class Route(AltNamespaceMixin, Resource):
 
     @property
     def aws_properties(self):
-         return {
-             "RouteKey": "%s %s%s" % (self.endpoint["method"],
-                                      "" if self.endpoint["path"].startswith("/") else "/",
-                                      self.endpoint["path"]),
-             "ApiId": {"Ref": H(f"{self.namespace}-api")}
-         }        
+        integration_ref =  H(f"{self.namespace}-integration")
+        return {
+            "RouteKey": "%s %s%s" % (self.endpoint["method"],
+                                     "" if self.endpoint["path"].startswith("/") else "/",
+                                     self.endpoint["path"]),
+            "Target": {"Fn::Sub": f"/aws/lambda/${{{integration_ref}}}"},
+            "ApiId": {"Ref": H(f"{self.namespace}-api")}
+        }        
 
 class Integration(AltNamespaceMixin, Resource):
     

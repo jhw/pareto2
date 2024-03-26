@@ -1,7 +1,8 @@
 ### short [01-apigw-v2]
 
-- remove / in endpoint namespace
-- route target
+- only two routes being created
+- only one integration being created
+
 - assert understanding of parameter, schema validation with chatgpt
 - route parameter validation
 - complete authorizer implementation
@@ -97,6 +98,8 @@
 
 ### done
 
+- route target
+- remove / in endpoint namespace
 - route route key
 - add method to demos
 - public/private route subclassing
