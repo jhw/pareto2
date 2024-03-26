@@ -69,9 +69,9 @@ AppHelloGetRoute:
         
 class PublicRoute(Route):
 
-    def __init__(self, namespace, function_namespace, endpoint):
+    def __init__(self, namespace, parent_namespace, endpoint):
         super().__init__(namespace = namespace,
-                         function_namespace = function_namespace,
+                         parent_namespace = parent_namespace,
                          endpoint = endpoint)
 
     @property
@@ -84,9 +84,9 @@ class PublicRoute(Route):
         
 class PrivateRoute(Route):
 
-    def __init__(self, namespace, function_namespace, endpoint):
+    def __init__(self, namespace, parent_namespace, endpoint):
         super().__init__(namespace = namespace,
-                         function_namespace = function_namespace,
+                         parent_namespace = parent_namespace,
                          endpoint = endpoint)
 
     @property
@@ -94,7 +94,7 @@ class PrivateRoute(Route):
         props = super().aws_properties
         props.update({
             "AuthorizationType": "JWT",
-            "AuthorizerId": {"Ref": H(f"{self.namespace}-authorizer")}
+            "AuthorizerId": {"Ref": H(f"{self.parent_namespace}-authorizer")}
         })
         return props
                 
@@ -151,11 +151,11 @@ class WebApi(Recipe):
     def init_endpoint(self, parent_ns, endpoint):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
         routeclass = eval("%sRoute" % endpoint["auth"].capitalize())
-        self.append(routeclass(namespace = parent_ns,
-                               function_namespace = child_ns,
+        self.append(routeclass(namespace = child_ns,
+                               parent_namespace = parent_ns,
                                endpoint = endpoint))
-        self.append(Integration(namespace = parent_ns,
-                                function_namespace = child_ns))
+        self.append(Integration(namespace = child_ns,
+                                parent_namespace = parent_ns))
         self.append(self.init_function(namespace = child_ns,
                                        endpoint = endpoint))
         self += self.init_role_and_policy(namespace = child_ns,

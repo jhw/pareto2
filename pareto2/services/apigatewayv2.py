@@ -105,9 +105,9 @@ AppHelloGetRoute:
     
 class Route(AltNamespaceMixin, Resource):
     
-    def __init__(self, namespace, function_namespace, endpoint):
+    def __init__(self, namespace, parent_namespace, endpoint):
         self.namespace = namespace
-        self.function_namespace = function_namespace
+        self.parent_namespace = parent_namespace
         self.endpoint = endpoint
 
     @property
@@ -118,20 +118,20 @@ class Route(AltNamespaceMixin, Resource):
                                      "" if self.endpoint["path"].startswith("/") else "/",
                                      self.endpoint["path"]),
             "Target": {"Fn::Sub": f"/aws/lambda/${{{integration_ref}}}"},
-            "ApiId": {"Ref": H(f"{self.namespace}-api")}
+            "ApiId": {"Ref": H(f"{self.parent_namespace}-api")}
         }        
 
 class Integration(AltNamespaceMixin, Resource):
     
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace, parent_namespace):
         self.namespace = namespace
-        self.function_namespace = function_namespace
+        self.parent_namespace = parent_namespace
 
     @property
     def aws_properties(self):
-        integration_uri = {"Fn::Sub": [LambdaMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.function_namespace}-function"), "Arn"]}}]}
+        integration_uri = {"Fn::Sub": [LambdaMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.namespace}-function"), "Arn"]}}]}
         return {
-            "ApiId": {"Ref": H(f"{self.namespace}-api")},
+            "ApiId": {"Ref": H(f"{self.parent_namespace}-api")},
             "IntegrationType": "AWS_PROXY",
             "IntegrationUri": integration_uri,
             "PayloadFormatVersion": "2.0",

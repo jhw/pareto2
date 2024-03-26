@@ -1,8 +1,5 @@
 ### short [01-apigw-v2]
 
-- only two routes being created
-- only one integration being created
-
 - assert understanding of parameter, schema validation with chatgpt
 - route parameter validation
 - complete authorizer implementation
@@ -98,6 +95,8 @@
 
 ### done
 
+- only two routes being created
+- only one integration being created
 - route target
 - remove / in endpoint namespace
 - route route key
