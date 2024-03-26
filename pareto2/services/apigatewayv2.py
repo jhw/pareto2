@@ -5,8 +5,6 @@ from pareto2.services import Resource
 
 LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"
 
-StageName = "prod"
-
 class Api(Resource):
 
     def __init__(self, namespace):
@@ -16,48 +14,13 @@ class Api(Resource):
     def aws_properties(self):
         return {
             "Name": {"Fn::Sub": f"{self.namespace}-api-${{AWS::StackName}}"},
-            "AutoDeploy": true
+            "AutoDeploy": True
         }
 
     @property
     def visible(self):
         return True
 
-"""
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-deployment.html
-- Deployment has a StageName property, but Cloudformation complains if you try and use it ("stage already created")
-"""
-    
-class Deployment(Resource):
-
-    def __init__(self, namespace, methods):
-        self.namespace = namespace
-        self.methods = methods
-
-    @property
-    def aws_properties(self):
-        return {
-            "ApiId": {"Ref": H(f"{self.namespace}-api")}
-        }
-
-    @property
-    def depends(self):
-        return self.methods
-                
-class Stage(Resource):
-
-    def __init__(self, namespace, stage_name = StageName):
-        self.namespace = namespace
-        self.stage_name = stage_name
-
-    @property
-    def aws_properties(self):
-        return {
-            "StageName": self.stage_name,
-            "DeploymentId": {"Ref": H(f"{self.namespace}-deployment")},
-            "ApiId": {"Ref": H(f"{self.namespace}-api")}
-        }
-    
 class Route(AltNamespaceMixin, Resource):
     
     def __init__(self, namespace, parent_namespace, endpoint):
@@ -162,16 +125,14 @@ class DomainName(Resource):
     
 class ApiMapping(Resource):
 
-    def __init__(self, namespace, stage_name = StageName):
+    def __init__(self, namespace):
         self.namespace = namespace
-        self.stage_name = stage_name
 
     @property
     def aws_properties(self):
         return {
             "DomainName": {"Ref": H("domain-name")},
-            "ApiId": {"Ref": H(f"{self.namespace}-api")},
-            "Stage": self.stage_name
+            "ApiId": {"Ref": H(f"{self.namespace}-api")}
         }
 
     @property

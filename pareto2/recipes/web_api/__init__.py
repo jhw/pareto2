@@ -11,11 +11,15 @@ import importlib, re
 
 L = importlib.import_module("pareto2.services.lambda")
 
+"""
+\\$default is the correct way to reference the Stage automatically created by ApiGatewayV2 when the Api AutoDeploy property is enabled
+"""
+
 class LambdaPermission(L.Permission):
 
     def __init__(self, namespace, function_namespace, method, path):
-        apiref, stageref = H(f"{namespace}-api"), H(f"{namespace}-stage")
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{apiref}}}/${{{stageref}}}/{method}/{path}"}
+        apiref = H(f"{namespace}-api")
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{apiref}}}/\$default/{method}/{path}"}
         super().__init__(namespace = function_namespace,    
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")
@@ -61,10 +65,6 @@ class WebApi(Recipe):
         for endpoint in endpoints:
             self.init_endpoint(parent_ns = namespace,
                                endpoint = endpoint)
-        methods = self.filter_methods(parent_ns = namespace,
-                                      endpoints = endpoints)
-        self.init_deployment(namespace = namespace,
-                             methods = methods)
 
     def has_private_endpoint(self, endpoints):
         for endpoint in endpoints:
@@ -74,7 +74,6 @@ class WebApi(Recipe):
         
     def init_api_base(self, namespace):
         for klass in [Api,
-                      Stage,
                       GatewayResponse4xx,
                       GatewayResponse5xx,
                       DomainName,
@@ -135,17 +134,6 @@ class WebApi(Recipe):
                                 method = endpoint["method"],
                                 path = endpoint["path"])
 
-    def filter_methods(self, parent_ns, endpoints):
-        methods = []
-        for endpoint in endpoints:
-            child_ns = self.endpoint_namespace(parent_ns, endpoint)
-            methods += [H(f"{child_ns}-route"),
-                        H(f"{child_ns}-integration")]
-    
-    def init_deployment(self, namespace, methods):
-        self.append(Deployment(namespace = namespace,
-                               methods = methods))
-            
 if __name__ == "__main__":
     pass
 
