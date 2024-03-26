@@ -69,20 +69,25 @@ AppHelloGetRoute:
         
 class PublicRoute(Route):
 
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace, function_namespace, endpoint):
         super().__init__(namespace = namespace,
-                         function_namespace = function_namespace)
+                         function_namespace = function_namespace,
+                         endpoint = endpoint)
 
     @property
     def aws_properties(self):
-        props = super().aws_properties        
+        props = super().aws_properties
+        props.update({
+            "AuthorizationType": "NONE"
+        })
         return props
         
 class PrivateRoute(Route):
 
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace, function_namespace, endpoint):
         super().__init__(namespace = namespace,
-                         function_namespace = function_namespace)
+                         function_namespace = function_namespace,
+                         endpoint = endpoint)
 
     @property
     def aws_properties(self):
@@ -147,7 +152,8 @@ class WebApi(Recipe):
         child_ns = self.endpoint_namespace(parent_ns, endpoint)
         routeclass = eval("%sRoute" % endpoint["auth"].capitalize())
         self.append(routeclass(namespace = parent_ns,
-                               function_namespace = child_ns))
+                               function_namespace = child_ns,
+                               endpoint = endpoint))
         self.append(Integration(namespace = parent_ns,
                                 function_namespace = child_ns))
         self.append(self.init_function(namespace = child_ns,

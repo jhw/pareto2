@@ -105,14 +105,18 @@ AppHelloGetRoute:
     
 class Route(AltNamespaceMixin, Resource):
     
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace, function_namespace, endpoint):
         self.namespace = namespace
         self.function_namespace = function_namespace
+        self.endpoint = endpoint
 
     @property
     def aws_properties(self):
          return {
-            "ApiId": {"Ref": H(f"{self.namespace}-api")}
+             "RouteKey": "%s %s%s" % (self.endpoint["method"],
+                                      "" if self.endpoint["path"].startswith("/") else "/",
+                                      self.endpoint["path"]),
+             "ApiId": {"Ref": H(f"{self.namespace}-api")}
          }        
 
 class Integration(AltNamespaceMixin, Resource):
