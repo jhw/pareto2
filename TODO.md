@@ -1,6 +1,5 @@
 ### short [01-apigw-v2]
 
-- assert understanding of parameter validation with chatgpt
 - complete authorizer implementation
 - implement routes and integrations at web_api recipe layer
 - check auto deployment
@@ -94,6 +93,7 @@
 
 ### done
 
+- assert understanding of parameter validation with chatgpt
 - route parameter validation
 - only two routes being created
 - only one integration being created
