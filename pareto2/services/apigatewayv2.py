@@ -15,7 +15,8 @@ class Api(Resource):
     @property
     def aws_properties(self):
         return {
-            "Name": {"Fn::Sub": f"{self.namespace}-api-${{AWS::StackName}}"}
+            "Name": {"Fn::Sub": f"{self.namespace}-api-${{AWS::StackName}}"},
+            "AutoDeploy": true
         }
 
     @property

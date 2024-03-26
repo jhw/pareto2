@@ -1,10 +1,13 @@
 ### short [01-apigw-v2]
 
-- check auto deployment
+- remove deployment
+
 - assert cors understanding with chatgpt
 - add cors support to top level api
+
 - check chatgpt for new props included in top- level classes
 - remove Name fields (Api)
+
 - ensure recipes always pass named arguments
 - refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
 
@@ -92,6 +95,7 @@
 
 ### done
 
+- check auto deployment
 - check authorizer getting user pool client name
 - implement routes and integrations at web_api recipe layer
 - bad user_pool_ref
