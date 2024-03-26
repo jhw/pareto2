@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- Domain Name is changed
-
 - assert cors understanding with chatgpt
 - add cors support to top level api
 
@@ -92,6 +90,7 @@
 
 ### done
 
+- Domain Name is changed
 - Api "ProtocolType" "HTTP"
 - check whether Name fields are really quired
 - remove deployment

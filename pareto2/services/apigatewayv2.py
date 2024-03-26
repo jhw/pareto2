@@ -121,7 +121,7 @@ class GatewayResponse5xx(GatewayResponse):
     def __init__(self, namespace):
         return super().__init__(namespace = namespace,
                                 response_type = "5XX")
-        
+
 class DomainName(Resource):
 
     def __init__(self, namespace):
@@ -131,7 +131,9 @@ class DomainName(Resource):
     def aws_properties(self):
         return {
             "DomainName": {"Ref": H("domain-name")},
-            "CertificateArn": {"Ref": H("certificate-arn")}
+            "DomainNameConfigurations": [
+                {"CertificateArn": {"Ref": H("certificate-arn")}}
+            ]
         }
     
 class ApiMapping(Resource):
