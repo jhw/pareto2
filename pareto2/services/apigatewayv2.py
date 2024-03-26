@@ -97,81 +97,19 @@ class Integration(AltNamespaceMixin, Resource):
             "IntegrationMethod": "POST"            
         }
         
-"""
-   "AppAuthorizer": {
-      "Properties": {
-        "ApiId": {
-          "Ref": "AppRestApi"
-        },
-        "Name": {
-          "Fn::Sub": "app-authorizer-${AWS::StackName}"
-        },
-        "Type": "JWT",
-        "JwtConfiguration": {
-          "Audience": [
-            {
-              "Fn::GetAtt": [
-                "AppUserPoolWebClient",
-                "UserPoolClientName"
-              ]
-            }
-          ],
-          "Issuer": {
-            "Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/${AppUserPool}"
-          }
-        }
-      },
-      "Type": "AWS::ApiGatewayV2::Authorizer"
-    },
-"""
-
-"""
-"MyAuthorizer": {
-  "Type": "AWS::ApiGatewayV2::Authorizer",
-  "Properties": {
-    "ApiId": "YourApiId",
-    "Name": "MyCognitoAuthorizer",
-    "AuthorizerType": "JWT",
-    "IdentitySource": ["$request.header.Authorization"],
-    "JwtConfiguration": {
-      "Audience": ["YourCognitoUserPoolClientId"],
-      "Issuer": "YourCognitoUserPoolIssuer"
-    }
-  }
-}
-"""
-
-"""
-MyCognitoAuthorizer:
-  Type: AWS::ApiGatewayV2::Authorizer
-  Properties:
-    ApiId: !Ref AppHttpApi
-    AuthorizerType: JWT
-    IdentitySource:
-      - $request.header.Authorization
-    JwtConfiguration:
-      Audience:
-        - <Your Cognito User Pool App Client ID>
-      Issuer: <Your Cognito User Pool Issuer URL>
-    Name: MyCognitoAuthorizer
-"""
-
 class Authorizer(Resource):
     
     def __init__(self, namespace):
         self.namespace = namespace
 
-    """
-    - feels like all APIGW authentication is going to be done against a UserPool, so it's okay to make this Cognito- centric in a base class
-    """
-        
     @property
     def aws_properties(self):
-        user_pool_ref = None
-        issuer = {"Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/{{{user_pool_ref}}}"}
-        
+        user_pool_client_name =  {"Fn::GetAtt": [H(f"{self.namespace}-user-pool-web-client"), "UserPoolClientName"]}
+        user_pool_ref =  H(f"{self.namespace}-user-pool")
+        issuer = {"Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/{{{user_pool_ref}}}"}        
         jwt_config = {
-            "Issuer": issuer
+            "Issuer": issuer,
+            "Audience": [user_pool_client_name]
         }
         return {
             "AuthorizerType": "JWT",

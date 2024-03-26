@@ -1,6 +1,5 @@
 ### short [01-apigw-v2]
 
-- complete authorizer implementation
 - implement routes and integrations at web_api recipe layer
 - check auto deployment
 - assert cors understanding with chatgpt
@@ -94,6 +93,7 @@
 
 ### done
 
+- complete authorizer implementation
 - assert understanding of parameter validation with chatgpt
 - route parameter validation
 - only two routes being created
