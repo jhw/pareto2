@@ -6,6 +6,7 @@
 - assert cors understanding with chatgpt
 - add cors support to top level api
 - check chatgpt for new props included in top- level classes
+- remove Name fields (Api)
 - ensure recipes always pass named arguments
 - refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
 

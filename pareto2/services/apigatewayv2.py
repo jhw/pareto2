@@ -167,12 +167,18 @@ class Authorizer(Resource):
         
     @property
     def aws_properties(self):
+        user_pool_ref = None
+        issuer = {"Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/{{{user_pool_ref}}}"}
+        
+        jwt_config = {
+            "Issuer": issuer
+        }
         return {
-            "ProviderARNs": [{"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "Arn"]}],
-            "IdentitySource": "method.request.header.Authorization",
+            "AuthorizerType": "JWT",
+            "JwtConfiguration": jwt_config,
+            "IdentitySource": ["$request.header.Authorization"],
             "Name": {"Fn::Sub": f"{self.namespace}-authorizer-${{AWS::StackName}}"},
             "ApiId": {"Ref": H(f"{self.namespace}-api")},
-            "Type": "COGNITO_USER_POOLS"
         }
 
 class GatewayResponse(AltNamespaceMixin, Resource):
