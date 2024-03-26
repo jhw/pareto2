@@ -1,10 +1,9 @@
 ### short [01-apigw-v2]
 
+- check chatgpt for new props included in top- level classes
+
 - assert cors understanding with chatgpt
 - add cors support to top level api
-
-- check chatgpt for new props included in top- level classes
-- check whether Name fields are really quired
 
 - ensure recipes always pass named arguments
 - refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
@@ -93,6 +92,7 @@
 
 ### done
 
+- check whether Name fields are really quired
 - remove deployment
 - check auto deployment
 - check authorizer getting user pool client name

@@ -10,6 +10,11 @@ class Api(Resource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+    """
+    - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-api.html#cfn-apigatewayv2-api-name
+    - Name: The name of the API. Required unless you specify an OpenAPI definition for Body or S3BodyLocation.
+    """
+        
     @property
     def aws_properties(self):
         return {
@@ -66,6 +71,11 @@ class Authorizer(Resource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+    """
+    - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-authorizer.html#cfn-apigatewayv2-authorizer-name
+    - Name: The name of the authorizer; Required: Yes
+    """
+ 
     @property
     def aws_properties(self):
         user_pool_ref =  H(f"{self.namespace}-user-pool")
