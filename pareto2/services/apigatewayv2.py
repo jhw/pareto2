@@ -106,7 +106,7 @@ class Authorizer(Resource):
     def aws_properties(self):
         user_pool_client_name =  {"Fn::GetAtt": [H(f"{self.namespace}-user-pool-web-client"), "UserPoolClientName"]}
         user_pool_ref =  H(f"{self.namespace}-user-pool")
-        issuer = {"Fn::Sub": "https://cognito-idp.${AWS::Region}.amazonaws.com/{{{user_pool_ref}}}"}        
+        issuer = {"Fn::Sub": f"https://cognito-idp.${{AWS::Region}}.amazonaws.com/${{{user_pool_ref}}}"}        
         jwt_config = {
             "Issuer": issuer,
             "Audience": [user_pool_client_name]

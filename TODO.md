@@ -1,6 +1,6 @@
 ### short [01-apigw-v2]
 
-- implement routes and integrations at web_api recipe layer
+- check authorizer getting user pool client name
 - check auto deployment
 - assert cors understanding with chatgpt
 - add cors support to top level api
@@ -93,6 +93,8 @@
 
 ### done
 
+- implement routes and integrations at web_api recipe layer
+- bad user_pool_ref
 - complete authorizer implementation
 - assert understanding of parameter validation with chatgpt
 - route parameter validation
