@@ -19,53 +19,6 @@ class LambdaPermission(L.Permission):
         super().__init__(namespace = function_namespace,    
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")
-
-
-"""
-AppHelloGetRoute:
-  Type: AWS::ApiGatewayV2::Route
-  Properties:
-    ApiId: !Ref AppHttpApi
-    RouteKey: GET /hello-get
-    AuthorizationType: NONE
-    Target: !Join 
-      - "/"
-      - - "integrations"
-        - !Ref AppHelloGetLambdaIntegration
-    RequestParameters:
-      querystrings.message:
-        Required: true
-"""
-
-"""
-AppHelloPostRoute:
-  Type: AWS::ApiGatewayV2::Route
-  Properties:
-    ApiId: !Ref AppHttpApi
-    RouteKey: POST /hello-post
-    AuthorizationType: NONE
-    Target: !Join 
-      - "/"
-      - - "integrations"
-        - !Ref AppHelloPostLambdaIntegration
-"""
-
-"""
-AppHelloGetRoute:
-  Type: AWS::ApiGatewayV2::Route
-  Properties:
-    ApiId: !Ref AppHttpApi
-    RouteKey: GET /hello-get
-    AuthorizationType: JWT
-    AuthorizerId: !Ref MyCognitoAuthorizer
-    Target: !Join 
-      - "/"
-      - - "integrations"
-        - !Ref AppHelloGetLambdaIntegration
-    RequestParameters:
-      querystrings.message:
-        Required: true
-"""
         
 class PublicRoute(Route):
 

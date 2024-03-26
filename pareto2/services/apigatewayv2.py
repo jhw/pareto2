@@ -56,52 +56,6 @@ class Stage(Resource):
             "DeploymentId": {"Ref": H(f"{self.namespace}-deployment")},
             "ApiId": {"Ref": H(f"{self.namespace}-api")}
         }
-
-"""
-AppHelloGetRoute:
-  Type: AWS::ApiGatewayV2::Route
-  Properties:
-    ApiId: !Ref AppHttpApi
-    RouteKey: GET /hello-get
-    AuthorizationType: NONE
-    Target: !Join 
-      - "/"
-      - - "integrations"
-        - !Ref AppHelloGetLambdaIntegration
-    RequestParameters:
-      querystrings.message:
-        Required: true
-"""
-
-"""
-AppHelloPostRoute:
-  Type: AWS::ApiGatewayV2::Route
-  Properties:
-    ApiId: !Ref AppHttpApi
-    RouteKey: POST /hello-post
-    AuthorizationType: NONE
-    Target: !Join 
-      - "/"
-      - - "integrations"
-        - !Ref AppHelloPostLambdaIntegration
-"""
-
-"""
-AppHelloGetRoute:
-  Type: AWS::ApiGatewayV2::Route
-  Properties:
-    ApiId: !Ref AppHttpApi
-    RouteKey: GET /hello-get
-    AuthorizationType: JWT
-    AuthorizerId: !Ref MyCognitoAuthorizer
-    Target: !Join 
-      - "/"
-      - - "integrations"
-        - !Ref AppHelloGetLambdaIntegration
-    RequestParameters:
-      querystrings.message:
-        Required: true
-"""
     
 class Route(AltNamespaceMixin, Resource):
     
@@ -113,14 +67,19 @@ class Route(AltNamespaceMixin, Resource):
     @property
     def aws_properties(self):
         integration_ref =  H(f"{self.namespace}-integration")
-        return {
+        props = {
             "RouteKey": "%s %s%s" % (self.endpoint["method"],
                                      "" if self.endpoint["path"].startswith("/") else "/",
                                      self.endpoint["path"]),
             "Target": {"Fn::Sub": f"/aws/lambda/${{{integration_ref}}}"},
             "ApiId": {"Ref": H(f"{self.parent_namespace}-api")}
-        }        
-
+        }
+        if (self.endpoint["method"] == "GET" and
+            "parameters" in self.endpoint):
+            props["RequestParameters"] = {f"querystrings.{param}": {"Required": True}
+                                          for param in self.endpoint["parameters"]}
+        return props
+        
 class Integration(AltNamespaceMixin, Resource):
     
     def __init__(self, namespace, parent_namespace):
