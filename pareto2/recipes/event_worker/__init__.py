@@ -39,7 +39,7 @@ class EventWorker(SlackRecipe):
         self += self.init_role_and_policy(namespace = namespace,
                                           worker = worker)
         for event in worker["events"]:
-            self.init_event_rule(parent_ns = namespace,
+            self.init_event_rule(namespace = namespace,
                                  event = event)
         
     def init_function(self, namespace, worker):
@@ -54,13 +54,13 @@ class EventWorker(SlackRecipe):
                    permissions = self.policy_permissions(worker))
         ]
 
-    def init_event_rule(self, parent_ns, event):
-        child_ns = f"{parent_ns}-{event['name']}"
-        self.append(Rule(namespace = child_ns,
-                         function_namespace = parent_ns,
+    def init_event_rule(self, namespace, event):
+        event_namespace = f"{namespace}-{event['name']}"
+        self.append(Rule(namespace = event_namespace,
+                         function_namespace = namespace,
                          pattern = event["pattern"]))
-        self.append(EventPermission(namespace = child_ns,
-                                    function_namespace = parent_ns))
+        self.append(EventPermission(namespace = event_namespace,
+                                    function_namespace = namespace))
                     
 if __name__ == "__main__":
     pass

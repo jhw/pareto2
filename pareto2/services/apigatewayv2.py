@@ -14,11 +14,48 @@ class Api(Resource):
     - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-api.html#cfn-apigatewayv2-api-name
     - Name: The name of the API. Required unless you specify an OpenAPI definition for Body or S3BodyLocation.
     """
-        
+
+    """
+CorsConfiguration:
+      AllowOrigins:
+        - "https://example.com"
+      AllowMethods:
+        - "GET"
+      AllowHeaders:
+        - "Content-Type"
+        - "X-Amz-Date"
+        - "Authorization"
+        - "X-Api-Key"
+      AllowCredentials: true
+      ExposeHeaders:
+        - "X-Custom-Header"
+      MaxAge: 3600
+"""
+    
     @property
     def aws_properties(self):
         return {
             "Name": {"Fn::Sub": f"{self.namespace}-api-${{AWS::StackName}}"},
+            "CorsConfiguration": {
+                "AllowOrigins": [
+                    "*"
+                ],
+                "AllowMethods": [
+                    "GET",
+                    "POST"
+                ],
+                "AllowHeaders": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key"
+                ],
+                "AllowCredentials": True,
+                "ExposeHeaders": [
+                    "X-Custom-Header"
+                ],
+                "MaxAge": 3600
+            },
             "ProtocolType": "HTTP",
             "AutoDeploy": True
         }
@@ -29,9 +66,9 @@ class Api(Resource):
 
 class Route(AltNamespaceMixin, Resource):
     
-    def __init__(self, namespace, parent_namespace, endpoint):
+    def __init__(self, namespace, api_namespace, endpoint):
         self.namespace = namespace
-        self.parent_namespace = parent_namespace
+        self.api_namespace = api_namespace
         self.endpoint = endpoint
 
     @property
@@ -42,7 +79,7 @@ class Route(AltNamespaceMixin, Resource):
                                      "" if self.endpoint["path"].startswith("/") else "/",
                                      self.endpoint["path"]),
             "Target": {"Fn::Sub": f"/aws/lambda/${{{integration_ref}}}"},
-            "ApiId": {"Ref": H(f"{self.parent_namespace}-api")}
+            "ApiId": {"Ref": H(f"{self.api_namespace}-api")}
         }
         if (self.endpoint["method"] == "GET" and
             "parameters" in self.endpoint):
@@ -52,15 +89,15 @@ class Route(AltNamespaceMixin, Resource):
         
 class Integration(AltNamespaceMixin, Resource):
     
-    def __init__(self, namespace, parent_namespace):
+    def __init__(self, namespace, api_namespace):
         self.namespace = namespace
-        self.parent_namespace = parent_namespace
+        self.api_namespace = api_namespace
 
     @property
     def aws_properties(self):
         integration_uri = {"Fn::Sub": [LambdaMethodArn, {"arn": {"Fn::GetAtt": [H(f"{self.namespace}-function"), "Arn"]}}]}
         return {
-            "ApiId": {"Ref": H(f"{self.parent_namespace}-api")},
+            "ApiId": {"Ref": H(f"{self.api_namespace}-api")},
             "IntegrationType": "AWS_PROXY",
             "IntegrationUri": integration_uri,
             "PayloadFormatVersion": "2.0",

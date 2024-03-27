@@ -26,9 +26,9 @@ class LambdaPermission(L.Permission):
         
 class PublicRoute(Route):
 
-    def __init__(self, namespace, parent_namespace, endpoint):
+    def __init__(self, namespace, api_namespace, endpoint):
         super().__init__(namespace = namespace,
-                         parent_namespace = parent_namespace,
+                         api_namespace = api_namespace,
                          endpoint = endpoint)
 
     @property
@@ -41,9 +41,9 @@ class PublicRoute(Route):
         
 class PrivateRoute(Route):
 
-    def __init__(self, namespace, parent_namespace, endpoint):
+    def __init__(self, namespace, api_namespace, endpoint):
         super().__init__(namespace = namespace,
-                         parent_namespace = parent_namespace,
+                         api_namespace = api_namespace,
                          endpoint = endpoint)
 
     @property
@@ -51,7 +51,7 @@ class PrivateRoute(Route):
         props = super().aws_properties
         props.update({
             "AuthorizationType": "JWT",
-            "AuthorizerId": {"Ref": H(f"{self.parent_namespace}-authorizer")}
+            "AuthorizerId": {"Ref": H(f"{self.api_namespace}-authorizer")}
         })
         return props
                 
@@ -63,7 +63,7 @@ class WebApi(Recipe):
         if self.has_private_endpoint(endpoints):
             self.init_private_api(namespace = namespace)
         for endpoint in endpoints:
-            self.init_endpoint(parent_ns = namespace,
+            self.init_endpoint(api_namespace = namespace,
                                endpoint = endpoint)
 
     def has_private_endpoint(self, endpoints):
@@ -100,20 +100,20 @@ class WebApi(Recipe):
                                     for tok in re.split("\\W", endpoint["path"])
                                     if tok != ""]))
     
-    def init_endpoint(self, parent_ns, endpoint):
-        child_ns = self.endpoint_namespace(parent_ns, endpoint)
+    def init_endpoint(self, api_namespace, endpoint):
+        endpoint_namespace = self.endpoint_namespace(api_namespace, endpoint)
         routeclass = eval("%sRoute" % endpoint["auth"].capitalize())
-        self.append(routeclass(namespace = child_ns,
-                               parent_namespace = parent_ns,
+        self.append(routeclass(namespace = endpoint_namespace,
+                               api_namespace = api_namespace,
                                endpoint = endpoint))
-        self.append(Integration(namespace = child_ns,
-                                parent_namespace = parent_ns))
-        self.append(self.init_function(namespace = child_ns,
+        self.append(Integration(namespace = endpoint_namespace,
+                                api_namespace = api_namespace))
+        self.append(self.init_function(namespace = endpoint_namespace,
                                        endpoint = endpoint))
-        self += self.init_role_and_policy(namespace = child_ns,
+        self += self.init_role_and_policy(namespace = endpoint_namespace,
                                           endpoint = endpoint)
-        self.append(self.init_lambda_permission(parent_ns = parent_ns,
-                                                child_ns = child_ns,
+        self.append(self.init_lambda_permission(api_namespace = api_namespace,
+                                                endpoint_namespace = endpoint_namespace,
                                                 endpoint = endpoint))
 
     def init_function(self, namespace, endpoint):
@@ -128,9 +128,9 @@ class WebApi(Recipe):
                    permissions = self.policy_permissions(endpoint))
         ]
     
-    def init_lambda_permission(self, parent_ns, child_ns, endpoint):
-        return LambdaPermission(namespace = parent_ns,
-                                function_namespace = child_ns,
+    def init_lambda_permission(self, api_namespace, endpoint_namespace, endpoint):
+        return LambdaPermission(namespace = api_namespace,
+                                function_namespace = endpoint_namespace,
                                 method = endpoint["method"],
                                 path = endpoint["path"])
 

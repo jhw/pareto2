@@ -1,15 +1,21 @@
 ### short [01-apigw-v2]
 
-- assert cors understanding with chatgpt
-- add cors support to top level api
+- IdentityPool AllowUnauthenticatedIdentities false
 
-- ensure recipes always pass named arguments
-- refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
+```
+However, when AllowCredentials is true, AllowOrigins cannot be '*'; it must specify actual origins rather than a wildcard for browsers to respect the AllowCredentials setting.
+```
+
+### website
+
+- top level api
+- proxy route and integration
+- redirect route and integration
+- binary media types handling
+- replace _ns refs with _namespace
+- replace parent/child_namespace with (eg) api/endpoint_namespace
 
 ### medium
-
-- apigw v2 website
-  - binary media types
 
 - lambda alarms 
 - event timer
@@ -90,6 +96,11 @@
 
 ### done
 
+- show template to chatgpt
+- refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
+- ensure recipes always pass named arguments
+- assert cors understanding with chatgpt
+- add cors support to top level api
 - Domain Name is changed
 - Api "ProtocolType" "HTTP"
 - check whether Name fields are really quired

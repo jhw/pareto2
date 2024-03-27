@@ -26,10 +26,10 @@ class SlackRecipe(Recipe):
         self.append(LogGroup(namespace = namespace))
         self.append(LogStream(namespace = namespace))
         for log_level in log_levels:
-            child_logging_ns = f"{logging_namespace}-{log_level}"
+            level_logging_namespace = f"{logging_namespace}-{log_level}"
             subscriptionfn = eval(H(f"{log_level}-subscription-filter"))
             self.append(subscriptionfn(namespace = namespace,
-                                       logging_namespace = child_logging_ns))
+                                       logging_namespace = level_logging_namespace))
 
     @property
     def log_levels(self):
@@ -39,11 +39,11 @@ class SlackRecipe(Recipe):
 
     def init_slack_logs(self, namespace):
         for log_level in self.log_levels:
-            child_ns = f"{namespace}-{log_level}"
-            self.append(SlackFunction(namespace = child_ns,
+            level_logging_namespace = f"{namespace}-{log_level}"
+            self.append(SlackFunction(namespace = level_logging_namespace,
                                       log_level = log_level))
-            self.append(Role(namespace = child_ns))
-            self.append(Policy(namespace = child_ns))
-            self.append(L.Permission(namespace = child_ns,
+            self.append(Role(namespace = level_logging_namespace))
+            self.append(Policy(namespace = level_logging_namespace))
+            self.append(L.Permission(namespace = level_logging_namespace,
                                                  principal = "logs.amazonaws.com"))
 
