@@ -85,6 +85,8 @@ class UserPoolWebClient(UserPoolClient):
 You should be able to use a User pool without an Identity pool, but experience of the Flutter Amplify libraries suggests an Identity pool is always required, even if not used
 
 All this Identity pool code is therefore boilerplate; not really clear if it should live in services or recipes; for now, keep it in the former
+
+Could set AllowUnauthenticatedIdentities to False, but don't know precisely what Amplify Auth requires from IdentityPool
 """
 
 class IdentityPool(Resource):
@@ -99,7 +101,7 @@ class IdentityPool(Resource):
         provider = {"ClientId": client_id,
                     "ProviderName": provider_name}
         return {
-            "AllowUnauthenticatedIdentities": True,
+            "AllowUnauthenticatedIdentities": True, # NB
             "CognitoIdentityProviders": [provider]
         }
 

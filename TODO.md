@@ -1,10 +1,6 @@
 ### short [01-apigw-v2]
 
-- IdentityPool AllowUnauthenticatedIdentities false
-
-```
-However, when AllowCredentials is true, AllowOrigins cannot be '*'; it must specify actual origins rather than a wildcard for browsers to respect the AllowCredentials setting.
-```
+- gist based testing
 
 ### website
 
@@ -96,6 +92,11 @@ However, when AllowCredentials is true, AllowOrigins cannot be '*'; it must spec
 
 ### done
 
+```
+However, when AllowCredentials is true, AllowOrigins cannot be '*'; it must specify actual origins rather than a wildcard for browsers to respect the AllowCredentials setting.
+```
+
+- IdentityPool AllowUnauthenticatedIdentities false
 - show template to chatgpt
 - refactor parent_ns as namespace, child_ns as child_namespace/endpoint_namespace
 - ensure recipes always pass named arguments
