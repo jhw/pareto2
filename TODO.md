@@ -1,16 +1,6 @@
 ### short [01-apigw-v2]
 
-```
-creating CNAME record for /hostedzone/Z00735873S7GO8IWZFK35
-Traceback (most recent call last):
-  File "scripts/domains/create_certificate.py", line 84, in <module>
-    print (route53.change_resource_record_sets(HostedZoneId=hostedzoneid,
-  File "/Users/jhw/work/pareto2/env/lib/python3.8/site-packages/botocore/client.py", line 508, in _api_call
-    return self._make_api_call(operation_name, kwargs)
-  File "/Users/jhw/work/pareto2/env/lib/python3.8/site-packages/botocore/client.py", line 915, in _make_api_call
-    raise error_class(parsed_response, operation_name)
-botocore.errorfactory.InvalidChangeBatch: An error occurred (InvalidChangeBatch) when calling the ChangeResourceRecordSets operation: [Tried to create resource record set [name='_e616a9cb89b8c6fb2d167ac9a2379f96.spaas.link.', type='CNAME'] but it already exists]
-```
+- create eu-west-1 certificate for spaaseu.link
 
 ### gist
 
@@ -110,6 +100,17 @@ botocore.errorfactory.InvalidChangeBatch: An error occurred (InvalidChangeBatch)
 
 ### done
 
+```
+creating CNAME record for /hostedzone/Z00735873S7GO8IWZFK35
+Traceback (most recent call last):
+  File "scripts/domains/create_certificate.py", line 84, in <module>
+    print (route53.change_resource_record_sets(HostedZoneId=hostedzoneid,
+  File "/Users/jhw/work/pareto2/env/lib/python3.8/site-packages/botocore/client.py", line 508, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+  File "/Users/jhw/work/pareto2/env/lib/python3.8/site-packages/botocore/client.py", line 915, in _make_api_call
+    raise error_class(parsed_response, operation_name)
+botocore.errorfactory.InvalidChangeBatch: An error occurred (InvalidChangeBatch) when calling the ChangeResourceRecordSets operation: [Tried to create resource record set [name='_e616a9cb89b8c6fb2d167ac9a2379f96.spaas.link.', type='CNAME'] but it already exists]
+```
 
 - create eu-west-1 certificate for spaas.link
 - adapt domain scripts to take region name as parameter
