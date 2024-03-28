@@ -53,6 +53,17 @@ class Api(Resource):
     def visible(self):
         return True
 
+class Stage(Resource):
+
+    def __init__(self, namespace):
+        self.namespace = namespace
+
+    @property
+    def aws_properties(self):
+        return {
+            "ApiId": {"Ref": H(f"{self.namespace}-api")}
+        }
+    
 class Route(Resource):
     
     def __init__(self, namespace, api_namespace, endpoint):

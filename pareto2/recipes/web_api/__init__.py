@@ -74,6 +74,7 @@ class WebApi(Recipe):
         
     def init_api_base(self, namespace):
         for klass in [Api,
+                      Stage,
                       DomainName,
                       ApiMapping,
                       RecordSet]:

@@ -1,6 +1,6 @@
 ### short [01-apigw-v2]
 
-- add Stage with AutoDeploy
+- complete Stage 
 - add Stage ref to ApiMapping
 - replace \\$default ref with ${AppStage}
 
