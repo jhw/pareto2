@@ -5,7 +5,6 @@
 - pass EndpointUrls parameter for use with allowed CORS origins
 - lambdas to round- trip supplied host name as permitted origin
 
-- domain scripts
 - remove us-east-1 from domain scripts
 - create eu-west-1 certificate for spaas.link
 
@@ -102,6 +101,7 @@
 
 ### done
 
+- domain scripts
 - replace \\$default ref with ${AppStage}
 - remove mapping depends
 - add Stage ref to ApiMapping
