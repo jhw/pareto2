@@ -59,8 +59,10 @@ if __name__=="__main__":
         hostedzoneid=hostedzones[hostedzonename]
         recordsets=list_record_sets(route53, hostedzoneid)
         recordsettypes=set([recordset["Type"] for recordset in recordsets])
+        """
         if "CNAME" in recordsettypes:
             raise RuntimeError("CNAME already exists in hosted zone %s" % hostedzonename)
+        """
         acm=boto3.client("acm", region_name=region)
         certificates=list_certificates(acm)
         certdomainname="*.%s" % hostname
