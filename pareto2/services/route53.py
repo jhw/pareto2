@@ -20,20 +20,20 @@ class RecordSet(Resource):
 
     @property
     def aws_properties(self):
-        hzname = {"Fn::Sub": ["${prefix}.${suffix}.", {
+        hosted_zone_name = {"Fn::Sub": ["${prefix}.${suffix}.", {
             "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]},
             "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}
         }]}
-        dnsname = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), "RegionalDomainName"]}
-        hzidref = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), "RegionalHostedZoneId"]}
-        aliastarget = {
-            "DNSName": dnsname,
+        dns_name = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), "RegionalDomainName"]}
+        hosted_zone_ref = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), "RegionalHostedZoneId"]}
+        alias_target = {
+            "DNSName": dns_name,
             "EvaluateTargetHealth": False,
-            "HostedZoneId": hzidref
+            "HostedZoneId": hosted_zone_ref
         }
         return {
-            "HostedZoneName": hzname,
+            "HostedZoneName": hosted_zone_name,
             "Name": {"Ref": H("domain-name")}, # global
             "Type": "A",
-            "AliasTarget": aliastarget
+            "AliasTarget": alias_target
         }
