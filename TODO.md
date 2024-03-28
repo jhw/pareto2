@@ -1,17 +1,24 @@
 ### short [01-apigw-v2]
 
-- add special 400 clause to lambda bodies for testing purposes
+- merge user pool clients into single resource with all existing auth flows
+
+- add Stage with AutoDeploy
+- add Stage ref to ApiMapping
+- replace \\$default ref with ${AppStage}
+
+- add CORS credentials as True
+- check if cloudformation supports list parameters
+- pass EndpointUrls parameter for use with allowed CORS origins
+- lambdas to round- trip supplied host name as permitted origin
+
+- test removal of Route alt namespacing
+
 - domain scripts
 - remove us-east-1 from domain scripts
-- cors needs to enable creds and replace origin wildcard with specific endpoints, at both api cors preflight level and lambda handler level
-- round- tripping of host for CORS origin purposes
-- private post body needs to be base64.b63decode'd [isBase64Encoded parameter]
-- merge user pool clients with all existing auth flows
-- not convinced that Route classes need alt namespacing
-- add Stage ref to ApiMapping
-- [route53] certificates in local regions?
-- add Stage with AutoDeploy
-- replace \\$default ref with ${AppStage}
+- create eu-west-1 certificate for spaas.link
+
+- POST body may need to be base64.b63decode'd [isBase64Encoded parameter]
+- add special 400 clause to lambda bodies for CORS error testing
 
 ### website
 
