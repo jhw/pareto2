@@ -1,5 +1,4 @@
 from pareto2.services import hungarorise as H
-from pareto2.services import AltNamespaceMixin
 
 from pareto2.services import Resource
 
@@ -54,7 +53,7 @@ class Api(Resource):
     def visible(self):
         return True
 
-class Route(AltNamespaceMixin, Resource):
+class Route(Resource):
     
     def __init__(self, namespace, api_namespace, endpoint):
         self.namespace = namespace
@@ -72,7 +71,7 @@ class Route(AltNamespaceMixin, Resource):
             "ApiId": {"Ref": H(f"{self.api_namespace}-api")}
         }
         
-class Integration(AltNamespaceMixin, Resource):
+class Integration(Resource):
     
     def __init__(self, namespace, api_namespace):
         self.namespace = namespace

@@ -9,8 +9,6 @@
 - pass EndpointUrls parameter for use with allowed CORS origins
 - lambdas to round- trip supplied host name as permitted origin
 
-- test removal of Route alt namespacing
-
 - domain scripts
 - remove us-east-1 from domain scripts
 - create eu-west-1 certificate for spaas.link
@@ -108,6 +106,7 @@
 
 ### done
 
+- test removal of Route alt namespacing
 - merge user pool clients into single resource with all existing auth flows
 - change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
 - Route target is badly specified with /aws/lambda prefix, should be integrations
