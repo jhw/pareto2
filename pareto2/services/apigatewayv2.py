@@ -64,18 +64,13 @@ class Route(AltNamespaceMixin, Resource):
     @property
     def aws_properties(self):
         integration_ref =  H(f"{self.namespace}-integration")
-        props = {
+        return {
             "RouteKey": "%s %s%s" % (self.endpoint["method"],
                                      "" if self.endpoint["path"].startswith("/") else "/",
                                      self.endpoint["path"]),
             "Target": {"Fn::Sub": f"/aws/lambda/${{{integration_ref}}}"},
             "ApiId": {"Ref": H(f"{self.api_namespace}-api")}
         }
-        if (self.endpoint["method"] == "GET" and
-            "parameters" in self.endpoint):
-            props["RequestParameters"] = {f"querystrings.{param}": {"Required": True}
-                                          for param in self.endpoint["parameters"]}
-        return props
         
 class Integration(AltNamespaceMixin, Resource):
     

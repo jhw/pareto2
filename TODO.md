@@ -2,7 +2,6 @@
 
 - Route target is badly specified with /aws/lambda prefix, should be integrations
 - change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
-- remove RequestParameters from Route
 
 - add special 400 clause to lambda bodies for testing purposes
 - domain scripts
@@ -107,6 +106,7 @@
 
 ### done
 
+- remove RequestParameters from Route
 - remove AutoDeploy from api
 - remove GatewayResponse classes
 - clean up stacks
