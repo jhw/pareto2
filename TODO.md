@@ -1,6 +1,12 @@
 ### short [01-apigw-v2]
 
-- clean up stacks
+- remove GatewayResponse classes
+- remove AutoDeploy from api
+- Route target is badly specified with /aws/lambda prefix, should be integrations
+- change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
+- remove RequestParameters from Route
+
+- add special 400 clause to lambda bodies for testing purposes
 - domain scripts
 - remove us-east-1 from domain scripts
 - cors needs to enable creds and replace origin wildcard with specific endpoints, at both api cors preflight level and lambda handler level
@@ -8,13 +14,8 @@
 - private post body needs to be base64.b63decode'd [isBase64Encoded parameter]
 - merge user pool clients with all existing auth flows
 - not convinced that Route classes need alt namespacing
-- Route target is badly specified with /aws/lambda prefix, should be integrations
-- remove RequestParameters from Route
 - add Stage ref to ApiMapping
-- change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
 - [route53] certificates in local regions?
-- remove GatewayResponse classes
-- remove AutoDeploy from api
 - add Stage with AutoDeploy
 - replace \\$default ref with ${AppStage}
 
@@ -108,6 +109,7 @@
 
 ### done
 
+- clean up stacks
 - remove woldeploy-us-east-1
 
 ```
