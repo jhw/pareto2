@@ -1,6 +1,22 @@
 ### short [01-apigw-v2]
 
-- gist based testing
+- clean up stacks
+- domain scripts
+- remove us-east-1 from domain scripts
+- cors needs to enable creds and replace origin wildcard with specific endpoints, at both api cors preflight level and lambda handler level
+- round- tripping of host for CORS origin purposes
+- private post body needs to be base64.b63decode'd [isBase64Encoded parameter]
+- merge user pool clients with all existing auth flows
+- not convinced that Route classes need alt namespacing
+- Route target is badly specified with /aws/lambda prefix, should be integrations
+- remove RequestParameters from Route
+- add Stage ref to ApiMapping
+- change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
+- [route53] certificates in local regions?
+- remove GatewayResponse classes
+- remove AutoDeploy from api
+- add Stage with AutoDeploy
+- replace \\$default ref with ${AppStage}
 
 ### website
 
@@ -91,6 +107,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- remove woldeploy-us-east-1
 
 ```
 However, when AllowCredentials is true, AllowOrigins cannot be '*'; it must specify actual origins rather than a wildcard for browsers to respect the AllowCredentials setting.
