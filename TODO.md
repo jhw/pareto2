@@ -1,7 +1,7 @@
 ### short [01-apigw-v2]
 
-- add Stage ref to ApiMapping
 - replace \\$default ref with ${AppStage}
+- remove mapping depends
 
 - add CORS credentials as True
 - check if cloudformation supports list parameters
@@ -105,6 +105,7 @@
 
 ### done
 
+- add Stage ref to ApiMapping
 - complete Stage 
 - test removal of Route alt namespacing
 - merge user pool clients into single resource with all existing auth flows

@@ -145,7 +145,7 @@ class DomainName(Resource):
                 {"CertificateArn": {"Ref": H("certificate-arn")}}
             ]
         }
-    
+
 class ApiMapping(Resource):
 
     def __init__(self, namespace):
@@ -155,7 +155,8 @@ class ApiMapping(Resource):
     def aws_properties(self):
         return {
             "DomainName": {"Ref": H("domain-name")},
-            "ApiId": {"Ref": H(f"{self.namespace}-api")}
+            "ApiId": {"Ref": H(f"{self.namespace}-api")},
+            "Stage": {"Ref": H(f"{self.namespace}-stage")}
         }
 
     @property
