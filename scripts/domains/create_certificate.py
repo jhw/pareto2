@@ -27,7 +27,7 @@ def fetch_resource_record(acm, certarn, maxtries=30, wait=2):
         time.sleep(wait)
     raise RuntimeError("no resource record found for %s" % certarn)
 
-def check_certificate_status(acm, certarn, maxtries=40, wait=2, targetstatus="ISSUED"):
+def check_certificate_status(acm, certarn, maxtries=500, wait=2, targetstatus="ISSUED"):
     for i in range(maxtries):
         cert=acm.describe_certificate(CertificateArn=certarn)["Certificate"]
         print ("certificate status %s [%i/%i]" % (cert["Status"],
