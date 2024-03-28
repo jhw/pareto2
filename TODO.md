@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- merge user pool clients into single resource with all existing auth flows
-
 - add Stage with AutoDeploy
 - add Stage ref to ApiMapping
 - replace \\$default ref with ${AppStage}
@@ -110,6 +108,7 @@
 
 ### done
 
+- merge user pool clients into single resource with all existing auth flows
 - change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
 - Route target is badly specified with /aws/lambda prefix, should be integrations
 - remove RequestParameters from Route

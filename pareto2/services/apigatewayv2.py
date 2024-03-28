@@ -105,7 +105,7 @@ class Authorizer(Resource):
         issuer = {"Fn::Sub": f"https://cognito-idp.${{AWS::Region}}.amazonaws.com/${{{user_pool_ref}}}"}        
         jwt_config = {
             "Issuer": issuer,
-            "Audience": [{"Ref": H(f"{self.namespace}-user-pool-web-client")}] 
+            "Audience": [{"Ref": H(f"{self.namespace}-user-pool-client")}] 
         }
         return {
             "AuthorizerType": "JWT",

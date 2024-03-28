@@ -40,7 +40,7 @@ class SimpleEmailUserPool(UserPool):
             "UsernameAttributes": ["email"]
         }
 
-class UserPoolClient(AltNamespaceMixin, Resource):
+class UserPoolClient(Resource):
     
     def __init__(self, namespace):
         self.namespace = namespace
@@ -50,36 +50,16 @@ class UserPoolClient(AltNamespaceMixin, Resource):
         return {
             "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")},
             "PreventUserExistenceErrors": "ENABLED",
-            "ExplicitAuthFlows": self.explicit_auth_flows
+            "ExplicitAuthFlows": [
+                "ALLOW_USER_SRP_AUTH", # for web access
+                "ALLOW_ADMIN_USER_PASSWORD_AUTH", # for localhost testing
+                "ALLOW_REFRESH_TOKEN_AUTH"
+            ]
         }
 
     @property
     def visible(self):
         return True
-
-class UserPoolAdminClient(UserPoolClient):
-
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace)
-
-    @property
-    def explicit_auth_flows(self):
-        return [
-            "ALLOW_ADMIN_USER_PASSWORD_AUTH",
-            "ALLOW_REFRESH_TOKEN_AUTH"
-        ]
-
-class UserPoolWebClient(UserPoolClient):
-    
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace)
-
-    @property
-    def explicit_auth_flows(self):
-        return [
-            "ALLOW_USER_SRP_AUTH",
-            "ALLOW_REFRESH_TOKEN_AUTH"
-        ]        
 
 """
 You should be able to use a User pool without an Identity pool, but experience of the Flutter Amplify libraries suggests an Identity pool is always required, even if not used
@@ -96,7 +76,7 @@ class IdentityPool(Resource):
 
     @property
     def aws_properties(self):
-        client_id = {"Ref": H(f"{self.namespace}-user-pool-web-client")}
+        client_id = {"Ref": H(f"{self.namespace}-user-pool-client")}
         provider_name = {"Fn::GetAtt": [H(f"{self.namespace}-user-pool"), "ProviderName"]}
         provider = {"ClientId": client_id,
                     "ProviderName": provider_name}

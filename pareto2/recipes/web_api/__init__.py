@@ -82,8 +82,7 @@ class WebApi(Recipe):
     def init_private_api(self, namespace):
         for klass in [Authorizer,
                       SimpleEmailUserPool,
-                      UserPoolAdminClient,
-                      UserPoolWebClient,
+                      UserPoolClient,
                       IdentityPool,
                       IdentityPoolAuthorizedRole,
                       IdentityPoolAuthorizedPolicy,
