@@ -11,15 +11,11 @@ import importlib, re
 
 L = importlib.import_module("pareto2.services.lambda")
 
-"""
-\\$default is the correct way to reference the Stage automatically created by ApiGatewayV2 when the Api AutoDeploy property is enabled
-"""
-
 class LambdaPermission(L.Permission):
 
     def __init__(self, namespace, function_namespace, method, path):
-        api_ref = H(f"{namespace}-api")
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{api_ref}}}/\$default/{method}/{path}"}
+        api_ref, stage_ref = H(f"{namespace}-api"), H(f"{namespace}-stage"), 
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{api_ref}}}/${{{stage_ref}}}/{method}/{path}"}
         super().__init__(namespace = function_namespace,    
                          source_arn = source_arn,
                          principal = "apigateway.amazonaws.com")

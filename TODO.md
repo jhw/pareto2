@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- replace \\$default ref with ${AppStage}
-
 - add CORS credentials as True
 - check if cloudformation supports list parameters
 - pass EndpointUrls parameter for use with allowed CORS origins
@@ -104,6 +102,7 @@
 
 ### done
 
+- replace \\$default ref with ${AppStage}
 - remove mapping depends
 - add Stage ref to ApiMapping
 - complete Stage 
