@@ -68,7 +68,7 @@ class Route(AltNamespaceMixin, Resource):
             "RouteKey": "%s %s%s" % (self.endpoint["method"],
                                      "" if self.endpoint["path"].startswith("/") else "/",
                                      self.endpoint["path"]),
-            "Target": {"Fn::Sub": f"/aws/lambda/${{{integration_ref}}}"},
+            "Target": {"Fn::Sub": f"integrations/${{{integration_ref}}}"},
             "ApiId": {"Ref": H(f"{self.api_namespace}-api")}
         }
         

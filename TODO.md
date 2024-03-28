@@ -1,6 +1,5 @@
 ### short [01-apigw-v2]
 
-- Route target is badly specified with /aws/lambda prefix, should be integrations
 - change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
 
 - add special 400 clause to lambda bodies for testing purposes
@@ -106,6 +105,7 @@
 
 ### done
 
+- Route target is badly specified with /aws/lambda prefix, should be integrations
 - remove RequestParameters from Route
 - remove AutoDeploy from api
 - remove GatewayResponse classes
