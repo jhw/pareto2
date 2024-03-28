@@ -1,6 +1,7 @@
 ### short [01-apigw-v2]
 
 - adapt domain scripts to take region name as parameter
+
 - create eu-west-1 certificate for spaas.link
 
 ### gist
@@ -8,8 +9,8 @@
 - revert AWS_PROFILE
 - update CERTIFICATE_ARN
 - scripts to ping public endpoints
-- ensure origin is always sent
-- test with invalid parameters (including CORS)
+- ensure localhost:3000 is always sent as origin
+- test invalid parameters (including CORS)
 
 ### website
 
