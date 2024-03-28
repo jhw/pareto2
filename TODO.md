@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- check if cloudformation supports list parameters
-- pass EndpointUrls parameter for use with allowed CORS origins
 - lambdas to round- trip supplied host name as permitted origin
 
 - remove us-east-1 from domain scripts
@@ -100,6 +98,8 @@
 
 ### done
 
+- pass EndpointUrls parameter for use with allowed CORS origins
+- check if cloudformation supports list parameters
 - add CORS credentials as True
 - domain scripts
 - replace \\$default ref with ${AppStage}
