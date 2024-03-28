@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- adapt domain scripts to take region name as parameter
-
 - create eu-west-1 certificate for spaas.link
 
 ### gist
@@ -102,6 +100,7 @@
 
 ### done
 
+- adapt domain scripts to take region name as parameter
 - lambdas to round- trip supplied host name as permitted origin
 - POST body to be optionally base64.b63decode'd [isBase64Encoded parameter]
 - add 400 responses if message parameter doesn't exist, body isn't JSON parseable

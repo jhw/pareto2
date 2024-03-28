@@ -1,4 +1,4 @@
-import boto3, sys, time
+import boto3, re, sys, time
 
 def list_hosted_zones(route53):
     print ("fetching hosted zones")
@@ -40,15 +40,17 @@ def check_certificate_status(acm, certarn, maxtries=40, wait=2, targetstatus="IS
 
 if __name__=="__main__":
     try:
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter hostname")
-        hostname=sys.argv[1]
+        if len(sys.argv) < 3:
+            raise RuntimeError("please enter hostname, region")
+        hostname, region = sys.argv[1:3]
         nperiods=len([c for c in hostname
                       if c=="."])
         if nperiods!=1:            
             raise RuntimeError("hostname can only have a single period")
         if hostname[-1]==".":
             raise RuntimeError("hostname cannot end in period")
+        if not re.search("^\\D{2}\\-\\D{4}\\-\\d{1}$", region):
+            raise RuntimeError("region is invalid")
         route53=boto3.client("route53")
         hostedzones=list_hosted_zones(route53)
         hostedzonename="%s." % hostname        
@@ -59,7 +61,7 @@ if __name__=="__main__":
         recordsettypes=set([recordset["Type"] for recordset in recordsets])
         if "CNAME" in recordsettypes:
             raise RuntimeError("CNAME already exists in hosted zone %s" % hostedzonename)
-        acm=boto3.client("acm", region_name="us-east-1") # NB
+        acm=boto3.client("acm", region_name=region)
         certificates=list_certificates(acm)
         certdomainname="*.%s" % hostname
         if certdomainname in certificates:

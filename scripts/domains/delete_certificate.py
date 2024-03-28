@@ -1,4 +1,4 @@
-import boto3, sys
+import boto3, re, sys
 
 def list_hosted_zones(route53):
     print ("fetching hosted zones")
@@ -16,22 +16,24 @@ def list_record_sets(route53, hostedzoneid):
 
 if __name__=="__main__":
     try:
-        if len(sys.argv) < 2:
-            raise RuntimeError("please enter hostname")
-        hostname=sys.argv[1]
+        if len(sys.argv) < 3:
+            raise RuntimeError("please enter hostname, region")
+        hostname, region = sys.argv[1:3]
         nperiods=len([c for c in hostname
                       if c=="."])
         if nperiods!=1:            
             raise RuntimeError("hostname can only have a single period")
         if hostname[-1]==".":
             raise RuntimeError("hostname cannot end in period")
+        if not re.search("^\\D{2}\\-\\D{4}\\-\\d{1}$", region):
+            raise RuntimeError("region is invalid")
         route53=boto3.client("route53")
         hostedzones=list_hosted_zones(route53)
         hostedzonename="%s." % hostname        
         if hostedzonename not in hostedzones:
             raise RuntimeError("hosted zone %s not found" % hostedzonename)
         hostedzoneid=hostedzones[hostedzonename]
-        acm=boto3.client("acm", region_name="us-east-1") # NB
+        acm=boto3.client("acm", region_name=region)
         certificates=list_certificates(acm)
         certname="*.%s" % hostname
         if certname not in certificates:
