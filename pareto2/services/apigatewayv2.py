@@ -15,13 +15,12 @@ class Api(Resource):
     """
 
     """
-    However, when AllowCredentials is true, AllowOrigins cannot be '*'; it must specify actual origins rather than a wildcard for browsers to respect the AllowCredentials setting.
-    """
+    AllowCredentials needs to be True, and you can't use wildcards for AllowOrigins :/
 
+    - https://stackoverflow.com/questions/35190615/api-gateway-cors-no-access-control-allow-origin-header
+    - https://stackoverflow.com/a/43029002/124179
     """
-    In the context of an AWS API Gateway (especially for HTTP APIs, which your configuration suggests), including OPTIONS in the AllowedMethods of the CORS configuration is not necessary when you configure CORS directly through the API Gateway settings. AWS API Gateway automatically handles OPTIONS preflight requests for you when CORS is enabled at the API level. This simplification is part of the service's features to make CORS management easier.
-    """
-
+    
     @property
     def aws_properties(self):
         return {
@@ -40,7 +39,7 @@ class Api(Resource):
                     "Authorization",
                     "X-Api-Key"
                 ],
-                "AllowCredentials": False, # NB see above
+                "AllowCredentials": True,
                 "ExposeHeaders": [
                     "X-Custom-Header"
                 ],

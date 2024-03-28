@@ -1,6 +1,5 @@
 ### short [01-apigw-v2]
 
-- add CORS credentials as True
 - check if cloudformation supports list parameters
 - pass EndpointUrls parameter for use with allowed CORS origins
 - lambdas to round- trip supplied host name as permitted origin
@@ -101,6 +100,7 @@
 
 ### done
 
+- add CORS credentials as True
 - domain scripts
 - replace \\$default ref with ${AppStage}
 - remove mapping depends
