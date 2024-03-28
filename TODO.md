@@ -1,7 +1,6 @@
 ### short [01-apigw-v2]
 
 - replace \\$default ref with ${AppStage}
-- remove mapping depends
 
 - add CORS credentials as True
 - check if cloudformation supports list parameters
@@ -105,6 +104,7 @@
 
 ### done
 
+- remove mapping depends
 - add Stage ref to ApiMapping
 - complete Stage 
 - test removal of Route alt namespacing

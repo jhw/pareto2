@@ -146,6 +146,10 @@ class DomainName(Resource):
             ]
         }
 
+"""
+- ApiMapping used to depend on DomainName but have removed it to see what happens
+"""
+    
 class ApiMapping(Resource):
 
     def __init__(self, namespace):
@@ -159,6 +163,3 @@ class ApiMapping(Resource):
             "Stage": {"Ref": H(f"{self.namespace}-stage")}
         }
 
-    @property
-    def depends(self):
-        return [H(f"{self.namespace}-domain-name")]
