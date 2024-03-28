@@ -1,5 +1,5 @@
 from pareto2.services import hungarorise as H
-from pareto2.services import Resource, AltNamespaceMixin
+from pareto2.services import Resource
 
 """
 - namespace here is always a function namespace
@@ -7,7 +7,7 @@ from pareto2.services import Resource, AltNamespaceMixin
 - but logging function is a singleton
 """
 
-class SubscriptionFilter(AltNamespaceMixin, Resource):
+class SubscriptionFilter(Resource):
 
     def __init__(self, namespace, logging_namespace, filter_pattern):
         self.namespace = namespace

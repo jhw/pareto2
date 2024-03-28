@@ -1,16 +1,4 @@
-### short [01-apigw-v2]
-
-- create eu-west-1 certificate for spaaseu.link
-
-### gist
-
-- revert AWS_PROFILE
-- update CERTIFICATE_ARN
-- scripts to ping public endpoints
-- ensure localhost:3000 is always sent as origin
-- test invalid parameters (including CORS)
-
-### website
+### short [01-api-v2/website]
 
 - top level api, stage etc
 - proxy route and integration
@@ -99,6 +87,13 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- revert AWS_PROFILE
+- update CERTIFICATE_ARN
+- scripts to ping public endpoints
+- ensure localhost:3000 is always sent as origin
+- test invalid parameters (including CORS)
+- create eu-west-1 certificate for spaaseu.link
 
 ```
 creating CNAME record for /hostedzone/Z00735873S7GO8IWZFK35
