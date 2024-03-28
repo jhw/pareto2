@@ -1,6 +1,5 @@
 ### short [01-apigw-v2]
 
-- remove AutoDeploy from api
 - Route target is badly specified with /aws/lambda prefix, should be integrations
 - change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
 - remove RequestParameters from Route
@@ -108,6 +107,7 @@
 
 ### done
 
+- remove AutoDeploy from api
 - remove GatewayResponse classes
 - clean up stacks
 - remove woldeploy-us-east-1

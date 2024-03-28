@@ -47,8 +47,7 @@ class Api(Resource):
                 ],
                 "MaxAge": 3600
             },
-            "ProtocolType": "HTTP",
-            "AutoDeploy": True
+            "ProtocolType": "HTTP"
         }
 
     @property
