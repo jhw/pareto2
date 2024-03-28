@@ -121,35 +121,6 @@ class Authorizer(Resource):
             "ApiId": {"Ref": H(f"{self.namespace}-api")},
         }
 
-class GatewayResponse(AltNamespaceMixin, Resource):
-
-    def __init__(self, namespace, response_type):
-        self.namespace = namespace
-        self.response_type = response_type
-
-    @property
-    def aws_properties(self):
-        response_parameters = {"gatewayresponse.header.Access-Control-Allow-%s" % k.capitalize(): "'%s'" % v # NB quotes
-                      for k, v in [("headers", "*"),
-                                   ("origin", "*")]}
-        return {
-            "ApiId": {"Ref": H(f"{self.namespace}-api")},
-            "ResponseType": f"DEFAULT_{self.response_type}",
-            "ResponseParameters": response_parameters
-        }
-    
-class GatewayResponse4xx(GatewayResponse):
-
-    def __init__(self, namespace):
-        return super().__init__(namespace = namespace,
-                                response_type = "4XX")
-
-class GatewayResponse5xx(GatewayResponse):
-
-    def __init__(self, namespace):
-        return super().__init__(namespace = namespace,
-                                response_type = "5XX")
-
 class DomainName(Resource):
 
     def __init__(self, namespace):
