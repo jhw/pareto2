@@ -2,6 +2,9 @@ from pareto2.recipes.web_api import WebApi
 
 import json, os, yaml
 
+EchoGetBody, EchoPostBody = (open("demos/web_api/echo_get.py").read(),
+                             open("demos/web_api/echo_post.py").read())
+
 Endpoints = yaml.safe_load("""
 - method: GET
   path: public-get
@@ -30,26 +33,6 @@ Endpoints = yaml.safe_load("""
   - s3:GetObject
   - s3:PutObject
 """)
-
-EchoGetBody="""def handler(event, context):
-    message=event["queryStringParameters"]["message"]
-    return {"statusCode": 200,
-            "headers": {"Content-Type": "text/plain",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent",
-                        "Access-Control-Allow-Methods": "OPTIONS,GET"},
-            "body": f"you sent '{message}' via GET"}"""
-
-EchoPostBody="""import json
-def handler(event, context):
-    body=json.loads(event["body"])
-    message=body["message"]
-    return {"statusCode": 200,
-            "headers": {"Content-Type": "text/plain",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent",
-                        "Access-Control-Allow-Methods": "OPTIONS,POST"},
-            "body": f"you sent '{message}' via POST"}"""
 
 if __name__ == "__main__":
     try:

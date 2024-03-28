@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- move web_app scripts inline
-
 - adapt domain scripts to take region name as parameter
 - create eu-west-1 certificate for spaas.link
 
@@ -107,6 +105,7 @@
 
 ### done
 
+- move web_app scripts inline
 - pass EndpointUrls parameter for use with allowed CORS origins
 - check if cloudformation supports list parameters
 - add CORS credentials as True
