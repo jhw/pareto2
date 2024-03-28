@@ -1,11 +1,8 @@
 ### short [01-apigw-v2]
 
+- lambdas to round- trip supplied host name as permitted origin
 - adapt domain scripts to take region name as parameter
 - create eu-west-1 certificate for spaas.link
-
-- lambdas to round- trip supplied host name as permitted origin
-- POST body to be optionally base64.b63decode'd [isBase64Encoded parameter]
-- add 400 responses if message parameter doesn't exist, body isn't JSON parseable
 
 ### gist
 
@@ -105,6 +102,8 @@
 
 ### done
 
+- POST body to be optionally base64.b63decode'd [isBase64Encoded parameter]
+- add 400 responses if message parameter doesn't exist, body isn't JSON parseable
 - move web_app scripts inline
 - pass EndpointUrls parameter for use with allowed CORS origins
 - check if cloudformation supports list parameters
