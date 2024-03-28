@@ -1,6 +1,5 @@
 ### short [01-apigw-v2]
 
-- complete Stage 
 - add Stage ref to ApiMapping
 - replace \\$default ref with ${AppStage}
 
@@ -106,6 +105,7 @@
 
 ### done
 
+- complete Stage 
 - test removal of Route alt namespacing
 - merge user pool clients into single resource with all existing auth flows
 - change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
