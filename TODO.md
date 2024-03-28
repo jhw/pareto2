@@ -1,16 +1,25 @@
 ### short [01-apigw-v2]
 
-- lambdas to round- trip supplied host name as permitted origin
+- move web_app scripts inline
 
-- remove us-east-1 from domain scripts
+- adapt domain scripts to take region name as parameter
 - create eu-west-1 certificate for spaas.link
 
-- POST body may need to be base64.b63decode'd [isBase64Encoded parameter]
-- add special 400 clause to lambda bodies for CORS error testing
+- lambdas to round- trip supplied host name as permitted origin
+- POST body to be optionally base64.b63decode'd [isBase64Encoded parameter]
+- add 400 responses if message parameter doesn't exist, body isn't JSON parseable
+
+### gist
+
+- revert AWS_PROFILE
+- update CERTIFICATE_ARN
+- scripts to ping public endpoints
+- ensure origin is always sent
+- test with invalid parameters (including CORS)
 
 ### website
 
-- top level api
+- top level api, stage etc
 - proxy route and integration
 - redirect route and integration
 - binary media types handling
