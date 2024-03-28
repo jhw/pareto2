@@ -1,7 +1,5 @@
 ### short [01-apigw-v2]
 
-- change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
-
 - add special 400 clause to lambda bodies for testing purposes
 - domain scripts
 - remove us-east-1 from domain scripts
@@ -105,6 +103,7 @@
 
 ### done
 
+- change prefixes of DomainName attributes used by RecordSet from "Distributed" to "Regional"
 - Route target is badly specified with /aws/lambda prefix, should be integrations
 - remove RequestParameters from Route
 - remove AutoDeploy from api
