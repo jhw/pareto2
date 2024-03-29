@@ -8,7 +8,18 @@ from pareto2.services.s3 import *
 
 from pareto2.recipes import Recipe
 
-class RedirectMethod(Method):
+"""
+- note that a simple has-many relationship (eg endpoints to apis in webapi receipe) doesn't strictly meet condition b)
+"""
+    
+class AltNamespaceMixin:
+
+    @property
+    def resource_name(self):    
+        tokens = self.class_names[-1].split(".") # latest subclass
+        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
+
+class RedirectMethod(AltNamespaceMixin, Method):
 
     def __init__(self, namespace, path = "index.html"):
         super().__init__(namespace = namespace)
@@ -44,7 +55,7 @@ class ProxyResource(APIGWResource):
         super().__init__(namespace = namespace,
                          path = path)
 
-class ProxyMethod(Method):
+class ProxyMethod(AltNamespaceMixin, Method):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace)
