@@ -8,73 +8,22 @@ from pareto2.services.s3 import *
 
 from pareto2.recipes import Recipe
 
-import re
-
-def dehungarorise(text):
-    buf, tok = [], ""
-    for c in text:
-        if c.upper() == c:
-            if tok != "":
-                buf.append(tok)
-            tok = c.lower()
-        else:
-            tok += c
-    if tok != "":
-        buf.append(tok)
-    return "-".join(buf)
-
-class AltNamespaceMixin:
-
-    @property
-    def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
-
-class RedirectMethod(AltNamespaceMixin, Method):
-
-    def __init__(self, namespace, path = "index.html"):
-        super().__init__(namespace = namespace)
-        self.path = path
-
-    @property
-    def _integration(self):
-        request_templates = {"application/json": "{\"statusCode\" : 302}"}
-        domain_name_ref = H("domain-name")
-        redirect_url = {"Fn::Sub": f"'https://${{{domain_name_ref}}}/{self.path}'"}
-        integration_responses = [{"StatusCode": 302,
-                                  "ResponseTemplates": {"application/json": "{}"},
-                                  "ResponseParameters": {"method.response.header.Location": redirect_url}}]
-        return {"Type": "MOCK",
-                "RequestTemplates": request_templates,
-                "IntegrationResponses": integration_responses}      
-        
-    @property
-    def aws_properties(self):
-        method_responses = [{"StatusCode": 302,
-                             "ResponseParameters": {"method.response.header.Location": True}}]
-        resource_id = {"Fn::GetAtt": [H(f"{self.namespace}-rest-api"), "RootResourceId"]}
-        return {"HttpMethod": "GET",
-                "AuthorizationType": "NONE",
-                "MethodResponses": method_responses,
-                "Integration": self._integration,
-                "ResourceId": resource_id, 
-                "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
-        
 class ProxyResource(APIGWResource):
 
     def __init__(self, namespace, path = "{proxy+}"):
         super().__init__(namespace = namespace,
                          path = path)
 
-class ProxyMethod(AltNamespaceMixin, Method):
+class ProxyMethod(Method):
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, api_namespace):
         super().__init__(namespace = namespace)
+        self.api_namespace = api_namespace
 
     @property
     def _integration(self):
-        uri = {"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H(f"{self.namespace}-bucket")}
-        credentials = {"Fn::GetAtt": [H(f"{self.namespace}-role"), "Arn"]}
+        uri = {"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:s3:path/${%s}/{proxy}" % H(f"{self.api_namespace}-bucket")}
+        credentials = {"Fn::GetAtt": [H(f"{self.api_namespace}-role"), "Arn"]}
         request_parameters = {"integration.request.path.proxy": "method.request.path.proxy"}
         integration_responses = [{"StatusCode": 200,
                                   "ResponseParameters": {"method.response.header.Content-Type": "integration.response.header.Content-Type"}},
@@ -99,8 +48,8 @@ class ProxyMethod(AltNamespaceMixin, Method):
                 "RequestParameters": request_parameters,
                 "MethodResponses": method_responses,
                 "Integration": self._integration,
-                "ResourceId": {"Ref": H(f"{self.namespace}-resource")},
-                "RestApiId": {"Ref": H(f"{self.namespace}-rest-api")}}
+                "ResourceId": {"Ref": H(f"{self.api_namespace}-resource")},
+                "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}}
     
 class ProxyRole(Role):
 
@@ -117,6 +66,37 @@ class ProxyPolicy(Policy):
         super().__init__(namespace = namespace,
                          permissions = permissions)
 
+class RedirectMethod(Method):
+
+    def __init__(self, namespace, api_namespace, path = "index.html"):
+        super().__init__(namespace = namespace)
+        self.api_namespace = api_namespace
+        self.path = path
+
+    @property
+    def _integration(self):
+        request_templates = {"application/json": "{\"statusCode\" : 302}"}
+        domain_name_ref = H("domain-name")
+        redirect_url = {"Fn::Sub": f"'https://${{{domain_name_ref}}}/{self.path}'"}
+        integration_responses = [{"StatusCode": 302,
+                                  "ResponseTemplates": {"application/json": "{}"},
+                                  "ResponseParameters": {"method.response.header.Location": redirect_url}}]
+        return {"Type": "MOCK",
+                "RequestTemplates": request_templates,
+                "IntegrationResponses": integration_responses}      
+        
+    @property
+    def aws_properties(self):
+        method_responses = [{"StatusCode": 302,
+                             "ResponseParameters": {"method.response.header.Location": True}}]
+        resource_id = {"Fn::GetAtt": [H(f"{self.api_namespace}-rest-api"), "RootResourceId"]}
+        return {"HttpMethod": "GET",
+                "AuthorizationType": "NONE",
+                "MethodResponses": method_responses,
+                "Integration": self._integration,
+                "ResourceId": resource_id, 
+                "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}}
+        
 class WebSite(Recipe):    
 
     def __init__(self, namespace):
@@ -125,15 +105,17 @@ class WebSite(Recipe):
             self.append(fn(namespace))
         for klass in [Stage,
                       ProxyResource,
-                      ProxyMethod,
                       ProxyRole,
                       ProxyPolicy,
-                      RedirectMethod,
                       DomainName,
                       BasePathMapping,
                       RecordSet,                      
                       StreamingBucket]:
             self.append(klass(namespace = namespace))
+        for attr in ["proxy", "redirect"]:
+            klass = eval("%sMethod" % attr.capitalize())
+            self.append(klass(namespace = f"{namespace}-{attr}",
+                              api_namespace = namespace))
         for fn in [self.init_deployment]:
             self.append(fn(namespace))
 

@@ -2,7 +2,6 @@
 
 - subclass RecordSet with Distributed and Regional versions
   - apigwv1 to use former; apigwv2 to use latter
-- why does website still need AltNamespaceMixin
 - creating record set with two certificates
 - BinaryMediaTypes needs to be an array, if included
 - user scripts
@@ -87,6 +86,7 @@
 
 ### done
 
+- why does website still need AltNamespaceMixin
 - add namespacing for website methods
 - replace _ns refs with _namespace
 - replace parent/child_namespace with (eg) api/endpoint_namespace
