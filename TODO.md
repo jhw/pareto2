@@ -1,6 +1,6 @@
 ### short
 
-- user scripts
+- refactor user scripts to take stackname and namespace
 
 - how to create record set supporting two certificates in different regions
 
@@ -86,6 +86,7 @@
 
 ### done
 
+- user scripts
 - subclass RecordSet with Distributed and Regional versions
   - apigwv1 to use former; apigwv2 to use latter
   
