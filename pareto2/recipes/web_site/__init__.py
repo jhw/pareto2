@@ -8,10 +8,21 @@ from pareto2.services.s3 import *
 
 from pareto2.recipes import Recipe
 
-"""
-- note that a simple has-many relationship (eg endpoints to apis in webapi receipe) doesn't strictly meet condition b)
-"""
-    
+import re
+
+def dehungarorise(text):
+    buf, tok = [], ""
+    for c in text:
+        if c.upper() == c:
+            if tok != "":
+                buf.append(tok)
+            tok = c.lower()
+        else:
+            tok += c
+    if tok != "":
+        buf.append(tok)
+    return "-".join(buf)
+
 class AltNamespaceMixin:
 
     @property
