@@ -1,13 +1,12 @@
-### short [01-api-v2/website]
+### short [merge-apigw-v2]
 
-- top level api, stage etc
-- proxy route and integration
-- redirect route and integration
-- binary media types handling
-- replace _ns refs with _namespace
-- replace parent/child_namespace with (eg) api/endpoint_namespace
+- add namespacing for website methods
+
+- user scripts
 
 ### medium
+
+- apigwv2 website
 
 - lambda alarms 
 - event timer
@@ -16,7 +15,6 @@
 
 - binding script
 - migration script
-- user scripts
 
 - react website demo
 
@@ -87,6 +85,15 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- replace _ns refs with _namespace
+- replace parent/child_namespace with (eg) api/endpoint_namespace
+
+- add apigateway.py
+- add irregular entry
+- check website works
+- remove superfluous classes
+- change routing from distributed to regional
 
 - revert AWS_PROFILE
 - update CERTIFICATE_ARN
