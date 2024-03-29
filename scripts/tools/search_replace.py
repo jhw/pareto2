@@ -1,4 +1,4 @@
-import os, re, sys, yaml
+import os, re, sys
 
 def refactor_src(pat, rep, root):
     def refactor(tokens):

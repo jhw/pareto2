@@ -1,6 +1,6 @@
 from botocore.exceptions import ClientError
 
-import boto3, os, re, sys, yaml
+import boto3, json, os, re, sys
 
 def hungarorise(text):
     return "".join([tok.capitalize()
@@ -17,20 +17,18 @@ def fetch_outputs(cf, stackname):
 
 if __name__=="__main__":
     try:
-        props=dict([tuple(row.split("="))
-                    for row in open("app.props").read().split("\n")
-                    if row!=''])
-        stackname=props["AppName"]
+        if len(sys.argv) < 3:
+            raise RuntimeError("please enter stackname, namespace")
+        stackname, namespace = sys.argv[1:3]
         cf=boto3.client("cloudformation")
         outputs=fetch_outputs(cf, stackname)
-        userpoolkey=hungarorise("app-user-pool")
+        userpoolkey=hungarorise(f"{namespace}-user-pool")
         if userpoolkey not in outputs:
             raise RuntimeError("userpool not found")
         userpool=outputs[userpoolkey]
         cognito=boto3.client("cognito-idp")
         resp=cognito.list_users(UserPoolId=userpool)
-        print (yaml.safe_dump(resp,
-                              default_flow_style=False))
+        print (json.dumps(resp, indent=2))
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:

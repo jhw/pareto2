@@ -1,7 +1,5 @@
 ### short
 
-- refactor user scripts to take stackname and namespace
-
 - how to create record set supporting two certificates in different regions
 
 - BinaryMediaTypes needs to be an array, if included
@@ -86,6 +84,7 @@
 
 ### done
 
+- refactor user scripts to take stackname and namespace
 - user scripts
 - subclass RecordSet with Distributed and Regional versions
   - apigwv1 to use former; apigwv2 to use latter
