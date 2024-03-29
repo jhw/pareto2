@@ -7,16 +7,14 @@ from pareto2.services import Resource
 """
 
 """
-^^^ original APIGW supported Distributed (global) domain names; new APIGWV2 does not
-Use of Distributed domain names requires certificates in us-east-1; use of Regional domain names does not
-Distributed domain names requires the use of Cloudfront; Regional domain names does not
-Route53 hopefully much faster now by eschewing use of Distributed domain names (Cloudfront is the slowest service)
+^^^ original APIGW seems to require Distributed (global) domain names; new APIGWV2 only supports Regional ones
 """
 
 class RecordSet(Resource):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, distribution):
         self.namespace = namespace
+        self.distribution = distribution
 
     @property
     def aws_properties(self):
@@ -24,8 +22,8 @@ class RecordSet(Resource):
             "prefix": {"Fn::Select": [1, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]},
             "suffix": {"Fn::Select": [2, {"Fn::Split": [".", {"Ref": H("domain-name")}]}]}
         }]}
-        dns_name = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), "RegionalDomainName"]}
-        hosted_zone_ref = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), "RegionalHostedZoneId"]}
+        dns_name = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), H(f"{self.distribution}-domain-name")]}
+        hosted_zone_ref = {"Fn::GetAtt": [H(f"{self.namespace}-domain-name"), H(f"{self.distribution}-hosted-zone-id")]}
         alias_target = {
             "DNSName": dns_name,
             "EvaluateTargetHealth": False,
@@ -37,3 +35,17 @@ class RecordSet(Resource):
             "Type": "A",
             "AliasTarget": alias_target
         }
+
+class DistributedRecordSet(RecordSet):
+
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace,
+                         distribution = "distributed")
+
+class RegionalRecordSet(RecordSet):
+
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace,
+                         distribution = "regional")
+
+        

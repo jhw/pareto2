@@ -109,7 +109,7 @@ class WebSite(Recipe):
                       ProxyPolicy,
                       DomainName,
                       BasePathMapping,
-                      RecordSet,                      
+                      DistributedRecordSet, # NB                   
                       StreamingBucket]:
             self.append(klass(namespace = namespace))
         for attr in ["proxy", "redirect"]:

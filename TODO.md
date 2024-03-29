@@ -1,10 +1,10 @@
 ### short
 
-- subclass RecordSet with Distributed and Regional versions
-  - apigwv1 to use former; apigwv2 to use latter
-- creating record set with two certificates
-- BinaryMediaTypes needs to be an array, if included
 - user scripts
+
+- how to create record set supporting two certificates in different regions
+
+- BinaryMediaTypes needs to be an array, if included
 
 ### medium
 
@@ -86,6 +86,9 @@
 
 ### done
 
+- subclass RecordSet with Distributed and Regional versions
+  - apigwv1 to use former; apigwv2 to use latter
+  
 - why does website still need AltNamespaceMixin
 - add namespacing for website methods
 - replace _ns refs with _namespace

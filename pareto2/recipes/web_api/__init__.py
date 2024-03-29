@@ -73,7 +73,7 @@ class WebApi(Recipe):
                       Stage,
                       DomainName,
                       ApiMapping,
-                      RecordSet]:
+                      RegionalRecordSet]: # NB
             self.append(klass(namespace = namespace))
         
     def init_private_api(self, namespace):
