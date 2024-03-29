@@ -2,9 +2,9 @@
 
 - subclass RecordSet with Distributed and Regional versions
   - apigwv1 to use former; apigwv2 to use latter
-
+- why does website still need AltNamespaceMixin
+- creating record set with two certificates
 - BinaryMediaTypes needs to be an array, if included
-
 - user scripts
 
 ### medium
@@ -23,7 +23,6 @@
 
 - cross- account deployments
 - step functions
-- website2 -> s3+cloudfront
 - federated auth
 - passwordless auth
 - s3 multipart uploads
