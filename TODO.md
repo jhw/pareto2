@@ -1,12 +1,13 @@
-### short [merge-apigw-v2]
+### short
 
-- add namespacing for website methods
+- subclass RecordSet with Distributed and Regional versions
+  - apigwv1 to use former; apigwv2 to use latter
+
+- BinaryMediaTypes needs to be an array, if included
 
 - user scripts
 
 ### medium
-
-- apigwv2 website
 
 - lambda alarms 
 - event timer
@@ -22,6 +23,7 @@
 
 - cross- account deployments
 - step functions
+- website2 -> s3+cloudfront
 - federated auth
 - passwordless auth
 - s3 multipart uploads
@@ -86,6 +88,7 @@
 
 ### done
 
+- add namespacing for website methods
 - replace _ns refs with _namespace
 - replace parent/child_namespace with (eg) api/endpoint_namespace
 
