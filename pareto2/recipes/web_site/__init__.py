@@ -100,11 +100,16 @@ class RedirectMethod(Method):
 """
 This is not currently CORS enabled. You could do it but it would be a big ball ache. You would need to define a CorsMethod which did all the CORS pre- flight stuff. This is possible, the code exists in branches from approx 23/03/24 - 30/03/24. But then you would also need ProxyMethod to return the CORS headers that the Lambda does in the APIGatewayV2 web-api recipe. All in all it's probably too much of a pain - this is supposed to be a simple pattern! If you really need CORS then you are probably better relying on the web-api recipe.
 """
-    
+
+"""
+BinaryMediaTypes = ["*/*"] is required if you want to get this pattern to serve any kind of binary data from S3; but enabling it messes up the redirect; hence the either/or switch enabled by has_binary_media. As per CORS, I am simply not willing to wrestle with APIGateway any more to fix this, in what is likely to be a minority- use pattern.
+"""
+
 class WebSite(Recipe):    
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, has_binary_media = True):
         super().__init__()
+        self.has_binary_media = has_binary_media
         for fn in [self.init_rest_api]:
             self.append(fn(namespace))
         for klass in [Stage,
@@ -115,21 +120,29 @@ class WebSite(Recipe):
                       BasePathMapping,
                       DistributedRecordSet, # NB                   
                       StreamingBucket]:
-            self.append(klass(namespace = namespace))
-        for attr in ["proxy", "redirect"]:
+            self.append(klass(namespace = namespace))            
+        for attr in self.method_attrs:
             klass = eval("%sMethod" % attr.capitalize())
             self.append(klass(namespace = f"{namespace}-{attr}",
                               api_namespace = namespace))
         for fn in [self.init_deployment]:
             self.append(fn(namespace))
 
+    @property
+    def method_attrs(self):
+        return ["proxy", "redirect"] if not self.has_binary_media else ["proxy"]
+
+    @property
+    def binary_media_types(self):
+        return ["*/*"] if self.has_binary_media else []
+    
     def init_rest_api(self, namespace):
         return RestApi(namespace = namespace,
                        binary_media_types = ["*/*"])
             
     def init_deployment(self, namespace):        
-        method_refs = [H(f"{namespace}-proxy-method"),
-                       H(f"{namespace}-redirect-method")]
+        method_refs = [H(f"{namespace}-{attr}-method")
+                       for attr in self.method_attrs]
         return Deployment(namespace = namespace,
                           methods = method_refs)
             

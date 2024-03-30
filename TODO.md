@@ -1,7 +1,5 @@
 ### short
 
-- implement redirect or binary media types
-
 ### medium
 
 - layer builder
@@ -84,6 +82,7 @@
 
 ### done
 
+- implement redirect or binary media types
 - rename distribution not distributed!
 - BinaryMediaTypes needs to be an array, if included
 - how to create record set supporting two certificates in different regions
