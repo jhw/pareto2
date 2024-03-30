@@ -1,6 +1,6 @@
 ### short
 
-- website BinaryMediaTypes vs redirect conflict
+- implement redirect or binary media types
 
 ### medium
 
