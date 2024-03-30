@@ -98,7 +98,7 @@ class RedirectMethod(Method):
                 "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}}
 
 """
-This is not currently CORS enabled. You could do it but it would be a big ball ache. You would need to define a CorsMethod which did all the CORS pre- flight stuff. This is possible, the code exists in branches from approx 23/03/24 - 30/03/24. But then you would also need ProxyMethod to return the CORS headers that the Lambda does in the APIGatewayV2 web-api recipe. All in all it's probably too much of a ball ache. This is supposed to be a simple pattern! If you really need CORS then you are probably better relying on the web-api pattern
+This is not currently CORS enabled. You could do it but it would be a big ball ache. You would need to define a CorsMethod which did all the CORS pre- flight stuff. This is possible, the code exists in branches from approx 23/03/24 - 30/03/24. But then you would also need ProxyMethod to return the CORS headers that the Lambda does in the APIGatewayV2 web-api recipe. All in all it's probably too much of a pain - this is supposed to be a simple pattern! If you really need CORS then you are probably better relying on the web-api recipe.
 """
     
 class WebSite(Recipe):    
