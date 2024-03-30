@@ -1,7 +1,5 @@
 ### short
 
-- rename distribution not distributed!
-
 - website BinaryMediaTypes vs redirect conflict
 
 ### medium
@@ -86,6 +84,7 @@
 
 ### done
 
+- rename distribution not distributed!
 - BinaryMediaTypes needs to be an array, if included
 - how to create record set supporting two certificates in different regions
 - refactor user scripts to take stackname and namespace

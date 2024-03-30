@@ -40,7 +40,7 @@ class DistributedRecordSet(RecordSet):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace,
-                         distribution = "distributed")
+                         distribution = "distribution") # NB distribution not distributed!
 
 class RegionalRecordSet(RecordSet):
 
