@@ -1,14 +1,14 @@
 ### short
 
-- BinaryMediaTypes vs redirect conflict
+- website BinaryMediaTypes vs redirect conflict
+- website CORS support
 
 ### medium
 
-- event timer
 - layer builder
-- secrets
-
+- event timer
 - lambda alarms 
+- secrets
 
 - binding script
 - migration script
