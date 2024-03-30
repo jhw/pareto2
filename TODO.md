@@ -1,15 +1,23 @@
-### short
+### short [01-package-builder]
+
+- codebuild package with Project
+- S3Project to extend Project and include all S3 rubbish
+- skeleton pip builder recipe
+- incude buildspec.yaml in recipe
+- create project and role
+- demo to dump template
+- demo to include worker which targets codebuild notifications
+- include Project ref in event definition
+- worker to push messages to slack
+- gist to test everything
 
 ### medium
 
-- layer builder
 - event timer
 - lambda alarms 
 - secrets
-
 - binding script
-- migration script
-
+- app migration script
 - react website demo
 
 ### long

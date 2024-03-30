@@ -1,3 +1,16 @@
+### builder 30/03/24
+
+- codebuild package with Project
+- S3Project to extend Project and include all S3 rubbish
+- skeleton pip builder recipe
+- incude buildspec.yaml in recipe
+- create project and role
+- demo to dump template
+- demo to include worker which targets codebuild notifications
+- include Project ref in event definition
+- worker to push messages to slack
+- gist to test everything
+
 ### sns to slack 25/03/24
 
 - proposal is to send notifications to sns, along with level, and have a single slack handler which sends to slack
