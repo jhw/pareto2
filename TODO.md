@@ -1,15 +1,14 @@
 ### short
 
-- how to create record set supporting two certificates in different regions
-
-- BinaryMediaTypes needs to be an array, if included
+- BinaryMediaTypes vs redirect conflict
 
 ### medium
 
-- lambda alarms 
 - event timer
 - layer builder
 - secrets
+
+- lambda alarms 
 
 - binding script
 - migration script
@@ -84,6 +83,8 @@
 
 ### done
 
+- BinaryMediaTypes needs to be an array, if included
+- how to create record set supporting two certificates in different regions
 - refactor user scripts to take stackname and namespace
 - user scripts
 - subclass RecordSet with Distributed and Regional versions

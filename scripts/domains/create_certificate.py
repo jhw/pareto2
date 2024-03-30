@@ -78,7 +78,7 @@ if __name__=="__main__":
                            "Type": "CNAME",
                            "TTL": 300,
                            "ResourceRecords": [{"Value": resourcerecord["Value"]}]}
-        changebatch={"Changes": [{'Action': 'CREATE',
+        changebatch={"Changes": [{'Action': 'UPSERT',
                                   'ResourceRecordSet': resourcerecordset}]}
         print ("creating CNAME record for %s" % hostedzoneid)
         print (route53.change_resource_record_sets(HostedZoneId=hostedzoneid,

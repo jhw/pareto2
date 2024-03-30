@@ -121,7 +121,7 @@ class WebSite(Recipe):
 
     def init_rest_api(self, namespace):
         return RestApi(namespace = namespace,
-                       binary_media_types = "*/*")
+                       binary_media_types = ["*/*"])
             
     def init_deployment(self, namespace):        
         method_refs = [H(f"{namespace}-proxy-method"),
