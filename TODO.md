@@ -1,7 +1,8 @@
 ### short
 
+- rename distribution not distributed!
+
 - website BinaryMediaTypes vs redirect conflict
-- website CORS support
 
 ### medium
 
@@ -28,6 +29,8 @@
 
 ### thoughts
 
+- website CORS support
+  - too much of a ball ache
 - refactor policy_permissions helper?
   - not clear how
 - eliminate unnecessary classes in web_xxx.py demos?
