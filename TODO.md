@@ -1,5 +1,7 @@
 ### short [01-pip-builder]
 
+- notes re use of events namespacing
+
 - template dump_s3() 
 - demos should be written as tests
 - demo to include worker pushing to slack
