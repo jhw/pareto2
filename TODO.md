@@ -1,11 +1,14 @@
 ### short [01-package-builder]
 
-- create project and role
-- demo to dump template
-- demo to include worker which targets codebuild notifications
+- role
+- bucket
+
+- template dump_file() method
+
+- demo to include worker pushing to Slack
+- include codebuild pattern in event definition
 - include Project ref in event definition
-- worker to push messages to slack
-- gist to test everything
+- gist for testing
 
 ### medium
 
@@ -86,6 +89,7 @@
 
 ### done
 
+- demo to dump template
 - skeleton pip builder recipe
 - incude buildspec.yaml in recipe
 - codebuild package with Project
