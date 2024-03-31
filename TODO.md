@@ -1,7 +1,5 @@
 ### short [01-package-builder]
 
-- skeleton pip builder recipe
-- incude buildspec.yaml in recipe
 - create project and role
 - demo to dump template
 - demo to include worker which targets codebuild notifications
@@ -88,6 +86,8 @@
 
 ### done
 
+- skeleton pip builder recipe
+- incude buildspec.yaml in recipe
 - codebuild package with Project
 - S3Project to extend Project and include all S3 rubbish
 - implement redirect or binary media types
