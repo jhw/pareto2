@@ -1,22 +1,17 @@
 from pareto2.services import hungarorise as H
-from pareto2.services import Resource, AltNamespaceMixin
+from pareto2.services import Resource
 
-"""
-- distinguish between logs_namespace (slack) and logging_namespace (eg slack-error)
-- namespace is always a function namespace
-- AltNamespaceMixin required because of error, warning subclasses
-"""
+class SubscriptionFilter(Resource):
 
-class SubscriptionFilter(AltNamespaceMixin, Resource):
-
-    def __init__(self, namespace, logging_namespace, filter_pattern):
+    def __init__(self, namespace, function_namespace, logging_namespace, filter_pattern):
         self.namespace = namespace
+        self.function_namespace = function_namespace
         self.logging_namespace = logging_namespace
         self.filter_pattern = filter_pattern
 
     @property
     def aws_properties(self):
-        function_ref = H(f"{self.namespace}-function")
+        function_ref = H(f"{self.function_namespace}-function")
         return {
             "LogGroupName": {"Fn::Sub": f"/aws/lambda/${{{function_ref}}}"},
             "FilterPattern": self.filter_pattern,
@@ -25,23 +20,8 @@ class SubscriptionFilter(AltNamespaceMixin, Resource):
 
     @property
     def depends(self):
-        return [H(f"{self.namespace}-log-stream"),
+        return [H(f"{self.function_namespace}-log-stream"),
                 H(f"{self.logging_namespace}-permission")]
-
-    
-class WarningSubscriptionFilter(SubscriptionFilter):
-
-    def __init__(self, namespace, logging_namespace, filter_pattern = "%WARNING|Task timed out%"):
-        super().__init__(namespace = namespace,
-                         logging_namespace = logging_namespace,
-                         filter_pattern = filter_pattern)
-
-class ErrorSubscriptionFilter(SubscriptionFilter):
-
-    def __init__(self, namespace, logging_namespace, filter_pattern = "ERROR"):
-        super().__init__(namespace = namespace,
-                         logging_namespace = logging_namespace,
-                         filter_pattern = filter_pattern)
 
 """
 - LogGroup and LogStream don't seem to need explicit refs to their parent function; must be connected implicitly via the LogGroupName (which contains function name)

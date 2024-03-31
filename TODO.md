@@ -1,7 +1,5 @@
 ### short [01-pip-builder]
 
-- notes re use of events namespacing
-
 - template dump_s3() 
 - demos should be written as tests
 - demo to include worker pushing to slack
@@ -91,6 +89,7 @@
 
 ### done
 
+- notes re use of events namespacing
 - slack namespacing is messed up :(
 - lock down role resource arns
 - template dump_file() method

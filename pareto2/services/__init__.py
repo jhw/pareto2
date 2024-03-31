@@ -71,9 +71,3 @@ class Resource:
             body["DependsOn"] = self.depends
         return (key, body)
 
-class AltNamespaceMixin:
-
-    @property
-    def resource_name(self):    
-        tokens = self.class_names[-1].split(".") # latest subclass
-        return "%s-%s" % (self.namespace, dehungarorise(tokens[-1]))
