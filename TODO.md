@@ -90,6 +90,7 @@
 
 ### done
 
+- lock down role resource arns
 - template dump_file() method
 - role and policy
 - bucket

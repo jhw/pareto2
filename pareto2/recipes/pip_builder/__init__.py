@@ -6,6 +6,7 @@ from pareto2.services.s3 import *
 
 from pareto2.recipes import Recipe
 
+
 class PipBuilder(Recipe):    
 
     def __init__(self,
@@ -17,12 +18,14 @@ class PipBuilder(Recipe):
         self.append(Role(namespace = namespace,
                          principal = "codebuild.amazonaws.com"))
         self.append(Policy(namespace = namespace,
-                           permissions =["events:PutEvents",
-                                         "logs:CreateLogGroup",
-                                         "logs:CreateLogStream",
-                                         "logs:PutLogEvents",
-                                         "codebuild:*",
-                                         "s3:PutObject"]))
+                           permissions =[{"action": ["events:PutEvents"]},
+                                         {"action": ["logs:CreateLogGroup",
+                                                     "logs:CreateLogStream",
+                                                     "logs:PutLogEvents"]},
+                                         {"action": ["codebuild:*"],
+                                          "resource": {"Fn::GetAtt": [H(f"{namespace}-project"), "Arn"]}},
+                                         {"action": ["s3:PutObject"],
+                                          "resource": {"Fn::GetAtt": [H(f"{namespace}-bucket"), "Arn"]}}]))
         
 if __name__ == "__main__":
     pass
