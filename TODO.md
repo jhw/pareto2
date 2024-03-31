@@ -14,7 +14,6 @@
 - lambda alarms 
 - secrets
 - binding script
-- app migration script
 - react website demo
 
 ### long
