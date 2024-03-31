@@ -1,12 +1,11 @@
 ### short [01-package-builder]
 
-- role
-
 - template dump_file() method
 
 - demo to include worker pushing to Slack
 - include codebuild pattern in event definition
 - include Project ref in event definition
+
 - gist for testing
 
 ### medium
@@ -88,6 +87,7 @@
 
 ### done
 
+- role and policy
 - bucket
 - demo to dump template
 - skeleton pip builder recipe
