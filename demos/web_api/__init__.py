@@ -1,6 +1,6 @@
 from pareto2.recipes.web_api import WebApi
 
-import json, os, yaml
+import yaml
 
 EchoGetBody, EchoPostBody = (open("demos/web_api/echo_get.py").read(),
                              open("demos/web_api/echo_post.py").read())
@@ -45,15 +45,10 @@ if __name__ == "__main__":
                 endpoint["code"] = EchoPostBody
             else:
                 raise RuntimeError("couldn't embed code body for endpoint %s" % path)
-        if not os.path.exists("tmp"):
-            os.mkdir("tmp")
         template = WebApi(namespace = "app",
                           endpoints = list(endpoints.values())).render()
         template.populate_parameters()
-        with open(f"tmp/web-api.json", 'w') as f:
-            f.write(json.dumps(template,
-                               sort_keys = True,
-                               indent = 2))
+        template.dump_file(filename = "tmp/web-api.json")
         print (", ".join(list(template["Parameters"].keys())))
     except RuntimeError as error:
         print ("Error: %s" % str(error))

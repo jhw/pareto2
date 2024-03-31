@@ -6,7 +6,7 @@ import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
 
-import re
+import json, os, re
 
 class Template(dict):
 
@@ -90,6 +90,16 @@ class Template(dict):
         refs.update(self.node_refs)
         refs.update(self.inline_refs)
         return refs    
+
+    def dump_file(self, filename):
+        path = "/".join(filename.split("/")[:-1])
+        if not os.path.exists(path):
+            os.makedirs(path)
+        with open(filename, 'w') as f:
+            f.write(json.dumps(self,
+                               sort_keys = True,
+                               indent = 2))
+
     
 """
 - a recipe is just a very thin wrapper around list of resources

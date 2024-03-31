@@ -1,10 +1,13 @@
 ### short [01-package-builder]
 
-- template dump_file() method
+- slack namespacing is messed up :(
 
-- demo to include worker pushing to Slack
-- include codebuild pattern in event definition
-- include Project ref in event definition
+- template dump_s3() 
+
+- demo to include worker pushing to slack
+
+- codebuild pattern as event detail
+- project ref as event source
 
 - gist for testing
 
@@ -87,6 +90,7 @@
 
 ### done
 
+- template dump_file() method
 - role and policy
 - bucket
 - demo to dump template
