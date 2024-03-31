@@ -1,7 +1,5 @@
 ### short [01-package-builder]
 
-- codebuild package with Project
-- S3Project to extend Project and include all S3 rubbish
 - skeleton pip builder recipe
 - incude buildspec.yaml in recipe
 - create project and role
@@ -90,6 +88,8 @@
 
 ### done
 
+- codebuild package with Project
+- S3Project to extend Project and include all S3 rubbish
 - implement redirect or binary media types
 - rename distribution not distributed!
 - BinaryMediaTypes needs to be an array, if included
