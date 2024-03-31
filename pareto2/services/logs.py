@@ -2,9 +2,9 @@ from pareto2.services import hungarorise as H
 from pareto2.services import Resource, AltNamespaceMixin
 
 """
-- namespace here is always a function namespace
-- each lambda must have its own subscription filters, log group, log stream
-- but logging function is a singleton
+- distinguish between logs_namespace (slack) and logging_namespace (eg slack-error)
+- namespace is always a function namespace
+- AltNamespaceMixin required because of error, warning subclasses
 """
 
 class SubscriptionFilter(AltNamespaceMixin, Resource):

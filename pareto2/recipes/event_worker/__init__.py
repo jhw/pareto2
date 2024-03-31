@@ -3,7 +3,7 @@ from pareto2.services import hungarorise as H
 from pareto2.services.events import *
 from pareto2.services.iam import *
 
-from pareto2.recipes.slack_logging import SlackRecipe
+from pareto2.recipes.mixins.slack_logs import SlackLogsMixin
 
 import importlib
 
@@ -17,20 +17,20 @@ class EventPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
-class EventWorker(SlackRecipe):    
+class EventWorker(SlackLogsMixin):    
 
     def __init__(self,
                  namespace,
                  worker,
-                 logging_namespace = "slack",
+                 logs_namespace = "slack",
                  log_levels = ["warning", "error"]):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
         self.init_logs_subscriptions(namespace = namespace,
-                                     logging_namespace = logging_namespace,
+                                     logs_namespace = logs_namespace,
                                      log_levels = log_levels)
-        self.init_slack_logs(namespace = logging_namespace)
+        self.init_slack_logs(namespace = logs_namespace)
 
     def init_worker(self, namespace, worker):
         self.append(self.init_function(namespace = namespace,

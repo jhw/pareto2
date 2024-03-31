@@ -1,7 +1,8 @@
 ### short [01-package-builder]
 
-- pass filter pattern args as part of call to subscription filter and remove subclassing
-- also need to change namespacing, possibly flatten it
+- Mixins don't need to extend recipe?
+
+- could logs AltNamespaceMixin be removed
 
 - demos should be written as tests
 - template dump_s3() 

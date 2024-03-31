@@ -16,20 +16,24 @@ class SlackFunction(L.InlineFunction):
                          code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
                          variables = {"slack-logging-level": log_level,
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
-    
-class SlackRecipe(Recipe):
+
+"""
+- distinguish between logs_namespace (slack) and logging_namespace (eg slack-error)
+"""
+        
+class SlackLogsMixin(Recipe):
 
     def __init__(self):
         super().__init__()
 
-    def init_logs_subscriptions(self, namespace, logging_namespace, log_levels):
+    def init_logs_subscriptions(self, namespace, logs_namespace, log_levels):
         self.append(LogGroup(namespace = namespace))
         self.append(LogStream(namespace = namespace))
         for log_level in log_levels:
-            level_logging_namespace = f"{logging_namespace}-{log_level}"
+            logging_namespace = f"{logs_namespace}-{log_level}"
             subscriptionfn = eval(H(f"{log_level}-subscription-filter"))
             self.append(subscriptionfn(namespace = namespace,
-                                       logging_namespace = level_logging_namespace))
+                                       logging_namespace = logging_namespace))
 
     @property
     def log_levels(self):
@@ -39,11 +43,11 @@ class SlackRecipe(Recipe):
 
     def init_slack_logs(self, namespace):
         for log_level in self.log_levels:
-            level_logging_namespace = f"{namespace}-{log_level}"
-            self.append(SlackFunction(namespace = level_logging_namespace,
+            logging_namespace = f"{namespace}-{log_level}"
+            self.append(SlackFunction(namespace = logging_namespace,
                                       log_level = log_level))
-            self.append(Role(namespace = level_logging_namespace))
-            self.append(Policy(namespace = level_logging_namespace))
-            self.append(L.Permission(namespace = level_logging_namespace,
+            self.append(Role(namespace = logging_namespace))
+            self.append(Policy(namespace = logging_namespace))
+            self.append(L.Permission(namespace = logging_namespace,
                                                  principal = "logs.amazonaws.com"))
 
