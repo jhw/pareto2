@@ -1,6 +1,8 @@
 ### short [01-package-builder]
 
-- slack namespacing is messed up :(
+- pass filter pattern args as part of call to subscription filter and remove subclassing
+- also need to change namespacing, possibly flatten it
+
 - demos should be written as tests
 - template dump_s3() 
 - demo to include worker pushing to slack
@@ -86,6 +88,7 @@
 
 ### done
 
+- slack namespacing is messed up :(
 - lock down role resource arns
 - template dump_file() method
 - role and policy
