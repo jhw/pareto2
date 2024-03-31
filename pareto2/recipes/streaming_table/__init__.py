@@ -3,7 +3,7 @@ from pareto2.services import hungarorise as H
 from pareto2.services.dynamodb import StreamingTable as StreamingTableResource
 from pareto2.services.iam import *
 
-from pareto2.recipes.mixins.slack_logs import SlackLogsMixin
+from pareto2.recipes.mixins.slack_alerts import SlackAlertsMixin
 
 import importlib
 
@@ -76,21 +76,21 @@ class StreamingEventSourceMapping(L.EventSourceMapping):
         })
         return props
         
-class StreamingTable(SlackLogsMixin):    
+class StreamingTable(SlackAlertsMixin):    
 
     def __init__(self,
                  namespace,
-                 logs_namespace = "slack",
+                 alerts_namespace = "slack",
                  log_levels = ["error"]):
         super().__init__()
         streaming_namespace = f"{namespace}-streaming-table"        
         self.append(StreamingTableResource(namespace = namespace))
         self.init_streaming(namespace = namespace,
                             streaming_namespace = streaming_namespace)
-        self.init_logs_subscriptions(namespace = streaming_namespace,
-                                     logs_namespace = logs_namespace,
-                                     log_levels = log_levels)
-        self.init_slack_logs(namespace = logs_namespace)
+        self.init_subscription_filters(function_namespace = streaming_namespace,
+                                       alerts_namespace = alerts_namespace,
+                                       log_levels = log_levels)
+        self.init_slack_alerts(namespace = alerts_namespace)
 
     def init_streaming(self, namespace, streaming_namespace):
         self.append(StreamingFunction(namespace = streaming_namespace,

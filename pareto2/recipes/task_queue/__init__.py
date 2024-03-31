@@ -3,7 +3,7 @@ from pareto2.services import hungarorise as H
 from pareto2.services.iam import *
 from pareto2.services.sqs import *
 
-from pareto2.recipes.mixins.slack_logs import SlackLogsMixin
+from pareto2.recipes.mixins.slack_alerts import SlackAlertsMixin
 
 import importlib
 
@@ -44,21 +44,21 @@ class QueueEventSourceMapping(L.EventSourceMapping):
         super().__init__(namespace = namespace,
                          source_arn = {"Fn::GetAtt": [H(f"{queue_namespace}-queue"), "Arn"]})
 
-class TaskQueue(SlackLogsMixin):    
+class TaskQueue(SlackAlertsMixin):    
 
     def __init__(self,
                  namespace,
-                 logs_namespace = "slack",
+                 alerts_namespace = "slack",
                  log_levels = ["error"]):
         super().__init__()
         streaming_namespace = f"{namespace}-task-queue"        
         self.append(Queue(namespace = namespace))
         self.init_streaming(namespace = namespace,
                             streaming_namespace = streaming_namespace)
-        self.init_logs_subscriptions(namespace = streaming_namespace,
-                                     logs_namespace = logs_namespace,
-                                     log_levels = log_levels)
-        self.init_slack_logs(namespace = logs_namespace)
+        self.init_subscription_filters(function_namespace = streaming_namespace,
+                                       alerts_namespace = alerts_namespace,
+                                       log_levels = log_levels)
+        self.init_slack_alerts(namespace = alerts_namespace)
 
     def init_streaming(self, namespace, streaming_namespace):
         self.append(QueueFunction(namespace = streaming_namespace,

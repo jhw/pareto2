@@ -1,12 +1,17 @@
 from pareto2.services import hungarorise as H
 from pareto2.services import Resource
 
+
+"""
+- subscription filter needs separate function_namespace, alert_namespace arguments as its root namespace is a combination of both
+"""
+
 class SubscriptionFilter(Resource):
 
-    def __init__(self, namespace, function_namespace, logging_namespace, filter_pattern):
+    def __init__(self, namespace, function_namespace, alert_namespace, filter_pattern):
         self.namespace = namespace
         self.function_namespace = function_namespace
-        self.logging_namespace = logging_namespace
+        self.alert_namespace = alert_namespace
         self.filter_pattern = filter_pattern
 
     @property
@@ -15,13 +20,13 @@ class SubscriptionFilter(Resource):
         return {
             "LogGroupName": {"Fn::Sub": f"/aws/lambda/${{{function_ref}}}"},
             "FilterPattern": self.filter_pattern,
-            "DestinationArn": {"Fn::GetAtt": [H(f"{self.logging_namespace}-function"), "Arn"]},
+            "DestinationArn": {"Fn::GetAtt": [H(f"{self.alert_namespace}-function"), "Arn"]},
         }
 
     @property
     def depends(self):
         return [H(f"{self.function_namespace}-log-stream"),
-                H(f"{self.logging_namespace}-permission")]
+                H(f"{self.alert_namespace}-permission")]
 
 """
 - LogGroup and LogStream don't seem to need explicit refs to their parent function; must be connected implicitly via the LogGroupName (which contains function name)
