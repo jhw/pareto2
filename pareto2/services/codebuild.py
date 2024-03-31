@@ -10,12 +10,10 @@ class S3Project(Project):
 
     def __init__(self,
                  namespace,
-                 bucket_namespace,
                  build_spec,
                  artifacts_name = "artifacts.zip",
                  artifacts_path = "build"):
         super().__init__(namespace)
-        self.bucket_namespace = bucket_namespace        
         self.build_spec = build_spec
         self.artifacts_name = artifacts_name
         self.artifacts_path = artifacts_path
@@ -45,7 +43,7 @@ class S3Project(Project):
     def artifacts(self):
         return {
             "Type": "S3",
-            "Location": {"Ref": H(f"{self.bucket_namespace}-bucket")},
+            "Location": {"Ref": H(f"{self.namespace}-bucket")},
             "Packaging": "ZIP",
             "Name": self.artifacts_name,
             "NamespaceType": "BUILD_ID",
@@ -54,7 +52,7 @@ class S3Project(Project):
 
     @property
     def logs_config(self):
-        bucket_ref = H(f"{self.bucket_namespace}-bucket")
+        bucket_ref = H(f"{self.namespace}-bucket")
         return {
             "Location": {"Fn::Sub": f"${{{bucket_ref}}}/logs"},
             "Status": "ENABLED"

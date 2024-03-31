@@ -1,7 +1,6 @@
 ### short [01-package-builder]
 
 - role
-- bucket
 
 - template dump_file() method
 
@@ -89,6 +88,7 @@
 
 ### done
 
+- bucket
 - demo to dump template
 - skeleton pip builder recipe
 - incude buildspec.yaml in recipe
