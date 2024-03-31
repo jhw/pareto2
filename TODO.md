@@ -1,14 +1,11 @@
 ### short [01-package-builder]
 
 - slack namespacing is messed up :(
-
+- demos should be written as tests
 - template dump_s3() 
-
 - demo to include worker pushing to slack
-
 - codebuild pattern as event detail
 - project ref as event source
-
 - gist for testing
 
 ### medium
