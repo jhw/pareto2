@@ -1,11 +1,7 @@
-### short [01-package-builder]
+### short [01-pip-builder]
 
-- Mixins don't need to extend recipe?
-
-- could logs AltNamespaceMixin be removed
-
-- demos should be written as tests
 - template dump_s3() 
+- demos should be written as tests
 - demo to include worker pushing to slack
 - codebuild pattern as event detail
 - project ref as event source
@@ -32,6 +28,10 @@
 
 ### thoughts
 
+- Mixins don't need to extend recipe?
+  - but how?
+- could logs AltNamespaceMixin be removed?
+  - but how?
 - website CORS support
   - too much of a ball ache
 - refactor policy_permissions helper?
