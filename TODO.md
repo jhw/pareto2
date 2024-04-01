@@ -1,4 +1,7 @@
-### short
+### short [01-event-timers]
+
+- move event source mappings back into lambda
+- subclass rule
 
 ### medium
 
