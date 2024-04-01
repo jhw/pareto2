@@ -1,6 +1,5 @@
 ### short [01-pip-builder]
 
-- rename slack_logging as slackops
 - remove separate event namespace
 - template dump_s3() 
 - demos should be written as tests
@@ -91,6 +90,7 @@
 
 ### done
 
+- rename slack_logging as slackops
 - add more notes to logs
 - notes re use of events namespacing
 - slack namespacing is messed up :(

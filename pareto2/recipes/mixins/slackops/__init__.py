@@ -44,7 +44,7 @@ class SlackAlertsMixin(Recipe):
                          for resource in self
                          if resource.aws_resource_type == "AWS::Logs::SubscriptionFilter"]))
 
-    def init_slack_alerts(self, namespace):
+    def init_slackops(self, namespace):
         for log_level in self.log_levels:
             alert_namespace = f"{namespace}-{log_level}"
             self.append(SlackFunction(namespace = alert_namespace,

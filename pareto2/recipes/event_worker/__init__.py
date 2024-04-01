@@ -3,7 +3,7 @@ from pareto2.services import hungarorise as H
 from pareto2.services.events import *
 from pareto2.services.iam import *
 
-from pareto2.recipes.mixins.slack_alerts import SlackAlertsMixin
+from pareto2.recipes.mixins.slackops import SlackAlertsMixin
 
 import importlib
 
@@ -30,7 +30,7 @@ class EventWorker(SlackAlertsMixin):
         self.init_subscription_filters(function_namespace = namespace,
                                        alerts_namespace = alerts_namespace,
                                        log_levels = log_levels)
-        self.init_slack_alerts(namespace = alerts_namespace)
+        self.init_slackops(namespace = alerts_namespace)
 
     def init_worker(self, namespace, worker):
         self.append(self.init_function(namespace = namespace,
