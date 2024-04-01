@@ -38,9 +38,8 @@ class EventWorker(SlackAlertsMixin):
         self.append(L.EventInvokeConfig(namespace = namespace))
         self += self.init_role_and_policy(namespace = namespace,
                                           worker = worker)
-        for event in worker["events"]:
-            self.init_event_rule(namespace = namespace,
-                                 event = event)
+        self.init_event_rule(namespace = namespace,
+                             event = worker["event"])
         
     def init_function(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function

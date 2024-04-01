@@ -1,5 +1,7 @@
 ### short [01-pip-builder]
 
+- remove event name
+
 - demo to include worker pushing to slack
 - codebuild pattern as event detail
 - project ref as event source
@@ -87,6 +89,7 @@
 
 ### done
 
+- replace worker events with event
 - remove separate event namespace
 - single test.py script
 - demos should be written as tests
