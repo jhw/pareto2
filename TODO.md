@@ -1,6 +1,7 @@
 ### short [01-pip-builder]
 
-- project ref as event source
+- alternative to mixins
+
 - gist for testing
 
 ### medium
@@ -85,6 +86,7 @@
 
 ### done
 
+- project ref as event source
 - codebuild pattern as event detail
 - demo to include worker pushing to slack
 - remove event name

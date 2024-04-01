@@ -3,10 +3,6 @@ from pareto2.recipes.event_worker import EventWorker
 
 import unittest, yaml
 
-"""
-NB source value is expected to be inserted into pattern at expanded/CI level and not provided by app definition
-"""
-
 Worker = yaml.safe_load("""
   event:
     pattern:
@@ -15,6 +11,8 @@ Worker = yaml.safe_load("""
       detail-type:
       - "CodeBuild Build Phase Change"
       detail:
+        project-name:
+        - Ref: AppProject
         completed-phase:
         - SUBMITTED
         - PROVISIONING
