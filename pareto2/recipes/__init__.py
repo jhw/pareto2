@@ -100,7 +100,14 @@ class Template(dict):
                                sort_keys = True,
                                indent = 2))
 
-    
+    def dump_s3(self, s3, bucketname, key):
+        s3.put_object(Bucket = bucketname,
+                      Key = key,
+                      Body = json.dumps(self,
+                                        sort_keys = True,
+                                        indent = 2),
+                      ContentType = "application/json")
+                
 """
 - a recipe is just a very thin wrapper around list of resources
 - it does not contain its own namespace in state because it may need to operate across a number of namespaces, particularly parent/child (eg api/endpoint)

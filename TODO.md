@@ -1,8 +1,8 @@
 ### short [01-pip-builder]
 
-- remove separate event namespace
-- template dump_s3() 
 - demos should be written as tests
+
+- remove separate event namespace
 - demo to include worker pushing to slack
 - codebuild pattern as event detail
 - project ref as event source
@@ -90,6 +90,7 @@
 
 ### done
 
+- template dump_s3() 
 - rename slack_logging as slackops
 - add more notes to logs
 - notes re use of events namespacing
