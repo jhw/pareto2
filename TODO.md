@@ -1,6 +1,13 @@
 ### short [01-pip-builder]
 
-- gist for testing
+- s3 PutObject/ListBucket permissions
+- policy resource arn for s3 permissions is incorrectly specified
+  - needs /* at end of ARN
+- Bucket needs to be visible
+  - probably true of all base state resources and builder project
+- LogsConfig needs S3Logs subdir
+- CodeBuild not Codebuild
+  - needs exception
 
 ### medium
 
