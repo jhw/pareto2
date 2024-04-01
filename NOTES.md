@@ -1,3 +1,24 @@
+### dsl
+
+- load bucket, table, api, website, queue, pip builder config from root
+  - can't have api and website
+  - website uses bucket- 
+- load handlers from lambda
+- handler type field
+  - endpoint, worker, timer
+
+### expander2 01/04/24
+
+- remove redeployer
+- handler type field
+  - endpoint, worker, timer
+- worker event-type field
+  - bucket, table, queue, project
+  - inserts relevant source or project-type field into pattern
+- templater to check certificate region
+  - default region for web-api
+  - us-east-1 for website
+
 ### builder 30/03/24
 
 - codebuild package with Project

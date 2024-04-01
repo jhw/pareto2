@@ -1,7 +1,5 @@
 ### short [01-pip-builder]
 
-- alternative to mixins
-
 - gist for testing
 
 ### medium
@@ -86,6 +84,7 @@
 
 ### done
 
+- alternative to mixins
 - project ref as event source
 - codebuild pattern as event detail
 - demo to include worker pushing to slack
