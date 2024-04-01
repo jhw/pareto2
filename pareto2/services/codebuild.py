@@ -67,3 +67,7 @@ class S3Project(Project):
              "Artifacts": self.artifacts,
              "LogsConfig": self.logs_config
          }
+
+    @property
+    def visible(self):
+        return True
