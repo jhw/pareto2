@@ -1,6 +1,10 @@
 ### short [01-event-timers]
 
-- subclass rule
+- event timer recipe
+- event timer demo
+
+- add switch for super/sub minute
+- inline code for sub routines
 
 ### medium
 
@@ -85,6 +89,7 @@
 
 ### done
 
+- subclass rule
 - move event source mappings back into lambda
 - add batch size to sqs event source mappings
 - policy resource arn for s3 permissions is incorrectly specified
