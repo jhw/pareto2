@@ -6,7 +6,6 @@ from pareto2.services.s3 import *
 
 from pareto2.recipes import Recipe
 
-
 class PipBuilder(Recipe):    
 
     def __init__(self,
@@ -19,6 +18,7 @@ class PipBuilder(Recipe):
         self.append(Bucket(namespace = namespace))
         self.append(Role(namespace = namespace,
                          principal = "codebuild.amazonaws.com"))
+        bucket_arn_ref = "%s.Arn" % H(f"{namespace}-bucket")
         self.append(Policy(namespace = namespace,
                            permissions =[{"action": ["events:PutEvents"]},
                                          {"action": ["logs:CreateLogGroup",
@@ -28,7 +28,7 @@ class PipBuilder(Recipe):
                                           "resource": {"Fn::GetAtt": [H(f"{namespace}-project"), "Arn"]}},
                                          {"action": ["s3:PutObject",
                                                      "s3:ListBucket"],
-                                          "resource": {"Fn::GetAtt": [H(f"{namespace}-bucket"), "Arn"]}}]))
+                                          "resource": {"Fn::Sub": f"${{{bucket_arn_ref}}}/*"}}])) # NB need permission for all objects in bucket 
         
 if __name__ == "__main__":
     pass

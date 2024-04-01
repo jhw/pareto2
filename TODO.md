@@ -1,22 +1,21 @@
 ### short [01-pip-builder]
 
-- policy resource arn for s3 permissions is incorrectly specified
-  - needs /* at end of ARN
 ### medium
 
 - event timer
 - lambda alarms 
 - binding script
-- react website demo
 
 ### long
 
+- federated auth
+- react website demo
 - cross- account deployments
 - step functions
-- federated auth
-- passwordless auth
 - s3 multipart uploads
+
 - secrets
+- passwordless auth
 - tracing and xrays
 - appsync
 - rockset
@@ -84,6 +83,8 @@
 
 ### done
 
+- policy resource arn for s3 permissions is incorrectly specified
+  - needs /* at end of ARN
 - LogsConfig needs S3Logs subdir
 - Bucket needs to be visible
   - probably true of all base state resources and builder project
