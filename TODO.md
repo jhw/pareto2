@@ -1,13 +1,13 @@
-### short [01-pip-builder]
+### short
 
 ### medium
 
 - event timer
-- lambda alarms 
 - binding script
 
 ### long
 
+- lambda alarms 
 - federated auth
 - react website demo
 - cross- account deployments
