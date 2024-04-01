@@ -1,11 +1,9 @@
 ### short [01-event-timers]
 
-- move event source mappings back into lambda
 - subclass rule
 
 ### medium
 
-- event timer
 - binding script
 
 ### long
@@ -87,6 +85,7 @@
 
 ### done
 
+- move event source mappings back into lambda
 - add batch size to sqs event source mappings
 - policy resource arn for s3 permissions is incorrectly specified
   - needs /* at end of ARN

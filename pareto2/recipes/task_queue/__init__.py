@@ -31,34 +31,6 @@ class QueuePolicy(Policy):
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
 
-"""
-https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#cfn-lambda-eventsourcemapping-batchsize
----
-- BatchSize
-  - The maximum number of records in each batch that Lambda pulls from your stream or queue and sends to your function. Lambda passes all of the records in the batch to the function in a single call, up to the payload limit for synchronous invocation (6 MB).
-  - Amazon Simple Queue Service – Default 10. For standard queues the max is 10,000. For FIFO queues the max is 10.
-  - BatchSize was formerly set at 1 but given inline_code.py iterates over Records and pushes one at a time into EventBridge this doesn't seem to matter any more
-"""
-
-class QueueEventSourceMapping(L.EventSourceMapping):
-
-    def __init__(self,
-                 namespace,
-                 queue_namespace,
-                 batch_size = 10):
-        super().__init__(namespace = namespace,
-                         source_arn = {"Fn::GetAtt": [H(f"{queue_namespace}-queue"), "Arn"]})
-        self.batch_size = batch_size
-        
-    @property
-    def aws_properties(self):
-        props = super().aws_properties
-        props.update({
-            "BatchSize": self.batch_size
-        })
-        return props
-
-
 class TaskQueue(SlackAlertsMixin):    
 
     def __init__(self,
@@ -81,10 +53,8 @@ class TaskQueue(SlackAlertsMixin):
         self.append(Role(namespace = streaming_namespace))
         self.append(QueuePolicy(namespace = streaming_namespace,
                                 queue_namespace = namespace))
-        self.append(QueueEventSourceMapping(namespace = streaming_namespace,
-                                            queue_namespace = namespace))
-
-
+        self.append(L.SQSEventSourceMapping(namespace = streaming_namespace,
+                                            source_arn = {"Fn::GetAtt": [H(f"{namespace}-queue"), "Arn"]}))
             
 if __name__ == "__main__":
     pass
