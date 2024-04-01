@@ -4,7 +4,6 @@ import unittest, yaml
 
 Worker = yaml.safe_load("""
   event:
-    name: whatevs
     pattern:
       detail:
         hello:

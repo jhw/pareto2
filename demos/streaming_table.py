@@ -9,7 +9,6 @@ NB source value is expected to be inserted into pattern at expanded/CI level and
 
 Worker = yaml.safe_load("""
   event:
-    name: foobar
     pattern:
       detail:
         eventName:
