@@ -6,6 +6,10 @@ class Bucket(Resource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+    @property
+    def visible(self):
+        return True
+
 class StreamingBucket(Bucket):
 
     def __init__(self, namespace):
@@ -16,6 +20,3 @@ class StreamingBucket(Bucket):
         notconf = {"EventBridgeConfiguration": {"EventBridgeEnabled": True}}
         return {"NotificationConfiguration": notconf}
 
-    @property
-    def visible(self):
-        return True

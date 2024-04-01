@@ -6,6 +6,10 @@ class Project(Resource):
     def __init__(self, namespace):
         self.namespace = namespace
 
+    @property
+    def visible(self):
+        return True
+
 class S3Project(Project):
 
     def __init__(self,
@@ -68,6 +72,3 @@ class S3Project(Project):
              "LogsConfig": self.logs_config
          }
 
-    @property
-    def visible(self):
-        return True

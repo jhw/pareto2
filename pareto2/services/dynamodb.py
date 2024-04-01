@@ -41,6 +41,10 @@ class Table(Resource):
             props["StreamSpecification"] = {"StreamViewType": self.stream_type}
         return props
 
+    @property
+    def visible(self):
+        return True
+
 class StreamingTable(Table):
     
     def __init__(self, namespace):
@@ -55,6 +59,3 @@ class StreamingTable(Table):
                                      "type": "RANGE"}],
                          stream_type = "NEW_AND_OLD_IMAGES")
 
-    @property
-    def visible(self):
-        return True
