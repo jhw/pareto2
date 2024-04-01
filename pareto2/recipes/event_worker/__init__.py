@@ -55,11 +55,9 @@ class EventWorker(SlackAlertsMixin):
         ]
 
     def init_event_rule(self, namespace, event):
-        event_namespace = f"{namespace}-{event['name']}"
-        self.append(Rule(namespace = event_namespace,
-                         function_namespace = namespace,
+        self.append(Rule(namespace = namespace,
                          pattern = event["pattern"]))
-        self.append(EventPermission(namespace = event_namespace,
+        self.append(EventPermission(namespace = namespace,
                                     function_namespace = namespace))
                     
 if __name__ == "__main__":
