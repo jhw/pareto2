@@ -1,7 +1,5 @@
 ### short [01-pip-builder]
 
-- demo to include worker pushing to slack
-- codebuild pattern as event detail
 - project ref as event source
 - gist for testing
 
@@ -87,6 +85,8 @@
 
 ### done
 
+- codebuild pattern as event detail
+- demo to include worker pushing to slack
 - remove event name
 - replace worker events with event
 - remove separate event namespace
