@@ -2,10 +2,6 @@
 
 - policy resource arn for s3 permissions is incorrectly specified
   - needs /* at end of ARN
-- Bucket needs to be visible
-  - probably true of all base state resources and builder project
-- LogsConfig needs S3Logs subdir
-
 ### medium
 
 - event timer
@@ -88,6 +84,9 @@
 
 ### done
 
+- LogsConfig needs S3Logs subdir
+- Bucket needs to be visible
+  - probably true of all base state resources and builder project
 - s3 PutObject/ListBucket permissions
 - CodeBuild not Codebuild
   - needs exception

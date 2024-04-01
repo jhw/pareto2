@@ -58,8 +58,10 @@ class S3Project(Project):
     def logs_config(self):
         bucket_ref = H(f"{self.namespace}-bucket")
         return {
-            "Location": {"Fn::Sub": f"${{{bucket_ref}}}/logs"},
-            "Status": "ENABLED"
+            "S3Logs": {
+                "Location": {"Fn::Sub": f"${{{bucket_ref}}}/logs"},
+                "Status": "ENABLED"
+            }
         }
     
     @property
