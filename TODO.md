@@ -1,8 +1,7 @@
 ### short [01-pip-builder]
 
-- can a function really be bound to more than one rule?
-  - if not, why do you need separate function namespace?
-
+- rename slack_logging as slackops
+- remove separate event namespace
 - template dump_s3() 
 - demos should be written as tests
 - demo to include worker pushing to slack
@@ -14,7 +13,6 @@
 
 - event timer
 - lambda alarms 
-- secrets
 - binding script
 - react website demo
 
@@ -25,6 +23,7 @@
 - federated auth
 - passwordless auth
 - s3 multipart uploads
+- secrets
 - tracing and xrays
 - appsync
 - rockset
