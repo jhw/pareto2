@@ -1,5 +1,6 @@
 ### short [01-pip-builder]
 
+- add more notes to logs
 - rename slack_logging as slackops
 - remove separate event namespace
 - template dump_s3() 
