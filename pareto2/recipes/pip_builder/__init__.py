@@ -12,8 +12,10 @@ class PipBuilder(Recipe):
     def __init__(self,
                  namespace):
         super().__init__()
+        with open("/".join(__file__.split("/")[:-1]+["build_spec.yaml"])) as f:
+            build_spec = f.read()
         self.append(S3Project(namespace = namespace,
-                              build_spec = open("/".join(__file__.split("/")[:-1]+["build_spec.yaml"])).read()))
+                              build_spec = build_spec))
         self.append(Bucket(namespace = namespace))
         self.append(Role(namespace = namespace,
                          principal = "codebuild.amazonaws.com"))

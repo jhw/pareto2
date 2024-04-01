@@ -1,6 +1,6 @@
 from pareto2.recipes.event_worker import EventWorker
 
-import yaml
+import unittest, yaml
 
 Worker = yaml.safe_load("""
   events:
@@ -21,12 +21,18 @@ def handler(event, context=None):
     logger.warning(str(event))
 """
 
-if __name__ == "__main__":
-    worker = Worker
-    worker["code"] = CodeBody
-    template = EventWorker(namespace = "my",
-                           worker = worker).render()
-    template.populate_parameters()
-    template.dump_file(filename = "tmp/event-worker.json")
-    print (", ".join(list(template["Parameters"].keys())))
+class EventWorkerTest(unittest.TestCase):
+    
+    def test_template(self):
+        worker = Worker
+        worker["code"] = CodeBody
+        template = EventWorker(namespace = "my",
+                               worker = worker).render()
+        template.populate_parameters()
+        template.dump_file(filename = "tmp/event-worker.json")
+        parameters = list(template["Parameters"].keys())
+        self.assertTrue(len(parameters) == 1)
+        self.assertTrue("SlackWebhookUrl" in parameters)
 
+if __name__ == "__main__":
+    unittest.main()

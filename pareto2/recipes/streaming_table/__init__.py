@@ -12,8 +12,10 @@ L = importlib.import_module("pareto2.services.lambda")
 class StreamingFunction(L.InlineFunction):
     
     def __init__(self, namespace, table_namespace):
+        with open("/".join(__file__.split("/")[:-1]+["inline_code.py"])) as f:
+            code = f.read()
         super().__init__(namespace = namespace,
-                         code = open("/".join(__file__.split("/")[:-1]+["inline_code.py"])).read(),
+                         code = code,
                          variables = {"table-name": {"Ref": H(f"{table_namespace}-table")}})
 
 class StreamingPolicy(Policy):

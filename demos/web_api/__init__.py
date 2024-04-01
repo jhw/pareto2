@@ -1,9 +1,14 @@
 from pareto2.recipes.web_api import WebApi
 
-import yaml
+import unittest, yaml
 
-EchoGetBody, EchoPostBody = (open("demos/web_api/echo_get.py").read(),
-                             open("demos/web_api/echo_post.py").read())
+def load_body(filename):
+    with open(filename) as f:
+        body = f.read()
+    return body
+
+EchoGetBody, EchoPostBody = (load_body("demos/web_api/echo_get.py"),
+                             load_body("demos/web_api/echo_post.py"))
 
 Endpoints = yaml.safe_load("""
 - method: GET
@@ -34,8 +39,9 @@ Endpoints = yaml.safe_load("""
   - s3:PutObject
 """)
 
-if __name__ == "__main__":
-    try:
+class WebApiTest(unittest.TestCase):
+
+    def test_template(self):
         endpoints = {endpoint["path"]:endpoint
                      for endpoint in Endpoints}
         for path, endpoint in endpoints.items():
@@ -49,6 +55,12 @@ if __name__ == "__main__":
                           endpoints = list(endpoints.values())).render()
         template.populate_parameters()
         template.dump_file(filename = "tmp/web-api.json")
-        print (", ".join(list(template["Parameters"].keys())))
-    except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        parameters = list(template["Parameters"].keys())
+        self.assertTrue(len(parameters) == 3)
+        for attr in ["DomainName",
+                     "CertificateArn",
+                     "AllowedOrigins"]:
+            self.assertTrue(attr in parameters)
+
+if __name__ == "__main__":
+    unittest.main()

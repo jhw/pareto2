@@ -1,7 +1,6 @@
 ### short [01-pip-builder]
 
-- demos should be written as tests
-
+- single test.py script
 - remove separate event namespace
 - demo to include worker pushing to slack
 - codebuild pattern as event detail
@@ -89,6 +88,13 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- demos should be written as tests
+
+```
+with open("/".join(__file__.split("/")[:-1]+["inline_code.py"]), "r", encoding="UTF-8") as file:
+    code = file.read(),
+```
 
 - template dump_s3() 
 - rename slack_logging as slackops
