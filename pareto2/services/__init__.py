@@ -46,6 +46,7 @@ class Resource:
     @property
     def aws_resource_type(self, irregulars = {"apigateway": "ApiGateway",
                                               "apigatewayv2": "ApiGatewayV2",
+                                              "codebuild": "CodeBuild",
                                               "dynamodb": "DynamoDB",
                                               "iam": "IAM",
                                               "sns": "SNS",

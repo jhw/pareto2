@@ -6,8 +6,6 @@
 - Bucket needs to be visible
   - probably true of all base state resources and builder project
 - LogsConfig needs S3Logs subdir
-- CodeBuild not Codebuild
-  - needs exception
 
 ### medium
 
@@ -91,6 +89,8 @@
 
 ### done
 
+- CodeBuild not Codebuild
+  - needs exception
 - alternative to mixins
 - project ref as event source
 - codebuild pattern as event detail
