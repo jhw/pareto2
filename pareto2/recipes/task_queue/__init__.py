@@ -39,12 +39,25 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lamb
   - Amazon Simple Queue Service – Default 10. For standard queues the max is 10,000. For FIFO queues the max is 10.
   - BatchSize was formerly set at 1 but given inline_code.py iterates over Records and pushes one at a time into EventBridge this doesn't seem to matter any more
 """
-        
+
 class QueueEventSourceMapping(L.EventSourceMapping):
 
-    def __init__(self, namespace, queue_namespace):
+    def __init__(self,
+                 namespace,
+                 queue_namespace,
+                 batch_size = 10):
         super().__init__(namespace = namespace,
                          source_arn = {"Fn::GetAtt": [H(f"{queue_namespace}-queue"), "Arn"]})
+        self.batch_size = batch_size
+        
+    @property
+    def aws_properties(self):
+        props = super().aws_properties
+        props.update({
+            "BatchSize": self.batch_size
+        })
+        return props
+
 
 class TaskQueue(SlackAlertsMixin):    
 

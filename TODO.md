@@ -25,6 +25,7 @@
 
 ### thoughts
 
+
 - Mixins don't need to extend recipe?
   - but how?
 - could logs AltNamespaceMixin be removed?
@@ -86,6 +87,7 @@
 
 ### done
 
+- add batch size to sqs event source mappings
 - policy resource arn for s3 permissions is incorrectly specified
   - needs /* at end of ARN
 - LogsConfig needs S3Logs subdir
