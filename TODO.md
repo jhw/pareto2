@@ -1,6 +1,5 @@
 ### short [01-pip-builder]
 
-- add more notes to logs
 - rename slack_logging as slackops
 - remove separate event namespace
 - template dump_s3() 
@@ -92,6 +91,7 @@
 
 ### done
 
+- add more notes to logs
 - notes re use of events namespacing
 - slack namespacing is messed up :(
 - lock down role resource arns

@@ -3,7 +3,9 @@ from pareto2.services import Resource
 
 
 """
-- subscription filter needs separate function_namespace, alert_namespace arguments as its root namespace is a combination of both
+- subscription filter needs separate function_namespace, alert_namespace arguments as its root namespace is a combination of both (since a single function might need multiple subscription filters)
+- function_namespace is effectively the source (watches the log group, named after the function)
+- alert_namespace is the destination, containing the alert function
 """
 
 class SubscriptionFilter(Resource):
@@ -29,7 +31,7 @@ class SubscriptionFilter(Resource):
                 H(f"{self.alert_namespace}-permission")]
 
 """
-- LogGroup and LogStream don't seem to need explicit refs to their parent function; must be connected implicitly via the LogGroupName (which contains function name)
+- LogGroup/LogStream namespace is function namespace
 """
         
 class LogGroup(Resource):
