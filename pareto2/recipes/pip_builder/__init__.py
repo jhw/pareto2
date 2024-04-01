@@ -26,7 +26,8 @@ class PipBuilder(Recipe):
                                                      "logs:PutLogEvents"]},
                                          {"action": ["codebuild:*"],
                                           "resource": {"Fn::GetAtt": [H(f"{namespace}-project"), "Arn"]}},
-                                         {"action": ["s3:PutObject"],
+                                         {"action": ["s3:PutObject",
+                                                     "s3:ListBucket"],
                                           "resource": {"Fn::GetAtt": [H(f"{namespace}-bucket"), "Arn"]}}]))
         
 if __name__ == "__main__":

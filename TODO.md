@@ -1,6 +1,5 @@
 ### short [01-pip-builder]
 
-- s3 PutObject/ListBucket permissions
 - policy resource arn for s3 permissions is incorrectly specified
   - needs /* at end of ARN
 - Bucket needs to be visible
@@ -89,6 +88,7 @@
 
 ### done
 
+- s3 PutObject/ListBucket permissions
 - CodeBuild not Codebuild
   - needs exception
 - alternative to mixins
