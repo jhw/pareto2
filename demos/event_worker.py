@@ -25,8 +25,9 @@ class EventWorkerTest(unittest.TestCase):
     def test_template(self):
         worker = Worker
         worker["code"] = CodeBody
-        template = EventWorker(namespace = "my",
-                               worker = worker).render()
+        recipe = EventWorker(namespace = "my",
+                             worker = worker)
+        template = recipe.render()
         template.populate_parameters()
         template.dump_file(filename = "tmp/event-worker.json")
         parameters = list(template["Parameters"].keys())

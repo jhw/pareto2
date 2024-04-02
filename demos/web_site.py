@@ -5,7 +5,8 @@ import unittest
 class WebSiteTest(unittest.TestCase):
 
     def test_template(self):
-        template = WebSite(namespace = "app").render()
+        recipe = WebSite(namespace = "app")
+        template = recipe.render()
         template.populate_parameters()
         template.dump_file(filename = "tmp/web-site.json")
         parameters = list(template["Parameters"].keys())

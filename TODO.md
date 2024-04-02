@@ -1,6 +1,6 @@
 ### short [01-event-timers]
 
-- string keys for role, policy, permission
+- extend __str__ to include policy role, role, permissions
 
 - event timer recipe
 - event timer demo
