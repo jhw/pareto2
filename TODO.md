@@ -1,12 +1,14 @@
 ### short [01-event-timers]
 
-- event timer recipe
-- event timer demo
 - schedule formatter
+- switch between macro and micro timers
+- micro to push to inline function (1)
+- inline function (1) to push to queue
+- queue bound to inline function (2)
+- inline function (2) to lambda.invoke target function
 
 ### medium
 
-- sub- minute timer
 - lambda alarms 
 - binding script
 
@@ -89,6 +91,8 @@
 
 ### done
 
+- event timer recipe
+- event timer demo
 - extend __str__ to include policy role, role, permissions
 - classes for permissions group and statement
 - replace self.append with self +=
