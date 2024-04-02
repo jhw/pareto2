@@ -154,23 +154,3 @@ class Recipe(list):
     def render(self):
         return Template(self)
 
-    @property
-    def role_groups(self):
-        groups = {}
-        for resource in self:
-            if resource.aws_resource_type == "AWS::IAM::Role":
-                key = str(resource)
-                groups.setdefault(key, [])
-                groups[key].append(resource)
-        return groups
-    
-    @property
-    def policy_groups(self):
-        groups = {}
-        for resource in self:
-            if resource.aws_resource_type == "AWS::IAM::Policy":
-                key = str(resource.statement) # NB statement only for now
-                groups.setdefault(key, [])
-                groups[key].append(resource)
-        return groups
-        

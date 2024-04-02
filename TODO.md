@@ -2,21 +2,18 @@
 
 - event timer recipe
 - event timer demo
-
 - schedule formatter
 
 ### medium
 
-- optimiser/compacter [notes]
-
 - sub- minute timer
 - lambda alarms 
-- step functions
 - binding script
 
 ### long
 
 - federated auth
+- step functions
 - react website demo
 - cross- account deployments
 - s3 multipart uploads
@@ -29,6 +26,8 @@
 ### thoughts
 
 
+- optimiser/compacter?
+  - hard to see how it is not over- optimisation
 - Mixins don't need to extend recipe?
   - but how?
 - could logs AltNamespaceMixin be removed?
