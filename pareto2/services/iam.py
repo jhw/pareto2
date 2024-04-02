@@ -24,6 +24,10 @@ def is_list_of_dicts(items, matcherfn =  lambda x: isinstance(x, dict)):
 def listify(values):
     return [values] if not isinstance(values, list) else values
 
+"""
+Technically speaking "lambda.amazonaws.com" is a service whilst {"Service": "lambda.amazonaws.com"} is a principal; but it's convenient to call them both principal as sometimes principal needs to be overwritten with an expression in which the key is not "Service" (eg Cognito -> "Federated")
+"""
+
 class Role(Resource):
 
     def __init__(self,
@@ -46,7 +50,7 @@ class Role(Resource):
                 "Statement": [self.statement]
             }
         }
-    
+
     @property
     def statement(self):
         statement= {
@@ -58,8 +62,15 @@ class Role(Resource):
             statement["Condition"] = self.condition
         return statement
 
+    def __str__(self):
+        return "%s/%s/%s" % (self.action,
+                             self.condition,
+                             self.principal)
+    
 """
 It's good to have some default permissions specified as Cloudformation will fail with empty list
+
+Policy does not have an overridden __str__() method as the content is all contained in the statement only; the other stuff is all boilerplate or links
 """
     
 class Policy(Resource):
@@ -133,6 +144,6 @@ class PermissionsGroup(dict):
         dict.__init__(self, item)
 
     def __str__(self):
-        return "%s/%s/%s" % (",".join(sorted(self["Action"])),                             
+        return "%s/%s/%s" % (",".join(sorted(self["Action"])),
                              self["Effect"],
                              self["Resource"])

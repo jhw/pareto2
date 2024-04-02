@@ -1,7 +1,5 @@
 ### short [01-event-timers]
 
-- extend __str__ to include policy role, role, permissions
-
 - event timer recipe
 - event timer demo
 
@@ -92,6 +90,7 @@
 
 ### done
 
+- extend __str__ to include policy role, role, permissions
 - classes for permissions group and statement
 - replace self.append with self +=
 - see if event event input is required
