@@ -30,17 +30,19 @@ class Role(Resource):
                  namespace,
                  action = "sts:AssumeRole",
                  condition = None,
-                 principal = "lambda.amazonaws.com"):
+                 principal = "lambda.amazonaws.com",
+                 version = "2012-10-17"):
         self.namespace = namespace
         self.action = action
         self.condition = condition
         self.principal = principal
+        self.version = version
 
     @property
     def aws_properties(self):
         return {
             "AssumeRolePolicyDocument": {
-                "Version": "2012-10-17",
+                "Version": self.version,
                 "Statement": [self.statement]
             }
         }
@@ -66,9 +68,20 @@ class Policy(Resource):
                  namespace,
                  permissions = ["logs:CreateLogGroup",
                                 "logs:CreateLogStream",
-                                "logs:PutLogEvents"]):
+                                "logs:PutLogEvents"],
+                 version = "2012-10-17"):
         self.namespace = namespace
         self.permissions = permissions
+        self.version = version
+
+    @property
+    def statement(self):
+        if is_list_of_strings(self.permissions):            
+            return SimpleStatement(self.permissions)
+        elif is_list_of_dicts(self.permissions):
+            return ExtendedStatement(self.permissions)
+        else:
+            raise RuntimeError("IAM permissions format not recognised")
         
     @property
     def aws_properties(self):
@@ -78,20 +91,19 @@ class Policy(Resource):
             ],
             "PolicyName": {"Fn::Sub": f"{self.namespace}-policy-${{AWS::StackName}}"},
             "PolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": self.init_statement(self.permissions)
+                "Version": self.version,
+                "Statement": self.statement
             }
         }
 
-    def init_statement(self, permissions):
-        if is_list_of_strings(permissions):            
-            return self.simple_permissions(permissions)
-        elif is_list_of_dicts(permissions):
-            return self.expanded_permissions(permissions)
-        else:
-            raise RuntimeError("IAM permissions format not recognised")
+class Statement(list):
+
+    def __init__(self, items):
+        list.__init__(self, items)
     
-    def simple_permissions(self, permissions):
+class SimpleStatement(Statement):
+
+    def __init__(self, permissions):
         def group_permissions(permissions):
             groups = {}
             for permission in permissions:
@@ -99,14 +111,20 @@ class Policy(Resource):
                 groups.setdefault(service, [])
                 groups[service].append(permission)
             return list(groups.values())
-        return [{"Action": group,
-                 "Effect": "Allow",
-                 "Resource": "*"}
-                for group in group_permissions(permissions)]
+        super().__init__([PermissionsGroup({"Action": group,
+                                            "Effect": "Allow",
+                                            "Resource": "*"})
+                          for group in group_permissions(permissions)])
 
-    def expanded_permissions(self, items):
-        return [{"Action": listify(item["action"]),
-                 "Effect": "Allow",
-                 "Resource": item["resource"] if "resource" in item else "*"}
-                for item in items]
+class ExtendedStatement(Statement):
+
+    def __init__(self, items):
+        super().__init__([PermissionsGroup({"Action": listify(item["action"]),
+                                            "Effect": "Allow",
+                                            "Resource": item["resource"] if "resource" in item else "*"})
+                          for item in items])
     
+class PermissionsGroup(dict):
+    
+    def __init__(self, item):
+        dict.__init__(self, item)

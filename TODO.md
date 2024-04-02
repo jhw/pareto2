@@ -1,6 +1,6 @@
 ### short [01-event-timers]
 
-- classes for permissionsgroup and statement
+- string keys for role, policy, permission
 
 - event timer recipe
 - event timer demo
@@ -8,9 +8,6 @@
 - schedule formatter
 
 ### medium
-
-- to_string properties for any resource which might be duplicated
-  - Permission, Role, Policy
 
 - optimiser/compacter [notes]
 
@@ -95,6 +92,7 @@
 
 ### done
 
+- classes for permissions group and statement
 - replace self.append with self +=
 - see if event event input is required
 - subclass rule
