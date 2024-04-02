@@ -48,13 +48,13 @@ class TaskQueue(SlackAlertsMixin):
         self.init_slackops(namespace = alerts_namespace)
 
     def init_streaming(self, namespace, streaming_namespace):
-        self.append(QueueFunction(namespace = streaming_namespace,
-                                  queue_namespace = namespace))
-        self.append(Role(namespace = streaming_namespace))
-        self.append(QueuePolicy(namespace = streaming_namespace,
-                                queue_namespace = namespace))
-        self.append(L.SQSEventSourceMapping(namespace = streaming_namespace,
-                                            source_arn = {"Fn::GetAtt": [H(f"{namespace}-queue"), "Arn"]}))
+        self += [QueueFunction(namespace = streaming_namespace,
+                               queue_namespace = namespace),
+                 Role(namespace = streaming_namespace),
+                 QueuePolicy(namespace = streaming_namespace,
+                                queue_namespace = namespace),
+                 L.SQSEventSourceMapping(namespace = streaming_namespace,
+                                         source_arn = {"Fn::GetAtt": [H(f"{namespace}-queue"), "Arn"]})]
             
 if __name__ == "__main__":
     pass

@@ -33,32 +33,18 @@ class EventWorker(SlackAlertsMixin):
         self.init_slackops(namespace = alerts_namespace)
 
     def init_worker(self, namespace, worker):
-        self.append(self.init_function(namespace = namespace,
-                                       worker = worker))
-        self.append(L.EventInvokeConfig(namespace = namespace))
-        self += self.init_role_and_policy(namespace = namespace,
-                                          worker = worker)
-        self.init_event_rule(namespace = namespace,
-                             event = worker["event"])
-        
-    def init_function(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
-        return (fn(namespace = namespace,
-                   **self.function_kwargs(worker)))
-    
-    def init_role_and_policy(self, namespace, worker):
-        return  [
-            Role(namespace = namespace),
-            Policy(namespace = namespace,
-                   permissions = self.policy_permissions(worker))
-        ]
-
-    def init_event_rule(self, namespace, event):
-        self.append(PatternRule(namespace = namespace,
-                                pattern = event["pattern"]))
-        self.append(EventPermission(namespace = namespace,
-                                    function_namespace = namespace))
-                    
+        self += [fn(namespace = namespace,
+                    **self.function_kwargs(worker)),
+                 L.EventInvokeConfig(namespace = namespace),
+                 Role(namespace = namespace),
+                 Policy(namespace = namespace,
+                        permissions = self.policy_permissions(worker)),
+                 PatternRule(namespace = namespace,
+                             pattern = worker["event"]["pattern"]),
+                 EventPermission(namespace = namespace,
+                                 function_namespace = namespace)]
+        
 if __name__ == "__main__":
     pass
 

@@ -97,36 +97,21 @@ class WebApi(Recipe):
     def init_endpoint(self, api_namespace, endpoint):
         endpoint_namespace = self.endpoint_namespace(api_namespace, endpoint)
         routeclass = eval("%sRoute" % endpoint["auth"].capitalize())
-        self.append(routeclass(namespace = endpoint_namespace,
-                               api_namespace = api_namespace,
-                               endpoint = endpoint))
-        self.append(Integration(namespace = endpoint_namespace,
-                                api_namespace = api_namespace))
-        self.append(self.init_function(namespace = endpoint_namespace,
-                                       endpoint = endpoint))
-        self += self.init_role_and_policy(namespace = endpoint_namespace,
-                                          endpoint = endpoint)
-        self.append(self.init_lambda_permission(api_namespace = api_namespace,
-                                                endpoint_namespace = endpoint_namespace,
-                                                endpoint = endpoint))
-
-    def init_function(self, namespace, endpoint):
         fn = L.InlineFunction if "code" in endpoint else L.S3Function
-        return fn(namespace = namespace,
-                  **self.function_kwargs(endpoint))
-
-    def init_role_and_policy(self, namespace, endpoint):
-        return [
-            Role(namespace),
-            Policy(namespace = namespace,
-                   permissions = self.policy_permissions(endpoint))
-        ]
-    
-    def init_lambda_permission(self, api_namespace, endpoint_namespace, endpoint):
-        return LambdaPermission(namespace = api_namespace,
-                                function_namespace = endpoint_namespace,
-                                method = endpoint["method"],
-                                path = endpoint["path"])
+        self += [routeclass(namespace = endpoint_namespace,
+                            api_namespace = api_namespace,
+                            endpoint = endpoint),
+                 Integration(namespace = endpoint_namespace,
+                             api_namespace = api_namespace),
+                 fn(namespace = endpoint_namespace,
+                    **self.function_kwargs(endpoint)),
+                 Role(namespace = endpoint_namespace),
+                 Policy(namespace = endpoint_namespace,
+                        permissions = self.policy_permissions(endpoint)),
+                 LambdaPermission(namespace = api_namespace,
+                                  function_namespace = endpoint_namespace,
+                                  method = endpoint["method"],
+                                  path = endpoint["path"])]
 
 if __name__ == "__main__":
     pass

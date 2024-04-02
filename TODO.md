@@ -1,6 +1,6 @@
 ### short [01-event-timers]
 
-- replace self.append with self +=
+- classes for permissionsgroup and statement
 
 - event timer recipe
 - event timer demo
@@ -8,6 +8,11 @@
 - schedule formatter
 
 ### medium
+
+- to_string properties for any resource which might be duplicated
+  - Permission, Role, Policy
+
+- optimiser/compacter [notes]
 
 - sub- minute timer
 - lambda alarms 
@@ -90,6 +95,7 @@
 
 ### done
 
+- replace self.append with self +=
 - see if event event input is required
 - subclass rule
 - move event source mappings back into lambda

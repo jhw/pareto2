@@ -30,8 +30,8 @@ class SlackAlertsMixin(Recipe):
                                   log_levels,
                                   filter_patterns = {"warning": "%WARNING|Task timed out%",
                                                      "error": "ERROR"}):
-        self.append(LogGroup(namespace = function_namespace))
-        self.append(LogStream(namespace = function_namespace))
+        self += [LogGroup(namespace = function_namespace),
+                 LogStream(namespace = function_namespace)]
         for log_level in log_levels:
             filter_namespace = f"{function_namespace}-{log_level}"
             alert_namespace = f"{alerts_namespace}-{log_level}"
@@ -49,10 +49,10 @@ class SlackAlertsMixin(Recipe):
     def init_slackops(self, namespace):
         for log_level in self.log_levels:
             alert_namespace = f"{namespace}-{log_level}"
-            self.append(SlackFunction(namespace = alert_namespace,
-                                      log_level = log_level))
-            self.append(Role(namespace = alert_namespace))
-            self.append(Policy(namespace = alert_namespace))
-            self.append(L.Permission(namespace = alert_namespace,
-                                                 principal = "logs.amazonaws.com"))
+            self += [SlackFunction(namespace = alert_namespace,
+                                   log_level = log_level),
+                     Role(namespace = alert_namespace),
+                     Policy(namespace = alert_namespace),
+                     L.Permission(namespace = alert_namespace,
+                                  principal = "logs.amazonaws.com")]
 

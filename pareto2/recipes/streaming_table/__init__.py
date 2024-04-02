@@ -49,13 +49,13 @@ class StreamingTable(SlackAlertsMixin):
         self.init_slackops(namespace = alerts_namespace)
 
     def init_streaming(self, namespace, streaming_namespace):
-        self.append(StreamingFunction(namespace = streaming_namespace,
-                                      table_namespace = namespace))
-        self.append(Role(namespace = streaming_namespace))
-        self.append(StreamingPolicy(namespace = streaming_namespace,
-                                    table_namespace = namespace))
-        self.append(L.DynamoDBEventSourceMapping(namespace = streaming_namespace,
-                                                 source_arn = {"Fn::GetAtt": [H(f"{namespace}-table"), "StreamArn"]}))
+        self += [StreamingFunction(namespace = streaming_namespace,
+                                   table_namespace = namespace),
+                 Role(namespace = streaming_namespace),
+                 StreamingPolicy(namespace = streaming_namespace,
+                                 table_namespace = namespace),
+                 L.DynamoDBEventSourceMapping(namespace = streaming_namespace,
+                                              source_arn = {"Fn::GetAtt": [H(f"{namespace}-table"), "StreamArn"]})]
             
 if __name__ == "__main__":
     pass
