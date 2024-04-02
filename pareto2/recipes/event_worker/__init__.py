@@ -3,6 +3,8 @@ from pareto2.services import hungarorise as H
 from pareto2.services.events import *
 from pareto2.services.iam import *
 
+from pareto2.recipes import *
+
 from pareto2.recipes.mixins.slackops import SlackAlertsMixin
 
 import importlib
@@ -35,11 +37,11 @@ class EventWorker(SlackAlertsMixin):
     def init_worker(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
         self += [fn(namespace = namespace,
-                    **self.function_kwargs(worker)),
+                    **function_kwargs(worker)),
                  L.EventInvokeConfig(namespace = namespace),
                  Role(namespace = namespace),
                  Policy(namespace = namespace,
-                        permissions = self.policy_permissions(worker)),
+                        permissions = policy_permissions(worker)),
                  PatternRule(namespace = namespace,
                              pattern = worker["event"]["pattern"]),
                  EventPermission(namespace = namespace,

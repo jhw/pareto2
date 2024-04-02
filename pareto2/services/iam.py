@@ -100,7 +100,10 @@ class Statement(list):
 
     def __init__(self, items):
         list.__init__(self, items)
-    
+
+    def __str__(self):
+        return "|".join(sorted([str(item) for item in self]))
+        
 class SimpleStatement(Statement):
 
     def __init__(self, permissions):
@@ -128,3 +131,8 @@ class PermissionsGroup(dict):
     
     def __init__(self, item):
         dict.__init__(self, item)
+
+    def __str__(self):
+        return "%s/%s/%s" % (",".join(sorted(self["Action"])),                             
+                             self["Effect"],
+                             self["Resource"])

@@ -3,7 +3,7 @@ from pareto2.services import hungarorise as H
 from pareto2.services.iam import *
 from pareto2.services.logs import *
 
-from pareto2.recipes import Recipe
+from pareto2.recipes import *
 
 import importlib
 

@@ -5,7 +5,7 @@ from pareto2.services.cognito import *
 from pareto2.services.iam import *
 from pareto2.services.route53 import *
 
-from pareto2.recipes import Recipe
+from pareto2.recipes import *
 
 import importlib, re
 
@@ -104,10 +104,10 @@ class WebApi(Recipe):
                  Integration(namespace = endpoint_namespace,
                              api_namespace = api_namespace),
                  fn(namespace = endpoint_namespace,
-                    **self.function_kwargs(endpoint)),
+                    **function_kwargs(endpoint)),
                  Role(namespace = endpoint_namespace),
                  Policy(namespace = endpoint_namespace,
-                        permissions = self.policy_permissions(endpoint)),
+                        permissions = policy_permissions(endpoint)),
                  LambdaPermission(namespace = api_namespace,
                                   function_namespace = endpoint_namespace,
                                   method = endpoint["method"],
