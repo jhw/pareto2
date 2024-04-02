@@ -1,24 +1,25 @@
 ### short [01-event-timers]
 
+- replace self.append with self +=
+
 - event timer recipe
 - event timer demo
 
-- add switch for super/sub minute
-- inline code for sub routines
+- schedule formatter
 
 ### medium
 
+- sub- minute timer
+- lambda alarms 
+- step functions
 - binding script
 
 ### long
 
-- lambda alarms 
 - federated auth
 - react website demo
 - cross- account deployments
-- step functions
 - s3 multipart uploads
-
 - secrets
 - passwordless auth
 - tracing and xrays
@@ -89,6 +90,7 @@
 
 ### done
 
+- see if event event input is required
 - subclass rule
 - move event source mappings back into lambda
 - add batch size to sqs event source mappings

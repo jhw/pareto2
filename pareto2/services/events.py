@@ -42,7 +42,7 @@ class PatternRule(Rule):
 
 class TimerRule(Rule):
 
-    def __init__(self, namespace, schedule, body = None):
+    def __init__(self, namespace, schedule, body = {}):
         super().__init__(namespace)
         self.schedule = schedule
         self.body = body
@@ -50,8 +50,7 @@ class TimerRule(Rule):
     @property    
     def target(self):
         target = super().target
-        if self.body:
-            target["Input"] = json.dumps(self.body)
+        target["Input"] = json.dumps(self.body)
         return target
         
     @property    
