@@ -1,8 +1,17 @@
 ### short [01-alarms]
 
-- sns topic
-- sns subscription
-- logs alarm
+- add logs alarm with default parameters 
+
+- add new alarms mixin 
+  - initialise topic, subscription, permission
+  - hook function to define cloudwatch alarm
+  - see slackops
+
+- add alarm to event worker 
+- add alarm to event timer 
+- add alarm to web api 
+
+- some kind of alarm demo
 
 ### medium
 
@@ -87,6 +96,8 @@
 
 ### done
 
+- sns subscription
+- sns topic
 - add hook() to slack mixins
 - notes regarding use of alarms for anything using inline lambda
 - event timer recipe

@@ -1,7 +1,6 @@
 from pareto2.services import hungarorise as H
 from pareto2.services import Resource
 
-
 """
 - subscription filter needs separate function_namespace, alert_namespace arguments as its root namespace is a combination of both (since a single function might need multiple subscription filters)
 - function_namespace is effectively the source (watches the log group, named after the function)
@@ -63,3 +62,22 @@ class LogStream(Resource):
     @property
     def depends(self):
         return [H(f"{self.namespace}-log-group")]
+
+"""
+ CloudWatchAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Invoke Alarm when target Lambda is called more than 5 times in 1 minute"
+      Namespace: "AWS/Lambda"
+      MetricName: "Invocations"
+      Dimensions:
+        - Name: "FunctionName"
+          Value: !Ref TargetLambdaFunction
+      Statistic: "Sum"
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 5
+      ComparisonOperator: "GreaterThanThreshold"
+      AlarmActions:
+        - Ref: AlarmTopic
+"""
