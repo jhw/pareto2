@@ -29,10 +29,10 @@ class EventTimer(SlackAlertsMixin):
         super().__init__()
         self.init_timer(namespace = namespace,
                          timer = timer)
-        self.init_subscription_filters(function_namespace = namespace,
+        self.init_slackops_hooks(function_namespace = namespace,
                                        alerts_namespace = alerts_namespace,
                                        log_levels = log_levels)
-        self.init_slackops(namespace = alerts_namespace)
+        self.init_slackops_resources(namespace = alerts_namespace)
 
     def init_timer(self, namespace, timer):
         fn = L.InlineFunction if "code" in timer else L.S3Function

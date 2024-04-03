@@ -1,6 +1,5 @@
 ### short [01-alarms]
 
-- add hook() to slack mixins
 - sns topic
 - sns subscription
 - logs alarm
@@ -88,6 +87,7 @@
 
 ### done
 
+- add hook() to slack mixins
 - notes regarding use of alarms for anything using inline lambda
 - event timer recipe
 - event timer demo

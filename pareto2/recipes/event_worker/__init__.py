@@ -29,10 +29,10 @@ class EventWorker(SlackAlertsMixin):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
-        self.init_subscription_filters(function_namespace = namespace,
+        self.init_slackops_hooks(function_namespace = namespace,
                                        alerts_namespace = alerts_namespace,
                                        log_levels = log_levels)
-        self.init_slackops(namespace = alerts_namespace)
+        self.init_slackops_resources(namespace = alerts_namespace)
 
     def init_worker(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
