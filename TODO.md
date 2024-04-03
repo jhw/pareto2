@@ -1,11 +1,4 @@
-### short [01-event-timers]
-
-- schedule formatter
-- switch between macro and micro timers
-- micro to push to inline function (1)
-- inline function (1) to push to queue
-- queue bound to inline function (2)
-- inline function (2) to lambda.invoke target function
+### short
 
 ### medium
 

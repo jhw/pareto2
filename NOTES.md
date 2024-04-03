@@ -1,4 +1,16 @@
-### dsl
+### micro timer 03/04/24
+
+- subsecond timer in addition to usual down-to-one-minute timer?
+- think is you can easily construct this from event timer and task queue
+- just have timer push items to queue, which are then pushed to eventbridge
+- only extra bit of glue you need is lambda to do the pushing
+- any "baked in" subsecond timer is just going to repeat this pattern
+- should task queue then be subclassed within recipes?
+- should subsecond tasks be executed via lambda.invoke, or via eventbridge?
+- neither of these seem like profitable or sensible questions to ask
+- therefore leave a subsecond timer out of the PaaS API for the minute, but allow users to construct one from the core components
+
+### dsl 02/04/24
 
 - load bucket, table, api, website, queue, pip builder config from root
   - can't have api and website
