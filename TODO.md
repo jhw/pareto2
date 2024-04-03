@@ -1,8 +1,12 @@
-### short
+### short [01-alarms]
+
+- add hook() to slack mixins
+- sns topic
+- sns subscription
+- logs alarm
 
 ### medium
 
-- lambda alarms 
 - binding script
 
 ### long
@@ -84,6 +88,7 @@
 
 ### done
 
+- notes regarding use of alarms for anything using inline lambda
 - event timer recipe
 - event timer demo
 - extend __str__ to include policy role, role, permissions
