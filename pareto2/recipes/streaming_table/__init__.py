@@ -11,6 +11,12 @@ import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
 
+"""
+- makes sense to push errors to Slack in case inline function fails
+- doesn't make sense to push warnings as inline code doesn't generate any
+- doesn't make sent to have an alarm (at least at the function) as the lambda is "intermediate" and if it is firing excessively, it is likely to be triggering a leaf lambda at the same rate (where an alarm should be implemented)
+"""
+
 class StreamingFunction(L.InlineFunction):
     
     def __init__(self, namespace, table_namespace):
@@ -35,12 +41,6 @@ class StreamingPolicy(Policy):
                                                     "logs:PutLogEvents"]}])
         
 class StreamingTable(SlackAlertsMixin):    
-
-    """
-    - makes sense to push errors to Slack in case inline function fails
-    - doesn't make sense to push warnings as inline code doesn't generate any
-    - doesn't make sent to have an alarm (at least at the function) as the lambda is "intermediate" and if it is firing excessively, it is likely to be triggering a leaf lambda at the same rate (where an alarm should be implemented)
-    """
     
     def __init__(self,
                  namespace,
