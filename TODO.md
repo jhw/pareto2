@@ -1,10 +1,7 @@
 ### short [01-alarms]
 
-- check what permissioning is required
-
 - initialise alarm hook
   - Alarm
-  - Subscription
 
 - add alarm to event worker 
 - add alarm to event timer 
@@ -95,6 +92,8 @@
 
 ### done
 
+- Subscription
+- check what permissioning is required
 - add logs alarm with default parameters 
 - sns subscription
 - sns topic

@@ -23,31 +23,19 @@ class AlarmMixin(Recipe):
     def __init__(self):
         super().__init__()
 
-    """
-        self += [LogGroup(namespace = function_namespace),
-                 LogStream(namespace = function_namespace)]
-        for log_level in log_levels:
-            filter_namespace = f"{function_namespace}-{log_level}"
-            alert_namespace = f"{alerts_namespace}-{log_level}"
-            self.append(SubscriptionFilter(namespace = filter_namespace,
-                                           function_namespace = function_namespace,
-                                           alert_namespace = alert_namespace,
-                                           filter_pattern = filter_patterns[log_level]))
-    """
-        
-    def init_alarm_hooks(self,
-                         function_namespace,
-                         alerts_namespace):
+    def init_alarm_hook(self):
         pass
         
     """
     - namespace is alarm_namespace
     """
-    
+
     def init_alarm_resources(self, namespace):
         self += [Topic(namespace = namespace),
+                 Subscription(namespace = namespace),
                  AlarmFunction(namespace = namespace),
                  Role(namespace = namespace),
                  Policy(namespace = namespace),
-                 L.Permission(namespace =namespace,
-                              principal = "logs.amazonaws.com")]
+                 L.Permission(namespace = namespace,
+                              source_arn = {"Ref": H(f"{namespace}-topic")}, # NB returns an ARN
+                              principal = "sns.amazonaws.com")]
