@@ -51,10 +51,10 @@ class StreamingTable(SlackMixin):
         self.append(StreamingTableResource(namespace = namespace))
         self.init_streaming(namespace = namespace,
                             streaming_namespace = streaming_namespace)
-        self.init_slackops_hooks(function_namespace = streaming_namespace,
+        self.init_slack_hooks(function_namespace = streaming_namespace,
                                        alerts_namespace = alerts_namespace,
                                        log_levels = log_levels)
-        self.init_slackops_resources(namespace = alerts_namespace)
+        self.init_slack_resources(namespace = alerts_namespace)
 
     def init_streaming(self, namespace, streaming_namespace):
         self += [StreamingFunction(namespace = streaming_namespace,

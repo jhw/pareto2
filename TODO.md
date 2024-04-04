@@ -1,15 +1,13 @@
 ### short [01-alarms]
 
-- add new alarms mixin 
-  - initialise topic, subscription, permission
-  - hook function to define cloudwatch alarm
-  - see slackops
+- initialise alarm resources
+- initialise alarm hook
 
 - add alarm to event worker 
 - add alarm to event timer 
 - add alarm to web api 
 
-- some kind of alarm demo
+- alarm gist demo
 
 ### medium
 
