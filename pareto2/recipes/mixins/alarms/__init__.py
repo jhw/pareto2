@@ -10,6 +10,8 @@ import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
 
+AlarmNamespace = "alarm"
+
 class AlarmFunction(L.InlineFunction):
 
     def __init__(self, namespace):
@@ -23,24 +25,16 @@ class AlarmMixin(Recipe):
     def __init__(self):
         super().__init__()
 
-    """
-    - namespace is alarm_namespace
-    """
-        
     def init_alarm_hook(self,
                         namespace,
-                        alarm_namespace,
-                        alarm):
+                        alarm,
+                        alarm_namespace = AlarmNamespace):        
         self += [InvocationAlarm(namespace = namespace,
                                  alarm_namespace = alarm_namespace,
                                  period = alarm["period"],
                                  threshold = alarm["threshold"])]
         
-    """
-    - namespace is alarm_namespace
-    """
-
-    def init_alarm_resources(self, namespace):
+    def init_alarm_resources(self, namespace = AlarmNamespace):
         self += [Topic(namespace = namespace),
                  Subscription(namespace = namespace),
                  AlarmFunction(namespace = namespace),

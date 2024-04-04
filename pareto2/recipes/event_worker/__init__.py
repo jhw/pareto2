@@ -25,17 +25,15 @@ class EventWorker(AlarmMixin, SlackMixin):
     def __init__(self,
                  namespace,
                  worker,
-                 alarm_namespace = "alarm",
                  log_levels = ["warning", "error"]):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
         self.init_alarm_hook(namespace = namespace,
-                             alarm_namespace = alarm_namespace,
                              alarm = worker["alarm"])
         self.init_slack_hooks(function_namespace = namespace,
                               log_levels = log_levels)
-        self.init_alarm_resources(namespace = alarm_namespace)
+        self.init_alarm_resources()
         self.init_slack_resources()
 
     def init_worker(self, namespace, worker):

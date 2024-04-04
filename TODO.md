@@ -1,6 +1,5 @@
 ### short [01-alarms]
 
-- alarm global namespace
 - remove streaming ref from task_queue
 - add alarm to web api 
 - roles mixin
@@ -92,6 +91,7 @@
 
 ### done
 
+- alarm global namespace
 - alerts global namespace
 - subclass Alarm as InvocationAlarm
 - replace self.namespace = namespace with super().__init__(namespace)
