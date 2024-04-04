@@ -31,10 +31,10 @@ class AlarmMixin(Recipe):
                         namespace,
                         alarm_namespace,
                         alarm):
-        self += [Alarm(namespace = namespace,
-                       alarm_namespace = alarm_namespace,
-                       period = alarm["period"],
-                       threshold = alarm["threshold"])]
+        self += [InvocationAlarm(namespace = namespace,
+                                 alarm_namespace = alarm_namespace,
+                                 period = alarm["period"],
+                                 threshold = alarm["threshold"])]
         
     """
     - namespace is alarm_namespace

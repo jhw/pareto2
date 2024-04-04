@@ -6,10 +6,6 @@ class Topic(Resource):
     def __init__(self, namespace):
         super().__init__(namespace)
 
-    @property
-    def visible(self):
-        return True
-
 class Subscription(Resource):
 
     def __init__(self, namespace):
