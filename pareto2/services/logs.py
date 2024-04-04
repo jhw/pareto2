@@ -29,6 +29,10 @@ class SubscriptionFilter(Resource):
         return [H(f"{self.function_namespace}-log-stream"),
                 H(f"{self.alert_namespace}-permission")]
 
+"""
+Unlike SubscriptionFilter, Alarm - a resource which is very similar in nature - doesn't need a separate function_namespace field as you don't need to sub- namespace it with warning|error subscripts
+"""
+    
 class Alarm(Resource):
 
     def __init__(self,

@@ -1,3 +1,16 @@
+### optimiser 04/04/24
+
+- so you could have something which looked for very specific patterns and tried to optimise them, before a recipe is rendered to a template
+- a good example would be Role
+- they are almost always the same, save for some Cognito specific stuff
+- filter roles from resources
+- group logical ids by type where key is JSON.dumps(resource["Properties"], sort_keys=True)
+- ignore any unique keys
+- generate new optimiser roles from first item in each non- unique key set
+- create map of old to new references
+- iterate through structure and replace old with new
+- remove old roles and add new optimised ones
+
 ### micro timer 03/04/24
 
 - subsecond timer in addition to usual down-to-one-minute timer?

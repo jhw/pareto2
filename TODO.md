@@ -1,12 +1,12 @@
 ### short [01-alarms]
 
-- ability to parameterise alarm from top level api
+- subclass Alarm as InvocationAlarm
+- replace self.namespace = namespace with super().__init__(namespace)
 - add alarm to web api 
 - alarm gist demo
+- optimiser demo
 
 ### medium
-
-- optimiser [notes]
 
 - binding script
 
@@ -90,6 +90,7 @@
 
 ### done
 
+- ability to parameterise alarm from top level api
 - alarm needs to be created in the function namespace
 - add alarm to event worker 
 

@@ -29,9 +29,12 @@ class AlarmMixin(Recipe):
         
     def init_alarm_hook(self,
                         namespace,
-                        alarm_namespace):
+                        alarm_namespace,
+                        alarm):
         self += [Alarm(namespace = namespace,
-                       alarm_namespace = alarm_namespace)]
+                       alarm_namespace = alarm_namespace,
+                       period = alarm["period"],
+                       threshold = alarm["threshold"])]
         
     """
     - namespace is alarm_namespace

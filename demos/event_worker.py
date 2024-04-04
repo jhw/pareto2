@@ -8,6 +8,9 @@ Worker = yaml.safe_load("""
       detail:
         hello:
          - world
+  alarm:
+    period: 60
+    threshold: 10
 """)
 
 CodeBody="""
