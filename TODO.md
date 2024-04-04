@@ -1,7 +1,5 @@
 ### short [01-alarms]
 
-- add logs alarm with default parameters 
-
 - add new alarms mixin 
   - initialise topic, subscription, permission
   - hook function to define cloudwatch alarm
@@ -96,6 +94,7 @@
 
 ### done
 
+- add logs alarm with default parameters 
 - sns subscription
 - sns topic
 - add hook() to slack mixins

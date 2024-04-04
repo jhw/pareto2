@@ -29,6 +29,49 @@ class SubscriptionFilter(Resource):
         return [H(f"{self.function_namespace}-log-stream"),
                 H(f"{self.alert_namespace}-permission")]
 
+class Alarm(Resource):
+
+    def __init__(self,
+                 namespace,
+                 function_namespace,
+                 cloudwatch_namespace = "AWS/Lambda",
+                 metric_name = "Invocations",
+                 statistic = "Sum",
+                 period = 60,
+                 evaluation_periods = 1,
+                 threshold = 10,
+                 comparision_operator = "GreaterThanThreshold"):
+        self.namespace = namespace
+        self.function_namespace = function_namespace
+        self.cloudwatch_namespace = cloudwatch_namespace
+        self.metric_name = metric_name
+        self.statistic = statistic
+        self.period = period
+        self.evaluation_periods = evaluation_periods
+        self.threshold = threshold
+        self.comparison_operator = comparison_operator
+
+    @property
+    def aws_properties(self):
+        return {
+            "Namespace": self.cloudwatch_namespace,
+            "MetricName": self.metric_name,
+            "Dimensions": [
+                {
+                    "Name": "FunctionName",
+                    "Value": {"Ref": H(f"{self.function_namespace}-function")}
+                }
+            ],
+            "Statistic": self.statistic,
+            "Period": self.period,
+            "EvaluationPeriods": self.evaluation_periods,
+            "Threshold": self.threshold,
+            "ComparisonOperator": self.comparison_operator,
+            "AlarmActions": [
+                {"Ref": H(f"{self.namespace}-topic")}
+            ]
+        }
+    
 """
 - LogGroup/LogStream namespace is function namespace
 """
@@ -63,21 +106,3 @@ class LogStream(Resource):
     def depends(self):
         return [H(f"{self.namespace}-log-group")]
 
-"""
- CloudWatchAlarm:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      AlarmDescription: "Invoke Alarm when target Lambda is called more than 5 times in 1 minute"
-      Namespace: "AWS/Lambda"
-      MetricName: "Invocations"
-      Dimensions:
-        - Name: "FunctionName"
-          Value: !Ref TargetLambdaFunction
-      Statistic: "Sum"
-      Period: 60
-      EvaluationPeriods: 1
-      Threshold: 5
-      ComparisonOperator: "GreaterThanThreshold"
-      AlarmActions:
-        - Ref: AlarmTopic
-"""
