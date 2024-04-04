@@ -13,7 +13,7 @@ from pareto2.services import Resource
 class RecordSet(Resource):
     
     def __init__(self, namespace, distribution):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.distribution = distribution
 
     @property

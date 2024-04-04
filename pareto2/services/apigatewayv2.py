@@ -7,7 +7,7 @@ LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/func
 class Api(Resource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     """
     - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-api.html#cfn-apigatewayv2-api-name
@@ -53,7 +53,7 @@ class Api(Resource):
 class Stage(Resource):
 
     def __init__(self, namespace, stage_name = "prod"):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.stage_name = stage_name
 
     @property
@@ -71,7 +71,7 @@ class Stage(Resource):
 class Route(Resource):
     
     def __init__(self, namespace, api_namespace, endpoint):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.api_namespace = api_namespace
         self.endpoint = endpoint
 
@@ -89,7 +89,7 @@ class Route(Resource):
 class Integration(Resource):
     
     def __init__(self, namespace, api_namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.api_namespace = api_namespace
 
     @property
@@ -106,7 +106,7 @@ class Integration(Resource):
 class Authorizer(Resource):
     
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     """
     - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-authorizer.html#cfn-apigatewayv2-authorizer-name
@@ -132,7 +132,7 @@ class Authorizer(Resource):
 class DomainName(Resource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):
@@ -150,7 +150,7 @@ class DomainName(Resource):
 class ApiMapping(Resource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):

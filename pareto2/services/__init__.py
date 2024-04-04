@@ -25,6 +25,9 @@ AWSProxyClassFilterFn = lambda x: len(x) == 4 and x[1] == "services"
 
 class Resource:
 
+    def __init__(self, namespace):
+        self.namespace = namespace
+    
     @property
     def class_names(self):
         return [str(cls).split("'")[1] for cls in reversed(self.__class__.__mro__)]

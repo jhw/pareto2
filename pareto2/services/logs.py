@@ -10,7 +10,7 @@ from pareto2.services import Resource
 class SubscriptionFilter(Resource):
 
     def __init__(self, namespace, function_namespace, alert_namespace, filter_pattern):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.function_namespace = function_namespace
         self.alert_namespace = alert_namespace
         self.filter_pattern = filter_pattern
@@ -45,7 +45,7 @@ class Alarm(Resource):
                  evaluation_periods = 1,
                  threshold = 10,
                  comparison_operator = "GreaterThanThreshold"):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.alarm_namespace = alarm_namespace
         self.cloudwatch_namespace = cloudwatch_namespace
         self.metric_name = metric_name
@@ -83,7 +83,7 @@ class Alarm(Resource):
 class LogGroup(Resource):
 
     def __init__(self, namespace, retention_days = 3):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.retention_days = retention_days
 
     @property
@@ -97,7 +97,7 @@ class LogGroup(Resource):
 class LogStream(Resource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):

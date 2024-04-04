@@ -13,7 +13,7 @@ class Function(Resource):
                  runtime = "python3.10",
                  timeout = 5,
                  variables = {}):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.code = code
         self.handler = handler
         self.layers = layers
@@ -60,7 +60,7 @@ class S3Function(Function):
 class EventInvokeConfig(Resource):
 
     def __init__(self, namespace, retries = 0):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.retries = retries
     
     @property
@@ -74,7 +74,7 @@ class EventInvokeConfig(Resource):
 class Permission(Resource):
 
     def __init__(self, namespace, principal, source_arn = None):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.principal = principal
         self.source_arn = source_arn
     
@@ -94,7 +94,7 @@ class EventSourceMapping(Resource):
     def __init__(self,
                  namespace,
                  source_arn):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.source_arn = source_arn
                 
     @property

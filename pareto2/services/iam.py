@@ -36,7 +36,7 @@ class Role(Resource):
                  condition = None,
                  principal = "lambda.amazonaws.com",
                  version = "2012-10-17"):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.action = action
         self.condition = condition
         self.principal = principal
@@ -74,7 +74,7 @@ class Policy(Resource):
                                 "logs:CreateLogStream",
                                 "logs:PutLogEvents"],
                  version = "2012-10-17"):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.permissions = permissions
         self.version = version
 

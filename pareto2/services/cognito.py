@@ -6,7 +6,7 @@ from pareto2.services.iam import *
 class UserPool(Resource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def visible(self):
@@ -43,7 +43,7 @@ class SimpleEmailUserPool(UserPool):
 class UserPoolClient(Resource):
     
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):
@@ -72,7 +72,7 @@ Could set AllowUnauthenticatedIdentities to False, but don't know precisely what
 class IdentityPool(Resource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):
@@ -132,7 +132,7 @@ class IdentityPoolUnauthorizedPolicy(Policy):
 class IdentityPoolRoleAttachment(Resource):
     
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):

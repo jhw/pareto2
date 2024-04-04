@@ -1,10 +1,10 @@
 ### short [01-alarms]
 
 - subclass Alarm as InvocationAlarm
-- replace self.namespace = namespace with super().__init__(namespace)
+- globals for slack, alarm namespaces
 - add alarm to web api 
+- roles mixin
 - alarm gist demo
-- optimiser demo
 
 ### medium
 
@@ -90,6 +90,7 @@
 
 ### done
 
+- replace self.namespace = namespace with super().__init__(namespace)
 - ability to parameterise alarm from top level api
 - alarm needs to be created in the function namespace
 - add alarm to event worker 

@@ -6,7 +6,7 @@ from pareto2.services import Resource as AWSResource # distinguish between aws.R
 class RestApi(AWSResource):
 
     def __init__(self, namespace, binary_media_types = []):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.binary_media_types = binary_media_types
 
     """
@@ -36,7 +36,7 @@ class RestApi(AWSResource):
 class Deployment(AWSResource):
 
     def __init__(self, namespace, methods):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.methods = methods
 
     @property
@@ -52,7 +52,7 @@ class Deployment(AWSResource):
 class Stage(AWSResource):
 
     def __init__(self, namespace, stage_name = "prod"):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.stage_name = stage_name
 
     @property
@@ -66,7 +66,7 @@ class Stage(AWSResource):
 class Resource(AWSResource):
 
     def __init__(self, namespace, path):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.path = path
 
     @property
@@ -80,12 +80,12 @@ class Resource(AWSResource):
 class Method(AWSResource):
     
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
 class DomainName(AWSResource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):
@@ -97,7 +97,7 @@ class DomainName(AWSResource):
 class BasePathMapping(AWSResource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def aws_properties(self):

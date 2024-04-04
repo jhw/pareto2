@@ -10,7 +10,7 @@ class Table(Resource):
                  indexes = [],
                  billing_mode = "PAY_PER_REQUEST",
                  stream_type = None):
-        self.namespace = namespace
+        super().__init__(namespace)
         self.attributes = attributes
         self.schema = schema
         self.indexes = indexes

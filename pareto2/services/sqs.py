@@ -4,7 +4,7 @@ from pareto2.services import Resource
 class Queue(Resource):
 
     def __init__(self, namespace):
-        self.namespace = namespace
+        super().__init__(namespace)
 
     @property
     def visible(self):
