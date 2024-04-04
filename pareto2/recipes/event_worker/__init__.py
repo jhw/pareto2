@@ -5,6 +5,7 @@ from pareto2.services.iam import *
 
 from pareto2.recipes import *
 
+from pareto2.recipes.mixins.alarms import AlarmMixin
 from pareto2.recipes.mixins.slackops import SlackMixin
 
 import importlib
@@ -19,19 +20,23 @@ class EventPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
-class EventWorker(SlackMixin):    
+class EventWorker(AlarmMixin, SlackMixin):    
 
     def __init__(self,
                  namespace,
                  worker,
+                 alarm_namespace = "alarm",
                  alerts_namespace = "slack",
                  log_levels = ["warning", "error"]):
         super().__init__()
         self.init_worker(namespace = namespace,
                          worker = worker)
+        self.init_alarm_hook(function_namespace = namespace,
+                             namespace = alarm_namespace)
         self.init_slack_hooks(function_namespace = namespace,
-                                       alerts_namespace = alerts_namespace,
-                                       log_levels = log_levels)
+                              alerts_namespace = alerts_namespace,
+                              log_levels = log_levels)
+        self.init_alarm_resources(namespace = alarm_namespace)
         self.init_slack_resources(namespace = alerts_namespace)
 
     def init_worker(self, namespace, worker):

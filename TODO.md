@@ -1,9 +1,8 @@
 ### short [01-alarms]
 
-- add alarm to event worker 
-- add alarm to event timer 
+- alarm needs to be created in the function namespace
+- ability to parameterise alarm from top level api
 - add alarm to web api 
-
 - alarm gist demo
 
 ### medium
@@ -25,7 +24,8 @@
 
 ### thoughts
 
-
+- add alarm to event timer?
+  - no points as is on a defined schedule
 - optimiser/compacter?
   - hard to see how it is not over- optimisation
 - Mixins don't need to extend recipe?
@@ -88,6 +88,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- add alarm to event worker 
 
 - initialise alarm hook
   - Alarm

@@ -12,7 +12,7 @@ L = importlib.import_module("pareto2.services.lambda")
 
 class AlarmFunction(L.InlineFunction):
 
-    def __init__(self, namespace, log_level):
+    def __init__(self, namespace):
         with open("/".join(__file__.split("/")[:-1]+["inline_code.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,

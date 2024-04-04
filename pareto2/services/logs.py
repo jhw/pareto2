@@ -40,7 +40,7 @@ class Alarm(Resource):
                  period = 60,
                  evaluation_periods = 1,
                  threshold = 10,
-                 comparision_operator = "GreaterThanThreshold"):
+                 comparison_operator = "GreaterThanThreshold"):
         self.namespace = namespace
         self.function_namespace = function_namespace
         self.cloudwatch_namespace = cloudwatch_namespace

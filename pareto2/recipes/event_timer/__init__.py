@@ -5,6 +5,10 @@ from pareto2.services.iam import *
 
 from pareto2.recipes import *
 
+"""
+- not a lot of point adding Alarm mixin here as event_timer is on a defined schedule
+"""
+
 from pareto2.recipes.mixins.slackops import SlackMixin
 
 import importlib
