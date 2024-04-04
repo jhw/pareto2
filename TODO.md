@@ -1,5 +1,9 @@
 ### short [01-alarms]
 
+- alarm needs to push directly to slack
+  - because it doesn't have any subscription filters attached
+  - and easier to push directly than add them
+
 - add alarm to web api 
 - roles mixin
 - alarm gist demo
