@@ -28,15 +28,13 @@ class EventTimer(SlackMixin):
     def __init__(self,
                  namespace,
                  timer,
-                 alerts_namespace = "slack",
                  log_levels = ["warning", "error"]):
         super().__init__()
         self.init_timer(namespace = namespace,
                          timer = timer)
         self.init_slack_hooks(function_namespace = namespace,
-                                       alerts_namespace = alerts_namespace,
                                        log_levels = log_levels)
-        self.init_slack_resources(namespace = alerts_namespace)
+        self.init_slack_resources()
 
     def init_timer(self, namespace, timer):
         fn = L.InlineFunction if "code" in timer else L.S3Function

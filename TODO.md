@@ -1,6 +1,7 @@
 ### short [01-alarms]
 
-- globals for slack, alarm namespaces
+- alarm global namespace
+- remove streaming ref from task_queue
 - add alarm to web api 
 - roles mixin
 - alarm gist demo
@@ -8,6 +9,8 @@
 ### medium
 
 - binding script
+
+- re- test gists
 
 ### long
 
@@ -89,6 +92,7 @@
 
 ### done
 
+- alerts global namespace
 - subclass Alarm as InvocationAlarm
 - replace self.namespace = namespace with super().__init__(namespace)
 - ability to parameterise alarm from top level api

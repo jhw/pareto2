@@ -44,7 +44,6 @@ class StreamingTable(SlackMixin):
     
     def __init__(self,
                  namespace,
-                 alerts_namespace = "slack",
                  log_levels = ["error"]):
         super().__init__()
         streaming_namespace = f"{namespace}-streaming-table"        
@@ -52,9 +51,8 @@ class StreamingTable(SlackMixin):
         self.init_streaming(namespace = namespace,
                             streaming_namespace = streaming_namespace)
         self.init_slack_hooks(function_namespace = streaming_namespace,
-                                       alerts_namespace = alerts_namespace,
-                                       log_levels = log_levels)
-        self.init_slack_resources(namespace = alerts_namespace)
+                              log_levels = log_levels)
+        self.init_slack_resources()
 
     def init_streaming(self, namespace, streaming_namespace):
         self += [StreamingFunction(namespace = streaming_namespace,

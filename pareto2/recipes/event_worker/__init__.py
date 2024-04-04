@@ -26,7 +26,6 @@ class EventWorker(AlarmMixin, SlackMixin):
                  namespace,
                  worker,
                  alarm_namespace = "alarm",
-                 alerts_namespace = "slack",
                  log_levels = ["warning", "error"]):
         super().__init__()
         self.init_worker(namespace = namespace,
@@ -35,10 +34,9 @@ class EventWorker(AlarmMixin, SlackMixin):
                              alarm_namespace = alarm_namespace,
                              alarm = worker["alarm"])
         self.init_slack_hooks(function_namespace = namespace,
-                              alerts_namespace = alerts_namespace,
                               log_levels = log_levels)
         self.init_alarm_resources(namespace = alarm_namespace)
-        self.init_slack_resources(namespace = alerts_namespace)
+        self.init_slack_resources()
 
     def init_worker(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
