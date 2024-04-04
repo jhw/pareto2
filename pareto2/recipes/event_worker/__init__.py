@@ -5,7 +5,7 @@ from pareto2.services.iam import *
 
 from pareto2.recipes import *
 
-from pareto2.recipes.mixins.slackops import SlackopsMixin
+from pareto2.recipes.mixins.slackops import SlackMixin
 
 import importlib
 
@@ -19,7 +19,7 @@ class EventPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
-class EventWorker(SlackopsMixin):    
+class EventWorker(SlackMixin):    
 
     def __init__(self,
                  namespace,

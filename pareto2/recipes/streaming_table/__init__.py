@@ -5,7 +5,7 @@ from pareto2.services.iam import *
 
 from pareto2.recipes import *
 
-from pareto2.recipes.mixins.slackops import SlackopsMixin
+from pareto2.recipes.mixins.slackops import SlackMixin
 
 import importlib
 
@@ -40,7 +40,7 @@ class StreamingPolicy(Policy):
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
         
-class StreamingTable(SlackopsMixin):    
+class StreamingTable(SlackMixin):    
     
     def __init__(self,
                  namespace,

@@ -9,7 +9,7 @@ import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
 
-class SlackopsFunction(L.InlineFunction):
+class SlackFunction(L.InlineFunction):
 
     def __init__(self, namespace, log_level):
         with open("/".join(__file__.split("/")[:-1]+["inline_code.py"])) as f:
@@ -19,7 +19,7 @@ class SlackopsFunction(L.InlineFunction):
                          variables = {"slack-logging-level": log_level,
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
 
-class SlackopsMixin(Recipe):
+class SlackMixin(Recipe):
 
     def __init__(self):
         super().__init__()
@@ -49,7 +49,7 @@ class SlackopsMixin(Recipe):
     def init_slackops_resources(self, namespace):
         for log_level in self.log_levels:
             alert_namespace = f"{namespace}-{log_level}"
-            self += [SlackopsFunction(namespace = alert_namespace,
+            self += [SlackFunction(namespace = alert_namespace,
                                    log_level = log_level),
                      Role(namespace = alert_namespace),
                      Policy(namespace = alert_namespace),

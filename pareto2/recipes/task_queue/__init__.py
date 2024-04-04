@@ -5,7 +5,7 @@ from pareto2.services.sqs import *
 
 from pareto2.recipes import *
 
-from pareto2.recipes.mixins.slackops import SlackopsMixin
+from pareto2.recipes.mixins.slackops import SlackMixin
 
 import importlib
 
@@ -39,7 +39,7 @@ class QueuePolicy(Policy):
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
 
-class TaskQueue(SlackopsMixin):    
+class TaskQueue(SlackMixin):    
     
     def __init__(self,
                  namespace,
