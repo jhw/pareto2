@@ -3,9 +3,6 @@ from pareto2.services import Resource
 
 class Project(Resource):
 
-    def __init__(self, namespace):
-        super().__init__(namespace)
-
     @property
     def visible(self):
         return True

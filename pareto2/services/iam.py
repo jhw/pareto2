@@ -102,8 +102,7 @@ class Policy(Resource):
 
 class Statement(list):
 
-    def __init__(self, items):
-        list.__init__(self, items)
+    pass
 
 class SimpleStatement(Statement):
 
@@ -130,6 +129,4 @@ class ExtendedStatement(Statement):
     
 class PermissionsGroup(dict):
     
-    def __init__(self, item):
-        dict.__init__(self, item)
-
+    pass

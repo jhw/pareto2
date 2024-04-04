@@ -79,13 +79,9 @@ class Resource(AWSResource):
 
 class Method(AWSResource):
     
-    def __init__(self, namespace):
-        super().__init__(namespace)
-
+    pass
+    
 class DomainName(AWSResource):
-
-    def __init__(self, namespace):
-        super().__init__(namespace)
 
     @property
     def aws_properties(self):
@@ -95,9 +91,6 @@ class DomainName(AWSResource):
         }
     
 class BasePathMapping(AWSResource):
-
-    def __init__(self, namespace):
-        super().__init__(namespace)
 
     @property
     def aws_properties(self):

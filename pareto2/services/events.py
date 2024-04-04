@@ -9,9 +9,6 @@ Rule namespace is just function namespace; any function should only ever be boun
 
 class Rule(Resource):
 
-    def __init__(self, namespace):
-        super().__init__(namespace)
-
     @property
     def target(self):
         return {

@@ -6,9 +6,6 @@ LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/func
 
 class Api(Resource):
 
-    def __init__(self, namespace):
-        super().__init__(namespace)
-
     """
     - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-api.html#cfn-apigatewayv2-api-name
     - Name: The name of the API. Required unless you specify an OpenAPI definition for Body or S3BodyLocation.
@@ -105,9 +102,6 @@ class Integration(Resource):
         
 class Authorizer(Resource):
     
-    def __init__(self, namespace):
-        super().__init__(namespace)
-
     """
     - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-authorizer.html#cfn-apigatewayv2-authorizer-name
     - Name: The name of the authorizer; Required: Yes
@@ -131,9 +125,6 @@ class Authorizer(Resource):
 
 class DomainName(Resource):
 
-    def __init__(self, namespace):
-        super().__init__(namespace)
-
     @property
     def aws_properties(self):
         return {
@@ -148,9 +139,6 @@ class DomainName(Resource):
 """
     
 class ApiMapping(Resource):
-
-    def __init__(self, namespace):
-        super().__init__(namespace)
 
     @property
     def aws_properties(self):

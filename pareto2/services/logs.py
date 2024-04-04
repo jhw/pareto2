@@ -111,9 +111,6 @@ class LogGroup(Resource):
 
 class LogStream(Resource):
 
-    def __init__(self, namespace):
-        super().__init__(namespace)
-
     @property
     def aws_properties(self):
         function_ref = H(f"{self.namespace}-function")
