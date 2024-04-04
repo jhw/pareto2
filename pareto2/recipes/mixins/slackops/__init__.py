@@ -25,11 +25,11 @@ class SlackMixin(Recipe):
         super().__init__()
 
     def init_slack_hooks(self,
-                            function_namespace,
-                            alerts_namespace,
-                            log_levels,
-                            filter_patterns = {"warning": "%WARNING|Task timed out%",
-                                               "error": "ERROR"}):
+                         function_namespace,
+                         alerts_namespace,
+                         log_levels,
+                         filter_patterns = {"warning": "%WARNING|Task timed out%",
+                                            "error": "ERROR"}):
         self += [LogGroup(namespace = function_namespace),
                  LogStream(namespace = function_namespace)]
         for log_level in log_levels:
@@ -46,6 +46,10 @@ class SlackMixin(Recipe):
                          for resource in self
                          if resource.aws_resource_type == "AWS::Logs::SubscriptionFilter"]))
 
+    """
+    - namespace is alerts_namespace
+    """
+    
     def init_slack_resources(self, namespace):
         for log_level in self.log_levels:
             alert_namespace = f"{namespace}-{log_level}"

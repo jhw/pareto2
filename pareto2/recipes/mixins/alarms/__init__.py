@@ -23,8 +23,15 @@ class AlarmMixin(Recipe):
     def __init__(self):
         super().__init__()
 
-    def init_alarm_hook(self):
-        pass
+    """
+    - namespace is alarm_namespace
+    """
+        
+    def init_alarm_hook(self,
+                        namespace,
+                        function_namespace):
+        self += [Alarm(namespace = namespace,
+                       function_namespace = function_namespace)]
         
     """
     - namespace is alarm_namespace

@@ -1,8 +1,5 @@
 ### short [01-alarms]
 
-- initialise alarm hook
-  - Alarm
-
 - add alarm to event worker 
 - add alarm to event timer 
 - add alarm to web api 
@@ -92,6 +89,9 @@
 
 ### done
 
+- initialise alarm hook
+  - Alarm
+  
 - Subscription
 - check what permissioning is required
 - add logs alarm with default parameters 
