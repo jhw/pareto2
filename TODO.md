@@ -1,11 +1,10 @@
 ### short [01-alarms]
 
+- VisibleResource
 - alarm needs to push directly to slack
   - because it doesn't have any subscription filters attached
   - and easier to push directly than add them
-
 - add alarm to web api 
-- roles mixin
 - alarm gist demo
 
 ### medium
@@ -29,6 +28,8 @@
 
 ### thoughts
 
+- roles mixin?
+  - seems like over- optimisation
 - add alarm to event timer?
   - no points as is on a defined schedule
 - optimiser/compacter?
