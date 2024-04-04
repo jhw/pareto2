@@ -1,11 +1,12 @@
 ### short [01-alarms]
 
-- alarm needs to be created in the function namespace
 - ability to parameterise alarm from top level api
 - add alarm to web api 
 - alarm gist demo
 
 ### medium
+
+- optimiser [notes]
 
 - binding script
 
@@ -89,6 +90,7 @@
 
 ### done
 
+- alarm needs to be created in the function namespace
 - add alarm to event worker 
 
 - initialise alarm hook

@@ -29,9 +29,9 @@ class AlarmMixin(Recipe):
         
     def init_alarm_hook(self,
                         namespace,
-                        function_namespace):
+                        alarm_namespace):
         self += [Alarm(namespace = namespace,
-                       function_namespace = function_namespace)]
+                       alarm_namespace = alarm_namespace)]
         
     """
     - namespace is alarm_namespace

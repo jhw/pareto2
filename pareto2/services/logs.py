@@ -33,7 +33,7 @@ class Alarm(Resource):
 
     def __init__(self,
                  namespace,
-                 function_namespace,
+                 alarm_namespace,
                  cloudwatch_namespace = "AWS/Lambda",
                  metric_name = "Invocations",
                  statistic = "Sum",
@@ -42,7 +42,7 @@ class Alarm(Resource):
                  threshold = 10,
                  comparison_operator = "GreaterThanThreshold"):
         self.namespace = namespace
-        self.function_namespace = function_namespace
+        self.alarm_namespace = alarm_namespace
         self.cloudwatch_namespace = cloudwatch_namespace
         self.metric_name = metric_name
         self.statistic = statistic
@@ -59,7 +59,7 @@ class Alarm(Resource):
             "Dimensions": [
                 {
                     "Name": "FunctionName",
-                    "Value": {"Ref": H(f"{self.function_namespace}-function")}
+                    "Value": {"Ref": H(f"{self.namespace}-function")}
                 }
             ],
             "Statistic": self.statistic,
@@ -68,7 +68,7 @@ class Alarm(Resource):
             "Threshold": self.threshold,
             "ComparisonOperator": self.comparison_operator,
             "AlarmActions": [
-                {"Ref": H(f"{self.namespace}-topic")}
+                {"Ref": H(f"{self.alarm_namespace}-topic")}
             ]
         }
     
