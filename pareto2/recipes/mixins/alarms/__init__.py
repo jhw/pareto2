@@ -2,6 +2,7 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.iam import *
 from pareto2.services.logs import *
+from pareto2.services.sns import *
 
 from pareto2.recipes import *
 
@@ -40,13 +41,13 @@ class AlarmMixin(Recipe):
         pass
         
     """
-            self += [AlarmFunction(namespace = alert_namespace,
-                                   log_level = log_level),
-                     Role(namespace = alert_namespace),
-                     Policy(namespace = alert_namespace),
-                     L.Permission(namespace = alert_namespace,
-                                  principal = "logs.amazonaws.com")]
+    - namespace is alarm_namespace
     """
-            
+    
     def init_alarm_resources(self, namespace):
-        pass
+        self += [Topic(namespace = namespace),
+                 AlarmFunction(namespace = namespace),
+                 Role(namespace = namespace),
+                 Policy(namespace = namespace),
+                 L.Permission(namespace =namespace,
+                              principal = "logs.amazonaws.com")]

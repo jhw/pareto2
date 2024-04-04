@@ -1,7 +1,10 @@
 ### short [01-alarms]
 
-- initialise alarm resources
+- check what permissioning is required
+
 - initialise alarm hook
+  - Alarm
+  - Subscription
 
 - add alarm to event worker 
 - add alarm to event timer 
