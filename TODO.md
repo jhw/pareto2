@@ -1,6 +1,5 @@
 ### short [01-alarms]
 
-- remove streaming ref from task_queue
 - add alarm to web api 
 - roles mixin
 - alarm gist demo
@@ -91,6 +90,7 @@
 
 ### done
 
+- remove streaming ref from task_queue
 - alarm global namespace
 - alerts global namespace
 - subclass Alarm as InvocationAlarm

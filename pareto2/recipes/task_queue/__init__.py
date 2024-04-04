@@ -1,10 +1,7 @@
 from pareto2.services import hungarorise as H
-
 from pareto2.services.iam import *
 from pareto2.services.sqs import *
-
 from pareto2.recipes import *
-
 from pareto2.recipes.mixins.slackops import SlackMixin
 
 import importlib
@@ -45,21 +42,21 @@ class TaskQueue(SlackMixin):
                  namespace,
                  log_levels = ["error"]):
         super().__init__()
-        streaming_namespace = f"{namespace}-task-queue"        
+        queue_namespace = f"{namespace}-task-queue"        
         self.append(Queue(namespace = namespace))
-        self.init_streaming(namespace = namespace,
-                            streaming_namespace = streaming_namespace)
-        self.init_slack_hooks(function_namespace = streaming_namespace,
+        self.init_queue(namespace = namespace,
+                        queue_namespace = queue_namespace)
+        self.init_slack_hooks(function_namespace = queue_namespace,
                               log_levels = log_levels)
         self.init_slack_resources()
 
-    def init_streaming(self, namespace, streaming_namespace):
-        self += [QueueFunction(namespace = streaming_namespace,
+    def init_queue(self, namespace, queue_namespace):
+        self += [QueueFunction(namespace = queue_namespace,
                                queue_namespace = namespace),
-                 Role(namespace = streaming_namespace),
-                 QueuePolicy(namespace = streaming_namespace,
+                 Role(namespace = queue_namespace),
+                 QueuePolicy(namespace = queue_namespace,
                                 queue_namespace = namespace),
-                 L.SQSEventSourceMapping(namespace = streaming_namespace,
+                 L.SQSEventSourceMapping(namespace = queue_namespace,
                                          source_arn = {"Fn::GetAtt": [H(f"{namespace}-queue"), "Arn"]})]
             
 if __name__ == "__main__":

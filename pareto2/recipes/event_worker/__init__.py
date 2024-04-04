@@ -1,10 +1,7 @@
 from pareto2.services import hungarorise as H
-
 from pareto2.services.events import *
 from pareto2.services.iam import *
-
 from pareto2.recipes import *
-
 from pareto2.recipes.mixins.alarms import AlarmMixin
 from pareto2.recipes.mixins.slackops import SlackMixin
 

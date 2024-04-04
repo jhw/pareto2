@@ -1,9 +1,7 @@
 from pareto2.services import hungarorise as H
-
 from pareto2.services.codebuild import *
 from pareto2.services.iam import *
 from pareto2.services.s3 import *
-
 from pareto2.recipes import *
 
 class PipBuilder(Recipe):    

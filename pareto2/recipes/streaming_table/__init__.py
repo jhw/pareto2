@@ -1,10 +1,7 @@
 from pareto2.services import hungarorise as H
-
 from pareto2.services.dynamodb import StreamingTable as StreamingTableResource
 from pareto2.services.iam import *
-
 from pareto2.recipes import *
-
 from pareto2.recipes.mixins.slackops import SlackMixin
 
 import importlib
