@@ -1,13 +1,12 @@
-### short [01-alarms]
-
-- add alarm to web api 
-- alarm gist demo
-
-### medium
+### short
 
 - binding script
 
+### medium
+
+
 - re- test gists
+  - including alarms
 
 ### long
 
@@ -23,6 +22,8 @@
 - rockset
 
 ### thoughts
+
+- add alarm to web api?
 
 - roles mixin?
   - seems like over- optimisation
