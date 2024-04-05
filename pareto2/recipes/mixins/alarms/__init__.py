@@ -18,7 +18,7 @@ class AlarmFunction(L.InlineFunction):
         super().__init__(namespace = namespace,
                          code = code)
 
-class AlarmMixin(Recipe):
+class AlarmsMixin(Recipe):
 
     def __init__(self):
         super().__init__()

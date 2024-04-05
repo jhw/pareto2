@@ -7,7 +7,7 @@ from pareto2.recipes import *
 - not a lot of point adding Alarm mixin here as event_timer is on a defined schedule
 """
 
-from pareto2.recipes.mixins.slackops import SlackMixin
+from pareto2.recipes.mixins.alerts import AlertsMixin
 
 import importlib
 
@@ -21,7 +21,7 @@ class EventPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
-class EventTimer(SlackMixin):    
+class EventTimer(AlertsMixin):    
 
     def __init__(self,
                  namespace,
@@ -30,9 +30,9 @@ class EventTimer(SlackMixin):
         super().__init__()
         self.init_timer(namespace = namespace,
                          timer = timer)
-        self.init_slack_hooks(function_namespace = namespace,
+        self.init_alert_hooks(function_namespace = namespace,
                                        log_levels = log_levels)
-        self.init_slack_resources()
+        self.init_alert_resources()
 
     def init_timer(self, namespace, timer):
         fn = L.InlineFunction if "code" in timer else L.S3Function

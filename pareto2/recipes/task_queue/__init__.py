@@ -2,7 +2,7 @@ from pareto2.services import hungarorise as H
 from pareto2.services.iam import *
 from pareto2.services.sqs import *
 from pareto2.recipes import *
-from pareto2.recipes.mixins.slackops import SlackMixin
+from pareto2.recipes.mixins.alerts import AlertsMixin
 
 import importlib
 
@@ -36,7 +36,7 @@ class QueuePolicy(Policy):
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
 
-class TaskQueue(SlackMixin):    
+class TaskQueue(AlertsMixin):    
     
     def __init__(self,
                  namespace,
@@ -46,9 +46,9 @@ class TaskQueue(SlackMixin):
         self.append(Queue(namespace = namespace))
         self.init_queue(namespace = namespace,
                         queue_namespace = queue_namespace)
-        self.init_slack_hooks(function_namespace = queue_namespace,
+        self.init_alert_hooks(function_namespace = queue_namespace,
                               log_levels = log_levels)
-        self.init_slack_resources()
+        self.init_alert_resources()
 
     def init_queue(self, namespace, queue_namespace):
         self += [QueueFunction(namespace = queue_namespace,

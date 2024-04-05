@@ -1,6 +1,5 @@
 ### short [01-alarms]
 
-- VisibleResource
 - alarm needs to push directly to slack
   - because it doesn't have any subscription filters attached
   - and easier to push directly than add them
@@ -95,6 +94,7 @@
 
 ### done
 
+- rename slack as alert
 - remove streaming ref from task_queue
 - alarm global namespace
 - alerts global namespace

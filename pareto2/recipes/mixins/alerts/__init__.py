@@ -7,9 +7,9 @@ import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
 
-SlackNamespace = "slack"
+AlertNamespace = "alert"
 
-class SlackFunction(L.InlineFunction):
+class AlertFunction(L.InlineFunction):
 
     def __init__(self, namespace, log_level):
         with open("/".join(__file__.split("/")[:-1]+["inline_code.py"])) as f:
@@ -19,15 +19,15 @@ class SlackFunction(L.InlineFunction):
                          variables = {"slack-logging-level": log_level,
                                       "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
 
-class SlackMixin(Recipe):
+class AlertsMixin(Recipe):
 
     def __init__(self):
         super().__init__()
 
-    def init_slack_hooks(self,
+    def init_alert_hooks(self,
                          function_namespace,
                          log_levels,
-                         alerts_namespace = SlackNamespace,
+                         alerts_namespace = AlertNamespace,
                          filter_patterns = {"warning": "%WARNING|Task timed out%",
                                             "error": "ERROR"}):
         self += [LogGroup(namespace = function_namespace),
@@ -50,10 +50,10 @@ class SlackMixin(Recipe):
     - namespace is alerts_namespace
     """
     
-    def init_slack_resources(self, namespace = SlackNamespace):
+    def init_alert_resources(self, namespace = AlertNamespace):
         for log_level in self.log_levels:
             alert_namespace = f"{namespace}-{log_level}"
-            self += [SlackFunction(namespace = alert_namespace,
+            self += [AlertFunction(namespace = alert_namespace,
                                    log_level = log_level),
                      Role(namespace = alert_namespace),
                      Policy(namespace = alert_namespace),
