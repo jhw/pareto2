@@ -10,13 +10,19 @@ L = importlib.import_module("pareto2.services.lambda")
 
 AlarmNamespace = "alarm"
 
+"""
+Alarm can't simply log warnings and expect these to be picked up by alerts code as Alarm lambda doesn't have any subscription filters attached; needs to push directly to Slack
+"""
+
 class AlarmFunction(L.InlineFunction):
 
-    def __init__(self, namespace):
+    def __init__(self, namespace, log_level = "warning"):
         with open("/".join(__file__.split("/")[:-1]+["inline_code.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
-                         code = code)
+                         code = code,
+                         variables = {"slack-logging-level": log_level,
+                                      "slack-webhook-url": {"Ref": H("slack-webhook-url")}})
 
 class AlarmsMixin(Recipe):
 
