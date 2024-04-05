@@ -1,0 +1,6 @@
+"""
+api: {}
+table: {}
+bucket: {}
+queue: {}
+"""

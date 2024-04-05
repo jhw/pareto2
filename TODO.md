@@ -1,9 +1,20 @@
-### short
+### short [01-binding]
 
-- binding script
+- find block of code which parses scripts
+- create root recipe
+- define root scheme 
+- parse root config and add resources
+- check for website and api conflict
+- check for website and bucket conflict 
+- define schemas for endpoint, worker, timer
+- iterate through lambdas and add resources
+- worker and timer names to come from python paths 
+- insert sources into event patterns
+- infer environment variables as define as part of lambdas 
+- layers, size, timeout
+- build/deploy, debug, artifacts scripts
 
 ### medium
-
 
 - re- test gists
   - including alarms
@@ -92,6 +103,13 @@
 
 ### done
 
+- define root config 
+- api, table, queue, builder 
+- api endpoint 
+- table event worker
+- event timer
+- define a hello project with api and tasks subdirs
+- install jsonschema
 - alarm needs to push directly to slack
   - because it doesn't have any subscription filters attached
   - and easier to push directly than add them

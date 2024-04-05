@@ -1,3 +1,29 @@
+### bindings 05/04/24
+
+- two aspects, root and lambda
+- root could be defining in app/__init__.py or separate yaml file in app root
+- think the former better as consistent with current lambda handling
+- use dsl script parsing code from pareto 0.7
+- root defines bucket, table, queue, api, builder
+- presence of each determines whether recipe is included in app recipe
+- root values are dicts
+- website is determined by bucket public = true
+- some limited checking such as can't have an API and a public bucket 
+- anything in the above list is created in the app workspace 
+- have a main recipe and then add sub recipes to it before creating template 
+- then a handler should be much simplified 
+- is either a worker or a timer or an api endpoint 
+- that's it
+- validate and add relevant recipe
+- note that api needs to be created first and then endpoints later
+- also how to name worker and timer namespaces
+- remember endpoint is named after path
+- but timer and worker need their own name fields
+- worker event should have a type field which leads to insertion of source into app pattern 
+- or project name in the case of builder
+- should also have an unbound or public option 
+- and any environment variables must be filtered from the handler and added as iac environment variables
+
 ### optimiser 04/04/24
 
 - so you could have something which looked for very specific patterns and tried to optimise them, before a recipe is rendered to a template
