@@ -1,14 +1,14 @@
-from pareto2.recipes.web_site import WebSite
+from pareto2.recipes.website import Website
 
 import unittest
 
-class WebSiteTest(unittest.TestCase):
+class WebsiteTest(unittest.TestCase):
 
     def test_template(self):
-        recipe = WebSite(namespace = "app")
+        recipe = Website(namespace = "app")
         template = recipe.render()
         template.populate_parameters()
-        template.dump_file(filename = "tmp/web-site.json")
+        template.dump_file(filename = "tmp/website.json")
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 2)
         for attr in ["DomainName",

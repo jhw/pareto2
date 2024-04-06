@@ -103,7 +103,7 @@ This is not currently CORS enabled. You could do it but it would be a big ball a
 BinaryMediaTypes = ["*/*"] is required if you want to get this pattern to serve any kind of binary data from S3; but enabling it messes up the redirect; hence the either/or switch enabled by has_binary_media. As per CORS, I am simply not willing to wrestle with APIGateway any more to fix this, in what is likely to be a minority- use pattern.
 """
 
-class WebSite(Recipe):    
+class Website(Recipe):    
 
     def __init__(self, namespace, has_binary_media = True):
         super().__init__()

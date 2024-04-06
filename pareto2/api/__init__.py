@@ -6,7 +6,7 @@ from pareto2.recipes.pip_builder import PipBuilder
 from pareto2.recipes.streaming_table import StreamingTable
 from pareto2.recipes.task_queue import TaskQueue
 from pareto2.recipes.web_api import WebApi
-from pareto2.recipes.web_site import WebSite
+from pareto2.recipes.website import Website
 
 from pareto2.services import hungarorise as H
 
@@ -159,7 +159,7 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
     if "bucket" in struct:
         if struct["bucket"]["public"]:
             has_binary_media = struct["bucket"]["binary-media"] if "binary-media" in struct["bucket"] else False
-            recipe += WebSite(namespace = namespace,
+            recipe += Website(namespace = namespace,
                               has_binary_media = has_binary_media)
         else:
             recipe.append(StreamingBucket(namespace = namespace))

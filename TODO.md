@@ -1,8 +1,8 @@
 ### short
 
-- rename web_site as website
-- table index handling at root level
-- table batching window at root level
+- table indexes api support
+- table batch window api support
+
 - build/deploy, debug, artifacts scripts
 - re- test gists
 
@@ -92,6 +92,7 @@
 
 ### done
 
+- rename web_site as website
 - enforce detail-type if event type is unbound
 - layers
 - bucket `binary-media` field
