@@ -1,8 +1,9 @@
 ### short
 
 - rename web_site as website
-- table index handling
-  - at root level
+- enforce detail-type if event type is unbound
+- table index handling at root level
+- table batching window at root level
 - build/deploy, debug, artifacts scripts
 - re- test gists
 
