@@ -104,6 +104,7 @@ def handle_lambdas(recipe, assets, endpoints):
                         struct = struct,
                         schema = schema)
         if type == "endpoint":
+            struct["handler"] = filename.replace(".py", ".handler")
             endpoints.append(struct)
         elif type == "worker":
             name = "-".join(filename.split("/")[1:-1])
@@ -143,8 +144,8 @@ def build_stack(pkg_root):
     if not assets.has_root:        
         raise RuntimeError("assets have no root content")
     recipe, endpoints = Recipe(), []
-    print (endpoints)
     handle_lambdas(recipe, assets.lambda_content, endpoints)
+    print (endpoints)
     handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
     return recipe
 
@@ -153,9 +154,11 @@ if __name__ == "__main__":
         recipe = build_stack("hello")
         template = recipe.render()
         template.populate_parameters()
+        """
         import json
         print () # TEMP
         print (json.dumps(recipe.render(),
                           indent=2))
+        """
     except RuntimeError as error:
         print ("Error: %s" % str(error))

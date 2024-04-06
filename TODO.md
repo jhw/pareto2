@@ -1,6 +1,5 @@
 ### short [01-api]
 
-- add (code) handler to endpoints
 - build api (and endpoints)
 
 - add (code) handler to workers and timers
@@ -103,6 +102,7 @@
 
 ### done
 
+- add (code) handler to endpoints
 - queue worker demo
 - extend worker examples to table/bucket/builder etc
 - add type field to worker endpoint
