@@ -1,10 +1,13 @@
 ### short [01-api]
 
-- website to be inferred from bucket public: true field
-- insert env variables
-- layers
+- env variables are not being passed through properly
 
-- check website binary media switch
+- should env variables changed context (APP_XXX -> XXX_NAME)?
+
+- website to be inferred from bucket `public: true` field
+- bucket `binary-media` field
+
+- layers
 
 - build/deploy, debug, artifacts scripts
 
@@ -96,6 +99,7 @@
 
 ### done
 
+- insert env variables
 - add sample os.environ refs to hello handlers
 - add s3 bucket bindings
 - validate size against available lambda sizes

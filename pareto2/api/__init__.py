@@ -78,7 +78,7 @@ def filter_infra(filename, text):
     raise RuntimeError(f"{filename} infra block not found")
 
 def filter_env_variables(text):
-    return set([tok[1:-1]
+    return set([tok[1:-1].lower().replace("_", "-")
                 for tok in re.findall(r"os\.environ\[(.*?)\]",
                                       re.sub("\\s", "", text))
                 if tok.upper()==tok])
@@ -122,10 +122,9 @@ def handle_lambdas(recipe, assets, endpoints):
         validate_schema(filename = filename,
                         struct = struct,
                         schema = schema)
-        struct["handler"] = filename.replace(".py", ".handler") # NB
-        # START TEMP CODE
-        print (filter_env_variables(code))
-        # END TEMP CODE
+        struct["handler"] = filename.replace(".py", ".handler") 
+        struct["variables"] = {k: {"Ref": H(k)}
+                               for k in filter_env_variables(code)}
         if type == "endpoint":
             endpoints.append(struct)
         elif type == "worker":
