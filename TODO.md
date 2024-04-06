@@ -1,10 +1,13 @@
 ### short [01-api]
 
+- add type field to worker event schema
+- add type field to worker endpoint
+- extend worker examples to table/bucket/builder etc
+
 - endpoints need to include path to code
 - initialise WebApi
 - initialise lambda resources
 
-- check event type handling
 - insert sources into event patterns
 - validate size against available lambda sizes
 - timeout minimax values
