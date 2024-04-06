@@ -1,4 +1,4 @@
-import os, yaml
+import jsonschema, os, yaml
 
 def filter_infra(filename, text):
     block, inblock = [], False
@@ -23,6 +23,22 @@ def filter_infra(filename, text):
             block.append(row)
     raise RuntimeError(f"{filename} infra block not found")
 
+def load_schema(type, cache = {}):
+    if type in cache:
+        return cache[type]    
+    filename = "/".join(__file__.split("/")[:-1]+["schemas", f"{type}.yaml"])
+    if not os.path.exists(filename):
+        raise RuntimeError(f"{filename} does not exist")
+    cache[type] = yaml.safe_load(open(filename).read())
+    return cache[type]
+
+def validate_schema(filename, struct, schema):
+    try:
+        jsonschema.validate(instance=struct,
+                            schema=schema)
+    except jsonschema.exceptions.ValidationError as error:
+        raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
+
 def file_loader(pkg_root, root_dir=''):
     file_contents = []
     pkg_full_path = os.path.join(root_dir, pkg_root)
@@ -37,23 +53,16 @@ def file_loader(pkg_root, root_dir=''):
                     relative_path = os.path.relpath(full_path, root_dir)
                     file_contents.append((relative_path, content))
     return file_contents
-
-def load_schema(type, cache = {}):
-    if type in cache:
-        return cache[type]    
-    filename = "/".join(__file__.split("/")[:-1]+["schemas", f"{type}.yaml"])
-    if not os.path.exists(filename):
-        raise RuntimeError(f"{filename} does not exist")
-    cache[type] = yaml.safe_load(open(filename).read())
-    return cache[type]
     
 def generate(pkg_root):
     for filename, code in file_loader("hello"):
+        print (f"--- {filename} ---")
         struct = filter_infra(filename, code)
-        print (struct)
         type = struct.pop("type") if "type" in struct else "root"
         schema = load_schema(type)
-        print (schema)
+        validate_schema(filename = filename,
+                        struct = struct,
+                        schema = schema)
 
 if __name__ == "__main__":
     try:

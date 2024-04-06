@@ -1,14 +1,15 @@
 ### short [01-api]
 
-- validate schemaa
+- separate root struct from lambdas
+- check for website vs api|bucket conflicts
 
 - create root recipe
 - parse root config
-- check for website vs api|bucket conflicts
 - iterate through lambdas
 - worker and timer names to come from python paths 
 - insert sources into event patterns
-- size, timeout minimax values
+- validate size against available lambda sizes
+- timeout minimax values
 - infer environment variables as define as part of lambdas 
 - layers
 
@@ -104,6 +105,7 @@
 
 ### done
 
+- validate schemaa
 - add type to root
 - load schema for type and validate
 - add infra blocks to handlers

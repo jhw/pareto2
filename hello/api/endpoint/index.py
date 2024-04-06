@@ -9,7 +9,7 @@ infra:
   permissions:
   - s3:GetObject
   layers: []
-  size: -1
+  size: 0
   timeout: 30
 """
 
