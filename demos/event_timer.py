@@ -3,8 +3,8 @@ from pareto2.recipes.event_timer import EventTimer
 import unittest, yaml
 
 Timer = yaml.safe_load("""
-  event:
-    schedule: "rate(1 minute)"
+event:
+  schedule: "rate(1 minute)"
 """)
 
 CodeBody="""

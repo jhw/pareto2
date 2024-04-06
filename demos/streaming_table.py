@@ -4,20 +4,20 @@ from pareto2.recipes.event_worker import EventWorker
 import unittest, yaml
 
 Worker = yaml.safe_load("""
-  alarm:
-    period: 60
-    threshold: 10
-  event:
-    pattern:
-      detail:
-        eventName:
-        - INSERT
-        pk: 
-        - prefix: LEAGUE
-      source:
-      - Ref: AppTable
-  permissions:
-  - s3:GetObject
+alarm:
+  period: 60
+  threshold: 10
+event:
+  pattern:
+    detail:
+      eventName:
+      - INSERT
+      pk: 
+      - prefix: LEAGUE
+    source:
+    - Ref: AppTable
+permissions:
+- s3:GetObject
 """)
 
 CodeBody="""

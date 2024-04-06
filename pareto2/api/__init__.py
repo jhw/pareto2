@@ -109,9 +109,11 @@ def handle_lambdas(recipe, assets, endpoints):
         elif type == "worker":
             namespace = "-".join(filename.split("/")[1:-1])
             print (namespace)
+            print (struct)
         elif type == "timer":
             namespace = "-".join(filename.split("/")[1:-1])
             print (namespace)
+            print (struct)
         else:
             raise RuntimeError(f"type {type} not recognised")
     

@@ -4,36 +4,36 @@ from pareto2.recipes.event_worker import EventWorker
 import unittest, yaml
 
 Worker = yaml.safe_load("""
-  alarm:
-    period: 60
-    threshold: 10
-  event:
-    pattern:
-      source:
-      - "aws.codebuild"
-      detail-type:
-      - "CodeBuild Build Phase Change"
-      detail:
-        project-name:
-        - Ref: AppProject
-        completed-phase:
-        - SUBMITTED
-        - PROVISIONING
-        - DOWNLOAD_SOURCE
-        - INSTALL
-        - PRE_BUILD
-        - BUILD
-        - POST_BUILD
-        - UPLOAD_ARTIFACTS
-        - FINALIZING
-        completed-phase-status:
-        - TIMED_OUT
-        - STOPPED
-        - FAILED
-        - SUCCEEDED
-        - FAULT
-        - CLIENT_ERROR
-  permissions: []
+alarm:
+  period: 60
+  threshold: 10
+event:
+  pattern:
+    source:
+    - "aws.codebuild"
+    detail-type:
+    - "CodeBuild Build Phase Change"
+    detail:
+      project-name:
+      - Ref: AppProject
+      completed-phase:
+      - SUBMITTED
+      - PROVISIONING
+      - DOWNLOAD_SOURCE
+      - INSTALL
+      - PRE_BUILD
+      - BUILD
+      - POST_BUILD
+      - UPLOAD_ARTIFACTS
+      - FINALIZING
+      completed-phase-status:
+      - TIMED_OUT
+      - STOPPED
+      - FAILED
+      - SUCCEEDED
+      - FAULT
+      - CLIENT_ERROR
+permissions: []
 """)
 
 CodeBody="""

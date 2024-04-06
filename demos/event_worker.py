@@ -3,14 +3,14 @@ from pareto2.recipes.event_worker import EventWorker
 import unittest, yaml
 
 Worker = yaml.safe_load("""
-  event:
-    pattern:
-      detail:
-        hello:
-         - world
-  alarm:
-    period: 60
-    threshold: 10
+event:
+  pattern:
+    detail:
+      hello:
+       - world
+alarm:
+  period: 60
+  threshold: 10
 """)
 
 CodeBody="""
