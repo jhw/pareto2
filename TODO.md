@@ -1,13 +1,15 @@
 ### short [01-api]
 
-- create workers and timers
+- add s3 bucket bindings
 
-- insert sources into event patterns
-  - event type must be popped from struct?
-  
-- extract and insert os.environ variables
 - validate size against available lambda sizes
+  - 128 MB and 10,240 MB 
 - timeout minimax values
+  - 1-900
+
+- add sample os.environ refs to hello handlers
+- extract and insert os.environ variables
+
 - layers
 
 - build/deploy, debug, artifacts scripts
@@ -102,6 +104,8 @@
 
 ### done
 
+- insert sources into event patterns
+- create workers and timers
 - add (code) handler to workers and timers
 - build api (and endpoints)
 - add (code) handler to endpoints

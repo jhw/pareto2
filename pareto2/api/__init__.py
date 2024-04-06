@@ -8,6 +8,8 @@ from pareto2.recipes.task_queue import TaskQueue
 from pareto2.recipes.web_api import WebApi
 from pareto2.recipes.web_site import WebSite
 
+from pareto2.services import hungarorise as H
+
 from pareto2.services.s3 import StreamingBucket
 
 import jsonschema, os, yaml
@@ -91,6 +93,16 @@ def validate_schema(filename, struct, schema):
     except jsonschema.exceptions.ValidationError as error:
         raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
 
+def insert_event_source(event, namespace = AppNamespace):
+    if event["type"] == "bucket":
+        pass
+    elif event["type"] == "builder":
+        event["pattern"]["detail"]["project-name"] = {"Ref": H(f"{namespace}-project")}
+    elif event["type"] == "queue":
+        event["pattern"]["source"] = {"Ref": H(f"{namespace}-queue")}
+    elif event["type"] == "table":
+        event["pattern"]["source"] = {"Ref": H(f"{namespace}-table")}
+    
 """
 Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path
 """
@@ -108,12 +120,13 @@ def handle_lambdas(recipe, assets, endpoints):
             endpoints.append(struct)
         elif type == "worker":
             namespace = "-".join(filename.split("/")[1:-1])
-            print (namespace)
-            print (struct)
+            insert_event_source(struct["event"])
+            recipe += EventWorker(namespace = namespace,
+                                  worker = struct)
         elif type == "timer":
             namespace = "-".join(filename.split("/")[1:-1])
-            print (namespace)
-            print (struct)
+            recipe += EventTimer(namespace = namespace,
+                                 timer = struct)
         else:
             raise RuntimeError(f"type {type} not recognised")
     
@@ -156,7 +169,7 @@ if __name__ == "__main__":
         recipe = build_stack("hello")
         template = recipe.render()
         template.populate_parameters()
-        print ()
-        print (list(template["Parameters"].keys()))
+        template.dump_file("tmp/template.json")
+        print (sorted(list(template["Parameters"].keys())))
     except RuntimeError as error:
         print ("Error: %s" % str(error))
