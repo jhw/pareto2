@@ -21,7 +21,7 @@ class QueueFunction(L.InlineFunction):
             code = f.read()
         super().__init__(namespace = namespace,
                          code = code,
-                         variables = {"queue-url": {"Ref": H(f"{queue_namespace}-queue")}})
+                         variables = {"app-queue": {"Ref": H(f"{queue_namespace}-queue")}})
 
 class QueuePolicy(Policy):
     

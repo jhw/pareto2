@@ -5,7 +5,7 @@ import boto3, json, math, os
 """
 
 def handler(event, context, batchsize = 10):
-    source = os.environ["QUEUE_URL"]
+    source = os.environ["APP_QUEUE"]
     entries = [{"Detail": json.dumps(record),
                 "DetailType": "record",
                 "Source": source}
