@@ -31,7 +31,8 @@ properties:
     minumum: 0
   timeout: 
     type: integer
-    minimum: 0
+    minimum: 1
+    maxumum: 900
 required:
 - method
 - path

@@ -104,6 +104,8 @@
 
 ### done
 
+- timeout minimax values
+  - 1-900
 - insert sources into event patterns
 - create workers and timers
 - add (code) handler to workers and timers
