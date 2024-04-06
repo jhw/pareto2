@@ -1,10 +1,15 @@
 ### short [01-api]
 
-- allow api and endpoints to be created separately
-- create root assets in app workspace
+- move root creation behind lambdas
+- initialise endpoints and pass to lambdas and root
+- add handler block to lambdas
+- lambdas to append endpoints
+- add root namespace
+- import root recipes and services
 
-- worker and timer names to come from python paths 
+- check event type handling
 - insert sources into event patterns
+- worker and timer names to come from python paths 
 - validate size against available lambda sizes
 - timeout minimax values
 - infer environment variables as define as part of lambdas 
