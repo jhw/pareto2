@@ -48,7 +48,7 @@ properties:
       type: string
   size: 
     type: integer
-    minumum: 128
+    minimum: 128
     maximum: 10240
   timeout: 
     type: integer

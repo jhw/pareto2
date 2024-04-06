@@ -5,7 +5,7 @@ infra:
     schedule: "rate(1 minute)"
   permissions: []
   layers: []
-  size: 0
+  size: 1024
   timeout: 30
 """
 

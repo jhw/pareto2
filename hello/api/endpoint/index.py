@@ -2,14 +2,14 @@
 infra:
   type: endpoint
   method: GET
-  path: public-get
+  path: hello-get
   auth: public
   parameters:
   - message
   permissions:
   - s3:GetObject
   layers: []
-  size: 0
+  size: 1024
   timeout: 30
 """
 

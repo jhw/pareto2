@@ -12,7 +12,7 @@ infra:
     threshold: 10
   permissions: []
   layers: []
-  size: 0
+  size: 1024
   timeout: 30
 """
 

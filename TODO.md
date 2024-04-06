@@ -1,16 +1,14 @@
 ### short [01-api]
 
 - website to be inferred from bucket public: true field
-
 - insert env variables
-
 - layers
+
+- check website binary media switch
 
 - build/deploy, debug, artifacts scripts
 
 ### medium
-
-- check website binary media switch
 
 - re- test gists
 
