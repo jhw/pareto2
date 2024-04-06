@@ -1,21 +1,24 @@
 ### short [01-api]
 
-- endpoints need to include path to code
-- initialise WebApi
-- initialise lambda resources
+- check function s3 code path support
+- include code path in endpoints
+- build api (and endpoints)
+
+- include code paths in workers and timers
+- build workers and timers (lambda level)
 
 - insert sources into event patterns
+- extract and insert os.environ variables
 - validate size against available lambda sizes
 - timeout minimax values
-- infer environment variables as define as part of lambdas 
 - layers
 
 - build/deploy, debug, artifacts scripts
 
 ### medium
 
-- re- test gists
-  - including alarms
+- re- test streaming table
+- test alarm
 
 ### long
 
