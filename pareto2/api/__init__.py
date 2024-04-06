@@ -2,6 +2,8 @@ from pareto2.recipes import Recipe
 
 import jsonschema, os, yaml
 
+AppNamespace = "app"
+
 class Assets(dict):
 
     def __init__(self, pkg_root, item = {}):
@@ -79,6 +81,10 @@ def validate_schema(filename, struct, schema):
     except jsonschema.exceptions.ValidationError as error:
         raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
 
+"""
+Note that worker and timer create (logical) names from python paths, whereas ednpoint takes (logical) name from endpoint path
+"""
+    
 def handle_lambdas(recipe, assets, endpoints):
     for filename, code in assets.items():
         struct = filter_infra(filename, code)
@@ -87,8 +93,18 @@ def handle_lambdas(recipe, assets, endpoints):
         validate_schema(filename = filename,
                         struct = struct,
                         schema = schema)
+        if type == "endpoint":
+            endpoints.append(struct)
+        elif type == "worker":
+            name = "-".join(filename.split("/")[1:-1])
+            print (name)
+        elif type == "timer":
+            name = "-".join(filename.split("/")[1:-1])
+            print (name)
+        else:
+            raise RuntimeError(f"type {type} not recognised")
     
-def handle_root(recipe, filename, code, endpoints):
+def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
     struct = filter_infra(filename, code)
     schema = load_schema("root")
     validate_schema(filename = filename,
@@ -99,7 +115,8 @@ def handle_root(recipe, filename, code, endpoints):
             "website" in struct):
             raise RuntimeError(f"app can't have both {attr} and website")
     if "api" in struct:
-        pass
+        if endpoints != []:
+            pass
     if "bucket" in struct:
         pass
     if "builder" in struct:
@@ -110,14 +127,14 @@ def handle_root(recipe, filename, code, endpoints):
         pass
     if "website" in struct:
         pass
-        
-    
+            
 def generate(pkg_root):
     assets = file_loader("hello")
     if not assets.has_root:        
         raise RuntimeError("assets have no root content")
     recipe, endpoints = Recipe(), []
     handle_lambdas(recipe, assets.lambda_content, endpoints)
+    print (endpoints)
     handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
 
 if __name__ == "__main__":

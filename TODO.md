@@ -1,19 +1,19 @@
 ### short [01-api]
 
-- add handler block to lambdas
-- lambdas to append endpoints
-- add root namespace
 - import root recipes and services
+
+- initialise root resources
+- initialise lambda resources
 
 - check event type handling
 - insert sources into event patterns
-- worker and timer names to come from python paths 
 - validate size against available lambda sizes
 - timeout minimax values
 - infer environment variables as define as part of lambdas 
 - layers
 
 - test template generation
+
 - build/deploy, debug, artifacts scripts
 
 ### medium
@@ -105,6 +105,10 @@
 
 ### done
 
+- worker and timer names to come from python paths 
+- add handler block to lambdas
+- lambdas to append endpoints
+- add root namespace
 - move root creation behind lambdas
 - initialise endpoints and pass to lambdas and root
 - create root recipe
