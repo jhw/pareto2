@@ -101,6 +101,7 @@
 
 ### done
 
+- queue worker demo
 - extend worker examples to table/bucket/builder etc
 - add type field to worker endpoint
 - add type field to worker event schema

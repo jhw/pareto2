@@ -1,7 +1,8 @@
 """
 infra:
   api: {}
-  table: {}
   bucket: {}
+  builder: {}
   queue: {}
+  table: {}
 """

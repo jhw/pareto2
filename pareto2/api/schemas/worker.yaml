@@ -10,6 +10,7 @@ properties:
         enum:
         - bucket
         - builder
+        - queue
         - table
         - unbound
       pattern:
