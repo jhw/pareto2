@@ -1,9 +1,7 @@
 ### short [01-api]
 
-- import root recipes and services
-
-- initialise root resources
 - initialise lambda resources
+- initialise root resources
 
 - check event type handling
 - insert sources into event patterns
@@ -105,6 +103,7 @@
 
 ### done
 
+- import root recipes and services
 - worker and timer names to come from python paths 
 - add handler block to lambdas
 - lambdas to append endpoints

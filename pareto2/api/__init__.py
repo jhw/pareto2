@@ -1,5 +1,15 @@
 from pareto2.recipes import Recipe
 
+from pareto2.recipes.event_timer import EventTimer
+from pareto2.recipes.event_worker import EventWorker
+from pareto2.recipes.pip_builder import PipBuilder
+from pareto2.recipes.streaming_table import StreamingTable
+from pareto2.recipes.task_queue import TaskQueue
+from pareto2.recipes.web_api import WebApi
+from pareto2.recipes.web_site import WebSite
+
+from pareto2.services.s3 import StreamingBucket
+
 import jsonschema, os, yaml
 
 AppNamespace = "app"
