@@ -1,17 +1,20 @@
 ### short [01-binding]
 
-- find block of code which parses scripts
+- schemas
+- schema parsing code
+- block parsing code and iterations
+
 - create root recipe
-- define root scheme 
-- parse root config and add resources
-- check for website and api conflict
-- check for website and bucket conflict 
-- define schemas for endpoint, worker, timer
-- iterate through lambdas and add resources
+- parse root config
+- check for website vs api|bucket conflicts
+- iterate through lambdas
 - worker and timer names to come from python paths 
 - insert sources into event patterns
 - infer environment variables as define as part of lambdas 
-- layers, size, timeout
+- layers
+- size, timeout
+
+- test generating template
 - build/deploy, debug, artifacts scripts
 
 ### medium
