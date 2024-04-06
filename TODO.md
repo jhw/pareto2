@@ -1,14 +1,10 @@
-### short [01-api]
-
-- bucket `binary-media` field
-
-- layers
+### short
 
 - build/deploy, debug, artifacts scripts
 
-### medium
-
 - re- test gists
+
+### medium
 
 ### long
 
@@ -25,8 +21,8 @@
 
 ### thoughts
 
+- separate hello2 test to check website?
 - add alarm to web api?
-
 - roles mixin?
   - seems like over- optimisation
 - add alarm to event timer?
@@ -94,6 +90,8 @@
 
 ### done
 
+- layers
+- bucket `binary-media` field
 - website to be inferred from bucket `public: true` field
 - env variables are not being passed through properly
 - should env variables changed context (APP_XXX -> XXX_NAME)?
