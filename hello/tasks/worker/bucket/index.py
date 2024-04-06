@@ -17,4 +17,4 @@ infra:
 """
 
 def handler(event, context = None):
-    pass
+    bucketname = os.environ["APP_BUCKET"]

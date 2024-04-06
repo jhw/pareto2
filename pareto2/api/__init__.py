@@ -12,7 +12,7 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.s3 import StreamingBucket
 
-import jsonschema, os, yaml
+import jsonschema, os, re, yaml
 
 AppNamespace = "app"
 
@@ -77,6 +77,12 @@ def filter_infra(filename, text):
             block.append(row)
     raise RuntimeError(f"{filename} infra block not found")
 
+def filter_env_variables(text):
+    return set([tok[1:-1]
+                for tok in re.findall(r"os\.environ\[(.*?)\]",
+                                      re.sub("\\s", "", text))
+                if tok.upper()==tok])
+
 def load_schema(type, cache = {}):
     if type in cache:
         return cache[type]    
@@ -117,6 +123,9 @@ def handle_lambdas(recipe, assets, endpoints):
                         struct = struct,
                         schema = schema)
         struct["handler"] = filename.replace(".py", ".handler") # NB
+        # START TEMP CODE
+        print (filter_env_variables(code))
+        # END TEMP CODE
         if type == "endpoint":
             endpoints.append(struct)
         elif type == "worker":

@@ -17,4 +17,5 @@ infra:
 """
 
 def handler(event, context = None):
-    pass
+    queuename = os.environ["APP_QUEUE"]
+

@@ -17,4 +17,4 @@ infra:
 """
 
 def handler(event, context = None):
-    pass
+    projectname = os.environ["APP_PROJECT"]

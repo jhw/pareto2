@@ -17,4 +17,4 @@ infra:
 """
 
 def handler(event, context = None):
-    pass
+    tablename = os.environ["APP_TABLE"]

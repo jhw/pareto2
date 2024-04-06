@@ -1,7 +1,6 @@
 ### short [01-api]
 
-- add sample os.environ refs to hello handlers
-- extract and insert os.environ variables
+- insert env variables
 
 - layers
 
@@ -97,6 +96,7 @@
 
 ### done
 
+- add sample os.environ refs to hello handlers
 - add s3 bucket bindings
 - validate size against available lambda sizes
   - 128 MB and 10,240 MB 
