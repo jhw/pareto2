@@ -1,6 +1,5 @@
 ### short [01-binding]
 
-- add path to file_loader
 - add infra blocks to handlers
 - add filter_infra
 - run through schema
@@ -107,6 +106,7 @@
 
 ### done
 
+- add path to file_loader
 - schemas
 - define root config 
 - api, table, queue, builder 
