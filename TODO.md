@@ -1,7 +1,9 @@
 ### short [01-binding]
 
-- schema parsing code
-- block parsing code and iterations
+- add path to file_loader
+- add infra blocks to handlers
+- add filter_infra
+- run through schema
 
 - create root recipe
 - parse root config
