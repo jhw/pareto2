@@ -1,6 +1,5 @@
 ### short [01-api]
 
-- add (code) handler to workers and timers
 - build workers and timers (lambda level)
 
 - insert sources into event patterns
@@ -101,6 +100,7 @@
 
 ### done
 
+- add (code) handler to workers and timers
 - build api (and endpoints)
 - add (code) handler to endpoints
 - queue worker demo

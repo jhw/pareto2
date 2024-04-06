@@ -92,7 +92,7 @@ def validate_schema(filename, struct, schema):
         raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
 
 """
-Note that worker and timer create (logical) names from python paths, whereas ednpoint takes (logical) name from endpoint path
+Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path
 """
     
 def handle_lambdas(recipe, assets, endpoints):
@@ -103,15 +103,15 @@ def handle_lambdas(recipe, assets, endpoints):
         validate_schema(filename = filename,
                         struct = struct,
                         schema = schema)
+        struct["handler"] = filename.replace(".py", ".handler") # NB
         if type == "endpoint":
-            struct["handler"] = filename.replace(".py", ".handler")
             endpoints.append(struct)
         elif type == "worker":
-            name = "-".join(filename.split("/")[1:-1])
-            print (name)
+            namespace = "-".join(filename.split("/")[1:-1])
+            print (namespace)
         elif type == "timer":
-            name = "-".join(filename.split("/")[1:-1])
-            print (name)
+            namespace = "-".join(filename.split("/")[1:-1])
+            print (namespace)
         else:
             raise RuntimeError(f"type {type} not recognised")
     
