@@ -128,27 +128,34 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
         if endpoints != []:
             pass
     if "bucket" in struct:
-        pass
+        recipe.append(StreamingBucket(namespace = namespace))
     if "builder" in struct:
-        pass
+        recipe += PipBuilder(namespace = namespace)
     if "queue" in struct:
-        pass
+        recipe += TaskQueue(namespace = namespace)
     if "table" in struct:
-        pass
+        recipe += StreamingTable(namespace = namespace)
     if "website" in struct:
-        pass
+        recipe += WebSite(namespace = namespace)
             
-def generate(pkg_root):
+def build_stack(pkg_root):
     assets = file_loader("hello")
     if not assets.has_root:        
         raise RuntimeError("assets have no root content")
     recipe, endpoints = Recipe(), []
-    handle_lambdas(recipe, assets.lambda_content, endpoints)
     print (endpoints)
+    handle_lambdas(recipe, assets.lambda_content, endpoints)
     handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
+    return recipe
 
 if __name__ == "__main__":
     try:
-        generate("hello")
+        recipe = build_stack("hello")
+        template = recipe.render()
+        template.populate_parameters()
+        import json
+        print () # TEMP
+        print (json.dumps(recipe.render(),
+                          indent=2))
     except RuntimeError as error:
         print ("Error: %s" % str(error))

@@ -1,7 +1,8 @@
 ### short [01-api]
 
+- endpoints need to include path to code
+- initialise WebApi
 - initialise lambda resources
-- initialise root resources
 
 - check event type handling
 - insert sources into event patterns
@@ -9,8 +10,6 @@
 - timeout minimax values
 - infer environment variables as define as part of lambdas 
 - layers
-
-- test template generation
 
 - build/deploy, debug, artifacts scripts
 
@@ -103,6 +102,8 @@
 
 ### done
 
+- test template generation
+- initialise root resources
 - import root recipes and services
 - worker and timer names to come from python paths 
 - add handler block to lambdas
