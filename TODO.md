@@ -1,5 +1,7 @@
 ### short [01-api]
 
+- website to be inferred from bucket public: true field
+
 - insert env variables
 
 - layers
