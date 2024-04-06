@@ -1,7 +1,9 @@
 ### short
 
+- rename web_site as website
+- table index handling
+  - at root level
 - build/deploy, debug, artifacts scripts
-
 - re- test gists
 
 ### medium
