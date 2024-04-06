@@ -1,7 +1,5 @@
 ### short [01-api]
 
-- add s3 bucket bindings
-
 - add sample os.environ refs to hello handlers
 - extract and insert os.environ variables
 
@@ -99,6 +97,7 @@
 
 ### done
 
+- add s3 bucket bindings
 - validate size against available lambda sizes
   - 128 MB and 10,240 MB 
 - timeout minimax values

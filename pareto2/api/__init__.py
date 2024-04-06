@@ -95,7 +95,8 @@ def validate_schema(filename, struct, schema):
 
 def insert_event_source(event, namespace = AppNamespace):
     if event["type"] == "bucket":
-        pass
+        event["pattern"]["detail"].setdefault("bucket", {})
+        event["pattern"]["detail"]["bucket"]["name"] = {"Ref": H(f"{namespace}-bucket")}
     elif event["type"] == "builder":
         event["pattern"]["detail"]["project-name"] = {"Ref": H(f"{namespace}-project")}
     elif event["type"] == "queue":
