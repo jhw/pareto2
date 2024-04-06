@@ -1,7 +1,5 @@
 ### short [01-api]
 
-- extend worker examples to table/bucket/builder etc
-
 - endpoints need to include path to code
 - initialise WebApi
 - initialise lambda resources
@@ -103,6 +101,7 @@
 
 ### done
 
+- extend worker examples to table/bucket/builder etc
 - add type field to worker endpoint
 - add type field to worker event schema
 - test template generation
