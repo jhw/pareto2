@@ -2,11 +2,6 @@
 
 - add s3 bucket bindings
 
-- validate size against available lambda sizes
-  - 128 MB and 10,240 MB 
-- timeout minimax values
-  - 1-900
-
 - add sample os.environ refs to hello handlers
 - extract and insert os.environ variables
 
@@ -104,6 +99,10 @@
 
 ### done
 
+- validate size against available lambda sizes
+  - 128 MB and 10,240 MB 
+- timeout minimax values
+  - 1-900
 - timeout minimax values
   - 1-900
 - insert sources into event patterns

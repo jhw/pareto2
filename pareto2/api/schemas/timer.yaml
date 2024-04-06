@@ -20,7 +20,8 @@ properties:
       type: string
   size: 
     type: integer
-    minimum: 0
+    minumum: 128
+    maximum: 10240
   timeout: 
     type: integer
     minimum: 1
