@@ -1,10 +1,9 @@
 ### short [01-api]
 
-- check function s3 code path support
-- include code path in endpoints
+- add (code) handler to endpoints
 - build api (and endpoints)
 
-- include code paths in workers and timers
+- add (code) handler to workers and timers
 - build workers and timers (lambda level)
 
 - insert sources into event patterns
