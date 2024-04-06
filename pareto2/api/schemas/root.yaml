@@ -1,0 +1,36 @@
+---
+"$schema": "http://json-schema.org/draft-07/schema#"
+type: object
+properties:
+  api:
+    type: object
+    properties: {}
+    required: []
+    additionaProperties: false
+  bucket: 
+    type: object
+    properties: {}
+    required: []
+    additionaProperties: false
+  builder: 
+    type: object
+    properties: {}
+    required: []
+    additionaProperties: false
+  queue: 
+    type: object
+    properties: {}
+    required: []
+    additionaProperties: false
+  table: 
+    type: object
+    properties: {}
+    required: []
+    additionaProperties: false
+  website: 
+    type: object
+    properties: {}
+    required: []
+    additionaProperties: false
+required: []
+additionalProperties: false
