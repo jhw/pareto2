@@ -58,7 +58,7 @@ def batch_records(records):
 """
 
 def handler(event, context, batchsize = 10):
-    source = os.environ["TABLE_NAME"]
+    source = os.environ["APP_TABLE"]
     groups = batch_records(event["Records"])
     entries = [Entry(k, v, source).entry
                for k, v in groups]

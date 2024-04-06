@@ -21,7 +21,7 @@ class StreamingFunction(L.InlineFunction):
             code = f.read()
         super().__init__(namespace = namespace,
                          code = code,
-                         variables = {"table-name": {"Ref": H(f"{table_namespace}-table")}})
+                         variables = {"app-table": {"Ref": H(f"{table_namespace}-table")}})
 
 class StreamingPolicy(Policy):
     
