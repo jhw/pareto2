@@ -38,10 +38,25 @@ def file_loader(pkg_root, root_dir=''):
                     file_contents.append((relative_path, content))
     return file_contents
 
-if __name__ == "__main__":
+def load_schema(type, cache = {}):
+    if type in cache:
+        return cache[type]    
+    filename = "/".join(__file__.split("/")[:-1]+["schemas", f"{type}.yaml"])
+    if not os.path.exists(filename):
+        raise RuntimeError(f"{filename} does not exist")
+    cache[type] = yaml.safe_load(open(filename).read())
+    return cache[type]
+    
+def generate(pkg_root):
     for filename, code in file_loader("hello"):
-        try:
-            print ("--- %s ---" % filename)
-            print (filter_infra(filename, code))
-        except RuntimeError as error:
-            print ("Error: %s" % str(error))
+        struct = filter_infra(filename, code)
+        print (struct)
+        type = struct.pop("type") if "type" in struct else "root"
+        schema = load_schema(type)
+        print (schema)
+
+if __name__ == "__main__":
+    try:
+        generate("hello")
+    except RuntimeError as error:
+        print ("Error: %s" % str(error))

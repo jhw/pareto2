@@ -1,7 +1,6 @@
-### short [01-binding]
+### short [01-api]
 
-- add type to root
-- load schema for type and validate
+- validate schemaa
 
 - create root recipe
 - parse root config
@@ -105,6 +104,8 @@
 
 ### done
 
+- add type to root
+- load schema for type and validate
 - add infra blocks to handlers
 - add path to file_loader
 - schemas

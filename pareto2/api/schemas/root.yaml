@@ -6,31 +6,31 @@ properties:
     type: object
     properties: {}
     required: []
-    additionaProperties: false
+    additionalProperties: false
   bucket: 
     type: object
     properties: {}
     required: []
-    additionaProperties: false
+    additionalProperties: false
   builder: 
     type: object
     properties: {}
     required: []
-    additionaProperties: false
+    additionalProperties: false
   queue: 
     type: object
     properties: {}
     required: []
-    additionaProperties: false
+    additionalProperties: false
   table: 
     type: object
     properties: {}
     required: []
-    additionaProperties: false
+    additionalProperties: false
   website: 
     type: object
     properties: {}
     required: []
-    additionaProperties: false
+    additionalProperties: false
 required: []
 additionalProperties: false

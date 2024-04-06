@@ -7,12 +7,12 @@ properties:
     properties:
       pattern:
         type: object
-	properties:
+        properties:
           detail:
-	    type: object
-	required:
+            type: object
+        required:
         - detail
-	additionalProperties: true
+        additionalProperties: true
     required:
     - pattern
     additionalProperties: false
@@ -24,7 +24,7 @@ properties:
         minimum: 0
       threshold:
         type: integer
-	minimum: 0
+        minimum: 0
     required:
     - period
     - threshold

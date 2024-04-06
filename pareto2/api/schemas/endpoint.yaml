@@ -11,7 +11,7 @@ properties:
     type: string
   auth:
     type: string
-    enum
+    enum:
     - public
     - private
   parameters: 
