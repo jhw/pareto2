@@ -1,8 +1,10 @@
 ### short [01-api]
 
-- build workers and timers (lambda level)
+- create workers and timers
 
 - insert sources into event patterns
+  - event type must be popped from struct?
+  
 - extract and insert os.environ variables
 - validate size against available lambda sizes
 - timeout minimax values
