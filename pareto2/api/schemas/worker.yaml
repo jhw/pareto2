@@ -21,8 +21,10 @@ properties:
     properties:
       period:
         type: integer
+        minimum: 0
       threshold:
         type: integer
+	minimum: 0
     required:
     - period
     - threshold
@@ -31,14 +33,16 @@ properties:
     type: array
     items:
       type: string
-  layers: 
+  layers:   
     type: array
     items:
       type: string
   size: 
     type: integer
+    minimum: 0
   timeout: 
     type: integer
+    minimum: 0
 required:
 - event
 - permissions

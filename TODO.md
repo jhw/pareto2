@@ -1,6 +1,5 @@
 ### short [01-binding]
 
-- schemas
 - schema parsing code
 - block parsing code and iterations
 
@@ -10,9 +9,9 @@
 - iterate through lambdas
 - worker and timer names to come from python paths 
 - insert sources into event patterns
+- size, timeout minimax values
 - infer environment variables as define as part of lambdas 
 - layers
-- size, timeout
 
 - test generating template
 - build/deploy, debug, artifacts scripts
@@ -106,6 +105,7 @@
 
 ### done
 
+- schemas
 - define root config 
 - api, table, queue, builder 
 - api endpoint 
