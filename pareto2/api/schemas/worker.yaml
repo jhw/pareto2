@@ -5,6 +5,13 @@ properties:
   event:
     type: object
     properties:
+      type: 
+        type: string
+        enum:
+        - bucket
+        - builder
+        - table
+        - unbound
       pattern:
         type: object
         properties:
@@ -14,6 +21,7 @@ properties:
         - detail
         additionalProperties: true
     required:
+    - type
     - pattern
     additionalProperties: false
   alarm:

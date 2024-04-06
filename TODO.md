@@ -1,7 +1,5 @@
 ### short [01-api]
 
-- add type field to worker event schema
-- add type field to worker endpoint
 - extend worker examples to table/bucket/builder etc
 
 - endpoints need to include path to code
@@ -105,6 +103,8 @@
 
 ### done
 
+- add type field to worker endpoint
+- add type field to worker event schema
 - test template generation
 - initialise root resources
 - import root recipes and services

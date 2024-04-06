@@ -2,6 +2,7 @@
 infra:
   type: worker
   event:
+    type: table
     pattern:
       detail:
         hello:
