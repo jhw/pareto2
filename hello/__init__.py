@@ -1,6 +1,7 @@
 """
-api: {}
-table: {}
-bucket: {}
-queue: {}
+infra:
+  api: {}
+  table: {}
+  bucket: {}
+  queue: {}
 """

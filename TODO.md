@@ -1,6 +1,5 @@
 ### short [01-binding]
 
-- add infra blocks to handlers
 - add filter_infra
 - run through schema
 
@@ -106,6 +105,7 @@
 
 ### done
 
+- add infra blocks to handlers
 - add path to file_loader
 - schemas
 - define root config 
