@@ -9,8 +9,12 @@ properties:
     additionalProperties: false
   bucket: 
     type: object
-    properties: {}
-    required: []
+    properties:
+    properties:
+      public:
+        type: boolean
+    required:
+    - public
     additionalProperties: false
   builder: 
     type: object
@@ -23,11 +27,6 @@ properties:
     required: []
     additionalProperties: false
   table: 
-    type: object
-    properties: {}
-    required: []
-    additionalProperties: false
-  website: 
     type: object
     properties: {}
     required: []

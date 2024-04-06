@@ -145,24 +145,25 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
     validate_schema(filename = filename,
                     struct = struct,
                     schema = schema)
-    for attr in ["api", "bucket"]:        
-        if (attr in struct and
-            "website" in struct):
-            raise RuntimeError(f"app can't have both {attr} and website")
+    if ("api" in struct and
+        "bucket" in struct and
+        struct["bucket"]["public"]):
+        raise RuntimeError(f"app can't have both api and public bucket")
     if "api" in struct:
         if endpoints != []:
             recipe += WebApi(namespace = namespace,
                              endpoints = endpoints)
     if "bucket" in struct:
-        recipe.append(StreamingBucket(namespace = namespace))
+        if struct["bucket"]["public"]:
+            recipe += WebSite(namespace = namespace)
+        else:
+            recipe.append(StreamingBucket(namespace = namespace))
     if "builder" in struct:
         recipe += PipBuilder(namespace = namespace)
     if "queue" in struct:
         recipe += TaskQueue(namespace = namespace)
     if "table" in struct:
         recipe += StreamingTable(namespace = namespace)
-    if "website" in struct:
-        recipe += WebSite(namespace = namespace)
             
 def build_stack(pkg_root):
     assets = file_loader("hello")
