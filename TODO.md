@@ -1,11 +1,8 @@
 ### short [01-api]
 
-- separate root struct from lambdas
-- check for website vs api|bucket conflicts
+- allow api and endpoints to be created separately
+- create root assets in app workspace
 
-- create root recipe
-- parse root config
-- iterate through lambdas
 - worker and timer names to come from python paths 
 - insert sources into event patterns
 - validate size against available lambda sizes
@@ -105,6 +102,9 @@
 
 ### done
 
+- create root recipe
+- separate root struct from lambdas
+- check for website vs api|bucket conflicts
 - validate schemaa
 - add type to root
 - load schema for type and validate
