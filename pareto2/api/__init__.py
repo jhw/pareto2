@@ -79,7 +79,16 @@ def validate_schema(filename, struct, schema):
     except jsonschema.exceptions.ValidationError as error:
         raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
 
-def handle_root(recipe, filename, code):
+def handle_lambdas(recipe, assets, endpoints):
+    for filename, code in assets.items():
+        struct = filter_infra(filename, code)
+        type = struct.pop("type") if "type" in struct else "root"
+        schema = load_schema(type)
+        validate_schema(filename = filename,
+                        struct = struct,
+                        schema = schema)
+    
+def handle_root(recipe, filename, code, endpoints):
     struct = filter_infra(filename, code)
     schema = load_schema("root")
     validate_schema(filename = filename,
@@ -102,22 +111,14 @@ def handle_root(recipe, filename, code):
     if "website" in struct:
         pass
         
-def handle_lambda(recipe, assets):
-    for filename, code in assets.items():
-        struct = filter_infra(filename, code)
-        type = struct.pop("type") if "type" in struct else "root"
-        schema = load_schema(type)
-        validate_schema(filename = filename,
-                        struct = struct,
-                        schema = schema)
     
 def generate(pkg_root):
     assets = file_loader("hello")
     if not assets.has_root:        
         raise RuntimeError("assets have no root content")
-    recipe = Recipe()
-    handle_root(recipe, assets.root_filename, assets.root_content)
-    handle_lambda(recipe, assets.lambda_content)
+    recipe, endpoints = Recipe(), []
+    handle_lambdas(recipe, assets.lambda_content, endpoints)
+    handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
 
 if __name__ == "__main__":
     try:

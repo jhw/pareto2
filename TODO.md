@@ -1,7 +1,5 @@
 ### short [01-api]
 
-- move root creation behind lambdas
-- initialise endpoints and pass to lambdas and root
 - add handler block to lambdas
 - lambdas to append endpoints
 - add root namespace
@@ -107,6 +105,8 @@
 
 ### done
 
+- move root creation behind lambdas
+- initialise endpoints and pass to lambdas and root
 - create root recipe
 - separate root struct from lambdas
 - check for website vs api|bucket conflicts
