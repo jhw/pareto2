@@ -1,0 +1,31 @@
+---
+"$schema": "http://json-schema.org/draft-07/schema#"
+type: object
+properties:
+  event:
+    type: object
+    properties:
+      schedule:
+        type: str
+    required:
+    - schedule
+    additionalProperties: false
+  permissions: 
+    type: array
+    items:
+      type: string
+  layers: 
+    type: array
+    items:
+      type: string
+  size: 
+    type: integer
+  timeout: 
+    type: integer
+required:
+- event
+- permissions
+- layers
+- size
+- timeout
+additionalProperties: false
