@@ -119,7 +119,8 @@ def function_kwargs(endpoint):
                  "handler",
                  "memory",
                  "timeout",
-                "runtime",
+                 "runtime",
+                 "variables",
                  "layers"]:
         if attr in endpoint:
             kwargs[attr] = endpoint[attr]

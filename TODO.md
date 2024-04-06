@@ -1,7 +1,5 @@
 ### short [01-api]
 
-- env variables are not being passed through properly
-
 - website to be inferred from bucket `public: true` field
 - bucket `binary-media` field
 
@@ -97,6 +95,7 @@
 
 ### done
 
+- env variables are not being passed through properly
 - should env variables changed context (APP_XXX -> XXX_NAME)?
 - insert env variables
 - add sample os.environ refs to hello handlers
