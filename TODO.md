@@ -1,7 +1,7 @@
 ### short [01-binding]
 
-- add filter_infra
-- run through schema
+- add type to root
+- load schema for type and validate
 
 - create root recipe
 - parse root config
@@ -13,7 +13,7 @@
 - infer environment variables as define as part of lambdas 
 - layers
 
-- test generating template
+- test template generation
 - build/deploy, debug, artifacts scripts
 
 ### medium
