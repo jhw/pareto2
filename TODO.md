@@ -1,7 +1,5 @@
 ### short [01-api]
 
-- build api (and endpoints)
-
 - add (code) handler to workers and timers
 - build workers and timers (lambda level)
 
@@ -15,8 +13,9 @@
 
 ### medium
 
-- re- test streaming table
-- test alarm
+- check website binary media switch
+
+- re- test gists
 
 ### long
 
@@ -102,6 +101,7 @@
 
 ### done
 
+- build api (and endpoints)
 - add (code) handler to endpoints
 - queue worker demo
 - extend worker examples to table/bucket/builder etc

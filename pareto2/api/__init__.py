@@ -127,7 +127,8 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
             raise RuntimeError(f"app can't have both {attr} and website")
     if "api" in struct:
         if endpoints != []:
-            pass
+            recipe += WebApi(namespace = namespace,
+                             endpoints = endpoints)
     if "bucket" in struct:
         recipe.append(StreamingBucket(namespace = namespace))
     if "builder" in struct:
@@ -145,7 +146,6 @@ def build_stack(pkg_root):
         raise RuntimeError("assets have no root content")
     recipe, endpoints = Recipe(), []
     handle_lambdas(recipe, assets.lambda_content, endpoints)
-    print (endpoints)
     handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
     return recipe
 
@@ -154,11 +154,7 @@ if __name__ == "__main__":
         recipe = build_stack("hello")
         template = recipe.render()
         template.populate_parameters()
-        """
-        import json
-        print () # TEMP
-        print (json.dumps(recipe.render(),
-                          indent=2))
-        """
+        print ()
+        print (list(template["Parameters"].keys()))
     except RuntimeError as error:
         print ("Error: %s" % str(error))
