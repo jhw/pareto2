@@ -1,5 +1,7 @@
 ### short
 
+- support for os.getenv() when looking up env variables
+
 - table indexes api support
 - table batch window api support
 
