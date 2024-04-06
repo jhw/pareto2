@@ -109,6 +109,9 @@ def insert_event_source(event, namespace = AppNamespace):
         event["pattern"]["source"] = {"Ref": H(f"{namespace}-queue")}
     elif event["type"] == "table":
         event["pattern"]["source"] = {"Ref": H(f"{namespace}-table")}
+    elif event["type"] == "unbound":
+        if "detail-type" not in event["pattern"]:
+            raise RuntimeError("unbound event must have detail-type")
     
 """
 Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path

@@ -1,7 +1,6 @@
 ### short
 
 - rename web_site as website
-- enforce detail-type if event type is unbound
 - table index handling at root level
 - table batching window at root level
 - build/deploy, debug, artifacts scripts
@@ -93,6 +92,7 @@
 
 ### done
 
+- enforce detail-type if event type is unbound
 - layers
 - bucket `binary-media` field
 - website to be inferred from bucket `public: true` field
