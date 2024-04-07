@@ -1,7 +1,5 @@
 ### short
 
-- add support for os.getenv() in env lookup
-
 - table indexes api support
 - table batch window api support
 
@@ -96,6 +94,7 @@
 
 ### done
 
+- add support for os.getenv() in env lookup
 - convert assets to list and add new asset class with contains infra ane env_variables
 - bad refs to artifacts bucket and key
 - rename web_site as website
