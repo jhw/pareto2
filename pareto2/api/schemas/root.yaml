@@ -10,7 +10,6 @@ properties:
   bucket: 
     type: object
     properties:
-    properties:
       public:
         type: boolean
       binary-media:
@@ -25,12 +24,18 @@ properties:
     additionalProperties: false
   queue: 
     type: object
-    properties: {}
+    properties:
+      batch-size:
+        type: integer
+        minimum: 1
     required: []
     additionalProperties: false
   table: 
     type: object
-    properties: {}
+    properties:
+      batch-window:
+        type: integer
+        minimum: 0
     required: []
     additionalProperties: false
 required: []

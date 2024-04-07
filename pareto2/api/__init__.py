@@ -176,9 +176,13 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
     if "builder" in struct:
         recipe += PipBuilder(namespace = namespace)
     if "queue" in struct:
-        recipe += TaskQueue(namespace = namespace)
+        batch_size = struct["queue"]["batch-size"] if "batch-size" in struct["queue"] else 10
+        recipe += TaskQueue(namespace = namespace,
+                            batch_size = batch_size)
     if "table" in struct:
-        recipe += StreamTable(namespace = namespace)
+        batch_window = struct["table"]["batch-window"] if "batch-table" in struct["table"] else 1
+        recipe += StreamTable(namespace = namespace,
+                              batch_window = batch_window)
             
 def build_stack(pkg_root):
     assets = file_loader("hello")

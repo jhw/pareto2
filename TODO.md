@@ -1,13 +1,14 @@
 ### short
 
 - add api stream table indexes support
-- add api stream table batch window support
-- add api task queue batch support
 
-- build/deploy, debug, artifacts scripts
-- re- test gists
+- build/deploy script
 
 ### medium
+
+- debug, artifacts scripts
+
+- re- test gists
 
 ### long
 
@@ -95,6 +96,8 @@
 
 ### done
 
+- add api stream table batch window support
+- add api task queue batch support
 - rename has_binary
 - rename streaming as stream
 - add batch_size support to task queue

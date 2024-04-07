@@ -4,6 +4,8 @@ infra:
   bucket:
     public: false
   builder: {}
-  queue: {}
-  table: {}
+  queue: 
+    batch-size: 10
+  table:
+    batch-window: 1
 """
