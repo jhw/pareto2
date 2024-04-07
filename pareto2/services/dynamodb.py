@@ -45,7 +45,7 @@ class Table(Resource):
     def visible(self):
         return True
 
-class StreamingTable(Table):
+class StreamTable(Table):
     
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace,

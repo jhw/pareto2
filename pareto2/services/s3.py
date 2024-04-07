@@ -7,7 +7,7 @@ class Bucket(Resource):
     def visible(self):
         return True
 
-class StreamingBucket(Bucket):
+class StreamBucket(Bucket):
 
     @property
     def aws_properties(self):
