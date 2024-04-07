@@ -1,8 +1,5 @@
 ### short
 
-- add minItems to all api arrays
-- force index type to be an S
-
 - build/deploy script
 
 ### medium
@@ -26,6 +23,8 @@
 
 ### thoughts
 
+- add minItems to all api arrays?
+  - might damage intention to be explicit because then you have to miss out empty arrays
 - replace os.env lookup with list of app level variables passed to all lambdas?
   - but then root has to be parsed ahead of lambdas; you can't have it both ways
 - separate hello2 test to check website?
@@ -97,6 +96,7 @@
 
 ### done
 
+- force index type to be an S
 - add api stream table indexes support
 - add api stream table batch window support
 - add api task queue batch support

@@ -45,6 +45,9 @@ properties:
               type: string
             type:
               type: string
+              enum:
+              - S
+              # - N
           required:
           - name
           - type

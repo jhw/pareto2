@@ -9,6 +9,6 @@ infra:
   table:
     batch-window: 1
     indexes:
-    - name: foo
-      type: bar
+    - name: foobar
+      type: S
 """
