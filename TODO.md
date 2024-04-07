@@ -1,7 +1,9 @@
 ### short
 
-- table indexes api support
-- table batch window api support
+- rename streaming as stream
+
+- add api table indexes support
+- add api table batch window support
 
 - build/deploy, debug, artifacts scripts
 - re- test gists
@@ -94,6 +96,8 @@
 
 ### done
 
+- add batch window support to DDB Mapping
+- add indexes support tyo StreamingTable
 - add support for os.getenv() in env lookup
 - convert assets to list and add new asset class with contains infra ane env_variables
 - bad refs to artifacts bucket and key

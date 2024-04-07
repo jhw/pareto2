@@ -41,23 +41,28 @@ class StreamingTable(AlertsMixin):
     
     def __init__(self,
                  namespace,
+                 batch_window = 1,
+                 indexes = [],
                  log_levels = ["error"]):
         super().__init__()
         streaming_namespace = f"{namespace}-streaming-table"        
-        self.append(StreamingTableResource(namespace = namespace))
+        self.append(StreamingTableResource(namespace = namespace,
+                                           indexes = indexes))
         self.init_streaming(namespace = namespace,
-                            streaming_namespace = streaming_namespace)
+                            streaming_namespace = streaming_namespace,
+                            batch_window = batch_window)
         self.init_alert_hooks(function_namespace = streaming_namespace,
                               log_levels = log_levels)
         self.init_alert_resources()
 
-    def init_streaming(self, namespace, streaming_namespace):
+    def init_streaming(self, namespace, streaming_namespace, batch_window):
         self += [StreamingFunction(namespace = streaming_namespace,
                                    table_namespace = namespace),
                  Role(namespace = streaming_namespace),
                  StreamingPolicy(namespace = streaming_namespace,
                                  table_namespace = namespace),
                  L.DynamoDBEventSourceMapping(namespace = streaming_namespace,
+                                              batch_window = batch_window,
                                               source_arn = {"Fn::GetAtt": [H(f"{namespace}-table"), "StreamArn"]})]
             
 if __name__ == "__main__":

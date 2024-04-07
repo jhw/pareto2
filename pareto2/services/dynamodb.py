@@ -47,7 +47,7 @@ class Table(Resource):
 
 class StreamingTable(Table):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace,
                          attributes = [{"name": "pk",
                                         "type": "S"},
@@ -57,5 +57,6 @@ class StreamingTable(Table):
                                      "type": "HASH"},
                                     {"name": "sk",
                                      "type": "RANGE"}],
-                         stream_type = "NEW_AND_OLD_IMAGES")
+                         stream_type = "NEW_AND_OLD_IMAGES",
+                         **kwargs)
 
