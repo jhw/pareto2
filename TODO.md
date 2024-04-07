@@ -1,7 +1,5 @@
 ### short
 
-- add batch_size support to task queeu
-
 - rename streaming as stream
 
 - add api stream table indexes support
@@ -99,6 +97,7 @@
 
 ### done
 
+- add batch_size support to task queue
 - add batch window support to DDB Mapping
 - add indexes support tyo StreamingTable
 - add support for os.getenv() in env lookup

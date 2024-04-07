@@ -40,23 +40,26 @@ class TaskQueue(AlertsMixin):
     
     def __init__(self,
                  namespace,
+                 batch_size = 10,
                  log_levels = ["error"]):
         super().__init__()
         queue_namespace = f"{namespace}-task-queue"        
         self.append(Queue(namespace = namespace))
         self.init_queue(namespace = namespace,
-                        queue_namespace = queue_namespace)
+                        queue_namespace = queue_namespace,
+                        batch_size = batch_size)
         self.init_alert_hooks(function_namespace = queue_namespace,
                               log_levels = log_levels)
         self.init_alert_resources()
 
-    def init_queue(self, namespace, queue_namespace):
+    def init_queue(self, namespace, queue_namespace, batch_size):
         self += [QueueFunction(namespace = queue_namespace,
                                queue_namespace = namespace),
                  Role(namespace = queue_namespace),
                  QueuePolicy(namespace = queue_namespace,
                                 queue_namespace = namespace),
                  L.SQSEventSourceMapping(namespace = queue_namespace,
+                                         batch_size = batch_size,
                                          source_arn = {"Fn::GetAtt": [H(f"{namespace}-queue"), "Arn"]})]
             
 if __name__ == "__main__":
