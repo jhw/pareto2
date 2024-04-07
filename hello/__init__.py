@@ -8,4 +8,7 @@ infra:
     batch-size: 10
   table:
     batch-window: 1
+    indexes:
+    - name: foo
+      type: bar
 """

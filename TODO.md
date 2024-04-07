@@ -1,6 +1,7 @@
 ### short
 
-- add api stream table indexes support
+- add minItems to all api arrays
+- force index type to be an S
 
 - build/deploy script
 
@@ -96,6 +97,7 @@
 
 ### done
 
+- add api stream table indexes support
 - add api stream table batch window support
 - add api task queue batch support
 - rename has_binary

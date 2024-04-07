@@ -180,8 +180,10 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
         recipe += TaskQueue(namespace = namespace,
                             batch_size = batch_size)
     if "table" in struct:
+        indexes = struct["table"]["indexes"] if "indexes" in struct["table"] else []
         batch_window = struct["table"]["batch-window"] if "batch-table" in struct["table"] else 1
         recipe += StreamTable(namespace = namespace,
+                              indexes = indexes,
                               batch_window = batch_window)
             
 def build_stack(pkg_root):

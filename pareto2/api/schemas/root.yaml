@@ -36,6 +36,19 @@ properties:
       batch-window:
         type: integer
         minimum: 0
+      indexes:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            type:
+              type: string
+          required:
+          - name
+          - type
+          additionalProperties: false
     required: []
     additionalProperties: false
 required: []
