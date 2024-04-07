@@ -52,8 +52,8 @@ class S3Function(Function):
 
     def __init__(self, namespace, handler, **kwargs):
         super().__init__(namespace = namespace,
-                         code = {"S3Bucket": H("artifacts-bucket"),
-                                 "S3Key": H("artifacts-key")},
+                         code = {"S3Bucket": {"Ref": H("artifacts-bucket")},
+                                 "S3Key": {"Ref": H("artifacts-key")}},
                          handler = handler,
                          **kwargs)
 

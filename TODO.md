@@ -1,6 +1,6 @@
 ### short
 
-- replace os.env lookup with list of app level variables passed to all lambdas
+- convert assets to list and add new asset class with contains infra ane env_variables
 
 - table indexes api support
 - table batch window api support
@@ -25,6 +25,8 @@
 
 ### thoughts
 
+- replace os.env lookup with list of app level variables passed to all lambdas?
+  - but then root has to be parsed ahead of lambdas; you can't have it both ways
 - separate hello2 test to check website?
 - add alarm to web api?
 - roles mixin?
@@ -94,6 +96,7 @@
 
 ### done
 
+- bad refs to artifacts bucket and key
 - rename web_site as website
 - enforce detail-type if event type is unbound
 - layers
