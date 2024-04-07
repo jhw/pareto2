@@ -95,6 +95,7 @@
 
 ### done
 
+- rename has_binary
 - rename streaming as stream
 - add batch_size support to task queue
 - add batch window support to DDB Mapping

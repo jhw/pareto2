@@ -168,9 +168,9 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
                              endpoints = endpoints)
     if "bucket" in struct:
         if struct["bucket"]["public"]:
-            has_binary_media = struct["bucket"]["binary-media"] if "binary-media" in struct["bucket"] else False
+            binary_media = struct["bucket"]["binary-media"] if "binary-media" in struct["bucket"] else False
             recipe += Website(namespace = namespace,
-                              has_binary_media = has_binary_media)
+                              binary_media = binary_media)
         else:
             recipe.append(StreamBucket(namespace = namespace))
     if "builder" in struct:

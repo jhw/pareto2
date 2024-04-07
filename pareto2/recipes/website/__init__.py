@@ -105,10 +105,10 @@ BinaryMediaTypes = ["*/*"] is required if you want to get this pattern to serve 
 
 class Website(Recipe):    
 
-    def __init__(self, namespace, has_binary_media = True):
+    def __init__(self, namespace, binary_media = True):
         super().__init__()
         self.append(RestApi(namespace = namespace,
-                            binary_media_types = ["*/*"] if has_binary_media else []))
+                            binary_media_types = ["*/*"] if binary_media else []))
         for klass in [Stage,
                       ProxyResource,
                       ProxyRole,
@@ -118,7 +118,7 @@ class Website(Recipe):
                       DistributedRecordSet, # NB                   
                       StreamBucket]:
             self.append(klass(namespace = namespace))
-        method_attrs = ["proxy", "redirect"] if not has_binary_media else ["proxy"]            
+        method_attrs = ["proxy", "redirect"] if not binary_media else ["proxy"]            
         for attr in method_attrs:
             klass = eval("%sMethod" % attr.capitalize())
             self.append(klass(namespace = f"{namespace}-{attr}",
