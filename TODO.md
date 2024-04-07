@@ -1,11 +1,22 @@
 ### short
 
-- build/deploy script
+- webapi, website to parameterise regional, distribution certificate arns
+- rename StreamTable as StreamSingleTableDesignTable
+- add SingleTableDesignTable subclass
+- ensure topic is visible
+- investigate resources required for pareto 0.7 topic
+  - topic, topic policy, subscription, permission
+  - topic policy may not be required
+- remove event worker event requirement
+- if event worker event not specified, bind to topic
+- new topic demo test and gist
+- aggregate and cache all inferred env variables
+- check env variables against resources
 
 ### medium
 
+- build/deploy script
 - debug, artifacts scripts
-
 - re- test gists
 
 ### long
