@@ -45,7 +45,11 @@ class Table(Resource):
     def visible(self):
         return True
 
-class StreamSingleTableDesignTable(Table):
+"""
+STD == SingleTableDesign
+"""
+    
+class STDTable(Table):
     
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace,
@@ -57,6 +61,13 @@ class StreamSingleTableDesignTable(Table):
                                      "type": "HASH"},
                                     {"name": "sk",
                                      "type": "RANGE"}],
+                         **kwargs)
+
+class StreamSTDTable(STDTable):
+    
+    def __init__(self, namespace, **kwargs):
+        super().__init__(namespace = namespace,
                          stream_type = "NEW_AND_OLD_IMAGES",
                          **kwargs)
+
 

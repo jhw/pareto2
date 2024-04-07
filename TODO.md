@@ -1,7 +1,5 @@
 ### short
 
-- rename StreamTable as StreamSingleTableDesignTable
-- add SingleTableDesignTable subclass
 - ensure topic is visible
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
@@ -106,6 +104,8 @@
 
 ### done
 
+- rename StreamTable as StreamSingleTableDesignTable
+- add SingleTableDesignTable subclass
 - rename distributed as distribution
 - webapi, website to parameterise regional, distribution certificate arns
 - force index type to be an S
