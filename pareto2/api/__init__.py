@@ -47,10 +47,13 @@ class Code:
 
     @property
     def env_variables(self):
-        return set([tok[1:-1].lower().replace("_", "-")
-                    for tok in re.findall(r"os\.environ\[(.*?)\]",
-                                          re.sub("\\s", "", self.text))
-                    if tok.upper()==tok])
+        cleantext, refs = re.sub("\\s", "", self.text), set()
+        for expr in [r"os\.environ\[(.*?)\]",
+                     r"os\.getenv\((.*?)\)"]:
+            refs.update(set([tok[1:-1].lower().replace("_", "-")
+                             for tok in re.findall(expr, cleantext)
+                             if tok.upper()==tok]))
+        return refs
     
 class Assets(dict):
 
