@@ -1,6 +1,6 @@
 ### short
 
-- support for os.getenv() when looking up env variables
+- replace os.env lookup with list of app level variables passed to all lambdas
 
 - table indexes api support
 - table batch window api support
