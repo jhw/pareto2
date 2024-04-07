@@ -1,5 +1,8 @@
 ### short
 
+- ask chatgpt about including AWS::StackName in Name fields
+  - do Names exist in the global namespace?
+
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
   - topic policy may not be required
