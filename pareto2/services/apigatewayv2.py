@@ -61,10 +61,6 @@ class Stage(Resource):
             "AutoDeploy": True
         }
 
-    @property
-    def visible(self):
-        return True
-        
 class Route(Resource):
     
     def __init__(self, namespace, api_namespace, endpoint):

@@ -1,14 +1,14 @@
 ### short
 
-- ensure topic is visible
+- aggregate and cache all inferred env variables
+- check env variables against resources
+
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
   - topic policy may not be required
 - remove event worker event requirement
 - if event worker event not specified, bind to topic
 - new topic demo test and gist
-- aggregate and cache all inferred env variables
-- check env variables against resources
 
 ### medium
 
@@ -104,6 +104,7 @@
 
 ### done
 
+- ensure topic is visible
 - rename StreamTable as StreamSingleTableDesignTable
 - add SingleTableDesignTable subclass
 - rename distributed as distribution
