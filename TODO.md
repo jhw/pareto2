@@ -1,7 +1,5 @@
 ### short
 
-- convert assets to list and add new asset class with contains infra ane env_variables
-
 - table indexes api support
 - table batch window api support
 
@@ -96,6 +94,7 @@
 
 ### done
 
+- convert assets to list and add new asset class with contains infra ane env_variables
 - bad refs to artifacts bucket and key
 - rename web_site as website
 - enforce detail-type if event type is unbound
