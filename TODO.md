@@ -1,9 +1,12 @@
 ### short
 
+- add batch_size support to task queeu
+
 - rename streaming as stream
 
-- add api table indexes support
-- add api table batch window support
+- add api stream table indexes support
+- add api stream table batch window support
+- add api task queue batch support
 
 - build/deploy, debug, artifacts scripts
 - re- test gists
