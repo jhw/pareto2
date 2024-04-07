@@ -1,5 +1,6 @@
 ### short
 
+- rename distributed as distribution
 - webapi, website to parameterise regional, distribution certificate arns
 - rename StreamTable as StreamSingleTableDesignTable
 - add SingleTableDesignTable subclass

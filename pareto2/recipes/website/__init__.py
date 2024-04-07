@@ -115,7 +115,7 @@ class Website(Recipe):
                       ProxyPolicy,
                       DomainName,
                       BasePathMapping,
-                      DistributedRecordSet, # NB                   
+                      DistributionRecordSet, # NB                   
                       StreamBucket]:
             self.append(klass(namespace = namespace))
         method_attrs = ["proxy", "redirect"] if not binary_media else ["proxy"]            

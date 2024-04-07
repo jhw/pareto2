@@ -36,11 +36,11 @@ class RecordSet(Resource):
             "AliasTarget": alias_target
         }
 
-class DistributedRecordSet(RecordSet):
+class DistributionRecordSet(RecordSet):
 
     def __init__(self, namespace):
         super().__init__(namespace = namespace,
-                         distribution = "distribution") # NB distribution not distributed!
+                         distribution = "distribution")
 
 class RegionalRecordSet(RecordSet):
 
