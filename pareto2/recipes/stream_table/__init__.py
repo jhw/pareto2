@@ -1,5 +1,5 @@
 from pareto2.services import hungarorise as H
-from pareto2.services.dynamodb import StreamTable as StreamTableResource
+from pareto2.services.dynamodb import *
 from pareto2.services.iam import *
 from pareto2.recipes import *
 from pareto2.recipes.mixins.alerts import AlertsMixin
@@ -46,8 +46,8 @@ class StreamTable(AlertsMixin):
                  log_levels = ["error"]):
         super().__init__()
         stream_namespace = f"{namespace}-stream-table"        
-        self.append(StreamTableResource(namespace = namespace,
-                                        indexes = indexes))
+        self.append(StreamSingleTableDesignTable(namespace = namespace,
+                                                 indexes = indexes))
         self.init_stream(namespace = namespace,
                             stream_namespace = stream_namespace,
                             batch_window = batch_window)
