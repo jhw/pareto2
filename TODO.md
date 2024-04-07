@@ -1,7 +1,5 @@
 ### short
 
-- rename streaming as stream
-
 - add api stream table indexes support
 - add api stream table batch window support
 - add api task queue batch support
@@ -97,6 +95,7 @@
 
 ### done
 
+- rename streaming as stream
 - add batch_size support to task queue
 - add batch window support to DDB Mapping
 - add indexes support tyo StreamingTable
