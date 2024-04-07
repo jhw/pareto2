@@ -12,7 +12,7 @@ class WebsiteTest(unittest.TestCase):
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 2)
         for attr in ["DomainName",
-                     "CertificateArn"]:
+                     "DistributionCertificateArn"]:
             self.assertTrue(attr in parameters)
         
 if __name__ == "__main__":

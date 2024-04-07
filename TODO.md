@@ -1,7 +1,5 @@
 ### short
 
-- rename distributed as distribution
-- webapi, website to parameterise regional, distribution certificate arns
 - rename StreamTable as StreamSingleTableDesignTable
 - add SingleTableDesignTable subclass
 - ensure topic is visible
@@ -108,6 +106,8 @@
 
 ### done
 
+- rename distributed as distribution
+- webapi, website to parameterise regional, distribution certificate arns
 - force index type to be an S
 - add api stream table indexes support
 - add api stream table batch window support

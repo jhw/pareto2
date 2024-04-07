@@ -59,7 +59,7 @@ class WebApiTest(unittest.TestCase):
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 3)
         for attr in ["DomainName",
-                     "CertificateArn",
+                     "RegionalCertificateArn",
                      "AllowedOrigins"]:
             self.assertTrue(attr in parameters)
 

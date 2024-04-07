@@ -82,12 +82,17 @@ class Method(AWSResource):
     pass
     
 class DomainName(AWSResource):
-
+    
+    """
+    APIGateway v1 requires DistributionDomainName/DistributionHostedZoneId (not Regional) 
+    Certificate must be in us-east-1 and there is a (hidden) Cloudfront dependency
+    """
+    
     @property
     def aws_properties(self):
         return {
             "DomainName": {"Ref": H("domain-name")},
-            "CertificateArn": {"Ref": H("certificate-arn")}
+            "CertificateArn": {"Ref": H("distribution-certificate-arn")}
         }
     
 class BasePathMapping(AWSResource):

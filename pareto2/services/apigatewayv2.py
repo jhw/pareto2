@@ -125,12 +125,17 @@ class Authorizer(Resource):
 
 class DomainName(Resource):
 
+    """
+    APIGateway v2 works with RegionalDomainName/RegionalHostedZoneId; you don't have to use DistributionDomainName/DistributionHostedZoneId (in fact I don't believe these are supported by AWS::APiGatewayV2::DomainName)
+    There is no us-east-1 requirement, nor Cloudfront dependency
+    """
+    
     @property
     def aws_properties(self):
         return {
             "DomainName": {"Ref": H("domain-name")},
             "DomainNameConfigurations": [
-                {"CertificateArn": {"Ref": H("certificate-arn")}}
+                {"CertificateArn": {"Ref": H("regional-certificate-arn")}}
             ]
         }
 
