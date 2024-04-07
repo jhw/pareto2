@@ -147,11 +147,39 @@ def policy_permissions(worker,
         permissions.update(set(worker["permissions"]))
     return sorted(list(permissions))
 
+def is_singleton(resource, prefixes = ["alert",
+                                       "alarm",
+                                       "app-bucket"]):
+    resource_name = resource.resource_name
+    for prefix in prefixes:
+        if resource_name.startswith(prefix):
+            return True
+    return False
+
 class Recipe(list):
 
     def __init__(self):
         list.__init__(self)
 
+    @property
+    def resource_names(self):
+        return [resource.resource_name
+                for resource in self]
+
+    def validate_resource_name_uniqueness(self):
+        counts = {}
+        for resource in self:
+            if not is_singleton(resource):
+                counts.setdefault(resource.resource_name, 0)
+                counts[resource.resource_name] += 1
+        duplicates = [k for k, v in counts.items()
+                      if v > 1]
+        if duplicates != []:
+            raise RuntimeError("duplicate resource names: %s" % ", ".join(duplicates))
+    
+    def validate(self):
+        self.validate_resource_name_uniqueness()
+    
     def render(self):
         return Template(self)
 

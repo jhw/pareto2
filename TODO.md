@@ -1,8 +1,5 @@
 ### short
 
-- aggregate and cache all inferred env variables
-- check env variables against resources
-
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
   - topic policy may not be required
@@ -104,6 +101,8 @@
 
 ### done
 
+- aggregate and cache all inferred env variables
+- check env variables against resources
 - ensure topic is visible
 - rename StreamTable as StreamSingleTableDesignTable
 - add SingleTableDesignTable subclass

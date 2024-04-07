@@ -127,7 +127,7 @@ def insert_event_source(event, namespace = AppNamespace):
 Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path
 """
     
-def handle_lambdas(recipe, assets, endpoints):
+def handle_lambdas(recipe, assets, endpoints, variables):
     for filename, code in assets.items():
         struct = code.infra
         type = struct.pop("type") if "type" in struct else "root"
@@ -138,6 +138,7 @@ def handle_lambdas(recipe, assets, endpoints):
         struct["handler"] = filename.replace(".py", ".handler") 
         struct["variables"] = {k: {"Ref": H(k)}
                                for k in code.env_variables}
+        variables.update(struct["variables"])
         if type == "endpoint":
             endpoints.append(struct)
         elif type == "worker":
@@ -185,14 +186,23 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
         recipe += StreamTable(namespace = namespace,
                               indexes = indexes,
                               batch_window = batch_window)
-            
+
+def post_validate_env_variables(recipe, variables):
+    resource_names = recipe.resource_names
+    missing = [variable for variable in variables
+               if variable not in resource_names]
+    if missing != []:
+        raise RuntimeError("references to unknown resources: %s" % ", ".join(missing))
+
 def build_stack(pkg_root):
     assets = file_loader("hello")
     if not assets.has_root:        
         raise RuntimeError("assets have no root content")
-    recipe, endpoints = Recipe(), []
-    handle_lambdas(recipe, assets.lambda_content, endpoints)
+    recipe, endpoints, variables = Recipe(), [], set()
+    handle_lambdas(recipe, assets.lambda_content, endpoints, variables)
     handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
+    post_validate_env_variables(recipe, variables)
+    recipe.validate()
     return recipe
 
 if __name__ == "__main__":
