@@ -1,7 +1,6 @@
 ### short
 
-- ask chatgpt about including AWS::StackName in Name fields
-  - do Names exist in the global namespace?
+- pass singletons as part of recipe constructor in regex form
 
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
@@ -9,6 +8,11 @@
 - remove event worker event requirement
 - if event worker event not specified, bind to topic
 - new topic demo test and gist
+
+- add api main hack to test website stuff
+
+- ask chatgpt about including AWS::StackName in Name fields
+  - do Names exist in the global namespace?
 
 ### medium
 
