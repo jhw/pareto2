@@ -1,5 +1,7 @@
 ### short [01-topic-worker]
 
+- function_namespace should default to namespace if the two are the same
+
 - api/__init_.py to be written as a test class, asserting parameters
   
 ### medium
