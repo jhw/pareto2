@@ -3,9 +3,7 @@ from pareto2.services import Resource
 
 class Topic(Resource):
 
-    @property
-    def visible(self):
-        return True
+    pass
     
 class Subscription(Resource):
 

@@ -10,7 +10,7 @@ import importlib
 
 L = importlib.import_module("pareto2.services.lambda")
 
-class EventPermission(L.Permission):
+class RulePermission(L.Permission):
 
     def __init__(self, namespace, function_namespace):
         source_arn = {"Fn::GetAtt": [H(f"{namespace}-rule"), "Arn"]}
@@ -18,6 +18,14 @@ class EventPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
+class TopicPermission(L.Permission):
+
+    def __init__(self, namespace, function_namespace):
+        source_arn = {"Ref": H(f"{namespace}-topic")}
+        super().__init__(namespace = function_namespace,    
+                         source_arn = source_arn,
+                         principal = "sns.amazonaws.com")
+        
 class EventWorker(AlarmsMixin, AlertsMixin):    
 
     def __init__(self,
@@ -45,8 +53,8 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                         permissions = policy_permissions(worker)),
                  PatternRule(namespace = namespace,
                              pattern = worker["event"]["pattern"]),
-                 EventPermission(namespace = namespace,
-                                 function_namespace = namespace)]
+                 RulePermission(namespace = namespace,
+                                function_namespace = namespace)]
 
     def init_topic_worker(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
@@ -55,7 +63,10 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                  L.EventInvokeConfig(namespace = namespace),
                  Role(namespace = namespace),
                  Policy(namespace = namespace,
-                        permissions = policy_permissions(worker))]
+                        permissions = policy_permissions(worker)),
+                 Topic(namespace = namespace),
+                 TopicPermission(namespace = namespace,
+                                 function_namespace = namespace)]
 
         
 if __name__ == "__main__":

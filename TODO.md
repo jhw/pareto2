@@ -1,8 +1,5 @@
 ### short [01-topic-worker]
 
-- topic permission class
-- defined sns, topic permission
-
 - api/__init_.py to be written as a test class, asserting parameters
   
 ### medium
@@ -99,6 +96,8 @@
 
 ### done
 
+- topic permission class
+- defined sns, topic permission
 - add topic worker demo to hello
 - allow topic to be undefined in worker schema
 - test api/__init__.py and see where it breaks due to missing event
