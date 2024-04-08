@@ -1,9 +1,12 @@
-### short
+### short [01-topic-worker]
+
+- add topic worker demo to hello
+- allow topic to be undefined in worker schema
+- test api/__init__.py and see where it breaks due to missing event
+- add switch in event worker recipe checking for event
+- add topic worker resources
+  - topic, permissions
   
-- topic worker
-
-- new topic demo test and gist
-
 ### medium
 
 - build/deploy script
