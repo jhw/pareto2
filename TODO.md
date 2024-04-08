@@ -1,14 +1,17 @@
 ### short
 
+- ask chatgpt about including AWS::StackName in Name fields
+  - AWS::IAM::Policy PolicyName
+  - AWS::Events::Rule Target Id
+  - AWS::ApiGatewayV2::Api Name
+  
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
   - topic policy may not be required
 - remove event worker event requirement
 - if event worker event not specified, bind to topic
-- new topic demo test and gist
 
-- ask chatgpt about including AWS::StackName in Name fields
-  - do Names exist in the global namespace?
+- new topic demo test and gist
 
 ### medium
 
