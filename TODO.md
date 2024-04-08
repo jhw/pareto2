@@ -1,11 +1,6 @@
 ### short
   
-- investigate resources required for pareto 0.7 topic
-  - topic, topic policy, subscription, permission
-  - topic policy may not be required
-
-- remove event worker event requirement
-- if event worker event not specified, bind to topic
+- topic worker
 
 - new topic demo test and gist
 
@@ -103,6 +98,9 @@
 
 ### done
 
+- investigate resources required for pareto 0.7 topic
+  - topic, topic policy, subscription, permission
+  - topic policy may not be required
 - add api main hack to test website stuff
 - make infra and env variables instance variables
 - pass singletons as part of recipe constructor in regex form
