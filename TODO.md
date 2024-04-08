@@ -1,13 +1,11 @@
 ### short
 
-- rename StreamBucket/Table as Streaming
-
+- migrations script
 - artifacts scripts
 - debug scripts
 
 ### medium
 
-- migrations script
 - push artifacts script
 - deploy/delete stack scripts
 
@@ -101,6 +99,7 @@
 
 ### done
 
+- rename StreamBucket/Table as Streaming
 - remove function_namespace = namespace
 - api/__init_.py to be written as a test class, asserting parameters
 - include pareto tests in test.py
