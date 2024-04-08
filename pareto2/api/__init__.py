@@ -194,11 +194,10 @@ def post_validate_env_variables(recipe, variables):
     if missing != []:
         raise RuntimeError("references to unknown resources: %s" % ", ".join(missing))
 
-def build_stack(pkg_root):
-    assets = file_loader("hello")
-    if not assets.has_root:        
-        raise RuntimeError("assets have no root content")
-    recipe, endpoints, variables = Recipe(), [], set()
+def build_stack(assets, singletons = ["^alert",
+                                      "^alarm",
+                                      "^app\\-bucket$"]):    
+    recipe, endpoints, variables = Recipe(singletons = singletons), [], set()
     handle_lambdas(recipe, assets.lambda_content, endpoints, variables)
     handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
     post_validate_env_variables(recipe, variables)
@@ -207,7 +206,10 @@ def build_stack(pkg_root):
 
 if __name__ == "__main__":
     try:
-        recipe = build_stack("hello")
+        assets = file_loader("hello")
+        if not assets.has_root:        
+            raise RuntimeError("assets have no root content")
+        recipe = build_stack(assets)
         template = recipe.render()
         template.populate_parameters()
         template.dump_file("tmp/template.json")

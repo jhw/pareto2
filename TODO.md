@@ -1,7 +1,5 @@
 ### short
 
-- pass singletons as part of recipe constructor in regex form
-
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
   - topic policy may not be required
@@ -108,6 +106,7 @@
 
 ### done
 
+- pass singletons as part of recipe constructor in regex form
 - aggregate and cache all inferred env variables
 - check env variables against resources
 - ensure topic is visible
