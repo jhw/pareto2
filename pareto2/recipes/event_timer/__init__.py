@@ -15,9 +15,9 @@ L = importlib.import_module("pareto2.services.lambda")
 
 class EventPermission(L.Permission):
 
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace):
         source_arn = {"Fn::GetAtt": [H(f"{namespace}-rule"), "Arn"]}
-        super().__init__(namespace = function_namespace,    
+        super().__init__(namespace = namespace,    
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
@@ -31,7 +31,7 @@ class EventTimer(AlertsMixin):
         self.init_timer(namespace = namespace,
                          timer = timer)
         self.init_alert_hooks(function_namespace = namespace,
-                                       log_levels = log_levels)
+                              log_levels = log_levels)
         self.init_alert_resources()
 
     def init_timer(self, namespace, timer):
@@ -44,8 +44,7 @@ class EventTimer(AlertsMixin):
                         permissions = policy_permissions(timer)),
                  TimerRule(namespace = namespace,
                            schedule = timer["event"]["schedule"]),
-                 EventPermission(namespace = namespace,
-                                 function_namespace = namespace)]
+                 EventPermission(namespace = namespace)]
         
 if __name__ == "__main__":
     pass

@@ -1,6 +1,6 @@
 ### short
 
-- function_namespace should default to namespace if the two are the same
+- remove function_namespace = namespace
   
 ### medium
 

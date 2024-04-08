@@ -12,17 +12,17 @@ L = importlib.import_module("pareto2.services.lambda")
 
 class RulePermission(L.Permission):
 
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace):
         source_arn = {"Fn::GetAtt": [H(f"{namespace}-rule"), "Arn"]}
-        super().__init__(namespace = function_namespace,    
+        super().__init__(namespace = namespace,    
                          source_arn = source_arn,
                          principal = "events.amazonaws.com")
 
 class TopicPermission(L.Permission):
 
-    def __init__(self, namespace, function_namespace):
+    def __init__(self, namespace):
         source_arn = {"Ref": H(f"{namespace}-topic")}
-        super().__init__(namespace = function_namespace,    
+        super().__init__(namespace = namespace,    
                          source_arn = source_arn,
                          principal = "sns.amazonaws.com")
         
@@ -53,8 +53,7 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                         permissions = policy_permissions(worker)),
                  PatternRule(namespace = namespace,
                              pattern = worker["event"]["pattern"]),
-                 RulePermission(namespace = namespace,
-                                function_namespace = namespace)]
+                 RulePermission(namespace = namespace)]
 
     def init_topic_worker(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
@@ -65,8 +64,7 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                  Policy(namespace = namespace,
                         permissions = policy_permissions(worker)),
                  Topic(namespace = namespace),
-                 TopicPermission(namespace = namespace,
-                                 function_namespace = namespace)]
+                 TopicPermission(namespace = namespace)]
 
         
 if __name__ == "__main__":
