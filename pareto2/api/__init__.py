@@ -18,13 +18,17 @@ AppNamespace = "app"
 
 class Code:
 
+    """
+    infra ana variables are defined as instance variables so they can be overriden in test cases
+    """
+    
     def __init__(self, text):
-        self.text = text
+        self.infra = self.filter_infra(text)
+        self.variables = self.filter_variables(text)
 
-    @property
-    def infra(self):
+    def filter_infra(self, text):
         block, inblock = [], False
-        for row in self.text.split("\n"):
+        for row in text.split("\n"):
             if row.startswith('"""'):
                 inblock=not inblock
                 if not inblock:
@@ -45,9 +49,8 @@ class Code:
                 block.append(row)
         raise RuntimeError("infra block not found")
 
-    @property
-    def env_variables(self):
-        cleantext, refs = re.sub("\\s", "", self.text), set()
+    def filter_variables(self, text):
+        cleantext, refs = re.sub("\\s", "", text), set()
         for expr in [r"os\.environ\[(.*?)\]",
                      r"os\.getenv\((.*?)\)"]:
             refs.update(set([tok[1:-1].lower().replace("_", "-")
@@ -137,7 +140,7 @@ def handle_lambdas(recipe, assets, endpoints, variables):
                         schema = schema)
         struct["handler"] = filename.replace(".py", ".handler") 
         struct["variables"] = {k: {"Ref": H(k)}
-                               for k in code.env_variables}
+                               for k in code.variables}
         variables.update(struct["variables"])
         if type == "endpoint":
             endpoints.append(struct)
