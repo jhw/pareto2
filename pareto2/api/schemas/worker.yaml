@@ -55,7 +55,7 @@ properties:
     minimum: 1
     maximum: 900
 required:
-- event
+# - event # absence of event will bind to topic
 - permissions
 - layers
 - size

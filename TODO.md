@@ -1,11 +1,9 @@
 ### short [01-topic-worker]
 
-- add topic worker demo to hello
-- allow topic to be undefined in worker schema
-- test api/__init__.py and see where it breaks due to missing event
-- add switch in event worker recipe checking for event
-- add topic worker resources
-  - topic, permissions
+- topic permission class
+- defined sns, topic permission
+
+- api/__init_.py to be written as a test class, asserting parameters
   
 ### medium
 
@@ -101,6 +99,10 @@
 
 ### done
 
+- add topic worker demo to hello
+- allow topic to be undefined in worker schema
+- test api/__init__.py and see where it breaks due to missing event
+- add switch in event worker recipe checking for event
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
   - topic policy may not be required

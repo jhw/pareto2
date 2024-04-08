@@ -146,7 +146,8 @@ def handle_lambdas(recipe, assets, endpoints, variables):
             endpoints.append(struct)
         elif type == "worker":
             namespace = "-".join(filename.split("/")[1:-1])
-            insert_event_source(struct["event"])
+            if "event" in struct:
+                insert_event_source(struct["event"])
             recipe += EventWorker(namespace = namespace,
                                   worker = struct)
         elif type == "timer":

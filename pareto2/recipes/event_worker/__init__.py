@@ -1,6 +1,7 @@
 from pareto2.services import hungarorise as H
 from pareto2.services.events import *
 from pareto2.services.iam import *
+from pareto2.services.sns import *
 from pareto2.recipes import *
 from pareto2.recipes.mixins.alarms import AlarmsMixin
 from pareto2.recipes.mixins.alerts import AlertsMixin
@@ -24,8 +25,9 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                  worker,
                  log_levels = ["warning", "error"]):
         super().__init__()
-        self.init_worker(namespace = namespace,
-                         worker = worker)
+        workerfn = self.init_event_worker if "event" in worker else self.init_topic_worker
+        workerfn(namespace = namespace,
+                 worker = worker)
         self.init_alarm_hook(namespace = namespace,
                              alarm = worker["alarm"])
         self.init_alert_hooks(function_namespace = namespace,
@@ -33,7 +35,7 @@ class EventWorker(AlarmsMixin, AlertsMixin):
         self.init_alarm_resources()
         self.init_alert_resources()
 
-    def init_worker(self, namespace, worker):
+    def init_event_worker(self, namespace, worker):
         fn = L.InlineFunction if "code" in worker else L.S3Function
         self += [fn(namespace = namespace,
                     **function_kwargs(worker)),
@@ -45,6 +47,16 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                              pattern = worker["event"]["pattern"]),
                  EventPermission(namespace = namespace,
                                  function_namespace = namespace)]
+
+    def init_topic_worker(self, namespace, worker):
+        fn = L.InlineFunction if "code" in worker else L.S3Function
+        self += [fn(namespace = namespace,
+                    **function_kwargs(worker)),
+                 L.EventInvokeConfig(namespace = namespace),
+                 Role(namespace = namespace),
+                 Policy(namespace = namespace,
+                        permissions = policy_permissions(worker))]
+
         
 if __name__ == "__main__":
     pass
