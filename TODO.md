@@ -1,11 +1,13 @@
 ### short
 
-- remove function_namespace = namespace
-  
+- artifacts scripts
+- debug scripts
+
 ### medium
 
-- build/deploy script
-- debug, artifacts scripts
+- push artifacts script
+- deploy/delete stack scripts
+
 - re- test gists
 
 ### long
@@ -96,6 +98,7 @@
 
 ### done
 
+- remove function_namespace = namespace
 - api/__init_.py to be written as a test class, asserting parameters
 - include pareto tests in test.py
 - topic permission class

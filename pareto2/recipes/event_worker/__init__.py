@@ -38,7 +38,7 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                  worker = worker)
         self.init_alarm_hook(namespace = namespace,
                              alarm = worker["alarm"])
-        self.init_alert_hooks(function_namespace = namespace,
+        self.init_alert_hooks(namespace = namespace,
                               log_levels = log_levels)
         self.init_alarm_resources()
         self.init_alert_resources()

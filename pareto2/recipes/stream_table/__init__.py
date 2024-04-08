@@ -49,9 +49,9 @@ class StreamTable(AlertsMixin):
         self.append(StreamSTDTable(namespace = namespace,
                                    indexes = indexes))
         self.init_stream(namespace = namespace,
-                            stream_namespace = stream_namespace,
-                            batch_window = batch_window)
-        self.init_alert_hooks(function_namespace = stream_namespace,
+                         stream_namespace = stream_namespace,
+                         batch_window = batch_window)
+        self.init_alert_hooks(namespace = stream_namespace,
                               log_levels = log_levels)
         self.init_alert_resources()
 

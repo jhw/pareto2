@@ -25,18 +25,18 @@ class AlertsMixin(Recipe):
         super().__init__()
 
     def init_alert_hooks(self,
-                         function_namespace,
+                         namespace,
                          log_levels,
                          alerts_namespace = AlertNamespace,
                          filter_patterns = {"warning": "%WARNING|Task timed out%",
                                             "error": "ERROR"}):
-        self += [LogGroup(namespace = function_namespace),
-                 LogStream(namespace = function_namespace)]
+        self += [LogGroup(namespace = namespace),
+                 LogStream(namespace = namespace)]
         for log_level in log_levels:
-            filter_namespace = f"{function_namespace}-{log_level}"
+            filter_namespace = f"{namespace}-{log_level}"
             alert_namespace = f"{alerts_namespace}-{log_level}"
             self.append(SubscriptionFilter(namespace = filter_namespace,
-                                           function_namespace = function_namespace,
+                                           function_namespace = namespace,
                                            alert_namespace = alert_namespace,
                                            filter_pattern = filter_patterns[log_level]))
 
@@ -46,10 +46,6 @@ class AlertsMixin(Recipe):
                          for resource in self
                          if resource.aws_resource_type == "AWS::Logs::SubscriptionFilter"]))
 
-    """
-    - namespace is alerts_namespace
-    """
-    
     def init_alert_resources(self, namespace = AlertNamespace):
         for log_level in self.log_levels:
             alert_namespace = f"{namespace}-{log_level}"

@@ -48,7 +48,7 @@ class TaskQueue(AlertsMixin):
         self.init_queue(namespace = namespace,
                         queue_namespace = queue_namespace,
                         batch_size = batch_size)
-        self.init_alert_hooks(function_namespace = queue_namespace,
+        self.init_alert_hooks(namespace = queue_namespace,
                               log_levels = log_levels)
         self.init_alert_resources()
 
@@ -57,7 +57,7 @@ class TaskQueue(AlertsMixin):
                                queue_namespace = namespace),
                  Role(namespace = queue_namespace),
                  QueuePolicy(namespace = queue_namespace,
-                                queue_namespace = namespace),
+                             queue_namespace = namespace),
                  L.SQSEventSourceMapping(namespace = queue_namespace,
                                          batch_size = batch_size,
                                          source_arn = {"Fn::GetAtt": [H(f"{namespace}-queue"), "Arn"]})]

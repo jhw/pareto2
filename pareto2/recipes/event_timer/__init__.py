@@ -30,7 +30,7 @@ class EventTimer(AlertsMixin):
         super().__init__()
         self.init_timer(namespace = namespace,
                          timer = timer)
-        self.init_alert_hooks(function_namespace = namespace,
+        self.init_alert_hooks(namespace = namespace,
                               log_levels = log_levels)
         self.init_alert_resources()
 
