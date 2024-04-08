@@ -12,7 +12,7 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.s3 import StreamBucket
 
-import jsonschema, os, re, sys, yaml
+import jsonschema, os, re, unittest, yaml
 
 AppNamespace = "app"
 
@@ -102,7 +102,8 @@ def load_schema(type, cache = {}):
     filename = "/".join(__file__.split("/")[:-1]+["schemas", f"{type}.yaml"])
     if not os.path.exists(filename):
         raise RuntimeError(f"{filename} does not exist")
-    cache[type] = yaml.safe_load(open(filename).read())
+    with open(filename, 'r', encoding='utf-8') as f:
+        cache[type] = yaml.safe_load(f.read())
     return cache[type]
 
 def validate_schema(filename, struct, schema):
@@ -214,25 +215,45 @@ def build_stack(assets, singletons = ["^alert",
     recipe.validate()
     return recipe
 
-if __name__ == "__main__":
-    try:
+class ApiTest(unittest.TestCase):
+
+
+    def test_webapi(self, required = ['AllowedOrigins',
+                                      'ArtifactsBucket',
+                                      'ArtifactsKey',
+                                      'DomainName',
+                                      'RegionalCertificateArn',
+                                      'SlackWebhookUrl']):
         assets = file_loader("hello")
-        if not assets.has_root:        
-            raise RuntimeError("assets have no root content")
-        test_website = sys.argv[1].lower() if len(sys.argv) >= 2 else "false"
-        if test_website not in ["true", "false"]:
-            raise RuntimeError("test_website parameter is invalid")
-        test_website = eval(test_website.capitalize())
-        if test_website:
-            root_infra = assets.root_content.infra
-            for attr in ["api", "builder"]:
-                root_infra.pop(attr)
-            root_infra.setdefault("bucket", {})
-            root_infra["bucket"]["public"] = True
         recipe = build_stack(assets)
         template = recipe.render()
         template.populate_parameters()
-        template.dump_file("tmp/template.json")
-        print (sorted(list(template["Parameters"].keys())))
-    except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        template.dump_file("tmp/hello-webapi.json")
+        parameters = list(template["Parameters"].keys())
+        self.assertTrue(len(parameters) == len(required))
+        for param in required:
+            self.assertTrue(param in parameters)
+
+    def test_website(self, required = ['ArtifactsBucket',
+                                       'ArtifactsKey',
+                                       'DistributionCertificateArn',
+                                       'DomainName',
+                                       'SlackWebhookUrl']):
+        assets = file_loader("hello")
+        root_infra = assets.root_content.infra
+        for attr in ["api", "builder"]:
+            root_infra.pop(attr)
+        root_infra.setdefault("bucket", {})
+        root_infra["bucket"]["public"] = True
+        recipe = build_stack(assets)
+        template = recipe.render()
+        template.populate_parameters()
+        template.dump_file("tmp/hello-website.json")
+        parameters = list(template["Parameters"].keys())
+        self.assertTrue(len(parameters) == len(required))
+        for param in required:
+            self.assertTrue(param in parameters)
+
+
+if __name__ == "__main__":
+    unittest.main()

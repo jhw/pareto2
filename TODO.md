@@ -1,8 +1,6 @@
-### short [01-topic-worker]
+### short
 
 - function_namespace should default to namespace if the two are the same
-
-- api/__init_.py to be written as a test class, asserting parameters
   
 ### medium
 
@@ -98,6 +96,8 @@
 
 ### done
 
+- api/__init_.py to be written as a test class, asserting parameters
+- include pareto tests in test.py
 - topic permission class
 - defined sns, topic permission
 - add topic worker demo to hello
