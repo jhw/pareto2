@@ -1,10 +1,13 @@
 ### short
 
+- rename StreamBucket/Table as Streaming
+
 - artifacts scripts
 - debug scripts
 
 ### medium
 
+- migrations script
 - push artifacts script
 - deploy/delete stack scripts
 
