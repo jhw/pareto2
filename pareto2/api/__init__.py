@@ -14,6 +14,28 @@ from pareto2.services.s3 import StreamingBucket
 
 import jsonschema, os, re, unittest, yaml
 
+"""
+Pros and cons to having a single top- level namespace
+
+Pros -> easy for lambda scripts to reference underlying Cloudformation resources
+
+Cons -> recipes which have a lot of resources can pollute one another (eg website and builder both have Role and Policy)
+
+### Solutions
+
+a) ban cross- polluting combinations
+b) have more than one top- level namespace
+c) each recipe to only have a single component in root namespace
+
+---
+
+b) is superficially appealing but make insertion of event sources into events more complex (because you have to maintain a range of namespaces)
+
+c) is also appealing (esp as streaming-table and task-queue effectively do this already) but means more child namespace complexity at services level
+
+In the end a) may be the least bad solution, esp as the key culprits (website and builder) are what you might call "marginal" components
+"""
+
 AppNamespace = "app"
 
 class Code:

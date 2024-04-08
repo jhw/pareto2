@@ -1,15 +1,15 @@
 ### short
 
-- migrations script
 - artifacts scripts
 - debug scripts
 
 ### medium
 
+- migrations script
 - push artifacts script
 - deploy/delete stack scripts
 
-- re- test gists
+- re- test gists?
 
 ### long
 
@@ -26,6 +26,8 @@
 
 ### thoughts
 
+- demos to call recipe.validate()?
+  - probably overkill and leads to a lot of alert/alarm duplication results
 - add minItems to all api arrays?
   - might damage intention to be explicit because then you have to miss out empty arrays
 - replace os.env lookup with list of app level variables passed to all lambdas?

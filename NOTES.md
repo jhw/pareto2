@@ -1,3 +1,117 @@
+### migrations script 08/04/24
+
+- rename API as paas 
+- load assets as per API init 
+- iterate through handlers
+- determine what each handler is
+- event, endpoint, topic, queue, timer.
+- reformat triggers for non- endpoint stuff into events
+- remove names
+- remove names related to event types 
+- convert sizes and timeouts to integers
+- pass through permissions and layers
+- add alarm to worker
+- remove endpoint post schema 
+- maintain list of endpoint public / private Auth levels
+- maintain a list of dB indexes
+- refactor table name, bucket name refs 
+- refactor old long queue names 
+- dump entire tree to tmp
+
+### manifesto 08/04/24
+
+- why write your own framework.
+- smart people told me not to but I went ahead anyway 
+- the thing is I think this space is important but very young
+- witness the number of frameworks around
+- severless, sst, wing, ampt, begin, amplify 
+- it's a bit like blogging circa 2023
+- writing you own paas framework a bit like writing your own blogging engine
+- sst get the closest but still not quite there
+- write your own because you don't want to find yourself in a vercel like situation 
+
+---
+
+- you can build amazing apps with serverless but it's about much more than lambda
+- you have to stitch multiple services together to make it sing
+- lambda, S3, dynamodb, eventbridge, sqs, sns, IAM cognito
+- a big aspect of serverless is pushing as much stuff into the infrastructure as possible 
+- the problem is the skills you need to do this are very different from coding apps in python or JavaScript
+- because the medium - Cloudformation - is so different 
+
+---
+
+- it's declarative and it's extremely verbose 
+- certainly if you're coding it by hand there is a big problem
+- there are so many places to trip you up
+- refs and IDs and arns for starters
+- the ubiquity of IAM 
+- the craziness of API gateway and cognito 
+- all multiplied by the slowness of Cloudformation 
+- it's a mess
+
+---
+
+- however it's very powerful
+- and you can argue you only need a few patterns done well
+- what you need is a layer above it to manage it for you 
+- something to embody the patterns
+- something to manage the namespacing
+- something to wrap the craziness
+
+---
+
+- so what are these patterns
+- firstly you what a robust http api obviously 
+- you want blob and row storage 
+- you want notifications and data streaming so you don't have to poll
+- you want timer and delay capabilities 
+- and you want observability and alerting baked in
+- you want to be able to access all this from a minimal amount of config, and something close to the code
+
+--
+
+- what comes out of this is the importance of workers
+- all paas you an http api, much fewer give you good offline processing capabilities 
+- hat tip google app engine
+- workers being pinged by timers, workers being handed queue jobs, worker responding to notifications 
+- it's nice to have a single catch all pattern here
+- in Aws you have a lot of messaging options 
+- sns, sws, eventbridge, Kafka and kinesis
+- settle on Eventbridge as most versatile 
+- because of decentralised structure 
+- anything which doesn't natively speak eventbridge, put an inline lambda in front of it which does conversion 
+- S3 does but sqs and dynamodb don't 
+- wrapping them in this way means the mechanics of sync invocations and lookback permissions can be baked into the stack and hidden from the app devs
+
+---
+
+- ci/cd is hugely important here
+- the standard cd pipeline just wraps whatever crap you have in docker and throws it into production
+- you can't do that here because you have an all important infrastructure building step
+- and the cd pipeline is a great place to run that 
+- so your cd pipeline has to become opionated 
+- it will build you app and push to production, but only if your app follows certain standards
+- that means more than just adhering to a particular framework (so the pipeline knows how to build)
+- you could / should be running unit tests as part of ci/cd
+- and you could also have your pipeline strip out, store and version app documentation
+- no docs? No deployment!
+- so imagine your cd pipeline as less of a postman and more of a policeman 
+- and think of your framework and cd pipeline as partners 
+
+---
+
+- and what of the binding layer?
+- this is where is becomes tricky
+- writing biz logic and defining infra are very different propositions, hence pareto
+- but you still need infra snippets which the framework can expand from
+- where should they go?
+- want to stay close to the code
+- but complex because some bits of infra are handler specific whilst some are app level.
+- settle on yaml fragments within code
+- but should maybe think of python annotations asa better solution
+- ultimately some combined solution like wing?
+
 ### Name fields 08/04/24
 
 - AWS::Events::Rule Target Id
