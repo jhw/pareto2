@@ -46,7 +46,7 @@ class Table(Resource):
         return True
 
 """
-STD == SingleTableDesign
+STD == SingleTableDesign ;)
 """
     
 class STDTable(Table):
@@ -63,7 +63,7 @@ class STDTable(Table):
                                      "type": "RANGE"}],
                          **kwargs)
 
-class StreamSTDTable(STDTable):
+class StreamingSTDTable(STDTable):
     
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace,

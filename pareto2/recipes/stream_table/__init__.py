@@ -46,7 +46,7 @@ class StreamTable(AlertsMixin):
                  log_levels = ["error"]):
         super().__init__()
         stream_namespace = f"{namespace}-stream-table"        
-        self.append(StreamSTDTable(namespace = namespace,
+        self.append(StreamingSTDTable(namespace = namespace,
                                    indexes = indexes))
         self.init_stream(namespace = namespace,
                          stream_namespace = stream_namespace,

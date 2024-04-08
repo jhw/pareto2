@@ -10,7 +10,7 @@ from pareto2.recipes.website import Website
 
 from pareto2.services import hungarorise as H
 
-from pareto2.services.s3 import StreamBucket
+from pareto2.services.s3 import StreamingBucket
 
 import jsonschema, os, re, unittest, yaml
 
@@ -184,7 +184,7 @@ def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
             recipe += Website(namespace = namespace,
                               binary_media = binary_media)
         else:
-            recipe.append(StreamBucket(namespace = namespace))
+            recipe.append(StreamingBucket(namespace = namespace))
     if "builder" in struct:
         recipe += PipBuilder(namespace = namespace)
     if "queue" in struct:
