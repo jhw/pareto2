@@ -1,7 +1,5 @@
 ### short
 
-- add api main hack to test website stuff
-
 - investigate resources required for pareto 0.7 topic
   - topic, topic policy, subscription, permission
   - topic policy may not be required
@@ -106,6 +104,7 @@
 
 ### done
 
+- add api main hack to test website stuff
 - make infra and env variables instance variables
 - pass singletons as part of recipe constructor in regex form
 - aggregate and cache all inferred env variables

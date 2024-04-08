@@ -12,7 +12,7 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.s3 import StreamBucket
 
-import jsonschema, os, re, yaml
+import jsonschema, os, re, sys, yaml
 
 AppNamespace = "app"
 
@@ -155,17 +155,23 @@ def handle_lambdas(recipe, assets, endpoints, variables):
                                  timer = struct)
         else:
             raise RuntimeError(f"type {type} not recognised")
-    
+
+"""
+api (obviously) conflicts with public bucket over use of domain name
+builder conflicts with public bucket because both have role, policy in app namespace; no good reason for both to exist the same time
+"""
+        
 def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
     struct = code.infra
     schema = load_schema("root")
     validate_schema(filename = filename,
                     struct = struct,
                     schema = schema)
-    if ("api" in struct and
-        "bucket" in struct and
-        struct["bucket"]["public"]):
-        raise RuntimeError(f"app can't have both api and public bucket")
+    for attr in ["api", "builder"]:
+        if (attr in struct and
+            "bucket" in struct and
+            struct["bucket"]["public"]):
+            raise RuntimeError(f"app can't have both {attr} and public bucket")
     if "api" in struct:
         if endpoints != []:
             recipe += WebApi(namespace = namespace,
@@ -212,6 +218,16 @@ if __name__ == "__main__":
         assets = file_loader("hello")
         if not assets.has_root:        
             raise RuntimeError("assets have no root content")
+        test_website = sys.argv[1].lower() if len(sys.argv) >= 2 else "false"
+        if test_website not in ["true", "false"]:
+            raise RuntimeError("test_website parameter is invalid")
+        test_website = eval(test_website.capitalize())
+        if test_website:
+            root_infra = assets.root_content.infra
+            for attr in ["api", "builder"]:
+                root_infra.pop(attr)
+            root_infra.setdefault("bucket", {})
+            root_infra["bucket"]["public"] = True
         recipe = build_stack(assets)
         template = recipe.render()
         template.populate_parameters()
