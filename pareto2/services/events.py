@@ -7,12 +7,16 @@ import json
 Rule namespace is just function namespace; any function should only ever be bound to a single event
 """
 
+"""
+ID: The ID of the target within the specified rule (ie local)
+"""
+
 class Rule(Resource):
 
     @property
     def target(self):
         return {
-            "Id": {"Fn::Sub": f"{self.namespace}-rule-${{AWS::StackName}}"},
+            "Id": {"Fn::Sub": f"{self.namespace}-rule"},
             "Arn": {"Fn::GetAtt": [H(f"{self.namespace}-function"), "Arn"]},
         }
         

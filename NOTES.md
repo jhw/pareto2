@@ -1,3 +1,12 @@
+### Name fields 08/04/24
+
+- AWS::Events::Rule Target Id
+- AWS::IAM::Policy PolicyName
+- AWS::ApiGatewayV2::Api Name
+
+- first is defined as "within the rule" so is clearly local; AWS::StackName can be removed, which is a good thing as there is a 64 character limit here
+- the latter two area required, but it's not clear what the namespacing is; they don't appear to be "contained" by anything other than the stack itself; hence feels best to probably include AWS::StackName in the name, just in case you want more than one similar stack on a particular account
+
 ### bindings 05/04/24
 
 - two aspects, root and lambda
