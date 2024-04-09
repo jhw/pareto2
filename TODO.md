@@ -1,7 +1,5 @@
 ### short
 
-- search logs script
-
 - migrations script
 
 ### medium
@@ -101,6 +99,7 @@
 
 ### done
 
+- search logs script
 - rename StreamBucket/Table as Streaming
 - remove function_namespace = namespace
 - api/__init_.py to be written as a test class, asserting parameters
