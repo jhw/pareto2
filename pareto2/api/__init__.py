@@ -38,13 +38,14 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
-class Code:
+class Asset:
 
     """
-    infra ana variables are defined as instance variables so they can be overriden in test cases
+    infra and variables are defined as instance variables so they can be overriden in test cases
     """
     
-    def __init__(self, text):
+    def __init__(self, filename, text):
+        self.filename = filename
         self.infra = self.filter_infra(text)
         self.variables = self.filter_variables(text)
 
@@ -64,12 +65,12 @@ class Code:
                         "infra" in struct):
                         return struct["infra"]
                     elif "infra" in chunk:
-                        raise RuntimeError("mis- specified infra block")
+                        raise RuntimeError(f"{self.filename} has mis- specified infra block")
                 else:
                     block=[]                        
             elif inblock:
                 block.append(row)
-        raise RuntimeError("infra block not found")
+        raise RuntimeError(f"infra block not found in {self.filename}")
 
     def filter_variables(self, text):
         cleantext, refs = re.sub("\\s", "", text), set()
@@ -115,7 +116,7 @@ def file_loader(pkg_root, root_dir=''):
                 with open(full_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                     relative_path = os.path.relpath(full_path, root_dir)
-                    assets[relative_path] = Code(content)
+                    assets[relative_path] = Asset(relative_path, content)
     return assets
 
 def load_schema(type, cache = {}):

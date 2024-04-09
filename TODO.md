@@ -1,6 +1,9 @@
-### short
+### short [01-migrations]
 
-- migrations script
+- complete handlers
+- assets to filter code blocks
+- dump results to tmp
+- handle tests
 
 ### medium
 
