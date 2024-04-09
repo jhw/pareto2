@@ -13,6 +13,8 @@
 
 ### long
 
+- replace custom yaml blocks with docstrings
+
 - federated auth
 - step functions
 - react website demo
