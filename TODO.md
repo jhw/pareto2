@@ -1,23 +1,21 @@
 ### short
 
-- artifacts scripts
-- debug scripts
+- search logs script
+
+- migrations script
 
 ### medium
 
-- migrations script
+- docstrings test
 - push artifacts script
 - deploy/delete stack scripts
-
-- re- test gists?
+- re- test gists
 
 ### long
 
-- replace custom yaml blocks with docstrings
-
+- react website demo
 - federated auth
 - step functions
-- react website demo
 - cross- account deployments
 - s3 multipart uploads
 - secrets
