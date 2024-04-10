@@ -1,17 +1,18 @@
 ### short [01-push-artifacts]
 
+- add filter_fn to file_loader
+- file_loader to be written as generator which can be used by clients
+  - migrations in particular
+- replace Lambdas.initialise with call to api/__init__/file_loader
+
 - setenv-hello.sh
 - create artifacts bucket
-- multiple acm clients
 - regional and distributed acm clients
-- include api stuff as per api/__init__.py main block
-
-- refactor test.py as per scripts/deploy/run_tests.py
 
 ### medium
 
+- refactor test.py as per scripts/deploy/run_tests.py
 - 0.8.0 tag
-
 - re- test gists
 
 ### long
