@@ -39,27 +39,17 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 AppNamespace = "app"
 
 def filter_infra(text):
-    block, inblock = [], False
-    for row in text.split("\n"):
-        if row.startswith('"""'):
-            inblock=not inblock
-            if not inblock:
-                chunk="\n".join(block)
-                struct=None
-                try:
-                    struct=yaml.safe_load(chunk)
-                except:
-                    pass
-                if (isinstance(struct, dict) and
-                    "infra" in struct):
-                    return struct["infra"]
-                elif "infra" in chunk:
-                    raise RuntimeError("mis- specified infra block")
-            else:
-                block=[]                        
-        elif inblock:
-            block.append(row)
-    raise RuntimeError(f"infra block not found")
+    blocks = [block for block in text.split('"""')
+              if re.sub("\\s", "", block) != ""]
+    if blocks == []:
+        raise RuntimeError("no infra blocks found")
+    try:
+        struct = yaml.safe_load(blocks[0])
+    except:
+        raise RuntimeError("error parsing infra block")
+    if "infra" not in struct:
+        raise RuntimeError("infra block is mis-specified")
+    return struct["infra"]
 
 def filter_variables(text):
     cleantext, refs = re.sub("\\s", "", text), set()
@@ -147,8 +137,8 @@ Note that worker and timer create namespaces from python paths, whereas endpoint
 """
     
 def handle_lambdas(recipe, assets, endpoints, variables):
-    for filename, code in assets.items():
-        struct = code["infra"]
+    for filename, asset in assets.items():
+        struct = asset["infra"]
         type = struct.pop("type") if "type" in struct else "root"
         schema = load_schema(type)
         validate_schema(filename = filename,
@@ -156,7 +146,7 @@ def handle_lambdas(recipe, assets, endpoints, variables):
                         schema = schema)
         struct["handler"] = filename.replace(".py", ".handler") 
         struct["variables"] = {k: {"Ref": H(k)}
-                               for k in code["variables"]}
+                               for k in asset["variables"]}
         variables.update(struct["variables"])
         if type == "endpoint":
             endpoints.append(struct)
@@ -178,8 +168,8 @@ api (obviously) conflicts with public bucket over use of domain name
 builder conflicts with public bucket because both have role, policy in app namespace; no good reason for both to exist the same time
 """
         
-def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
-    struct = code["infra"]
+def handle_root(recipe, filename, asset, endpoints, namespace = AppNamespace):
+    struct = asset["infra"]
     schema = load_schema("root")
     validate_schema(filename = filename,
                     struct = struct,
