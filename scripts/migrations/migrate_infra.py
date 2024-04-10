@@ -1,3 +1,8 @@
+"""
+This script migrates pareto 0.6, 0.7 infra snippets to 0.8
+"""
+
+
 import copy, os, re, sys, yaml
 
 Alarm = {
@@ -122,7 +127,15 @@ def handle_infra(struct, modstruct):
         handle_topic(struct, modstruct)
     else:
         raise RuntimeError("no handler found for %s" % struct)
-            
+
+def dump_output(filename, text, struct):
+    blocks = [block for block in text.split('"""')
+              if re.sub("\\s", "", block) != ""]
+    blocks[0] = "\n"+yaml.safe_dump(struct)    
+    content = '"""'.join(['']+blocks)
+    with open(filename, 'w') as f:
+        f.write(content)
+    
 def migrate_infra(pkg_root, root_dir=''):
     pkg_full_path = os.path.join(root_dir, pkg_root)
     for root, dirs, files in os.walk(pkg_full_path):
@@ -136,9 +149,9 @@ def migrate_infra(pkg_root, root_dir=''):
                     content = f.read()
                     struct, modstruct = filter_infra(content), {}
                     handle_infra(struct, modstruct)
-                    print (f"--- {relative_path} ---")
-                    print (yaml.safe_dump(modstruct))
-
+                    infra = {"infra": modstruct}
+                    dump_output(relative_path, content, infra)
+                    
 if __name__ == "__main__":
     try:
         if len(sys.argv) < 2:

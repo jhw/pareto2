@@ -1,7 +1,5 @@
 ### short [01-migrations]
 
-- dump results
-- move to migrations subdir
 - migrate_variables script
 
 ### medium
@@ -103,6 +101,8 @@
 
 ### done
 
+- move to migrations subdir
+- dump results
 - check pattern variables to be stripped out
 - strip out diffKeys and table headers which have now been removed
 - add type fields
