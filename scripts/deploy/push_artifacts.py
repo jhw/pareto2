@@ -1,4 +1,4 @@
-from pareto.api import build_stack
+from pareto.api import file_loader, build_stack
 
 import boto3, io, os, re, zipfile
 
@@ -13,21 +13,10 @@ def hungarorise(text):
                     for tok in re.split("\\-|\\_", text)
                     if tok != ''])
 
-class Lambdas(list):
+class Lambdas(dict):
 
-    @classmethod
-    def initialise(self, app_name, filterfn = FilterFn):
-        root, assets = app_name.replace("-", ""), []
-        for localroot, _, files in os.walk(root):
-            for file_name in files:
-                if filterfn(file_name):
-                    abs_file_name = os.path.join(localroot, file_name)
-                    key = "/".join(abs_file_name.split("/"))
-                    assets.append((key, open(abs_file_name).read()))
-        return Lambdas(assets)
-                       
-    def __init__(self, items):
-        list.__init__(self, items)
+    def __init__(self, assets = {}):
+        dict.__init__(self, assets)
 
     """
     - https://chat.openai.com/c/34736a67-aa28-4662-ad65-1c2d522e67ec
@@ -37,7 +26,7 @@ class Lambdas(list):
     def zip_buffer(self):
         buf = io.BytesIO()
         zf = zipfile.ZipFile(buf, "a", zipfile.ZIP_DEFLATED, False)
-        for k, v in self:
+        for k, v in self.items():
             # zf.writestr(k, v)
             unix_mode = 0o100644  # File permission: rw-r--r--
             zip_info = zipfile.ZipInfo(k)
@@ -80,17 +69,19 @@ class Env(dict):
     
 class Assets:
 
-    def __init__(self, env, s3):
+    def __init__(self, env, s3, filter_fn = FilterFn):
         self.env = env
         self.s3 = s3
         self.timestamp = datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        self.lambdas = Lambdas.initialise(self.env.AppName, self.timestamp)
+        self.lambdas = Lambdas({path: content
+                                for path, content in file_loader(pkg_root = self.env.AppName,
+                                                                 filter_fn = filter_fn)})
 
     def put_template(self):
         recipe = build_stack(self.lambdas)
         template = recipe.render()
         template.populate_parameters()
-        for file_slug in [self.template,
+        for file_slug in [self.timestamp,
                           "latest"]:
             template.dump_s3(s3 = self.s3,
                              bucket_name = self.env.BucketName,

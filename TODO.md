@@ -1,13 +1,8 @@
-### short [01-push-artifacts]
+### short
 
-- replace Lambdas.initialise with call to api/__init__/file_loader
-
-- s3_zip loader
-
-
-- setenv-hello.sh
+- PKG_ROOT vs APP_NAME
 - create artifacts bucket
-- regional and distributed acm clients
+- distribution vs regional acm clients
 
 ### medium
 
@@ -31,6 +26,8 @@
 
 ### thoughts
 
+- s3_zip loader?
+  - save for expander
 - demos to call recipe.validate()?
   - probably overkill and leads to a lot of alert/alarm duplication results
 - add minItems to all api arrays?
@@ -106,6 +103,8 @@
 
 ### done
 
+- setenv-hello.sh
+- replace Lambdas.initialise with call to api/__init__/file_loader
 - add filter_fn to migrations scripts
 - add filter_fn to file_loader
 - file_loader to be written as generator which can be used by clients
