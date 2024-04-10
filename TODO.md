@@ -1,8 +1,7 @@
 ### short [01-migrations]
 
-- move to migrations subdir
 - dump results
-
+- move to migrations subdir
 - migrate_variables script
 
 ### medium
