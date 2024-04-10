@@ -72,28 +72,24 @@ def handle_events(struct, modstruct):
         "pattern": event["pattern"]
     }
 
-"""
-event:
-  schedule: "rate(1 minute)"
-"""
-    
 def handle_timer(struct, modstruct):
-    print (struct)
-
+    timer = struct["timer"]
+    modstruct["schedule"] = timer["rate"]
+    if "body" in struct:
+        modstruct["body"] = timer["body"]
 
 """
-event:
-  pattern:
-    source:
-    - Ref: HelloQueue
+A queue worker has an event defined but possibly not a pattern, relying on source binding alone instead
 """
-
+        
 @insert_alarm
 def handler_queue(struct, modstruct):
-    pass
+    modstruct["event"] = {
+        "type": "queue"
+    }
 
 """
-a topic worker now has no event
+A topic worker has no event defined
 """
 
 @insert_alarm
@@ -132,9 +128,7 @@ def file_loader(pkg_root, root_dir=''):
                     struct, modstruct = filter_infra(content), {}
                     handle_infra(struct, modstruct)
                     print (f"--- {relative_path} ---")
-                    """
                     print (yaml.safe_dump(modstruct))
-                    """
 
 if __name__ == "__main__":
     file_loader("../expander2/expander2")
