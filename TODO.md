@@ -3,6 +3,7 @@
 - PKG_ROOT vs APP_NAME
 - create artifacts bucket
 - distribution vs regional acm clients
+- test push artifacts
 
 ### medium
 
