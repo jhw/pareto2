@@ -78,7 +78,8 @@ event:
 """
     
 def handle_timer(struct, modstruct):
-    pass
+    print (struct)
+
 
 """
 event:
