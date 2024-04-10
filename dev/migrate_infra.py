@@ -54,18 +54,12 @@ def insert_alarm(fn, alarm = Alarm):
         fn(struct, modstruct)
     return wrapped
 
-"""
-- method: GET
-  path: public-get
-  auth: public
-  parameters:
-  - message
-  permissions:
-  - s3:GetObject
-"""
-
 def handle_endpoint(struct, modstruct):
-    pass
+    endpoint = struct["endpoint"]
+    for attr in ["method", "path"]:
+        modstruct[attr] = endpoint[attr]
+    modstruct["auth"] = endpoint["api"]
+    modstruct["parameters"] = endpoint["parameters"] if "parameters" in endpoint else []
 
 @insert_alarm
 def handle_events(struct, modstruct):
@@ -136,8 +130,10 @@ def file_loader(pkg_root, root_dir=''):
                     content = f.read()
                     struct, modstruct = filter_infra(content), {}
                     handle_infra(struct, modstruct)
-                    print (f"--- {relative_path} ---")                    
+                    print (f"--- {relative_path} ---")
+                    """
                     print (yaml.safe_dump(modstruct))
+                    """
 
 if __name__ == "__main__":
     file_loader("../expander2/expander2")
