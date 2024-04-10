@@ -38,49 +38,38 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
-class Asset:
+def filter_infra(text):
+    block, inblock = [], False
+    for row in text.split("\n"):
+        if row.startswith('"""'):
+            inblock=not inblock
+            if not inblock:
+                chunk="\n".join(block)
+                struct=None
+                try:
+                    struct=yaml.safe_load(chunk)
+                except:
+                    pass
+                if (isinstance(struct, dict) and
+                    "infra" in struct):
+                    return struct["infra"]
+                elif "infra" in chunk:
+                    raise RuntimeError("mis- specified infra block")
+            else:
+                block=[]                        
+        elif inblock:
+            block.append(row)
+    raise RuntimeError(f"infra block not found")
 
-    """
-    infra and variables are defined as instance variables so they can be overriden in test cases
-    """
-    
-    def __init__(self, filename, text):
-        self.filename = filename
-        self.infra = self.filter_infra(text)
-        self.variables = self.filter_variables(text)
+def filter_variables(text):
+    cleantext, refs = re.sub("\\s", "", text), set()
+    for expr in [r"os\.environ\[(.*?)\]",
+                 r"os\.getenv\((.*?)\)"]:
+        refs.update(set([tok[1:-1].lower().replace("_", "-")
+                         for tok in re.findall(expr, cleantext)
+                         if tok.upper()==tok]))
+    return refs
 
-    def filter_infra(self, text):
-        block, inblock = [], False
-        for row in text.split("\n"):
-            if row.startswith('"""'):
-                inblock=not inblock
-                if not inblock:
-                    chunk="\n".join(block)
-                    struct=None
-                    try:
-                        struct=yaml.safe_load(chunk)
-                    except:
-                        pass
-                    if (isinstance(struct, dict) and
-                        "infra" in struct):
-                        return struct["infra"]
-                    elif "infra" in chunk:
-                        raise RuntimeError(f"{self.filename} has mis- specified infra block")
-                else:
-                    block=[]                        
-            elif inblock:
-                block.append(row)
-        raise RuntimeError(f"infra block not found in {self.filename}")
-
-    def filter_variables(self, text):
-        cleantext, refs = re.sub("\\s", "", text), set()
-        for expr in [r"os\.environ\[(.*?)\]",
-                     r"os\.getenv\((.*?)\)"]:
-            refs.update(set([tok[1:-1].lower().replace("_", "-")
-                             for tok in re.findall(expr, cleantext)
-                             if tok.upper()==tok]))
-        return refs
-    
 class Assets(dict):
 
     def __init__(self, pkg_root, item = {}):
@@ -116,7 +105,10 @@ def file_loader(pkg_root, root_dir=''):
                 with open(full_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                     relative_path = os.path.relpath(full_path, root_dir)
-                    assets[relative_path] = Asset(relative_path, content)
+                    assets[relative_path] = {
+                        "infra": filter_infra(content),
+                        "variables": filter_variables(content)
+                    }
     return assets
 
 def load_schema(type, cache = {}):
@@ -156,7 +148,7 @@ Note that worker and timer create namespaces from python paths, whereas endpoint
     
 def handle_lambdas(recipe, assets, endpoints, variables):
     for filename, code in assets.items():
-        struct = code.infra
+        struct = code["infra"]
         type = struct.pop("type") if "type" in struct else "root"
         schema = load_schema(type)
         validate_schema(filename = filename,
@@ -164,7 +156,7 @@ def handle_lambdas(recipe, assets, endpoints, variables):
                         schema = schema)
         struct["handler"] = filename.replace(".py", ".handler") 
         struct["variables"] = {k: {"Ref": H(k)}
-                               for k in code.variables}
+                               for k in code["variables"]}
         variables.update(struct["variables"])
         if type == "endpoint":
             endpoints.append(struct)
@@ -187,7 +179,7 @@ builder conflicts with public bucket because both have role, policy in app names
 """
         
 def handle_root(recipe, filename, code, endpoints, namespace = AppNamespace):
-    struct = code.infra
+    struct = code["infra"]
     schema = load_schema("root")
     validate_schema(filename = filename,
                     struct = struct,
@@ -263,7 +255,7 @@ class ApiTest(unittest.TestCase):
                                        'DomainName',
                                        'SlackWebhookUrl']):
         assets = file_loader("hello")
-        root_infra = assets.root_content.infra
+        root_infra = assets.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
         root_infra.setdefault("bucket", {})

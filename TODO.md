@@ -1,5 +1,10 @@
 ### short [01-migrations]
 
+- remove migrations script
+- move infra and variables handlers out of class
+- replace class with dict
+- simplify infra block lookup
+
 - complete handlers
 - assets to filter code blocks
 - dump results to tmp
