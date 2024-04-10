@@ -1,13 +1,16 @@
 ### short [01-migrations]
 
-- dummy run option
+- move to migrations subdir
 - dump results
+
 - migrate_variables script
 
 ### medium
 
+- run_tests script
 - push artifacts script
 - deploy/delete stack scripts
+
 - re- test gists
 
 ### long
