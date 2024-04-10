@@ -1,6 +1,5 @@
 ### short [01-migrations]
 
-- add type fields
 - strip out diffKeys and table headers which have now been removed
 - dump results
 
@@ -103,6 +102,7 @@
 
 ### done
 
+- add type fields
 - complete handlers
 - add block saying only migrates infrastructure
 - copy sample blocks

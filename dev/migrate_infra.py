@@ -55,6 +55,7 @@ def insert_alarm(fn, alarm = Alarm):
     return wrapped
 
 def handle_endpoint(struct, modstruct):
+    modstruct["type"] = "endpoint"
     endpoint = struct["endpoint"]
     for attr in ["method", "path"]:
         modstruct[attr] = endpoint[attr]
@@ -63,6 +64,7 @@ def handle_endpoint(struct, modstruct):
 
 @insert_alarm
 def handle_events(struct, modstruct):
+    modstruct["type"] = "worker"
     events = struct["events"]
     if len(events) > 1:
         raise RuntimeError("multiple events detected - %s" % struct)
@@ -73,6 +75,7 @@ def handle_events(struct, modstruct):
     }
 
 def handle_timer(struct, modstruct):
+    modstruct["type"] = "timer"
     timer = struct["timer"]
     modstruct["schedule"] = timer["rate"]
     if "body" in struct:
@@ -84,6 +87,7 @@ A queue worker has an event defined but possibly not a pattern, relying on sourc
         
 @insert_alarm
 def handler_queue(struct, modstruct):
+    modstruct["type"] = "worker"
     modstruct["event"] = {
         "type": "queue"
     }
@@ -94,7 +98,7 @@ A topic worker has no event defined
 
 @insert_alarm
 def handle_topic(struct, modstruct):
-    pass
+    modstruct["type"] = "worker"
 
 @handle_layers
 @handle_permissions
