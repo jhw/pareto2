@@ -1,7 +1,6 @@
 ### short
 
 - PKG_ROOT vs APP_NAME
-- create artifacts bucket
 - distribution vs regional acm clients
 - test push artifacts
 
@@ -104,6 +103,7 @@
 
 ### done
 
+- create artifacts bucket
 - setenv-hello.sh
 - replace Lambdas.initialise with call to api/__init__/file_loader
 - add filter_fn to migrations scripts
