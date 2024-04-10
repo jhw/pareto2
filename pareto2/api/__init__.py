@@ -84,7 +84,6 @@ class Assets(dict):
                 if k != self.root_filename}
     
 def file_loader(pkg_root, root_dir=''):
-    assets = Assets(pkg_root)
     pkg_full_path = os.path.join(root_dir, pkg_root)
     for root, dirs, files in os.walk(pkg_full_path):
         dirs[:] = [d for d in dirs if d != '__pycache__']
@@ -95,11 +94,7 @@ def file_loader(pkg_root, root_dir=''):
                 with open(full_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                     relative_path = os.path.relpath(full_path, root_dir)
-                    assets[relative_path] = {
-                        "infra": filter_infra(content),
-                        "variables": filter_variables(content)
-                    }
-    return assets
+                    yield (relative_path, content)
 
 def load_schema(type, cache = {}):
     if type in cache:
@@ -222,14 +217,21 @@ def build_stack(assets, singletons = ["^alert",
 
 class ApiTest(unittest.TestCase):
 
-
+    def load_assets(self, pkg_root = "hello"):
+        return Assets(pkg_root, {
+            path: {
+                "infra": filter_infra(content),
+                "variables": filter_variables(content)
+            }
+            for path, content in file_loader(pkg_root)})
+    
     def test_webapi(self, required = ['AllowedOrigins',
                                       'ArtifactsBucket',
                                       'ArtifactsKey',
                                       'DomainName',
                                       'RegionalCertificateArn',
                                       'SlackWebhookUrl']):
-        assets = file_loader("hello")
+        assets = self.load_assets()
         recipe = build_stack(assets)
         template = recipe.render()
         template.populate_parameters()
@@ -244,7 +246,7 @@ class ApiTest(unittest.TestCase):
                                        'DistributionCertificateArn',
                                        'DomainName',
                                        'SlackWebhookUrl']):
-        assets = file_loader("hello")
+        assets = self.load_assets()
         root_infra = assets.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)

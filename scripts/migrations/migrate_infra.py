@@ -1,7 +1,9 @@
+
 """
 This script migrates pareto 0.6, 0.7 infra snippets to 0.8
 """
 
+from pareto2.api import file_loader
 
 import copy, os, re, sys, yaml
 
@@ -136,21 +138,12 @@ def dump_output(filename, text, struct):
     with open(filename, 'w') as f:
         f.write(content)
     
-def migrate_infra(pkg_root, root_dir=''):
-    pkg_full_path = os.path.join(root_dir, pkg_root)
-    for root, dirs, files in os.walk(pkg_full_path):
-        dirs[:] = [d for d in dirs if d != '__pycache__']
-        for file in files:
-            full_path = os.path.join(root, file)
-            if (full_path == f"{pkg_root}/__init__.py" or
-                full_path.endswith("index.py")):
-                with open(full_path, 'r', encoding='utf-8') as f:
-                    relative_path = os.path.relpath(full_path, root_dir)
-                    content = f.read()
-                    struct, modstruct = filter_infra(content), {}
-                    handle_infra(struct, modstruct)
-                    infra = {"infra": modstruct}
-                    dump_output(relative_path, content, infra)
+def migrate_infra(pkg_root):
+    for relative_path, content in file_loader(pkg_root):
+        struct, modstruct = filter_infra(content), {}
+        handle_infra(struct, modstruct)
+        infra = {"infra": modstruct}
+        dump_output(relative_path, content, infra)
                     
 if __name__ == "__main__":
     try:
