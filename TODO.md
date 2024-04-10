@@ -4,15 +4,17 @@
 - strip out diffKeys and table headers which have now been removed
 - dump results
 
+- migrate_variables script
+
 ### medium
 
-- docstrings test
 - push artifacts script
 - deploy/delete stack scripts
 - re- test gists
 
 ### long
 
+- docstrings
 - react website demo
 - federated auth
 - step functions

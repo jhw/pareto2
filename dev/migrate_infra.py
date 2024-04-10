@@ -1,15 +1,3 @@
-"""
-This script migrates INFRA BLOCKS ONLY; in particular it does not touch handler bodies, nor test functions
-
-The only things which should need migrating above and beyond infra are the names of environment variables, in particular -
-
-- TABLE_NAME -> APP_TABLE
-- BUCKET_NAME -> APP_BUCKET
-- *_QUEUE_NAME -> APP_QUEUE
-
-It's simpler to do these manually with a few calls to /scripts/tools/search_and_replace.py rather than add automated handling here
-"""
-
 import os, re, yaml
 
 Alarm = {
