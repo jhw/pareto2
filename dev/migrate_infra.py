@@ -1,4 +1,4 @@
-import os, re, yaml
+import copy, os, re, yaml
 
 Alarm = {
     "period": 60,
@@ -69,9 +69,14 @@ def handle_events(struct, modstruct):
     if len(events) > 1:
         raise RuntimeError("multiple events detected - %s" % struct)
     event = events.pop()
+    type = event["source"]["type"]
+    pattern = copy.deepcopy(event["pattern"])
+    for attr in ["diffKeys"]:
+        if attr in pattern:
+            pattern.pop(attr)
     modstruct["event"] = {
-        "type": event["source"]["type"],
-        "pattern": event["pattern"]
+        "type": type,
+        "pattern": pattern
     }
 
 def handle_timer(struct, modstruct):
@@ -134,7 +139,7 @@ def file_loader(pkg_root, root_dir=''):
                     print (f"--- {relative_path} ---")
                     print (yaml.safe_dump(modstruct))
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     file_loader("../expander2/expander2")
 
 

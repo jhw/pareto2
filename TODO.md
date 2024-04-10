@@ -1,8 +1,8 @@
 ### short [01-migrations]
 
-- strip out diffKeys and table headers which have now been removed
+- check pattern variables to be stripped out
+- pass path to migrate_infra
 - dump results
-
 - migrate_variables script
 
 ### medium
@@ -102,6 +102,7 @@
 
 ### done
 
+- strip out diffKeys and table headers which have now been removed
 - add type fields
 - complete handlers
 - add block saying only migrates infrastructure
