@@ -1,9 +1,15 @@
-### short
+### short [01-push-artifacts]
+
+- ARTIFACTS_BUCKET
+- create artifacts bucket
+- regional and distributed acm clients
+- include api stuff as per api/__init__.py main block
+
+- refactor test.py as per scripts/deploy/run_tests.py
 
 ### medium
 
-- push artifacts script
-- deploy/delete stack scripts
+- 0.8.0 tag
 
 - re- test gists
 
@@ -98,6 +104,7 @@
 
 ### done
 
+- deploy/delete stack scripts
 - run_tests script
 - migrate_variables script
 - move to migrations subdir
