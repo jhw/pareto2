@@ -1,4 +1,21 @@
+"""
+This script migrates INFRA BLOCKS ONLY; in particular it does not touch handler bodies, nor test functions
+
+The only things which should need migrating above and beyond infra are the names of environment variables, in particular -
+
+- TABLE_NAME -> APP_TABLE
+- BUCKET_NAME -> APP_BUCKET
+- *_QUEUE_NAME -> APP_QUEUE
+
+It's simpler to do these manually with a few calls to /scripts/tools/search_and_replace.py rather than add automated handling here
+"""
+
 import os, re, yaml
+
+Alarm = {
+    "period": 60,
+    "threshold": 10
+}
 
 def filter_infra(text):
     blocks = [block for block in text.split('"""')
@@ -25,28 +42,78 @@ def handle_permissions(fn):
         fn(struct, modstruct)
     return wrapped
 
-def handle_size(fn):
+def handle_size(fn, sizes = {"default": 512,
+                             "large": 2048,
+                             "medium": 1024}):
     def wrapped(struct, modstruct):
+        key = struct["size"] if "size" in struct else "default"
+        modstruct["size"] = sizes[key]
         fn(struct, modstruct)
     return wrapped
 
-def handle_timeout(fn):
+def handle_timeout(fn, timeouts = {"default": 5,
+                                   "long": 30,
+                                   "medium": 15}):        
     def wrapped(struct, modstruct):
+        key = struct["timeout"] if "timeout" in struct else "default"
+        modstruct["timeout"] = timeouts[key]
         fn(struct, modstruct)
     return wrapped
+
+def insert_alarm(fn, alarm = Alarm):
+    def wrapped(struct, modstruct):
+        modstruct["alarm"] = alarm
+        fn(struct, modstruct)
+    return wrapped
+
+"""
+- method: GET
+  path: public-get
+  auth: public
+  parameters:
+  - message
+  permissions:
+  - s3:GetObject
+"""
 
 def handle_endpoint(struct, modstruct):
     pass
 
+@insert_alarm
 def handle_events(struct, modstruct):
-    pass
+    events = struct["events"]
+    if len(events) > 1:
+        raise RuntimeError("multiple events detected - %s" % struct)
+    event = events.pop()
+    modstruct["event"] = {
+        "type": event["source"]["type"],
+        "pattern": event["pattern"]
+    }
 
+"""
+event:
+  schedule: "rate(1 minute)"
+"""
+    
 def handle_timer(struct, modstruct):
     pass
-    
+
+"""
+event:
+  pattern:
+    source:
+    - Ref: HelloQueue
+"""
+
+@insert_alarm
 def handler_queue(struct, modstruct):
     pass
 
+"""
+a topic worker now has no event
+"""
+
+@insert_alarm
 def handle_topic(struct, modstruct):
     pass
 
@@ -67,8 +134,7 @@ def handle_infra(struct, modstruct):
         handle_topic(struct, modstruct)
     else:
         raise RuntimeError("no handler found for %s" % struct)
-        
-    
+            
 def file_loader(pkg_root, root_dir=''):
     pkg_full_path = os.path.join(root_dir, pkg_root)
     for root, dirs, files in os.walk(pkg_full_path):
@@ -81,9 +147,9 @@ def file_loader(pkg_root, root_dir=''):
                     relative_path = os.path.relpath(full_path, root_dir)
                     content = f.read()
                     struct, modstruct = filter_infra(content), {}
-                    print (f"--- {relative_path} ---")
                     handle_infra(struct, modstruct)
-                    print (modstruct)
+                    print (f"--- {relative_path} ---")                    
+                    print (yaml.safe_dump(modstruct))
 
 if __name__ == "__main__":
     file_loader("../expander2/expander2")

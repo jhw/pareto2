@@ -1,14 +1,8 @@
 ### short [01-migrations]
 
-- remove migrations script
-- move infra and variables handlers out of class
-- replace class with dict
-- simplify infra block lookup
-
 - complete handlers
-- assets to filter code blocks
-- dump results to tmp
-- handle tests
+- strip out diffKeys and table headers which have now been removed
+- dump results
 
 ### medium
 
@@ -107,6 +101,16 @@
 
 ### done
 
+- add block saying only migrates infrastructure
+- copy sample blocks
+- remove migrations script
+- move infra and variables handlers out of class
+- replace class with dict
+- simplify infra block lookup
+- complete handlers
+- assets to filter code blocks
+- dump results to tmp
+- handle tests
 - search logs script
 - rename StreamBucket/Table as Streaming
 - remove function_namespace = namespace
