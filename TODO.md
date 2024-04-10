@@ -2,7 +2,6 @@
 
 ### medium
 
-- run_tests script
 - push artifacts script
 - deploy/delete stack scripts
 
@@ -99,6 +98,7 @@
 
 ### done
 
+- run_tests script
 - migrate_variables script
 - move to migrations subdir
 - dump results
