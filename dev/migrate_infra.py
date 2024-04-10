@@ -1,4 +1,4 @@
-import copy, os, re, yaml
+import copy, os, re, sys, yaml
 
 Alarm = {
     "period": 60,
@@ -123,7 +123,7 @@ def handle_infra(struct, modstruct):
     else:
         raise RuntimeError("no handler found for %s" % struct)
             
-def file_loader(pkg_root, root_dir=''):
+def migrate_infra(pkg_root, root_dir=''):
     pkg_full_path = os.path.join(root_dir, pkg_root)
     for root, dirs, files in os.walk(pkg_full_path):
         dirs[:] = [d for d in dirs if d != '__pycache__']
@@ -139,8 +139,16 @@ def file_loader(pkg_root, root_dir=''):
                     print (f"--- {relative_path} ---")
                     print (yaml.safe_dump(modstruct))
 
-if __name__ == "__main__":    
-    file_loader("../expander2/expander2")
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) < 2:
+            raise RuntimeError("please enter path")
+        path = sys.argv[1]
+        if not os.path.exists(path):
+            raise RuntimeError("path does not exist")        
+        migrate_infra(path)
+    except RuntimeError as error:
+        print ("Error: %s" % str(error))
 
 
 

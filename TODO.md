@@ -1,7 +1,6 @@
 ### short [01-migrations]
 
-- check pattern variables to be stripped out
-- pass path to migrate_infra
+- dummy run option
 - dump results
 - migrate_variables script
 
@@ -102,6 +101,7 @@
 
 ### done
 
+- check pattern variables to be stripped out
 - strip out diffKeys and table headers which have now been removed
 - add type fields
 - complete handlers
