@@ -1,12 +1,13 @@
 ### short
 
 - distribution vs regional acm clients
+
 - test push artifacts
 
 ### medium
 
-- refactor test.py as per scripts/deploy/run_tests.py
 - 0.8.0 tag
+
 - re- test gists
 
 ### long
@@ -25,6 +26,8 @@
 
 ### thoughts
 
+- refactor test.py as per scripts/deploy/run_tests.py?
+  - doesn't seem a lot of point and anywa the contexts seem quite different
 - s3_zip loader?
   - save for expander
 - demos to call recipe.validate()?

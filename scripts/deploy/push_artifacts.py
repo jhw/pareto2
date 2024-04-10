@@ -46,7 +46,7 @@ class Env(dict):
     def __init__(self, L, acm):
         dict.__init__(self, {hungarorise(k):v
                              for k, v in os.environ.items()})
-        for attr in ["AppName", "ArtifactsBucket", "AWSRegion"]:
+        for attr in ["PkgRoot", "ArtifactsBucket", "AWSRegion"]:
             if attr not in self:
                 raise RuntimeError(f"env is missing {attr}")
         self.update(self.list_layers(L))
@@ -74,7 +74,7 @@ class Assets:
         self.s3 = s3
         self.timestamp = datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         self.lambdas = Lambdas({path: content
-                                for path, content in file_loader(pkg_root = self.env.AppName,
+                                for path, content in file_loader(pkg_root = self.env.PkgRoot,
                                                                  filter_fn = filter_fn)})
 
     def put_template(self):
