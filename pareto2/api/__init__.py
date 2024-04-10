@@ -208,8 +208,18 @@ def init_package_filter(pkg_root):
                 full_path.endswith("index.py"))
     return filter_fn
 
+"""
+"-" in pkg_root is replaced because within scripts, this variable is used for two purposes - AWS stack names and python roots
+
+The former permits slashes in names whilst the latter does not
+
+It's useful to tolerate this duality, and simply removed the slashes when you want to access python code
+
+I think this is the only place in the pareto2 codebase where that applies, but you may need to do similar in expander2 when loading assets from s3- based file systems
+"""
+
 def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
-    pkg_full_path = os.path.join(root_dir, pkg_root)
+    pkg_full_path = os.path.join(root_dir, pkg_root.replace("-", ""))
     for root, dirs, files in os.walk(pkg_full_path):
         dirs[:] = [d for d in dirs if d != '__pycache__']
         for file in files:
