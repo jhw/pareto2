@@ -139,7 +139,8 @@ def dump_output(filename, text, struct):
         f.write(content)
     
 def migrate_infra(pkg_root):
-    for relative_path, content in file_loader(pkg_root):
+    for relative_path, content in file_loader(pkg_root,
+                                              filter_fn = lambda x: x.endswith("index.py")):
         struct, modstruct = filter_infra(content), {}
         handle_infra(struct, modstruct)
         infra = {"infra": modstruct}

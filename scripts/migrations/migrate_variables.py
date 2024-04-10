@@ -12,7 +12,8 @@ def filter_variables(text):
     return refs
 
 def migrate_variables(pkg_root):
-    for relative_path, text in file_loader(pkg_root):
+    for relative_path, text in file_loader(pkg_root,
+                                           filter_fn = lambda x: x.endswith(".py")):
         variables = filter_variables(text)
         for variable in variables:
             if variable.endswith("_TABLE"):

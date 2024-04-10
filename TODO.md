@@ -1,8 +1,9 @@
 ### short [01-push-artifacts]
 
-- add filter_fn to migrations scripts
-- s3_zip loader
 - replace Lambdas.initialise with call to api/__init__/file_loader
+
+- s3_zip loader
+
 
 - setenv-hello.sh
 - create artifacts bucket
@@ -105,6 +106,7 @@
 
 ### done
 
+- add filter_fn to migrations scripts
 - add filter_fn to file_loader
 - file_loader to be written as generator which can be used by clients
   - migrations in particular

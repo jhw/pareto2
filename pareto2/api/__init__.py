@@ -37,7 +37,7 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 """
 
 AppNamespace = "app"
-        
+
 def filter_infra(text):
     blocks = [block for block in text.split('"""')
               if re.sub("\\s", "", block) != ""]
@@ -82,25 +82,7 @@ class Assets(dict):
     def lambda_content(self):
         return {k:v for k, v in self.items()
                 if k != self.root_filename}
-
-def init_filter_fn(pkg_root):
-    def filter_fn(full_path):
-        return (full_path == f"{pkg_root}/__init__.py" or
-                full_path.endswith("index.py"))
-    return filter_fn
     
-def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
-    pkg_full_path = os.path.join(root_dir, pkg_root)
-    for root, dirs, files in os.walk(pkg_full_path):
-        dirs[:] = [d for d in dirs if d != '__pycache__']
-        for file in files:
-            full_path = os.path.join(root, file)
-            if filter_fn(full_path):
-                with open(full_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                    relative_path = os.path.relpath(full_path, root_dir)
-                    yield (relative_path, content)
-
 def load_schema(type, cache = {}):
     if type in cache:
         return cache[type]    
@@ -220,10 +202,28 @@ def build_stack(assets, singletons = ["^alert",
     recipe.validate()
     return recipe
 
+def init_package_filter(pkg_root):
+    def filter_fn(full_path):
+        return (full_path == f"{pkg_root}/__init__.py" or
+                full_path.endswith("index.py"))
+    return filter_fn
+
+def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
+    pkg_full_path = os.path.join(root_dir, pkg_root)
+    for root, dirs, files in os.walk(pkg_full_path):
+        dirs[:] = [d for d in dirs if d != '__pycache__']
+        for file in files:
+            full_path = os.path.join(root, file)
+            if filter_fn(full_path):
+                with open(full_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    relative_path = os.path.relpath(full_path, root_dir)
+                    yield (relative_path, content)
+
 class ApiTest(unittest.TestCase):
 
     def load_assets(self, pkg_root = "hello"):
-        filter_fn = init_filter_fn(pkg_root)
+        filter_fn = init_package_filter(pkg_root)
         return Assets(pkg_root, {
             path: {
                 "infra": filter_infra(content),
