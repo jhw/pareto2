@@ -101,6 +101,7 @@
 
 ### done
 
+- migrate_variables script
 - move to migrations subdir
 - dump results
 - check pattern variables to be stripped out
