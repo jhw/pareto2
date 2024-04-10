@@ -26,10 +26,10 @@ def run_tests(tests):
 
 if __name__=="__main__":
     try:
-        appname=os.environ["APP_NAME"]
-        if appname in ["", None]:
-            raise RuntimeError("APP_NAME not found")
-        tests=filter_tests(appname.replace("-", ""))
+        pkgroot=os.environ["PKG_ROOT"]
+        if pkgroot in ["", None]:
+            raise RuntimeError("PKG_ROOT not found")
+        tests=filter_tests(pkgroot)
         run_tests(tests)
     except RuntimeError as error:
         print ("Error: %s" % error)

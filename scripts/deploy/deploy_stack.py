@@ -11,9 +11,9 @@ def stack_exists(cf, stackname):
 
 if __name__=="__main__":
     try:
-        appname=os.environ["APP_NAME"]
-        if appname in ["", None]:
-            raise RuntimeError("APP_NAME does not exist")
+        stackname=os.environ["PKG_ROOT"]
+        if stackname in ["", None]:
+            raise RuntimeError("PKG_ROOT does not exist")
         bucketname=os.environ["ARTIFACTS_BUCKET"]
         if bucketname in ["", None]:
             raise RuntimeError("ARTIFACTS_BUCKET does not exist")
@@ -21,7 +21,6 @@ if __name__=="__main__":
         if region in ["", None]:
             raise RuntimeError("AWS_REGION does not exist")
         filename="template-latest.json" if len(sys.argv) < 2 else sys.argv[1]
-        stackname=appname
         cf=boto3.client("cloudformation")
         action="update" if stack_exists(cf, stackname) else "create"
         fn=getattr(cf, "%s_stack" % action)

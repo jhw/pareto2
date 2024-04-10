@@ -28,9 +28,9 @@ def fetch_events(cf, stackname, n, filterfn=lambda x: True):
 
 if __name__=="__main__":
     try:
-        stackname=os.environ["APP_NAME"]
+        stackname=os.environ["PKG_ROOT"]
         if stackname in ["", None]:
-            raise RuntimeError("APP_NAME not found")
+            raise RuntimeError("PKG_ROOT not found")
         if len(sys.argv) < 2:
             raise RuntimeError("please enter n")
         n=sys.argv[1]

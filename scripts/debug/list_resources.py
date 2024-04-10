@@ -31,9 +31,9 @@ def fetch_resources(cf, stackname, filterfn=lambda x: True):
 
 if __name__=="__main__":
     try:
-        stackname=os.environ["APP_NAME"]
+        stackname=os.environ["PKG_ROOT"]
         if stackname in ["", None]:
-            raise RuntimeError("APP_NAME not found")
+            raise RuntimeError("PKG_ROOT not found")
         if len(sys.argv) < 2:
             raise RuntimeError("please enter pattern")
         pattern=sys.argv[1]

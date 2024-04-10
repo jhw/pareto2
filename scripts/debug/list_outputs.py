@@ -17,9 +17,9 @@ def fetch_outputs(cf, stackname):
 
 if __name__=="__main__":
     try:
-        stackname=os.environ["APP_NAME"]
+        stackname=os.environ["PKG_ROOT"]
         if stackname in ["", None]:
-            raise RuntimeError("APP_NAME not found")
+            raise RuntimeError("PKG_ROOT not found")
         cf=boto3.client("cloudformation")
         outputs=fetch_outputs(cf, stackname)
         for k in sorted(outputs.keys()):
