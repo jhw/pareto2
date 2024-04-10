@@ -1,7 +1,8 @@
 ### short [01-push-artifacts]
 
-- ARTIFACTS_BUCKET
+- setenv-hello.sh
 - create artifacts bucket
+- multiple acm clients
 - regional and distributed acm clients
 - include api stuff as per api/__init__.py main block
 
@@ -104,6 +105,7 @@
 
 ### done
 
+- ARTIFACTS_BUCKET
 - deploy/delete stack scripts
 - run_tests script
 - migrate_variables script

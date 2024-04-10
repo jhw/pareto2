@@ -1,4 +1,4 @@
-import boto3, io, json, os, re, zipfile
+import boto3, io, os, re, zipfile
 
 from datetime import datetime
 
@@ -58,9 +58,12 @@ class Lambdas(list):
 
 class Env(dict):
 
-    def __init__(self, L, acm, dsl):
+    def __init__(self, L, acm):
         dict.__init__(self, {hungarorise(k):v
                              for k, v in os.environ.items()})
+        for attr in ["AppName", "ArtifactsBucket"]:
+            if attr not in self:
+                raise RuntimeError(f"env is missing {attr}")
         self.update(self.list_layers(L))
         if "DomainName" in self:
             self.insert_certificate(acm)
@@ -81,29 +84,24 @@ class Env(dict):
     
 class Assets:
 
-    def __init__(self, app_name, bucket_name, env):
-        self.app_name = app_name
-        self.buckename = bucket_name
+    def __init__(self, env, s3):
         self.env = env
         self.timestamp = datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-        self.lambdas = Lambdas.initialise(self.app_name, self.timestamp)
+        self.lambdas = Lambdas.initialise(self.env.AppName, self.timestamp)
 
-    def put_template(self, s3):
+    def put_template(self):
         pass
 
-    def put_lambdas(self, s3):
-        self.lambdas.put_s3(s3, self.bucket_name)
+    def put_lambdas(self):
+        self.lambdas.put_s3(self.s3, self.env.BucketName)
 
 if __name__ == "__main__":
     try:
-        app_name = os.environ["APP_NAME"]
-        if app_name in ["", None]:
-            raise RuntimeError("APP_NAME does not exist")
         s3, L, acm = (boto3.client("s3"),
                       boto3.client("lambda"),
                       boto3.client("acm", region_name = "us-east-1"))
         env = Env(L, acm)
-        assets = Assets(app_name, env)
+        assets = Assets(env)
         assets.put_template(s3)
         assets.put_lambdas(s3)
     except RuntimeError as error:
