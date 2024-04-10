@@ -1,6 +1,4 @@
-### short [01-migrations]
-
-- migrate_variables script
+### short
 
 ### medium
 
