@@ -38,34 +38,40 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
-def filter_infra(text):
-    blocks = [block for block in text.split('"""')
-              if re.sub("\\s", "", block) != ""]
-    if blocks == []:
-        raise RuntimeError("no infra blocks found")
-    try:
-        struct = yaml.safe_load(blocks[0])
-    except:
-        raise RuntimeError("error parsing infra block")
-    if "infra" not in struct:
-        raise RuntimeError("infra block is mis-specified")
-    return struct["infra"]
-
-def filter_variables(text):
-    cleantext, refs = re.sub("\\s", "", text), set()
-    for expr in [r"os\.environ\[(.*?)\]",
-                 r"os\.getenv\((.*?)\)"]:
-        refs.update(set([tok[1:-1].lower().replace("_", "-")
-                         for tok in re.findall(expr, cleantext)
-                         if tok.upper()==tok]))
-    return refs
-
 class Project(dict):
 
-    def __init__(self, pkg_root, item = {}):
-        dict.__init__(self, item)
+    def __init__(self, pkg_root, loader):
+        dict.__init__(self, {
+            path: {
+                "infra": self.filter_infra(content),
+                "variables": self.filter_variables(content),
+                "content": content
+            }
+            for path, content in loader})        
         self.pkg_root = pkg_root
 
+    def filter_infra(self, text):
+        blocks = [block for block in text.split('"""')
+                  if re.sub("\\s", "", block) != ""]
+        if blocks == []:
+            raise RuntimeError("no infra blocks found")
+        try:
+            struct = yaml.safe_load(blocks[0])
+        except:
+            raise RuntimeError("error parsing infra block")
+        if "infra" not in struct:
+            raise RuntimeError("infra block is mis-specified")
+        return struct["infra"]
+
+    def filter_variables(self, text):
+        cleantext, refs = re.sub("\\s", "", text), set()
+        for expr in [r"os\.environ\[(.*?)\]",
+                     r"os\.getenv\((.*?)\)"]:
+            refs.update(set([tok[1:-1].lower().replace("_", "-")
+                             for tok in re.findall(expr, cleantext)
+                             if tok.upper()==tok]))
+        return refs
+        
     @property
     def root_filename(self):
         return f"{self.pkg_root}/__init__.py"
@@ -204,7 +210,8 @@ class Project(dict):
         return recipe
     
     """
-    - https://chat.openai.com/c/34736a67-aa28-4662-ad65-1c2d522e67ec
+    You can get some weird Lambda errors on execution if you fail to zip the archives properly
+    Unfortunately the chatgpt chat in which this was explained has now been deleted :(
     """
         
     @property
@@ -226,12 +233,6 @@ class Project(dict):
                       Body = self.zipped_content,
                       ContentType = "application/gzip")
         
-def init_package_filter(pkg_root):
-    def filter_fn(full_path):
-        return (full_path == f"{pkg_root}/__init__.py" or
-                full_path.endswith("index.py"))
-    return filter_fn
-
 """
 "-" in pkg_root is replaced because within scripts, this variable is used for two purposes - AWS stack names and python roots
 
@@ -254,18 +255,19 @@ def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
                     relative_path = os.path.relpath(full_path, root_dir)
                     yield (relative_path, content)
                     
-class ApiTest(unittest.TestCase):
-
-    def load_project(self, pkg_root = "hello"):
-        filter_fn = init_package_filter(pkg_root)
-        return Project(pkg_root, {
-            path: {
-                "infra": filter_infra(content),
-                "variables": filter_variables(content),
-                "content": content
-            }
-            for path, content in file_loader(pkg_root,
-                                             filter_fn = filter_fn)})
+class TemplateTest(unittest.TestCase):
+    
+    def init_filter(self, pkg_root):
+        def filter_fn(full_path):
+            return (full_path == f"{pkg_root}/__init__.py" or
+                    full_path.endswith("index.py"))
+        return filter_fn
+    
+    def init_project(self, pkg_root = "hello"):
+        filter_fn = self.init_filter(pkg_root)        
+        loader = file_loader(pkg_root,
+                             filter_fn = filter_fn)        
+        return Project(pkg_root, loader)
     
     def test_webapi(self, required = ['AllowedOrigins',
                                       'ArtifactsBucket',
@@ -273,7 +275,7 @@ class ApiTest(unittest.TestCase):
                                       'DomainName',
                                       'RegionalCertificateArn',
                                       'SlackWebhookUrl']):
-        project = self.load_project()
+        project = self.init_project()
         recipe = project.spawn_recipe()
         template = recipe.render()
         template.populate_parameters()
@@ -288,7 +290,7 @@ class ApiTest(unittest.TestCase):
                                        'DistributionCertificateArn',
                                        'DomainName',
                                        'SlackWebhookUrl']):
-        project = self.load_project()
+        project = self.init_project()
         root_infra = project.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
@@ -302,7 +304,6 @@ class ApiTest(unittest.TestCase):
         self.assertTrue(len(parameters) == len(required))
         for param in required:
             self.assertTrue(param in parameters)
-
 
 if __name__ == "__main__":
     unittest.main()

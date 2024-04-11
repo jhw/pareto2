@@ -1,9 +1,14 @@
 ### short
 
+- move api test into separate test module
+- add moto test for project zipped components
+- extend Project to include s3 loader
+- add back app_name vs pkg_root
+  - remove removal of slashes in file_loader
+- check template for ability to populate parameters with Default values
+- sample push_artifacts script with Env class
 - distribution vs regional acm clients
-
-- test push artifacts
-
+  
 ### medium
 
 - 0.8.0 tag
