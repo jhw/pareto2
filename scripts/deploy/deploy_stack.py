@@ -11,9 +11,9 @@ def stack_exists(cf, stackname):
 
 if __name__=="__main__":
     try:
-        stackname=os.environ["PKG_ROOT"]
+        stackname=os.environ["APP_NAME"]
         if stackname in ["", None]:
-            raise RuntimeError("PKG_ROOT does not exist")
+            raise RuntimeError("APP_NAME does not exist")
         bucketname=os.environ["ARTIFACTS_BUCKET"]
         if bucketname in ["", None]:
             raise RuntimeError("ARTIFACTS_BUCKET does not exist")

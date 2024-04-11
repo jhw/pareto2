@@ -1,6 +1,5 @@
 ### short
 
-- add back app_name vs pkg_root
 - test zipped_content
 - push_artifacts script
 - distribution vs regional acm clients
@@ -106,6 +105,7 @@
 
 ### done
 
+- add back app_name vs pkg_root
 - remove slashes management in file_loader
 - api test to define env dict and pass to spawn_template
 - template to populate default values from passed env

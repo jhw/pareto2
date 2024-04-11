@@ -46,9 +46,9 @@ def delete_stack(cf, s3, stackname):
 
 if __name__=="__main__":
     try:
-        stackname=os.environ["PKG_ROOT"]
+        stackname=os.environ["APP_NAME"]
         if stackname in ["", None]:
-            raise RuntimeError("PKG_ROOT does not exist")
+            raise RuntimeError("APP_NAME does not exist")
         cf, s3 = boto3.client("cloudformation"), boto3.client("s3")
         delete_stack(cf, s3, stackname)
     except RuntimeError as error:
