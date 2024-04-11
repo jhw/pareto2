@@ -1,15 +1,7 @@
 ### short
 
-- api test to define env dict and pass to spawn_template
-- template to populate default values from passed env
-- template is_complete() method
-- api test to assert template is complete
-
-- test zipped_content
-
 - add back app_name vs pkg_root
-  - remove slashes management in file_loader
-
+- test zipped_content
 - push_artifacts script
 - distribution vs regional acm clients
   
@@ -114,6 +106,11 @@
 
 ### done
 
+- remove slashes management in file_loader
+- api test to define env dict and pass to spawn_template
+- template to populate default values from passed env
+- template is_complete() method
+- api test to assert template is complete
 - rename api as project
 - revert everything back into single __init__.py
 - check migrations scripts still work

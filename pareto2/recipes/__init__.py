@@ -7,113 +7,6 @@ import importlib
 L = importlib.import_module("pareto2.services.lambda")
 
 import json, os, re
-
-class Template(dict):
-
-    def __init__(self, resources):
-        dict.__init__(self, {"Parameters": {},
-                             "Resources": dict([resource.render()
-                                                for resource in resources]),
-                             "Outputs": {H(resource.resource_name): {"Value": {"Ref": H(resource.resource_name)}}
-                                         for resource in resources
-                                         if resource.visible}})
-
-    def populate_parameters(self):
-        ids = list(self["Resources"].keys())
-        refs = self.refs
-        self["Parameters"].update({ref: {"Type": "String"}
-                                   for ref in refs
-                                   if ref not in ids})
-        
-    @property
-    def node_refs(self):
-        def is_ref(key, element):
-            return (key == "Ref" and
-                    type(element) == str and
-                    "::" not in str(element))
-        def is_getatt(key, element):
-            return (key == "Fn::GetAtt" and
-                    type(element) == list and
-                    len(element) == 2 and
-                    type(element[0]) == str and
-                    type(element[1]) == str)
-        def is_depends(key, element):
-            return (key == "DependsOn" and
-                    type(element) == list)
-        def filter_refs(element, refs):
-            if isinstance(element, list):
-                for subelement in element:
-                    filter_refs(subelement, refs)
-            elif isinstance(element, dict):
-                for key, subelement in element.items():
-                    if is_ref(key, subelement):
-                        # print (key, subelement)
-                        refs.add(subelement)
-                    elif is_getatt(key, subelement):
-                        # print (key, subelement[0])
-                        refs.add(subelement[0])
-                    elif is_depends(key, subelement):
-                        # print (key, set(subelement))
-                        refs.update(subelement)
-                    else:
-                        filter_refs(subelement, refs)
-        refs = set()
-        filter_refs(self["Resources"], refs)
-        return refs
-
-    @property
-    def inline_refs(self):
-        def filter_expressions(text):
-            return [tok[2:-1]
-                    for tok in re.findall("\\$\\{\\w+\\}", text)
-                    if tok != tok.lower()]
-        def filter_refs(element, refs):
-            if isinstance(element, list):
-                for subelement in element:
-                    if isinstance(subelement, str):
-                        refs.update(set(filter_expressions(subelement)))
-                    else:
-                        filter_refs(subelement, refs)
-            elif isinstance(element, dict):
-                for key, subelement in element.items():
-                    if isinstance(subelement, str):
-                        refs.update(set(filter_expressions(subelement)))
-                    else:
-                        filter_refs(subelement, refs)
-        refs = set()
-        filter_refs(self, refs)
-        return refs
-
-    @property
-    def refs(self):
-        refs = set()
-        refs.update(self.node_refs)
-        refs.update(self.inline_refs)
-        return refs    
-
-    """
-    Currently doesn't do anything but might in the future check for parameters which don't have Default values attached
-    """
-    
-    def validate(self):
-        pass
-    
-    def dump_file(self, filename):
-        path = "/".join(filename.split("/")[:-1])
-        if not os.path.exists(path):
-            os.makedirs(path)
-        with open(filename, 'w') as f:
-            f.write(json.dumps(self,
-                               sort_keys = True,
-                               indent = 2))
-
-    def dump_s3(self, s3, bucketname, key):
-        s3.put_object(Bucket = bucketname,
-                      Key = key,
-                      Body = json.dumps(self,
-                                        sort_keys = True,
-                                        indent = 2),
-                      ContentType = "application/json")
                 
 """
 - a recipe is just a very thin wrapper around list of resources
@@ -190,3 +83,127 @@ class Recipe(list):
     def render(self):
         return Template(self)
 
+class Template(dict):
+
+    def __init__(self, resources):
+        dict.__init__(self, {"Parameters": {},
+                             "Resources": dict([resource.render()
+                                                for resource in resources]),
+                             "Outputs": {H(resource.resource_name): {"Value": {"Ref": H(resource.resource_name)}}
+                                         for resource in resources
+                                         if resource.visible}})
+
+    def init_parameters(self):
+        ids = list(self["Resources"].keys())
+        refs = self.refs
+        self["Parameters"].update({ref: {"Type": "String"}
+                                   for ref in refs
+                                   if ref not in ids})
+
+    def set_parameter_value(self, key, value):
+        if key not in self["Parameters"]:
+            raise RuntimeError(f"parameter {key} not found")
+        self["Parameters"][key]["Default"] = value
+
+    def update_parameters(self, parameters):
+        for key, value in parameters.items():
+            self.set_parameter_value(key, value)
+
+    @property
+    def is_complete(self):
+        for key in self["Parameters"]:
+            if "Default" not in self["Parameters"][key]:
+                return False
+        return True
+
+    @property
+    def unpopulated_parameters(self):
+        return [key for key in self["Parameters"]
+                if "Default" not in self["Parameters"][key]]
+
+    def validate(self):
+        if not self.is_complete:
+            raise RuntimeError("template has unpopulated parameters: %s" % ", ".join(self.unpopulated_parameters))
+    
+    @property
+    def node_refs(self):
+        def is_ref(key, element):
+            return (key == "Ref" and
+                    type(element) == str and
+                    "::" not in str(element))
+        def is_getatt(key, element):
+            return (key == "Fn::GetAtt" and
+                    type(element) == list and
+                    len(element) == 2 and
+                    type(element[0]) == str and
+                    type(element[1]) == str)
+        def is_depends(key, element):
+            return (key == "DependsOn" and
+                    type(element) == list)
+        def filter_refs(element, refs):
+            if isinstance(element, list):
+                for subelement in element:
+                    filter_refs(subelement, refs)
+            elif isinstance(element, dict):
+                for key, subelement in element.items():
+                    if is_ref(key, subelement):
+                        # print (key, subelement)
+                        refs.add(subelement)
+                    elif is_getatt(key, subelement):
+                        # print (key, subelement[0])
+                        refs.add(subelement[0])
+                    elif is_depends(key, subelement):
+                        # print (key, set(subelement))
+                        refs.update(subelement)
+                    else:
+                        filter_refs(subelement, refs)
+        refs = set()
+        filter_refs(self["Resources"], refs)
+        return refs
+
+    @property
+    def inline_refs(self):
+        def filter_expressions(text):
+            return [tok[2:-1]
+                    for tok in re.findall("\\$\\{\\w+\\}", text)
+                    if tok != tok.lower()]
+        def filter_refs(element, refs):
+            if isinstance(element, list):
+                for subelement in element:
+                    if isinstance(subelement, str):
+                        refs.update(set(filter_expressions(subelement)))
+                    else:
+                        filter_refs(subelement, refs)
+            elif isinstance(element, dict):
+                for key, subelement in element.items():
+                    if isinstance(subelement, str):
+                        refs.update(set(filter_expressions(subelement)))
+                    else:
+                        filter_refs(subelement, refs)
+        refs = set()
+        filter_refs(self, refs)
+        return refs
+
+    @property
+    def refs(self):
+        refs = set()
+        refs.update(self.node_refs)
+        refs.update(self.inline_refs)
+        return refs    
+
+    def dump_file(self, filename):
+        path = "/".join(filename.split("/")[:-1])
+        if not os.path.exists(path):
+            os.makedirs(path)
+        with open(filename, 'w') as f:
+            f.write(json.dumps(self,
+                               sort_keys = True,
+                               indent = 2))
+
+    def dump_s3(self, s3, bucketname, key):
+        s3.put_object(Bucket = bucketname,
+                      Key = key,
+                      Body = json.dumps(self,
+                                        sort_keys = True,
+                                        indent = 2),
+                      ContentType = "application/json")

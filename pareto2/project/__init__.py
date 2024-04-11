@@ -209,15 +209,11 @@ class Project(dict):
         recipe.validate()
         return recipe
 
-    """
-    template.validate() doesn't currently do anything but might in the future assert all Parameters have Default values
-    equally it currently takes an environment values dict for future population of template Parameters, but doesn't currently do anything
-    """
-    
-    def spawn_template(self, env = {}):
+    def spawn_template(self, env):
         recipe = self.spawn_recipe()
         template = recipe.render()
-        template.populate_parameters()
+        template.init_parameters()
+        template.update_parameters(env)
         template.validate()
         return template
     
@@ -246,7 +242,7 @@ class Project(dict):
                       ContentType = "application/gzip")
 
 def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
-    pkg_full_path = os.path.join(root_dir, pkg_root.replace("-", ""))
+    pkg_full_path = os.path.join(root_dir, pkg_root)
     for root, dirs, files in os.walk(pkg_full_path):
         dirs[:] = [d for d in dirs if d != '__pycache__']
         for file in files:
@@ -271,37 +267,32 @@ class TemplateTest(unittest.TestCase):
                              filter_fn = filter_fn)        
         return Project(pkg_root, loader)
     
-    def test_webapi(self, required = ['AllowedOrigins',
-                                      'ArtifactsBucket',
-                                      'ArtifactsKey',
-                                      'DomainName',
-                                      'RegionalCertificateArn',
-                                      'SlackWebhookUrl']):
+    def test_webapi(self, parameters = ['AllowedOrigins',
+                                        'ArtifactsBucket',
+                                        'ArtifactsKey',
+                                        'DomainName',
+                                        'RegionalCertificateArn',
+                                        'SlackWebhookUrl']):
         project = self.init_project()
-        template = project.spawn_template()
+        env = {param: None for param in parameters}
+        template = project.spawn_template(env = env)
         template.dump_file("tmp/hello-webapi.json")
-        parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == len(required))
-        for param in required:
-            self.assertTrue(param in parameters)
+        self.assertTrue(template.is_complete)
 
-    def test_website(self, required = ['ArtifactsBucket',
-                                       'ArtifactsKey',
-                                       'DistributionCertificateArn',
-                                       'DomainName',
-                                       'SlackWebhookUrl']):
+    def test_website(self, parameters = ['ArtifactsBucket',
+                                         'ArtifactsKey',
+                                         'DistributionCertificateArn',
+                                         'DomainName',
+                                         'SlackWebhookUrl']):
         project = self.init_project()
         root_infra = project.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
         root_infra.setdefault("bucket", {})
         root_infra["bucket"]["public"] = True
-        template = project.spawn_template()
-        template.dump_file("tmp/hello-website.json")
-        parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == len(required))
-        for param in required:
-            self.assertTrue(param in parameters)
+        env = {param: None for param in parameters}
+        template = project.spawn_template(env = env)        
+        self.assertTrue(template.is_complete)
 
 if __name__ == "__main__":
     unittest.main()

@@ -7,7 +7,7 @@ class WebsiteTest(unittest.TestCase):
     def test_template(self):
         recipe = Website(namespace = "app")
         template = recipe.render()
-        template.populate_parameters()
+        template.init_parameters()
         template.dump_file(filename = "tmp/website.json")
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 2)

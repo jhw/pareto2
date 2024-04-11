@@ -25,7 +25,7 @@ class EventTimerTest(unittest.TestCase):
         recipe = EventTimer(namespace = "my",
                             timer = timer)
         template = recipe.render()
-        template.populate_parameters()
+        template.init_parameters()
         template.dump_file(filename = "tmp/event-timer.json")
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 1)

@@ -54,7 +54,7 @@ class WebApiTest(unittest.TestCase):
         recipe = WebApi(namespace = "app",
                           endpoints = list(endpoints.values()))
         template = recipe.render()
-        template.populate_parameters()
+        template.init_parameters()
         template.dump_file(filename = "tmp/web-api.json")
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 3)

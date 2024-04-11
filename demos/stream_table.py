@@ -39,7 +39,7 @@ class StreamTableTest(unittest.TestCase):
         recipe += EventWorker(namespace = "demo",
                               worker = worker)
         template = recipe.render()
-        template.populate_parameters()
+        template.init_parameters()
         template.dump_file(filename = "tmp/stream-table.json")
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 1)

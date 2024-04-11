@@ -1,7 +1,7 @@
 import os, re, sys
 
 def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
-    pkg_full_path = os.path.join(root_dir, pkg_root.replace("-", ""))
+    pkg_full_path = os.path.join(root_dir, pkg_root)
     for root, dirs, files in os.walk(pkg_full_path):
         dirs[:] = [d for d in dirs if d != '__pycache__']
         for file in files:

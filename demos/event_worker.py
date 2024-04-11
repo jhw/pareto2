@@ -31,7 +31,7 @@ class EventWorkerTest(unittest.TestCase):
         recipe = EventWorker(namespace = "my",
                              worker = worker)
         template = recipe.render()
-        template.populate_parameters()
+        template.init_parameters()
         template.dump_file(filename = "tmp/event-worker.json")
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 1)
