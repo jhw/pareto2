@@ -1,7 +1,5 @@
 ### short
 
-- consider subclassing project with zip facilities
-
 - rename api as project
 
 - api test to define env dict and pass to spawn_template
@@ -9,8 +7,7 @@
 - template is_complete() method
 - api test to assert template is complete
 
-- add moto test for project zipped components
-- extend Project to include s3 loader
+- test zipped_content
 
 - add back app_name vs pkg_root
   - remove slashes management in file_loader
