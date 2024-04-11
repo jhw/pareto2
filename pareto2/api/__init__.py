@@ -12,7 +12,7 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.s3 import StreamingBucket
 
-import io, jsonschema, os, re, unittest, yaml, zipfile
+import io, jsonschema, os, re, yaml, zipfile
 
 """
 Pros and cons to having a single top- level namespace
@@ -208,6 +208,18 @@ class Project(dict):
         self.post_validate_env_variables(recipe, variables)
         recipe.validate()
         return recipe
+
+    """
+    template.validate() doesn't currently do anything but might in the future assert all Parameters have Default values
+    equally it currently takes an environment values dict for future population of template Parameters, but doesn't currently do anything
+    """
+    
+    def spawn_template(self, env = {}):
+        recipe = self.spawn_recipe()
+        template = recipe.render()
+        template.populate_parameters()
+        template.validate()
+        return template
     
     """
     You can get some weird Lambda errors on execution if you fail to zip the archives properly
@@ -233,77 +245,5 @@ class Project(dict):
                       Body = self.zipped_content,
                       ContentType = "application/gzip")
         
-"""
-"-" in pkg_root is replaced because within scripts, this variable is used for two purposes - AWS stack names and python roots
-
-The former permits slashes in names whilst the latter does not
-
-It's useful to tolerate this duality, and simply removed the slashes when you want to access python code
-
-I think this is the only place in the pareto2 codebase where that applies, but you may need to do similar in expander2 when loading project from s3- based file systems
-"""
-
-def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
-    pkg_full_path = os.path.join(root_dir, pkg_root.replace("-", ""))
-    for root, dirs, files in os.walk(pkg_full_path):
-        dirs[:] = [d for d in dirs if d != '__pycache__']
-        for file in files:
-            full_path = os.path.join(root, file)
-            if filter_fn(full_path):
-                with open(full_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                    relative_path = os.path.relpath(full_path, root_dir)
-                    yield (relative_path, content)
-                    
-class TemplateTest(unittest.TestCase):
-    
-    def init_filter(self, pkg_root):
-        def filter_fn(full_path):
-            return (full_path == f"{pkg_root}/__init__.py" or
-                    full_path.endswith("index.py"))
-        return filter_fn
-    
-    def init_project(self, pkg_root = "hello"):
-        filter_fn = self.init_filter(pkg_root)        
-        loader = file_loader(pkg_root,
-                             filter_fn = filter_fn)        
-        return Project(pkg_root, loader)
-    
-    def test_webapi(self, required = ['AllowedOrigins',
-                                      'ArtifactsBucket',
-                                      'ArtifactsKey',
-                                      'DomainName',
-                                      'RegionalCertificateArn',
-                                      'SlackWebhookUrl']):
-        project = self.init_project()
-        recipe = project.spawn_recipe()
-        template = recipe.render()
-        template.populate_parameters()
-        template.dump_file("tmp/hello-webapi.json")
-        parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == len(required))
-        for param in required:
-            self.assertTrue(param in parameters)
-
-    def test_website(self, required = ['ArtifactsBucket',
-                                       'ArtifactsKey',
-                                       'DistributionCertificateArn',
-                                       'DomainName',
-                                       'SlackWebhookUrl']):
-        project = self.init_project()
-        root_infra = project.root_content["infra"]
-        for attr in ["api", "builder"]:
-            root_infra.pop(attr)
-        root_infra.setdefault("bucket", {})
-        root_infra["bucket"]["public"] = True
-        recipe = project.spawn_recipe()
-        template = recipe.render()
-        template.populate_parameters()
-        template.dump_file("tmp/hello-website.json")
-        parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == len(required))
-        for param in required:
-            self.assertTrue(param in parameters)
-
 if __name__ == "__main__":
-    unittest.main()
+    pass

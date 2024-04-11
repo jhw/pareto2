@@ -91,6 +91,13 @@ class Template(dict):
         refs.update(self.inline_refs)
         return refs    
 
+    """
+    Currently doesn't do anything but might in the future check for parameters which don't have Default values attached
+    """
+    
+    def validate(self):
+        pass
+    
     def dump_file(self, filename):
         path = "/".join(filename.split("/")[:-1])
         if not os.path.exists(path):

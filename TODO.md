@@ -1,12 +1,24 @@
 ### short
 
-- move api test into separate test module
+- populate Project with Asset class so infra and variables can be properties
+  - simplify Project constructor
+  - remove content attribute
+  - __str(asset) just returns the content field
+
+- consider subclassing project with zip facilities
+
+- api test to define env dict and pass to spawn_template
+- template to populate default values from passed env
+- template is_complete() method
+- api test to assert template is complete
+
 - add moto test for project zipped components
 - extend Project to include s3 loader
+
 - add back app_name vs pkg_root
-  - remove removal of slashes in file_loader
-- check template for ability to populate parameters with Default values
-- sample push_artifacts script with Env class
+  - remove slashes management in file_loader
+
+- push_artifacts script
 - distribution vs regional acm clients
   
 ### medium
@@ -110,6 +122,7 @@
 
 ### done
 
+- move api test into separate test module
 - PKG_ROOT vs APP_NAME
 - create artifacts bucket
 - setenv-hello.sh
