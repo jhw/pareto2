@@ -1,7 +1,5 @@
 ### short
 
-- rename api as project
-
 - api test to define env dict and pass to spawn_template
 - template to populate default values from passed env
 - template is_complete() method
@@ -116,6 +114,7 @@
 
 ### done
 
+- rename api as project
 - revert everything back into single __init__.py
 - check migrations scripts still work
 - revert everything back into single __init__.py
