@@ -3,14 +3,24 @@
 This script migrates pareto 0.6, 0.7 infra snippets to 0.8
 """
 
-from pareto2.api import file_loader
-
 import copy, os, re, sys, yaml
 
 Alarm = {
     "period": 60,
     "threshold": 10
 }
+
+def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
+    pkg_full_path = os.path.join(root_dir, pkg_root.replace("-", ""))
+    for root, dirs, files in os.walk(pkg_full_path):
+        dirs[:] = [d for d in dirs if d != '__pycache__']
+        for file in files:
+            full_path = os.path.join(root, file)
+            if filter_fn(full_path):
+                with open(full_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    relative_path = os.path.relpath(full_path, root_dir)
+                    yield (relative_path, content)
 
 def filter_infra(text):
     blocks = [block for block in text.split('"""')

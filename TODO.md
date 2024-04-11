@@ -1,8 +1,5 @@
 ### short
 
-- revert everything back into single __init__.py
-- check migrations scripts still work
-
 - consider subclassing project with zip facilities
 
 - rename api as project
@@ -122,6 +119,8 @@
 
 ### done
 
+- revert everything back into single __init__.py
+- check migrations scripts still work
 - revert everything back into single __init__.py
 - move api test into separate test module
 - PKG_ROOT vs APP_NAME
