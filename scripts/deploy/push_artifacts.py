@@ -43,29 +43,9 @@ class Lambdas(dict):
 
 class Env(dict):
 
-    def __init__(self, L, acm):
+    def __init__(self):
         dict.__init__(self, {hungarorise(k):v
                              for k, v in os.environ.items()})
-        for attr in ["PkgRoot", "ArtifactsBucket", "AWSRegion"]:
-            if attr not in self:
-                raise RuntimeError(f"env is missing {attr}")
-        self.update(self.list_layers(L))
-        if "DomainName" in self:
-            self.insert_certificate(acm)
-
-    def list_layers(self, L):
-        resp = L.list_layers()
-        return {hungarorise("%s-layer-arn" % layer["LayerName"]):layer["LatestMatchingVersion"]["LayerVersionArn"]
-                for layer in resp["Layers"]} if "Layers" in resp else {}
-
-    def insert_certificate(self, acm):
-        domainname = ".".join(self["DomainName"].split(".")[1:])
-        resp = acm.list_certificates()
-        certs = {".".join(cert["DomainName"].split(".")[1:]):cert["CertificateArn"]
-               for cert in resp["CertificateSummaryList"]} if "CertificateSummaryList" in resp else {}
-        if domainname not in certs:
-            raise RuntimeError("no certificate found for %s" % domainname)
-        self["CertificateArn"] = certs[domainname]
     
 class Assets:
 
@@ -94,9 +74,7 @@ class Assets:
 
 if __name__ == "__main__":
     try:
-        L, acm = (boto3.client("lambda"),
-                  boto3.client("acm", region_name = "us-east-1"))
-        env = Env(L, acm)
+        env = Env()
         s3 = boto3.client("s3")
         assets = Assets(env, s3)
         assets.put_template()
