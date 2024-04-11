@@ -12,7 +12,7 @@ from pareto2.services import hungarorise as H
 
 from pareto2.services.s3 import StreamingBucket
 
-import jsonschema, os, re, unittest, yaml
+import io, jsonschema, os, re, unittest, yaml, zipfile
 
 """
 Pros and cons to having a single top- level namespace
@@ -60,7 +60,7 @@ def filter_variables(text):
                          if tok.upper()==tok]))
     return refs
 
-class Assets(dict):
+class Project(dict):
 
     def __init__(self, pkg_root, item = {}):
         dict.__init__(self, item)
@@ -82,126 +82,150 @@ class Assets(dict):
     def lambda_content(self):
         return {k:v for k, v in self.items()
                 if k != self.root_filename}
-    
-def load_schema(type, cache = {}):
-    if type in cache:
-        return cache[type]    
-    filename = "/".join(__file__.split("/")[:-1]+["schemas", f"{type}.yaml"])
-    if not os.path.exists(filename):
-        raise RuntimeError(f"{filename} does not exist")
-    with open(filename, 'r', encoding='utf-8') as f:
-        cache[type] = yaml.safe_load(f.read())
-    return cache[type]
 
-def validate_schema(filename, struct, schema):
-    try:
-        jsonschema.validate(instance=struct,
-                            schema=schema)
-    except jsonschema.exceptions.ValidationError as error:
-        raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
+    def load_schema(self, type, cache = {}):
+        if type in cache:
+            return cache[type]    
+        filename = "/".join(__file__.split("/")[:-1]+["schemas", f"{type}.yaml"])
+        if not os.path.exists(filename):
+            raise RuntimeError(f"{filename} does not exist")
+        with open(filename, 'r', encoding='utf-8') as f:
+            cache[type] = yaml.safe_load(f.read())
+        return cache[type]
 
-def insert_event_source(event, namespace = AppNamespace):
-    if event["type"] == "bucket":
-        event["pattern"]["detail"].setdefault("bucket", {})
-        event["pattern"]["detail"]["bucket"]["name"] = {"Ref": H(f"{namespace}-bucket")}
-    elif event["type"] == "builder":
-        event["pattern"]["detail"]["project-name"] = {"Ref": H(f"{namespace}-project")}
-    elif event["type"] == "queue":
-        event["pattern"]["source"] = {"Ref": H(f"{namespace}-queue")}
-    elif event["type"] == "table":
-        event["pattern"]["source"] = {"Ref": H(f"{namespace}-table")}
-    elif event["type"] == "unbound":
-        if "detail-type" not in event["pattern"]:
-            raise RuntimeError("unbound event must have detail-type")
-    
-"""
-Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path
-"""
-    
-def handle_lambdas(recipe, assets, endpoints, variables):
-    for filename, asset in assets.items():
-        struct = asset["infra"]
-        type = struct.pop("type") if "type" in struct else "root"
-        schema = load_schema(type)
-        validate_schema(filename = filename,
-                        struct = struct,
-                        schema = schema)
-        struct["handler"] = filename.replace(".py", ".handler") 
-        struct["variables"] = {k: {"Ref": H(k)}
-                               for k in asset["variables"]}
-        variables.update(struct["variables"])
-        if type == "endpoint":
-            endpoints.append(struct)
-        elif type == "worker":
-            namespace = "-".join(filename.split("/")[1:-1])
-            if "event" in struct:
-                insert_event_source(struct["event"])
-            recipe += EventWorker(namespace = namespace,
-                                  worker = struct)
-        elif type == "timer":
-            namespace = "-".join(filename.split("/")[1:-1])
-            recipe += EventTimer(namespace = namespace,
-                                 timer = struct)
-        else:
-            raise RuntimeError(f"type {type} not recognised")
+    def validate_schema(self, filename, struct, schema):
+        try:
+            jsonschema.validate(instance=struct,
+                                schema=schema)
+        except jsonschema.exceptions.ValidationError as error:
+            raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
 
-"""
-api (obviously) conflicts with public bucket over use of domain name
-builder conflicts with public bucket because both have role, policy in app namespace; no good reason for both to exist the same time
-"""
+    
+    """
+    api (obviously) conflicts with public bucket over use of domain name
+    builder conflicts with public bucket because both have role, policy in app namespace; no good reason for both to exist the same time
+    """
         
-def handle_root(recipe, filename, asset, endpoints, namespace = AppNamespace):
-    struct = asset["infra"]
-    schema = load_schema("root")
-    validate_schema(filename = filename,
-                    struct = struct,
-                    schema = schema)
-    for attr in ["api", "builder"]:
-        if (attr in struct and
-            "bucket" in struct and
-            struct["bucket"]["public"]):
-            raise RuntimeError(f"app can't have both {attr} and public bucket")
-    if "api" in struct:
-        if endpoints != []:
-            recipe += WebApi(namespace = namespace,
-                             endpoints = endpoints)
-    if "bucket" in struct:
-        if struct["bucket"]["public"]:
-            binary_media = struct["bucket"]["binary-media"] if "binary-media" in struct["bucket"] else False
-            recipe += Website(namespace = namespace,
-                              binary_media = binary_media)
-        else:
-            recipe.append(StreamingBucket(namespace = namespace))
-    if "builder" in struct:
-        recipe += PipBuilder(namespace = namespace)
-    if "queue" in struct:
-        batch_size = struct["queue"]["batch-size"] if "batch-size" in struct["queue"] else 10
-        recipe += TaskQueue(namespace = namespace,
-                            batch_size = batch_size)
-    if "table" in struct:
-        indexes = struct["table"]["indexes"] if "indexes" in struct["table"] else []
-        batch_window = struct["table"]["batch-window"] if "batch-table" in struct["table"] else 1
-        recipe += StreamTable(namespace = namespace,
-                              indexes = indexes,
-                              batch_window = batch_window)
+    def handle_root(self, recipe, endpoints, namespace = AppNamespace):
+        struct = self.root_content["infra"]
+        schema = self.load_schema("root")
+        self.validate_schema(filename = self.root_filename,
+                             struct = struct,
+                             schema = schema)
+        for attr in ["api", "builder"]:
+            if (attr in struct and
+                "bucket" in struct and
+                struct["bucket"]["public"]):
+                raise RuntimeError(f"app can't have both {attr} and public bucket")
+        if "api" in struct:
+            if endpoints != []:
+                recipe += WebApi(namespace = namespace,
+                                 endpoints = endpoints)
+        if "bucket" in struct:
+            if struct["bucket"]["public"]:
+                binary_media = struct["bucket"]["binary-media"] if "binary-media" in struct["bucket"] else False
+                recipe += Website(namespace = namespace,
+                                  binary_media = binary_media)
+            else:
+                recipe.append(StreamingBucket(namespace = namespace))
+        if "builder" in struct:
+            recipe += PipBuilder(namespace = namespace)
+        if "queue" in struct:
+            batch_size = struct["queue"]["batch-size"] if "batch-size" in struct["queue"] else 10
+            recipe += TaskQueue(namespace = namespace,
+                                batch_size = batch_size)
+        if "table" in struct:
+            indexes = struct["table"]["indexes"] if "indexes" in struct["table"] else []
+            batch_window = struct["table"]["batch-window"] if "batch-table" in struct["table"] else 1
+            recipe += StreamTable(namespace = namespace,
+                                  indexes = indexes,
+                                  batch_window = batch_window)
 
-def post_validate_env_variables(recipe, variables):
-    resource_names = recipe.resource_names
-    missing = [variable for variable in variables
-               if variable not in resource_names]
-    if missing != []:
-        raise RuntimeError("references to unknown resources: %s" % ", ".join(missing))
+    def insert_event_source(self, event, namespace = AppNamespace):
+        if event["type"] == "bucket":
+            event["pattern"]["detail"].setdefault("bucket", {})
+            event["pattern"]["detail"]["bucket"]["name"] = {"Ref": H(f"{namespace}-bucket")}
+        elif event["type"] == "builder":
+            event["pattern"]["detail"]["project-name"] = {"Ref": H(f"{namespace}-project")}
+        elif event["type"] == "queue":
+            event["pattern"]["source"] = {"Ref": H(f"{namespace}-queue")}
+        elif event["type"] == "table":
+            event["pattern"]["source"] = {"Ref": H(f"{namespace}-table")}
+        elif event["type"] == "unbound":
+            if "detail-type" not in event["pattern"]:
+                raise RuntimeError("unbound event must have detail-type")
+            
+    """
+    Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path
+    """
+    
+    def handle_lambdas(self, recipe, endpoints, variables):
+        for filename, asset in self.lambda_content.items():
+            struct = asset["infra"]
+            type = struct.pop("type") if "type" in struct else "root"
+            schema = self.load_schema(type)
+            self.validate_schema(filename = filename,
+                                 struct = struct,
+                                 schema = schema)
+            struct["handler"] = filename.replace(".py", ".handler") 
+            struct["variables"] = {k: {"Ref": H(k)}
+                                   for k in asset["variables"]}
+            variables.update(struct["variables"])
+            if type == "endpoint":
+                endpoints.append(struct)
+            elif type == "worker":
+                namespace = "-".join(filename.split("/")[1:-1])
+                if "event" in struct:
+                    self.insert_event_source(struct["event"])
+                recipe += EventWorker(namespace = namespace,
+                                      worker = struct)
+            elif type == "timer":
+                namespace = "-".join(filename.split("/")[1:-1])
+                recipe += EventTimer(namespace = namespace,
+                                     timer = struct)
+            else:
+                raise RuntimeError(f"type {type} not recognised")
+    
+    def post_validate_env_variables(self, recipe, variables):
+        resource_names = recipe.resource_names
+        missing = [variable for variable in variables
+                   if variable not in resource_names]
+        if missing != []:
+            raise RuntimeError("references to unknown resources: %s" % ", ".join(missing))
+    
+    def spawn_recipe(self, singletons = ["^alert",
+                                         "^alarm",
+                                         "^app\\-bucket$"]):    
+        recipe, endpoints, variables = Recipe(singletons = singletons), [], set()
+        self.handle_lambdas(recipe, endpoints, variables)
+        self.handle_root(recipe, endpoints)
+        self.post_validate_env_variables(recipe, variables)
+        recipe.validate()
+        return recipe
+    
+    """
+    - https://chat.openai.com/c/34736a67-aa28-4662-ad65-1c2d522e67ec
+    """
+        
+    @property
+    def zipped_content(self):
+        buf = io.BytesIO()
+        zf = zipfile.ZipFile(buf, "a", zipfile.ZIP_DEFLATED, False)
+        for k, v in self["content"].items():
+            # zf.writestr(k, v)
+            unix_mode = 0o100644  # File permission: rw-r--r--
+            zip_info = zipfile.ZipInfo(k)
+            zip_info.external_attr = (unix_mode << 16) | 0o755  # Add execute permission
+            zf.writestr(zip_info, v)
+        zf.close()
+        return buf.getvalue()
 
-def build_stack(assets, singletons = ["^alert",
-                                      "^alarm",
-                                      "^app\\-bucket$"]):    
-    recipe, endpoints, variables = Recipe(singletons = singletons), [], set()
-    handle_lambdas(recipe, assets.lambda_content, endpoints, variables)
-    handle_root(recipe, assets.root_filename, assets.root_content, endpoints)
-    post_validate_env_variables(recipe, variables)
-    recipe.validate()
-    return recipe
-
+    def put_s3(self, s3, bucket_name, file_name):
+        s3.put_object(Bucket = bucket_name,
+                      Key = file_name,
+                      Body = self.zipped_content,
+                      ContentType = "application/gzip")
+        
 def init_package_filter(pkg_root):
     def filter_fn(full_path):
         return (full_path == f"{pkg_root}/__init__.py" or
@@ -215,7 +239,7 @@ The former permits slashes in names whilst the latter does not
 
 It's useful to tolerate this duality, and simply removed the slashes when you want to access python code
 
-I think this is the only place in the pareto2 codebase where that applies, but you may need to do similar in expander2 when loading assets from s3- based file systems
+I think this is the only place in the pareto2 codebase where that applies, but you may need to do similar in expander2 when loading project from s3- based file systems
 """
 
 def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
@@ -229,15 +253,16 @@ def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
                     content = f.read()
                     relative_path = os.path.relpath(full_path, root_dir)
                     yield (relative_path, content)
-
+                    
 class ApiTest(unittest.TestCase):
 
-    def load_assets(self, pkg_root = "hello"):
+    def load_project(self, pkg_root = "hello"):
         filter_fn = init_package_filter(pkg_root)
-        return Assets(pkg_root, {
+        return Project(pkg_root, {
             path: {
                 "infra": filter_infra(content),
-                "variables": filter_variables(content)
+                "variables": filter_variables(content),
+                "content": content
             }
             for path, content in file_loader(pkg_root,
                                              filter_fn = filter_fn)})
@@ -248,8 +273,8 @@ class ApiTest(unittest.TestCase):
                                       'DomainName',
                                       'RegionalCertificateArn',
                                       'SlackWebhookUrl']):
-        assets = self.load_assets()
-        recipe = build_stack(assets)
+        project = self.load_project()
+        recipe = project.spawn_recipe()
         template = recipe.render()
         template.populate_parameters()
         template.dump_file("tmp/hello-webapi.json")
@@ -263,13 +288,13 @@ class ApiTest(unittest.TestCase):
                                        'DistributionCertificateArn',
                                        'DomainName',
                                        'SlackWebhookUrl']):
-        assets = self.load_assets()
-        root_infra = assets.root_content["infra"]
+        project = self.load_project()
+        root_infra = project.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
         root_infra.setdefault("bucket", {})
         root_infra["bucket"]["public"] = True
-        recipe = build_stack(assets)
+        recipe = project.spawn_recipe()
         template = recipe.render()
         template.populate_parameters()
         template.dump_file("tmp/hello-website.json")
