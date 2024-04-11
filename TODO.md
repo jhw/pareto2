@@ -1,11 +1,11 @@
 ### short
 
-- populate Project with Asset class so infra and variables can be properties
-  - simplify Project constructor
-  - remove content attribute
-  - __str(asset) just returns the content field
+- revert everything back into single __init__.py
+- check migrations scripts still work
 
 - consider subclassing project with zip facilities
+
+- rename api as project
 
 - api test to define env dict and pass to spawn_template
 - template to populate default values from passed env
@@ -122,6 +122,7 @@
 
 ### done
 
+- revert everything back into single __init__.py
 - move api test into separate test module
 - PKG_ROOT vs APP_NAME
 - create artifacts bucket
