@@ -1,8 +1,6 @@
 ### short
 
-- test zipped_content
 - push_artifacts script
-- distribution vs regional acm clients
   
 ### medium
 
@@ -105,6 +103,7 @@
 
 ### done
 
+- test zipped_content
 - add back app_name vs pkg_root
 - remove slashes management in file_loader
 - api test to define env dict and pass to spawn_template

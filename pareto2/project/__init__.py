@@ -226,12 +226,12 @@ class Project(dict):
     def zipped_content(self):
         buf = io.BytesIO()
         zf = zipfile.ZipFile(buf, "a", zipfile.ZIP_DEFLATED, False)
-        for k, v in self["content"].items():
+        for k, v in self.items():
             # zf.writestr(k, v)
             unix_mode = 0o100644  # File permission: rw-r--r--
             zip_info = zipfile.ZipInfo(k)
             zip_info.external_attr = (unix_mode << 16) | 0o755  # Add execute permission
-            zf.writestr(zip_info, v)
+            zf.writestr(zip_info, v["content"])
         zf.close()
         return buf.getvalue()
 
@@ -253,7 +253,7 @@ def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
                     relative_path = os.path.relpath(full_path, root_dir)
                     yield (relative_path, content)
 
-class TemplateTest(unittest.TestCase):
+class ProjectTest(unittest.TestCase):
     
     def init_filter(self, pkg_root):
         def filter_fn(full_path):
@@ -261,30 +261,34 @@ class TemplateTest(unittest.TestCase):
                     full_path.endswith("index.py"))
         return filter_fn
     
-    def init_project(self, pkg_root = "hello"):
+    def init_project(self, pkg_root):
         filter_fn = self.init_filter(pkg_root)        
         loader = file_loader(pkg_root,
                              filter_fn = filter_fn)        
         return Project(pkg_root, loader)
     
-    def test_webapi(self, parameters = ['AllowedOrigins',
-                                        'ArtifactsBucket',
-                                        'ArtifactsKey',
-                                        'DomainName',
-                                        'RegionalCertificateArn',
-                                        'SlackWebhookUrl']):
-        project = self.init_project()
+    def test_webapi_template(self,
+                             pkg_root = "hello",
+                             parameters = ['AllowedOrigins',
+                                           'ArtifactsBucket',
+                                           'ArtifactsKey',
+                                           'DomainName',
+                                           'RegionalCertificateArn',
+                                           'SlackWebhookUrl']):
+        project = self.init_project(pkg_root = pkg_root)
         env = {param: None for param in parameters}
         template = project.spawn_template(env = env)
         template.dump_file("tmp/hello-webapi.json")
         self.assertTrue(template.is_complete)
 
-    def test_website(self, parameters = ['ArtifactsBucket',
-                                         'ArtifactsKey',
-                                         'DistributionCertificateArn',
-                                         'DomainName',
-                                         'SlackWebhookUrl']):
-        project = self.init_project()
+    def test_website_template(self,
+                              pkg_root = "hello",
+                              parameters = ['ArtifactsBucket',
+                                            'ArtifactsKey',
+                                            'DistributionCertificateArn',
+                                            'DomainName',
+                                            'SlackWebhookUrl']):
+        project = self.init_project(pkg_root = pkg_root)
         root_infra = project.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
@@ -294,6 +298,14 @@ class TemplateTest(unittest.TestCase):
         template = project.spawn_template(env = env)        
         self.assertTrue(template.is_complete)
 
+    def test_zipped_content(self, pkg_root = "hello"):
+        project = self.init_project(pkg_root = pkg_root)
+        buf = project.zipped_content
+        zf = zipfile.ZipFile(io.BytesIO(buf))
+        filenames = [item.filename for item in zf.infolist()]
+        self.assertTrue(f"{pkg_root}/__init__.py" in filenames)
+        self.assertTrue(len(filenames) > 1)
+        
 if __name__ == "__main__":
     unittest.main()
         
