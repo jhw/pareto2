@@ -56,7 +56,7 @@ def file_loader(pkg_root,
 def s3_zip_loader(s3, bucket_name, key,
                   path_rewriter = lambda x: x,
                   filter_fn = lambda x: True):
-    zf=zipfile.ZipFile(io.BytesIO(s3.get_object(Bucket=bucketname,
+    zf=zipfile.ZipFile(io.BytesIO(s3.get_object(Bucket=bucket_name,
                                                 Key=key)["Body"].read()))
     for item in zf.infolist():
         if (filterfn(item.filename) and

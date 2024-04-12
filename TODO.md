@@ -1,8 +1,5 @@
 ### short [01-push-artifacts]
 
-- project tests to push to mock s3
-- assert file exists
-
 - complete assets/s3 tests
 - env tests
 
@@ -114,6 +111,8 @@
 
 ### done
 
+- project tests to push to mock s3
+- assert file exists
 - api s3 base class
 - move tests
 - env certificate handling

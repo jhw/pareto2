@@ -1,10 +1,7 @@
-from moto import mock_s3
-
 import boto3, unittest
 
 BucketName, Region = "pareto2-assets-test-bucket", "eu-west-1"
 
-@mock_s3
 class ApiTestBase(unittest.TestCase):
 
     def setUp(self, bucket_name = BucketName, region = Region):

@@ -200,8 +200,8 @@ class Template(dict):
                                sort_keys = True,
                                indent = 2))
 
-    def dump_s3(self, s3, bucketname, key):
-        s3.put_object(Bucket = bucketname,
+    def dump_s3(self, s3, bucket_name, key):
+        s3.put_object(Bucket = bucket_name,
                       Key = key,
                       Body = json.dumps(self,
                                         sort_keys = True,
