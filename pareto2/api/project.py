@@ -10,7 +10,7 @@ from pareto2.recipes.website import Website
 from pareto2.services import hungarorise as H
 from pareto2.services.s3 import StreamingBucket
 
-import io, jsonschema, os, re, yaml, unittest
+import jsonschema, os, re, yaml, unittest
 
 """
 Pros and cons to having a single top- level namespace
@@ -224,7 +224,7 @@ class ProjectTest(unittest.TestCase):
     
     def init_project(self, pkg_root):
         filter_fn = self.init_filter(pkg_root)
-        from pareto2.api import file_loader
+        from pareto2.api.assets import file_loader
         loader = file_loader(pkg_root,
                              filter_fn = filter_fn)        
         return Project(pkg_root, loader)

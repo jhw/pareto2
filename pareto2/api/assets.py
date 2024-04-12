@@ -1,11 +1,10 @@
-import io, unittest, zipfile
+import io, os, unittest, zipfile
 
 class Assets(dict):
 
-    def __init__(self, pkg_root, loader):
+    def __init__(self, loader):
         dict.__init__(self, {path: content
                              for path, content in loader})
-        self.pkg_root = pkg_root
     
     """
     You can get some weird Lambda errors on execution if you fail to zip the archives properly
@@ -31,15 +30,25 @@ class Assets(dict):
                       Body = self.zipped_content,
                       ContentType = "application/gzip")
 
+def file_loader(pkg_root,
+                root_dir='',
+                path_rewriter = lambda x: x,
+                filter_fn = lambda x: True):
+    pkg_full_path = os.path.join(root_dir, pkg_root)
+    for root, dirs, files in os.walk(pkg_full_path):
+        dirs[:] = [d for d in dirs if d != '__pycache__']
+        for file in files:
+            full_path = os.path.join(root, file)
+            if filter_fn(full_path):
+                with open(full_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    relative_path = os.path.relpath(full_path, root_dir)
+                    yield (path_rewriter(relative_path), content)
+        
 class AssetsTest(unittest.TestCase):
     
-    def init_assets(self, pkg_root):
-        from pareto2.api import file_loader
-        loader = file_loader(pkg_root)
-        return Assets(pkg_root, loader)
-    
     def test_zipped_content(self, pkg_root = "hello"):
-        assets = self.init_assets(pkg_root = pkg_root)
+        assets = Assets(file_loader(pkg_root))
         buf = assets.zipped_content
         zf = zipfile.ZipFile(io.BytesIO(buf))
         filenames = [item.filename for item in zf.infolist()]
