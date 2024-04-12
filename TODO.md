@@ -1,9 +1,7 @@
 ### short [01-push-artifacts]
 
-- check for existence of pkg_root and artifacts_bucket
 - generate timestamp
 - assets to push lambdas to s3
-- env from os.environ
 - insert artifacts key
 - project to push template to s3 
 
@@ -112,6 +110,8 @@
 
 ### done
 
+- check for existence of pkg_root and artifacts_bucket
+- env from os.environ
 - mock acm
 - convert env test to use mock lambda, mock acm
 - don't pass loader as constructor arg
