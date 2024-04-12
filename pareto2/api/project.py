@@ -38,13 +38,13 @@ AppNamespace = "app"
 
 class Project(dict):
 
-    def __init__(self, pkg_root, loader):
+    def __init__(self, pkg_root, assets):
         dict.__init__(self, {
             path: {
                 "infra": self.filter_infra(content),
                 "variables": self.filter_variables(content)
             }
-            for path, content in loader})        
+            for path, content in assets.items()})        
         self.pkg_root = pkg_root
 
     def filter_infra(self, text):

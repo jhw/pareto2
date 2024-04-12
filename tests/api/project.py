@@ -26,7 +26,7 @@ class ProjectTest(ApiTestBase):
         filter_fn = self.init_filter(pkg_root)
         loader = file_loader(pkg_root,
                              filter_fn = filter_fn)        
-        return Project(pkg_root, loader)
+        return Project(pkg_root, {k:v for k, v in loader})
     
     def test_webapi(self,
                     pkg_root = PkgRoot,

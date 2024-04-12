@@ -1,6 +1,5 @@
 ### short [01-push-artifacts]
 
-- don't pass loader as constructor arg
 - convert env test to use mock lambda, mock acm
 
 - check for existence of pkg_root and artifacts_bucket
@@ -115,6 +114,7 @@
 
 ### done
 
+- don't pass loader as constructor arg
 - move demos to tests/recipes
 - acm.list_certificates() (no region specified) returns blank?
 - why is spaas.link showing eu-west-1 certificate?
