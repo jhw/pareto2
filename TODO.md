@@ -1,14 +1,14 @@
 ### short [01-push-artifacts]
 
-- asset s3 tests
+- move tests
+- add assets s3 tests with moto
 
-- push_artifacts script
-  - check for existence of pkg_root and artifacts_bucket
-  - generate timestamp
-  - assets to push lambdas to s3
-  - env from os.environ
-  - insert artifacts key
-  - project to push template to s3 
+- check for existence of pkg_root and artifacts_bucket
+- generate timestamp
+- assets to push lambdas to s3
+- env from os.environ
+- insert artifacts key
+- project to push template to s3 
 
 - 0.8.0 tag
   
