@@ -14,7 +14,8 @@ def find_and_run_tests(root_dirs):
                         continue 
                     for name in dir(module):
                         obj = getattr(module, name)
-                        if isinstance(obj, type) and issubclass(obj, unittest.TestCase):
+                        if (isinstance(obj, type) and
+                            issubclass(obj, unittest.TestCase)):
                             suite.addTest(unittest.TestLoader().loadTestsFromTestCase(obj))
     unittest.TextTestRunner().run(suite)
 
