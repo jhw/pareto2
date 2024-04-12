@@ -23,13 +23,13 @@ class Assets(dict):
         zf.close()
         return buf.getvalue()
 
-    def put_s3_zipped(self, s3, bucket_name, file_name):
+    def dump_s3(self, s3, bucket_name, key):
         s3.put_object(Bucket = bucket_name,
-                      Key = file_name,
+                      Key = key,
                       Body = self.zipped_content,
                       ContentType = "application/gzip")
-
-    def put_files(self, root = "tmp"):
+        
+    def dump_files(self, root = "tmp"):
         for k, v in self.items():
             dirname="/".join([root]+k.split("/")[:-1])
             if not os.path.exists(dirname):
