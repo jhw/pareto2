@@ -7,6 +7,8 @@
 - insert artifacts key
 - project to push template to s3 
 
+- requirements_dev.txt
+
 - 0.8.0 tag
   
 ### medium
