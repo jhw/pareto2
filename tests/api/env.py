@@ -4,7 +4,7 @@ Env is tested against real AWS resources rather than mock as is read- only
 
 from pareto2.api.env import Env
 
-import boto3, os, unittest
+import os, unittest
 
 DomainName, Region = "spaas.link", "eu-west-1"
 
@@ -21,7 +21,7 @@ class EnvTest(unittest.TestCase):
 
     def test_layers(self):
         env = Env()
-        env.update_layers(boto3.client("lambda"))
+        env.update_layers()
         self.assertTrue(env != {})
 
     def test_certificates(self,
@@ -29,8 +29,9 @@ class EnvTest(unittest.TestCase):
                           region = Region):
         env = Env({"DomainName": domain_name,
                    "AwsRegion": region})
-        env.update_certificates(boto3.client("acm"))
-        for attr in ["RegionalCertificateArn"]:
+        env.update_certificates()
+        for attr in ["DistributionCertificateArn",
+                     "RegionalCertificateArn"]:
             self.assertTrue(attr in env)
         
 if __name__ == "__main__":

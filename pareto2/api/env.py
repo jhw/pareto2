@@ -1,6 +1,6 @@
 from pareto2.services import hungarorise as H
 
-import os
+import boto3, os
 
 class Env(dict):
 
@@ -24,8 +24,8 @@ class Env(dict):
     def __init__(self, item = {}):
         dict.__init__(self, item)
 
-    def update_layers(self, L):
-        resp=L.list_layers()
+    def update_layers(self):
+        resp=boto3.client("lambda").list_layers()
         if "Layers" in resp:
             self.update({H("%s-layer-arn" % layer["LayerName"]):layer["LatestMatchingVersion"]["LayerVersionArn"]
                          for layer in resp["Layers"]})
@@ -38,38 +38,40 @@ class Env(dict):
     def domain_name(self):
         return ".".join(self["DomainName"].split(".")[1:])
 
-    @property
-    def has_aws_region(self):
-        return "AwsRegion" in self
-    
-    """
-    acm doesn't seem to have the ability to filter by domain name
-    """
-    
-    def list_certificates(self, acm, domain_name):
-        resp, certificates = acm.list_certificates(), {}
-        if "CertificateSummaryList" in resp:
-            for cert in resp["CertificateSummaryList"]:
-                if domain_name in cert["DomainName"]:
-                    certificate_arn = cert["CertificateArn"]
-                    region = certificate_arn.split(":")[3]
-                    certificates.setdefault(region, [])                    
-                    certificates[region].append(certificate_arn)
+    def list_certificates(self, regions, domain_name):
+        certificates = {}
+        for region in regions:
+            acm = boto3.client("acm", region_name = region)
+            resp = acm.list_certificates()
+            if "CertificateSummaryList" in resp:
+                for cert in resp["CertificateSummaryList"]:
+                    if domain_name in cert["DomainName"]:
+                        certificate_arn = cert["CertificateArn"]
+                        certificates.setdefault(region, [])                    
+                        certificates[region].append(certificate_arn)
         return certificates
 
     def update_distribution_certificate(self, certificates, region = "us-east-1"):
         if region in certificates:
             self["DistributionCertificateArn"] = certificates[region][0]
 
+    @property
+    def has_aws_region(self):
+        return "AwsRegion" in self
+            
     def update_regional_certificate(self, certificates):        
         if self.has_aws_region:
             region = self["AwsRegion"]
             if region in certificates:
                 self["RegionalCertificateArn"] = certificates[region][0]
             
-    def update_certificates(self, acm):
+    def update_certificates(self):
+        regions = {"us-east-1"}
+        if self.has_aws_region:
+            if self["AwsRegion"] not in regions:                
+                regions.add(self["AwsRegion"])
         if self.has_domain_name:
-            certificates = self.list_certificates(acm, self.domain_name)
+            certificates = self.list_certificates(regions, self.domain_name)
             self.update_distribution_certificate(certificates)
             self.update_regional_certificate(certificates)
 

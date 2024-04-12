@@ -1,9 +1,6 @@
 ### short [01-push-artifacts]
 
-- acm.list_certificates() (no region specified) returns blank?
-- why is spaas.link showing eu-west-1 certificate?
-
-- DistributionCertificateArn
+- how come spaas.link has an eu-west-1 cert?
 
 - check for existence of pkg_root and artifacts_bucket
 - generate timestamp
@@ -113,6 +110,9 @@
 
 ### done
 
+- acm.list_certificates() (no region specified) returns blank?
+- why is spaas.link showing eu-west-1 certificate?
+- DistributionCertificateArn
 - env tests
 - complete assets/s3 tests
 - project tests to push to mock s3
