@@ -3,12 +3,13 @@ from pareto2.recipes.web_api import WebApi
 import unittest, yaml
 
 def load_body(filename):
-    with open(filename) as f:
+    absfilepath = "/".join(__file__.split("/")[:-1]+[filename])
+    with open(absfilepath) as f:
         body = f.read()
     return body
 
-EchoGetBody, EchoPostBody = (load_body("demos/web_api/echo_get.py"),
-                             load_body("demos/web_api/echo_post.py"))
+EchoGetBody, EchoPostBody = (load_body("echo_get.py"),
+                             load_body("echo_post.py"))
 
 Endpoints = yaml.safe_load("""
 - method: GET

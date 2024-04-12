@@ -20,4 +20,4 @@ def find_and_run_tests(root_dirs):
     unittest.TextTestRunner().run(suite)
 
 if __name__ == "__main__":
-    find_and_run_tests(["tests/api", "demos"])
+    find_and_run_tests(["tests"])

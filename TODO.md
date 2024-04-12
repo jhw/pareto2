@@ -115,6 +115,7 @@
 
 ### done
 
+- move demos to tests/recipes
 - acm.list_certificates() (no region specified) returns blank?
 - why is spaas.link showing eu-west-1 certificate?
 - DistributionCertificateArn
