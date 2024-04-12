@@ -1,5 +1,4 @@
 from pareto2.recipes import Recipe
-
 from pareto2.recipes.event_timer import EventTimer
 from pareto2.recipes.event_worker import EventWorker
 from pareto2.recipes.pip_builder import PipBuilder
@@ -9,10 +8,9 @@ from pareto2.recipes.web_api import WebApi
 from pareto2.recipes.website import Website
 
 from pareto2.services import hungarorise as H
-
 from pareto2.services.s3 import StreamingBucket
 
-import io, jsonschema, os, re, yaml, unittest, zipfile
+import io, jsonschema, os, re, yaml, unittest
 
 """
 Pros and cons to having a single top- level namespace
@@ -38,14 +36,13 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
-class Project(dict):
+class Templater(dict):
 
     def __init__(self, pkg_root, loader):
         dict.__init__(self, {
             path: {
                 "infra": self.filter_infra(content),
-                "variables": self.filter_variables(content),
-                "content": content
+                "variables": self.filter_variables(content)
             }
             for path, content in loader})        
         self.pkg_root = pkg_root
@@ -217,43 +214,7 @@ class Project(dict):
         template.validate()
         return template
     
-    """
-    You can get some weird Lambda errors on execution if you fail to zip the archives properly
-    Unfortunately the chatgpt chat in which this was explained has now been deleted :(
-    """
-        
-    @property
-    def zipped_content(self):
-        buf = io.BytesIO()
-        zf = zipfile.ZipFile(buf, "a", zipfile.ZIP_DEFLATED, False)
-        for k, v in self.items():
-            # zf.writestr(k, v)
-            unix_mode = 0o100644  # File permission: rw-r--r--
-            zip_info = zipfile.ZipInfo(k)
-            zip_info.external_attr = (unix_mode << 16) | 0o755  # Add execute permission
-            zf.writestr(zip_info, v["content"])
-        zf.close()
-        return buf.getvalue()
-
-    def put_s3(self, s3, bucket_name, file_name):
-        s3.put_object(Bucket = bucket_name,
-                      Key = file_name,
-                      Body = self.zipped_content,
-                      ContentType = "application/gzip")
-
-def file_loader(pkg_root, root_dir='', filter_fn = lambda x: True):
-    pkg_full_path = os.path.join(root_dir, pkg_root)
-    for root, dirs, files in os.walk(pkg_full_path):
-        dirs[:] = [d for d in dirs if d != '__pycache__']
-        for file in files:
-            full_path = os.path.join(root, file)
-            if filter_fn(full_path):
-                with open(full_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                    relative_path = os.path.relpath(full_path, root_dir)
-                    yield (relative_path, content)
-
-class ProjectTest(unittest.TestCase):
+class TemplaterTest(unittest.TestCase):
     
     def init_filter(self, pkg_root):
         def filter_fn(full_path):
@@ -262,32 +223,33 @@ class ProjectTest(unittest.TestCase):
         return filter_fn
     
     def init_project(self, pkg_root):
-        filter_fn = self.init_filter(pkg_root)        
+        filter_fn = self.init_filter(pkg_root)
+        from pareto2.api import file_loader
         loader = file_loader(pkg_root,
                              filter_fn = filter_fn)        
-        return Project(pkg_root, loader)
+        return Templater(pkg_root, loader)
     
-    def test_webapi_template(self,
-                             pkg_root = "hello",
-                             parameters = ['AllowedOrigins',
-                                           'ArtifactsBucket',
-                                           'ArtifactsKey',
-                                           'DomainName',
-                                           'RegionalCertificateArn',
-                                           'SlackWebhookUrl']):
+    def test_webapi(self,
+                    pkg_root = "hello",
+                    parameters = ['AllowedOrigins',
+                                  'ArtifactsBucket',
+                                  'ArtifactsKey',
+                                  'DomainName',
+                                  'RegionalCertificateArn',
+                                  'SlackWebhookUrl']):
         project = self.init_project(pkg_root = pkg_root)
         env = {param: None for param in parameters}
         template = project.spawn_template(env = env)
         template.dump_file("tmp/hello-webapi.json")
         self.assertTrue(template.is_complete)
 
-    def test_website_template(self,
-                              pkg_root = "hello",
-                              parameters = ['ArtifactsBucket',
-                                            'ArtifactsKey',
-                                            'DistributionCertificateArn',
-                                            'DomainName',
-                                            'SlackWebhookUrl']):
+    def test_website(self,
+                     pkg_root = "hello",
+                     parameters = ['ArtifactsBucket',
+                                   'ArtifactsKey',
+                                   'DistributionCertificateArn',
+                                   'DomainName',
+                                   'SlackWebhookUrl']):
         project = self.init_project(pkg_root = pkg_root)
         root_infra = project.root_content["infra"]
         for attr in ["api", "builder"]:
@@ -297,14 +259,6 @@ class ProjectTest(unittest.TestCase):
         env = {param: None for param in parameters}
         template = project.spawn_template(env = env)        
         self.assertTrue(template.is_complete)
-
-    def test_zipped_content(self, pkg_root = "hello"):
-        project = self.init_project(pkg_root = pkg_root)
-        buf = project.zipped_content
-        zf = zipfile.ZipFile(io.BytesIO(buf))
-        filenames = [item.filename for item in zf.infolist()]
-        self.assertTrue(f"{pkg_root}/__init__.py" in filenames)
-        self.assertTrue(len(filenames) > 1)
         
 if __name__ == "__main__":
     unittest.main()
