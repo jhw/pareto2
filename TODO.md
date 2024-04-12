@@ -1,6 +1,6 @@
 ### short [01-push-artifacts]
 
-- convert env test to use mock lambda, mock acm
+- mock acm
 
 - check for existence of pkg_root and artifacts_bucket
 - generate timestamp
@@ -12,8 +12,6 @@
 - 0.8.0 tag
   
 ### medium
-
-- convert env test to use mocj data
 
 - re- test gists
 
@@ -114,6 +112,7 @@
 
 ### done
 
+- convert env test to use mock lambda, mock acm
 - don't pass loader as constructor arg
 - move demos to tests/recipes
 - acm.list_certificates() (no region specified) returns blank?
