@@ -1,7 +1,5 @@
-### short [01-push-artifacts]
+### short
 
-- 0.8.0 tag
-  
 ### medium
 
 - re- test gists
@@ -103,6 +101,7 @@
 
 ### done
 
+- 0.8.0 tag
 - requirements_dev.txt
 - AllowedOrigins
 - insert artifacts key
