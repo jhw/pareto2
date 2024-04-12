@@ -2,9 +2,8 @@ import io, os, zipfile
 
 class Assets(dict):
 
-    def __init__(self, loader):
-        dict.__init__(self, {path: content
-                             for path, content in loader})
+    def __init__(self, item = {}):
+        dict.__init__(self, item)
     
     """
     You can get some weird Lambda errors on execution if you fail to zip the archives properly

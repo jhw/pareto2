@@ -18,7 +18,7 @@ class AssetsTest(ApiTestBase):
                         pkg_root = PkgRoot,
                         bucket_name = BucketName,
                         key = "assets.zip"):
-        assets = Assets(file_loader(pkg_root))
+        assets = Assets({k:v for k, v in file_loader(pkg_root)})
         assets.dump_s3(s3 = self.s3,
                        bucket_name = bucket_name,
                        key = key)
