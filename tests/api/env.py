@@ -2,14 +2,17 @@ from pareto2.api.env import Env
 
 from tests.api import ApiTestBase, BucketName
 
-from moto import mock_s3, mock_lambda
+from moto import mock_s3, mock_lambda, mock_acm
 
 import boto3, os, unittest
 
 LayerName = "whatevs"
 
+DomainName, Region = "whatevs.com", "eu-west-1"
+
 @mock_s3
 @mock_lambda
+@mock_acm
 class EnvTest(ApiTestBase):
 
     def setUp(self):
@@ -32,23 +35,32 @@ class EnvTest(ApiTestBase):
         env.update_layers()
         self.assertTrue(env != {})
 
-    """
-    def test_certificates_1(self,
-                            domain_name = "hello.spaas.link"):
+    def test_distribution_certificate(self,
+                                      domain_name = DomainName,
+                                      region = "us-east-1"):
+        acm = boto3.client("acm", region_name = region)
+        acm.request_certificate(DomainName = f"%.{domain_name}",
+                                ValidationMethod = "DNS")
         env = Env({"DomainName": domain_name})
         env.update_certificates()
         self.assertTrue("DistributionCertificateArn" in env)
         self.assertTrue("RegionalCertificateArn" not in env)
+        for cert in acm.list_certificates()["CertificateSummaryList"]:
+            acm.delete_certificate(CertificateArn = cert["CertificateArn"])
 
-    def test_certificates_2(self,
-                            domain_name = "hello.spaaseu.link",
-                            region = "eu-west-1"):
+    def test_regional_certificate(self,
+                                  domain_name = DomainName,
+                                  region = "eu-west-1"):
+        acm = boto3.client("acm", region_name = region)
+        acm.request_certificate(DomainName = f"%.{domain_name}",
+                                ValidationMethod = "DNS")
         env = Env({"DomainName": domain_name,
                    "AwsRegion": region})
         env.update_certificates()
-        self.assertTrue("DistributionCertificateArn" in env)
+        self.assertTrue("DistributionCertificateArn" not in env)
         self.assertTrue("RegionalCertificateArn" in env)
-    """
+        for cert in acm.list_certificates()["CertificateSummaryList"]:
+            acm.delete_certificate(CertificateArn = cert["CertificateArn"])
         
     def tearDown(self, layer_name = LayerName):
         super().tearDown()

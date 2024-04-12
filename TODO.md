@@ -1,7 +1,5 @@
 ### short [01-push-artifacts]
 
-- mock acm
-
 - check for existence of pkg_root and artifacts_bucket
 - generate timestamp
 - assets to push lambdas to s3
@@ -112,6 +110,7 @@
 
 ### done
 
+- mock acm
 - convert env test to use mock lambda, mock acm
 - don't pass loader as constructor arg
 - move demos to tests/recipes
