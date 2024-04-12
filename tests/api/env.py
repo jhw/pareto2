@@ -6,6 +6,8 @@ from pareto2.api.env import Env
 
 import boto3, os, unittest
 
+DomainName, Region = "spaas.link", "eu-west-1"
+
 class EnvTest(unittest.TestCase):
     
     def test_environ(self):
@@ -22,5 +24,14 @@ class EnvTest(unittest.TestCase):
         env.update_layers(boto3.client("lambda"))
         self.assertTrue(env != {})
 
+    def test_certificates(self,
+                          domain_name = DomainName,
+                          region = Region):
+        env = Env({"DomainName": domain_name,
+                   "AwsRegion": region})
+        env.update_certificates(boto3.client("acm"))
+        for attr in ["RegionalCertificateArn"]:
+            self.assertTrue(attr in env)
+        
 if __name__ == "__main__":
     unittest.main()

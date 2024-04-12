@@ -57,11 +57,11 @@ class Env(dict):
                     certificates[region].append(certificate_arn)
         return certificates
 
-    def update_distribution_certificate(self, region = "us-east-1"):
+    def update_distribution_certificate(self, certificates, region = "us-east-1"):
         if region in certificates:
             self["DistributionCertificateArn"] = certificates[region][0]
 
-    def update_regional_certificate(self):        
+    def update_regional_certificate(self, certificates):        
         if self.has_aws_region:
             region = self["AwsRegion"]
             if region in certificates:
