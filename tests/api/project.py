@@ -2,11 +2,13 @@ from pareto2.api.assets import file_loader
 from pareto2.api.env import Env
 from pareto2.api.project import Project
 
+from tests.api import ApiTestBase, BucketName
+
 import unittest
 
 PkgRoot = "hello"
 
-class ProjectTest(unittest.TestCase):
+class ProjectTest(ApiTestBase):
     
     def init_filter(self, pkg_root):
         def filter_fn(full_path):
@@ -31,7 +33,6 @@ class ProjectTest(unittest.TestCase):
         project = self.init_project(pkg_root = pkg_root)
         env = Env({param: None for param in parameters})
         template = project.spawn_template(env = env)
-        template.dump_file("tmp/hello-webapi.json")
         self.assertTrue(template.is_complete)
 
     def test_website(self,
