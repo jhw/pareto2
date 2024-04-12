@@ -1,12 +1,6 @@
 ### short [01-push-artifacts]
 
-- generate timestamp
-- assets to push lambdas to s3
-- insert artifacts key
-- project to push template to s3 
-
 - requirements_dev.txt
-
 - 0.8.0 tag
   
 ### medium
@@ -110,6 +104,11 @@
 
 ### done
 
+- AllowedOrigins
+- insert artifacts key
+- project to push template to s3 
+- generate timestamp
+- assets to push lambdas to s3
 - check for existence of pkg_root and artifacts_bucket
 - env from os.environ
 - mock acm

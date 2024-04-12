@@ -100,14 +100,10 @@ class Template(dict):
                                    for ref in refs
                                    if ref not in ids})
 
-    def set_parameter_value(self, key, value):
-        if key not in self["Parameters"]:
-            raise RuntimeError(f"parameter {key} not found")
-        self["Parameters"][key]["Default"] = value
-
     def update_parameters(self, parameters):
         for key, value in parameters.items():
-            self.set_parameter_value(key, value)
+            if key in self["Parameters"]:
+                self["Parameters"][key]["Default"] = value
 
     @property
     def is_complete(self):
