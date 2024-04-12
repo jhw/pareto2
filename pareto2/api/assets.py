@@ -8,7 +8,6 @@ class Assets(dict):
     
     """
     You can get some weird Lambda errors on execution if you fail to zip the archives properly
-    Unfortunately the chatgpt chat in which this was explained has now been deleted :(
     """
         
     @property
@@ -24,12 +23,21 @@ class Assets(dict):
         zf.close()
         return buf.getvalue()
 
-    def put_s3(self, s3, bucket_name, file_name):
+    def put_s3_zipped(self, s3, bucket_name, file_name):
         s3.put_object(Bucket = bucket_name,
                       Key = file_name,
                       Body = self.zipped_content,
                       ContentType = "application/gzip")
 
+    def put_files(self, root = "tmp"):
+        for k, v in self.items():
+            dirname="/".join([root]+k.split("/")[:-1])
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
+            filename=k.split("/")[-1]
+            with open("%s/%s" % (dirname, filename), 'w') as f:
+                f.write(v)
+        
 def file_loader(pkg_root,
                 root_dir='',
                 path_rewriter = lambda x: x,
@@ -44,7 +52,18 @@ def file_loader(pkg_root,
                     content = f.read()
                     relative_path = os.path.relpath(full_path, root_dir)
                     yield (path_rewriter(relative_path), content)
-        
+
+def s3_zip_loader(s3, bucket_name, key,
+                  path_rewriter = lambda x: x,
+                  filter_fn = lambda x: True):
+    zf=zipfile.ZipFile(io.BytesIO(s3.get_object(Bucket=bucketname,
+                                                Key=key)["Body"].read()))
+    for item in zf.infolist():
+        if (filterfn(item.filename) and
+            not item.filename.endswith("/")):
+            content = zf.read(item.filename).decode("utf-8")
+            yield (path_rewriter(item.filename), content)
+                    
 class AssetsTest(unittest.TestCase):
     
     def test_zipped_content(self, pkg_root = "hello"):

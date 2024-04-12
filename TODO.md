@@ -1,8 +1,8 @@
 ### short [01-push-artifacts]
 
-- s3 loader
-- s3 dumper
 - env class
+
+- complete set of asset tests using moto
   
 ### medium
 
@@ -105,6 +105,8 @@
 
 ### done
 
+- file dumper
+- s3 loader
 - path rewriter
 - test zipped_content
 - add back app_name vs pkg_root
