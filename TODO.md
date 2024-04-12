@@ -1,12 +1,13 @@
 ### short [01-push-artifacts]
 
-- env class
+- env layer handling
+- env certificate handling
 
-- complete set of asset tests using moto
+- asset s3 tests
+- push_artifacts script
+- 0.8.0 tag
   
 ### medium
-
-- 0.8.0 tag
 
 - re- test gists
 
@@ -105,6 +106,7 @@
 
 ### done
 
+- env class
 - file dumper
 - s3 loader
 - path rewriter
