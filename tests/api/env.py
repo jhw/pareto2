@@ -1,12 +1,15 @@
-"""
-Env is tested against real AWS resources rather than mock as is read- only
-"""
-
 from pareto2.api.env import Env
+
+from tests.api import ApiTestBase, BucketName
+
+from moto import mock_s3
 
 import os, unittest
 
-class EnvTest(unittest.TestCase):
+class EnvTest(ApiTestBase):
+
+    def setUp(self):
+        super().setUp()
     
     def test_environ(self):
         env = Env.create_from_environ()
@@ -22,10 +25,6 @@ class EnvTest(unittest.TestCase):
         env.update_layers()
         self.assertTrue(env != {})
 
-    """
-    as of 12/04/24 spaas.link has us-east-1 certificate only
-    """
-        
     def test_certificates_1(self,
                             domain_name = "hello.spaas.link"):
         env = Env({"DomainName": domain_name})
@@ -33,10 +32,6 @@ class EnvTest(unittest.TestCase):
         self.assertTrue("DistributionCertificateArn" in env)
         self.assertTrue("RegionalCertificateArn" not in env)
 
-    """
-    as of 12/04/24 spaaseu.link has both us-east-1 and eu-west-1 certificates
-    """
-        
     def test_certificates_2(self,
                             domain_name = "hello.spaaseu.link",
                             region = "eu-west-1"):
@@ -46,5 +41,8 @@ class EnvTest(unittest.TestCase):
         self.assertTrue("DistributionCertificateArn" in env)
         self.assertTrue("RegionalCertificateArn" in env)
         
+    def tearDown(self):
+        super().tearDown()
+       
 if __name__ == "__main__":
     unittest.main()
