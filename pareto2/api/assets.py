@@ -1,4 +1,4 @@
-import io, os, unittest, zipfile
+import io, os, zipfile
 
 class Assets(dict):
 
@@ -64,16 +64,5 @@ def s3_zip_loader(s3, bucket_name, key,
             content = zf.read(item.filename).decode("utf-8")
             yield (path_rewriter(item.filename), content)
                     
-class AssetsTest(unittest.TestCase):
-    
-    def test_zipped_content(self, pkg_root = "hello"):
-        assets = Assets(file_loader(pkg_root))
-        buf = assets.zipped_content
-        zf = zipfile.ZipFile(io.BytesIO(buf))
-        filenames = [item.filename for item in zf.infolist()]
-        self.assertTrue(f"{pkg_root}/__init__.py" in filenames)
-        self.assertTrue(len(filenames) > 1)
-        
 if __name__ == "__main__":
-    unittest.main()
-        
+    pass

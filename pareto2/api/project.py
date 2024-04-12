@@ -10,7 +10,7 @@ from pareto2.recipes.website import Website
 from pareto2.services import hungarorise as H
 from pareto2.services.s3 import StreamingBucket
 
-import jsonschema, os, re, yaml, unittest
+import jsonschema, os, re, yaml
 
 """
 Pros and cons to having a single top- level namespace
@@ -214,54 +214,6 @@ class Project(dict):
         template.validate()
         return template
     
-class ProjectTest(unittest.TestCase):
-    
-    def init_filter(self, pkg_root):
-        def filter_fn(full_path):
-            return (full_path == f"{pkg_root}/__init__.py" or
-                    full_path.endswith("index.py"))
-        return filter_fn
-    
-    def init_project(self, pkg_root):
-        filter_fn = self.init_filter(pkg_root)
-        from pareto2.api.assets import file_loader
-        loader = file_loader(pkg_root,
-                             filter_fn = filter_fn)        
-        return Project(pkg_root, loader)
-    
-    def test_webapi(self,
-                    pkg_root = "hello",
-                    parameters = ['AllowedOrigins',
-                                  'ArtifactsBucket',
-                                  'ArtifactsKey',
-                                  'DomainName',
-                                  'RegionalCertificateArn',
-                                  'SlackWebhookUrl']):
-        project = self.init_project(pkg_root = pkg_root)
-        from pareto2.api.env import Env
-        env = Env({param: None for param in parameters})
-        template = project.spawn_template(env = env)
-        template.dump_file("tmp/hello-webapi.json")
-        self.assertTrue(template.is_complete)
-
-    def test_website(self,
-                     pkg_root = "hello",
-                     parameters = ['ArtifactsBucket',
-                                   'ArtifactsKey',
-                                   'DistributionCertificateArn',
-                                   'DomainName',
-                                   'SlackWebhookUrl']):
-        project = self.init_project(pkg_root = pkg_root)
-        root_infra = project.root_content["infra"]
-        for attr in ["api", "builder"]:
-            root_infra.pop(attr)
-        root_infra.setdefault("bucket", {})
-        root_infra["bucket"]["public"] = True
-        from pareto2.api.env import Env
-        env = Env({param: None for param in parameters})
-        template = project.spawn_template(env = env)        
-        self.assertTrue(template.is_complete)
-        
 if __name__ == "__main__":
-    unittest.main()
+    pass
         

@@ -58,10 +58,10 @@ def filter_packages(root):
     
 setuptools.setup(
     name="pareto2",
-    version="0.7.8",
+    version="0.8.0",
     author="jhw",
     author_email="justin.worrall@gmail.com",
-    description="An opinionated Cloudformation preprocessor",
+    description="An opinionated Cloudformation generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jhw/pareto2",

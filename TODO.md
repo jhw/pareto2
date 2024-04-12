@@ -1,7 +1,7 @@
 ### short [01-push-artifacts]
 
-- move tests
-- add assets s3 tests with moto
+- complete assets/s3 tests
+- env tests
 
 - check for existence of pkg_root and artifacts_bucket
 - generate timestamp
@@ -111,6 +111,7 @@
 
 ### done
 
+- move tests
 - env certificate handling
 - env layer handling
 - env class
