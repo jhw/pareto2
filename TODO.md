@@ -1,6 +1,5 @@
 ### short [01-push-artifacts]
 
-- path rewriter
 - s3 loader
 - s3 dumper
 - env class
@@ -106,6 +105,7 @@
 
 ### done
 
+- path rewriter
 - test zipped_content
 - add back app_name vs pkg_root
 - remove slashes management in file_loader
