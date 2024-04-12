@@ -59,7 +59,7 @@ def s3_zip_loader(s3, bucket_name, key,
     zf=zipfile.ZipFile(io.BytesIO(s3.get_object(Bucket=bucket_name,
                                                 Key=key)["Body"].read()))
     for item in zf.infolist():
-        if (filterfn(item.filename) and
+        if (filter_fn(item.filename) and
             not item.filename.endswith("/")):
             content = zf.read(item.filename).decode("utf-8")
             yield (path_rewriter(item.filename), content)
