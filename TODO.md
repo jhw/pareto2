@@ -1,6 +1,5 @@
 ### short [01-push-artifacts]
 
-- requirements_dev.txt
 - 0.8.0 tag
   
 ### medium
@@ -104,6 +103,7 @@
 
 ### done
 
+- requirements_dev.txt
 - AllowedOrigins
 - insert artifacts key
 - project to push template to s3 
