@@ -1,10 +1,15 @@
 ### short [01-push-artifacts]
 
-- env layer handling
-- env certificate handling
-
 - asset s3 tests
+
 - push_artifacts script
+  - check for existence of pkg_root and artifacts_bucket
+  - generate timestamp
+  - assets to push lambdas to s3
+  - env from os.environ
+  - insert artifacts key
+  - project to push template to s3 
+
 - 0.8.0 tag
   
 ### medium
@@ -106,6 +111,8 @@
 
 ### done
 
+- env certificate handling
+- env layer handling
 - env class
 - file dumper
 - s3 loader
