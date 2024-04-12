@@ -238,7 +238,8 @@ class ProjectTest(unittest.TestCase):
                                   'RegionalCertificateArn',
                                   'SlackWebhookUrl']):
         project = self.init_project(pkg_root = pkg_root)
-        env = {param: None for param in parameters}
+        from pareto2.api.env import Env
+        env = Env({param: None for param in parameters})
         template = project.spawn_template(env = env)
         template.dump_file("tmp/hello-webapi.json")
         self.assertTrue(template.is_complete)
@@ -256,7 +257,8 @@ class ProjectTest(unittest.TestCase):
             root_infra.pop(attr)
         root_infra.setdefault("bucket", {})
         root_infra["bucket"]["public"] = True
-        env = {param: None for param in parameters}
+        from pareto2.api.env import Env
+        env = Env({param: None for param in parameters})
         template = project.spawn_template(env = env)        
         self.assertTrue(template.is_complete)
         
