@@ -6,8 +6,6 @@ from pareto2.api.env import Env
 
 import os, unittest
 
-DomainName, Region = "spaas.link", "eu-west-1"
-
 class EnvTest(unittest.TestCase):
     
     def test_environ(self):
@@ -24,15 +22,29 @@ class EnvTest(unittest.TestCase):
         env.update_layers()
         self.assertTrue(env != {})
 
-    def test_certificates(self,
-                          domain_name = DomainName,
-                          region = Region):
+    """
+    as of 12/04/24 spaas.link has us-east-1 certificate only
+    """
+        
+    def test_certificates_1(self,
+                            domain_name = "hello.spaas.link"):
+        env = Env({"DomainName": domain_name})
+        env.update_certificates()
+        self.assertTrue("DistributionCertificateArn" in env)
+        self.assertTrue("RegionalCertificateArn" not in env)
+
+    """
+    as of 12/04/24 spaaseu.link has both us-east-1 and eu-west-1 certificates
+    """
+        
+    def test_certificates_2(self,
+                            domain_name = "hello.spaaseu.link",
+                            region = "eu-west-1"):
         env = Env({"DomainName": domain_name,
                    "AwsRegion": region})
         env.update_certificates()
-        for attr in ["DistributionCertificateArn",
-                     "RegionalCertificateArn"]:
-            self.assertTrue(attr in env)
+        self.assertTrue("DistributionCertificateArn" in env)
+        self.assertTrue("RegionalCertificateArn" in env)
         
 if __name__ == "__main__":
     unittest.main()

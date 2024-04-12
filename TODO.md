@@ -1,7 +1,5 @@
 ### short [01-push-artifacts]
 
-- how come spaas.link has an eu-west-1 cert?
-
 - check for existence of pkg_root and artifacts_bucket
 - generate timestamp
 - assets to push lambdas to s3
@@ -12,6 +10,8 @@
 - 0.8.0 tag
   
 ### medium
+
+- convert env test to use mocj data
 
 - re- test gists
 
