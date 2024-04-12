@@ -36,8 +36,12 @@ class Env(dict):
 
     @property
     def domain_name(self):
-        return ".".join(self["DomainName"].split(".")[1:])
+        return ".".join(self["DomainName"].split(".")[-2:])
 
+    """
+    acm requires you to create a client on a per region basis
+    """
+    
     def list_certificates(self, regions, domain_name):
         certificates = {}
         for region in regions:

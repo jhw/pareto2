@@ -1,5 +1,8 @@
 ### short [01-push-artifacts]
 
+- don't pass loader as constructor arg
+- convert env test to use mock lambda, mock acm
+
 - check for existence of pkg_root and artifacts_bucket
 - generate timestamp
 - assets to push lambdas to s3
@@ -31,6 +34,8 @@
 
 ### thoughts
 
+- don't you need some kind of zip writing util?
+  - you have it already in assets.zipped_content and put_s3
 - refactor test.py as per scripts/deploy/run_tests.py?
   - doesn't seem a lot of point and anywa the contexts seem quite different
 - s3_zip loader?
