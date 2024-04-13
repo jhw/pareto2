@@ -41,26 +41,26 @@ class Project(dict):
     def __init__(self, pkg_root, assets):
         dict.__init__(self, {
             path: {
-                "infra": self.filter_infra(content),
-                "variables": self.filter_variables(content)
+                "infra": self.filter_infra(path, content),
+                "variables": self.filter_variables(path, content)
             }
             for path, content in assets.items()})        
         self.pkg_root = pkg_root
 
-    def filter_infra(self, text):
+    def filter_infra(self, path, text):
         blocks = [block for block in text.split('"""')
                   if re.sub("\\s", "", block) != ""]
         if blocks == []:
-            raise RuntimeError("no infra blocks found")
+            raise RuntimeError(f"no infra blocks found in {path}")
         try:
             struct = yaml.safe_load(blocks[0])
         except:
-            raise RuntimeError("error parsing infra block")
+            raise RuntimeError(f"error parsing {path} infra block")
         if "infra" not in struct:
-            raise RuntimeError("infra block is mis-specified")
+            raise RuntimeError(f"{path} infra block is mis-specified")
         return struct["infra"]
 
-    def filter_variables(self, text):
+    def filter_variables(self, path, text):
         cleantext, refs = re.sub("\\s", "", text), set()
         for expr in [r"os\.environ\[(.*?)\]",
                      r"os\.getenv\((.*?)\)"]:
