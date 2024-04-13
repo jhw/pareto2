@@ -144,16 +144,20 @@ class Project(dict):
                                   indexes = indexes,
                                   batch_window = batch_window)
 
+    """
+    NB all leaf values in rules must be lists
+    """
+            
     def insert_event_source(self, event, namespace = AppNamespace):
         if event["type"] == "bucket":
             event["pattern"]["detail"].setdefault("bucket", {})
-            event["pattern"]["detail"]["bucket"]["name"] = {"Ref": H(f"{namespace}-bucket")}
+            event["pattern"]["detail"]["bucket"]["name"] = [{"Ref": H(f"{namespace}-bucket")}]
         elif event["type"] == "builder":
-            event["pattern"]["detail"]["project-name"] = {"Ref": H(f"{namespace}-project")}
+            event["pattern"]["detail"]["project-name"] = [{"Ref": H(f"{namespace}-project")}]
         elif event["type"] == "queue":
-            event["pattern"]["source"] = {"Ref": H(f"{namespace}-queue")}
+            event["pattern"]["source"] = [{"Ref": H(f"{namespace}-queue")}]
         elif event["type"] == "table":
-            event["pattern"]["source"] = {"Ref": H(f"{namespace}-table")}
+            event["pattern"]["source"] = [{"Ref": H(f"{namespace}-table")}]
         elif event["type"] == "unbound":
             if "detail-type" not in event["pattern"]:
                 raise RuntimeError("unbound event must have detail-type")
