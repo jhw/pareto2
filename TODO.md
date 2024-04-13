@@ -1,6 +1,5 @@
 ### short
 
-- migrate_infra.py >>> handle missing event pattern
 - migrate_infra.py >>> script is failing to include detail under pattern
 - better error messages on failing to parse infra
 - push_artifacts.py >>> assets to include filter fn
@@ -107,6 +106,7 @@
 
 ### done
 
+- migrate_infra.py >>> handle missing event pattern
 - 0.8.0 tag
 - requirements_dev.txt
 - AllowedOrigins

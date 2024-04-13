@@ -52,6 +52,7 @@ def handle_size(fn, sizes = {"default": 512,
                              "medium": 1024}):
     def wrapped(struct, modstruct):
         key = struct["size"] if "size" in struct else "default"
+        
         modstruct["size"] = sizes[key]
         fn(struct, modstruct)
     return wrapped
@@ -79,6 +80,11 @@ def handle_endpoint(struct, modstruct):
     modstruct["auth"] = endpoint["api"]
     modstruct["parameters"] = endpoint["parameters"] if "parameters" in endpoint else []
 
+"""
+- historically event["pattern"] can be missing in certain marginal casses
+- see layman2/tasks/cbevents/index.py
+"""
+    
 @insert_alarm
 def handle_events(struct, modstruct):
     modstruct["type"] = "worker"
@@ -87,14 +93,15 @@ def handle_events(struct, modstruct):
         raise RuntimeError("multiple events detected - %s" % struct)
     event = events.pop()
     type = event["source"]["type"]
-    pattern = copy.deepcopy(event["pattern"])
-    for attr in ["diffKeys"]:
-        if attr in pattern:
-            pattern.pop(attr)
-    modstruct["event"] = {
-        "type": type,
-        "pattern": pattern
-    }
+    if "pattern" in event:
+        pattern = copy.deepcopy(event["pattern"])
+        for attr in ["diffKeys"]:
+            if attr in pattern:
+                pattern.pop(attr)
+        modstruct["event"] = {
+            "type": type,
+            "pattern": pattern
+        }
 
 def handle_timer(struct, modstruct):
     modstruct["type"] = "timer"
