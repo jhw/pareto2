@@ -1,5 +1,11 @@
 ### short
 
+- migrate_infra.py >>> handle missing event pattern
+- migrate_infra.py >>> script is failing to include detail under pattern
+- better error messages on failing to parse infra
+- push_artifacts.py >>> assets to include filter fn
+- add dump_s3 to env
+
 ### medium
 
 - re- test gists
