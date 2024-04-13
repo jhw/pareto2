@@ -8,6 +8,12 @@ from datetime import datetime
 
 import boto3, os
 
+def init_filter(pkg_root):
+    def filter_fn(full_path):
+        return (full_path == f"{pkg_root}/__init__.py" or
+                full_path.endswith("index.py"))
+    return filter_fn
+
 if __name__=="__main__":
     try:
         for attr in ["PKG_ROOT",
@@ -19,7 +25,9 @@ if __name__=="__main__":
         s3 = boto3.client("s3")
         timestamp = datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         pkg_root = os.environ["PKG_ROOT"]
-        assets = Assets({k:v for k, v in file_loader(pkg_root)})
+        filter_fn = init_filter(pkg_root)
+        assets = Assets({k:v for k, v in file_loader(pkg_root,
+                                                     filter_fn = filter_fn)})
         bucket_name = os.environ["ARTIFACTS_BUCKET"]
         artifacts_key = f"lambdas-{timestamp}.zip"
         assets.dump_s3(s3 = s3,

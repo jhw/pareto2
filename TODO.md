@@ -1,6 +1,5 @@
 ### short
 
-- push_artifacts.py >>> assets to include filter fn
 - add dump_s3 to env
 
 ### medium
@@ -104,6 +103,7 @@
 
 ### done
 
+- push_artifacts.py >>> assets to include filter fn
 - better error messages on failing to parse infra
 - migrate_infra.py >>> script is failing to include detail under pattern
 - migrate_infra.py >>> handle missing event pattern
