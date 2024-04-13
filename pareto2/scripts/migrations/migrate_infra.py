@@ -83,8 +83,9 @@ def handle_endpoint(struct, modstruct):
 """
 - historically event["pattern"] can be missing in certain marginal casses
 - see layman2/tasks/cbevents/index.py
+- NB note also that pareto 0.8.x requires detail to be specified as explicit pattern child; in paret0 0.7.x and 0.6.x the pattern was effectively the detail
 """
-    
+
 @insert_alarm
 def handle_events(struct, modstruct):
     modstruct["type"] = "worker"
@@ -100,7 +101,7 @@ def handle_events(struct, modstruct):
                 pattern.pop(attr)
         modstruct["event"] = {
             "type": type,
-            "pattern": pattern
+            "pattern": {"detail": pattern}
         }
 
 def handle_timer(struct, modstruct):
