@@ -1,6 +1,6 @@
 from pareto2.services import hungarorise as H
 
-import boto3, os
+import boto3, json, os
 
 class Env(dict):
 
@@ -79,5 +79,12 @@ class Env(dict):
             self.update_distribution_certificate(certificates)
             self.update_regional_certificate(certificates)
 
+    def dump_s3(self, s3, bucket_name, key):
+        s3.put_object(Bucket = bucket_name,
+                      Key = key,
+                      Body = json.dumps(self,
+                                        indent = 2),
+                      ContentType = "application/json")
+            
 if __name__ == "__main__":
     pass

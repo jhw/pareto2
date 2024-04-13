@@ -1,7 +1,5 @@
 ### short
 
-- add dump_s3 to env
-
 ### medium
 
 - re- test gists
@@ -103,6 +101,7 @@
 
 ### done
 
+- add dump_s3 to env
 - push_artifacts.py >>> assets to include filter fn
 - better error messages on failing to parse infra
 - migrate_infra.py >>> script is failing to include detail under pattern
