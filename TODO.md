@@ -3,7 +3,6 @@
 ### medium
 
 - python version as environment variable
-
 - re- test gists
 
 ### long
