@@ -1,6 +1,13 @@
 ### short
 
+- project should ignore files without infra (not assume they don't exist)
+- simplify push_artifacts.py filter so just ignores test.py
+- new version of debug/dump_logs.py 
+- debug/list_functions.py
+
 ### medium
+
+- python version as environment variable
 
 - re- test gists
 
