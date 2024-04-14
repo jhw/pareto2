@@ -38,15 +38,24 @@ AppNamespace = "app"
 
 class Project(dict):
 
+    """
+    Note filtering; Project may be passed full set of assets but not need everything
+    """
+    
     def __init__(self, pkg_root, assets):
         dict.__init__(self, {
             path: {
                 "infra": self.filter_infra(path, content),
                 "variables": self.filter_variables(path, content)
             }
-            for path, content in assets.items()})        
+            for path, content in assets.items()
+            if (path  == f"{pkg_root}/__init__.py" or
+                path.endswith("index.py"))
+        })
         self.pkg_root = pkg_root
 
+
+        
     def filter_infra(self, path, text):
         blocks = [block for block in text.split('"""')
                   if re.sub("\\s", "", block) != ""]

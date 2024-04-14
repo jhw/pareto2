@@ -1,6 +1,6 @@
 ### short
 
-- project should ignore files without infra (not assume they don't exist)
+- add test.py, template.html files to demo project
 - simplify push_artifacts.py filter so just ignores test.py
 - new version of debug/dump_logs.py 
 - debug/list_functions.py
@@ -108,6 +108,8 @@
 
 ### done
 
+- remove filtering from project tests
+- project should ignore files without infra (not assume they don't exist)
 - add dump_s3 to env
 - push_artifacts.py >>> assets to include filter fn
 - better error messages on failing to parse infra

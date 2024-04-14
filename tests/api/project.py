@@ -16,17 +16,8 @@ class ProjectTest(ApiTestBase):
     def setUp(self):
         super().setUp()
     
-    def init_filter(self, pkg_root):
-        def filter_fn(full_path):
-            return (full_path == f"{pkg_root}/__init__.py" or
-                    full_path.endswith("index.py"))
-        return filter_fn
-    
     def init_project(self, pkg_root):
-        filter_fn = self.init_filter(pkg_root)
-        loader = file_loader(pkg_root,
-                             filter_fn = filter_fn)        
-        return Project(pkg_root, {k:v for k, v in loader})
+        return Project(pkg_root, {k:v for k, v in file_loader(pkg_root)})
     
     def test_webapi(self,
                     pkg_root = PkgRoot,
