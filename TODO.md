@@ -1,8 +1,5 @@
 ### short
 
-- new version of debug/dump_logs.py 
-- debug/list_functions.py
-
 ### medium
 
 - python version as environment variable
@@ -106,6 +103,8 @@
 
 ### done
 
+- new version of debug/dump_logs.py 
+- debug/list_functions.py
 - add test.py, template.html files to demo project
 - simplify push_artifacts.py filter so just ignores test.py
 - remove filtering from project tests
