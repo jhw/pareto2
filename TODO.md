@@ -1,9 +1,10 @@
 ### short
 
-** queue inline code needs to unpack target for pattern matching **
+- remove records from queue schema
+- change task queue to pass the json parsed sqs message body as detail and see what breaks
+- remove aws S3/codebuild refs from hello event example and have project insert them along with bucket / project name 
+- compare and contast streaming table inline code with task queue code to ensure pattern consistency 
 
-- queue eventSource matching
-  
 - add unbound event demo
 - add subscription to topic worker
 - add alerts to api handlers
