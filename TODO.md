@@ -1,10 +1,10 @@
 ### short
 
-- add queue fields to schema
-  - including const detail type
+** queue inline code needs to unpack target for pattern matching **
+
+- queue eventSource matching
   
 - add unbound event demo
-
 - add subscription to topic worker
 - add alerts to api handlers
 - simplify scripts/debug

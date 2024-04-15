@@ -4,8 +4,14 @@ type: object
 properties:
   detail:
     type: object
-    properties: {}
-    required: []
+    properties:
+      Records:
+        type: array
+        items:
+          type: object
+        minItems: 1
+    required:
+    - Records
     additionalProperties: true
   detail-type:
     type: array
