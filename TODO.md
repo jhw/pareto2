@@ -1,6 +1,6 @@
 ### short
 
-- prevent table example from failing due to missing records
+- add pk, sk to table example
 
 - uncomment source fields
 
@@ -115,6 +115,7 @@
 
 ### done
 
+- prevent table example from failing due to missing records
 - prevent s3 example from failing due to missing bucket/object
 - add table fields to schema
 - validate against local event schema

@@ -18,9 +18,9 @@ properties:
         items:
           type: object
         minItems: 1
-    required: []
-    # - records   
-    additionalProperties: true
+    required:
+    - records   
+    additionalProperties: false
   detail-type:
     type: array
     items:

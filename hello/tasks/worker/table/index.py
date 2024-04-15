@@ -5,8 +5,8 @@ infra:
     type: table
     pattern:
       detail:
-        hello:
-        - world
+        records:
+        - hello: world
   alarm:
     period: 60
     threshold: 10
