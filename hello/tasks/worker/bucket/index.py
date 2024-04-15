@@ -11,6 +11,8 @@ infra:
         object:
           key:
           - world
+      source:
+      - aws.s3
   alarm:
     period: 60
     threshold: 10

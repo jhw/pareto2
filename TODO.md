@@ -1,7 +1,8 @@
 ### short
 
-- fix bucket/s3 source
 - fix builder/codebuild source
+
+- fix const validation
 
 - add queue fields to schema
   - including const detail type
@@ -114,6 +115,7 @@
 
 ### done
 
+- fix bucket/s3 source
 - add pk, sk to table example
 - prevent table example from failing due to missing records
 - prevent s3 example from failing due to missing bucket/object

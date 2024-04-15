@@ -33,11 +33,11 @@ properties:
     type: array
     items:
       type: string
-    const: "aws.s3"
+    # const: aws.s3
     minItems: 1
     maxItems: 1
 required:
 - detail
 # - detail-type
-# - source
+- source
 additionalProperties: false
