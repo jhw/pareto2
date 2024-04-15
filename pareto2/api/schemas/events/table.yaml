@@ -4,8 +4,22 @@ type: object
 properties:
   detail:
     type: object
-    properties: {}
+    properties:
+      eventName:
+        type: array
+        items:
+          type: string
+        minItems: 1
+        maxItems: 1
+      pk: {}
+      sk: {}
+      records:
+        type: array
+        items:
+          type: object
+        minItems: 1
     required: []
+    # - records   
     additionalProperties: true
   detail-type:
     type: array

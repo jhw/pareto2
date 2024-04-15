@@ -1,7 +1,9 @@
 ### short
 
-- add table, queue fields to schema
+- add table fields to schema
+- add queue fields to schema
 - prevent s3 example from failing due to missing bucket/object
+- prevent table example from failing due to missing records
 - uncomment source fields
 
 - validate leaf values
