@@ -1,8 +1,5 @@
 ### short
 
-- add event validation block
-- check for existence of detail
-- check for existence of detail-type if unbound
 - validate against local event schema
 - validate leaf values
 
@@ -112,6 +109,9 @@
 
 ### done
 
+- add event validation block
+- check for existence of detail
+- check for existence of detail-type if unbound
 - new version of debug/dump_logs.py 
 - debug/list_functions.py
 - add test.py, template.html files to demo project

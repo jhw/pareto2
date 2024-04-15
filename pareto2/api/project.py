@@ -53,8 +53,6 @@ class Project(dict):
                 path.endswith("index.py"))
         })
         self.pkg_root = pkg_root
-
-
         
     def filter_infra(self, path, text):
         blocks = [block for block in text.split('"""')
@@ -111,7 +109,6 @@ class Project(dict):
                                 schema=schema)
         except jsonschema.exceptions.ValidationError as error:
             raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
-
     
     """
     api (obviously) conflicts with public bucket over use of domain name
@@ -153,9 +150,13 @@ class Project(dict):
                                   indexes = indexes,
                                   batch_window = batch_window)
 
-    """
-    NB all leaf values in rules must be lists
-    """
+    def validate_event_attributes(self, event):
+        if event["type"] == "unbound":
+            if "detail-type" not in event["pattern"]:
+                raise RuntimeError("unbound event must have detail-type")
+        else:
+            if "detail" not in event["pattern"]:
+                raise RuntimeError("bound event must have detail")
             
     def insert_event_source(self, event, namespace = AppNamespace):
         if event["type"] == "bucket":
@@ -167,9 +168,6 @@ class Project(dict):
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-queue")}]
         elif event["type"] == "table":
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-table")}]
-        elif event["type"] == "unbound":
-            if "detail-type" not in event["pattern"]:
-                raise RuntimeError("unbound event must have detail-type")
             
     """
     Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path
@@ -192,6 +190,7 @@ class Project(dict):
             elif type == "worker":
                 namespace = "-".join(filename.split("/")[1:-1])
                 if "event" in struct:
+                    self.validate_event_attributes(struct["event"])
                     self.insert_event_source(struct["event"])
                 recipe += EventWorker(namespace = namespace,
                                       worker = struct)
