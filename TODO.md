@@ -1,8 +1,6 @@
 ### short
 
-- change task queue to pass the json parsed sqs message body as detail and see what breaks
 - remove aws S3/codebuild refs from hello event example and have project insert them along with bucket / project name 
-- compare and contast streaming table inline code with task queue code to ensure pattern consistency 
 
 - add unbound event demo
 - add subscription to topic worker
@@ -11,8 +9,9 @@
 
 ### medium
 
+- tests for inline code
+
 - python version as environment variable
-- re- test gists
 
 ### long
 
@@ -111,6 +110,8 @@
 
 ### done
 
+- compare and contast streaming table inline code with task queue code to ensure pattern consistency 
+- change task queue to pass the json parsed sqs message body as detail and see what breaks
 - remove records from queue schema
 - validate leaf values
 - fix const validation
