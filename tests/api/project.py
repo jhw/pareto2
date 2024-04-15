@@ -16,9 +16,6 @@ class ProjectTest(ApiTestBase):
     def setUp(self):
         super().setUp()
     
-    def init_project(self, pkg_root):
-        return Project(pkg_root, {k:v for k, v in file_loader(pkg_root)})
-    
     def test_webapi(self,
                     pkg_root = PkgRoot,
                     bucket_name = BucketName,
@@ -28,7 +25,7 @@ class ProjectTest(ApiTestBase):
                                   'DomainName',
                                   'RegionalCertificateArn',
                                   'SlackWebhookUrl']):
-        project = self.init_project(pkg_root = pkg_root)
+        project = Project(pkg_root, {k:v for k, v in file_loader(pkg_root)})
         env = Env({param: None for param in parameters})
         template = project.spawn_template(env = env)
         self.assertTrue(template.is_complete)
@@ -48,7 +45,9 @@ class ProjectTest(ApiTestBase):
                                    'DistributionCertificateArn',
                                    'DomainName',
                                    'SlackWebhookUrl']):
-        project = self.init_project(pkg_root = pkg_root)
+        filter_fn = lambda x: "builder" not in x
+        project = Project(pkg_root, {k:v for k, v in file_loader(pkg_root,
+                                                                 filter_fn = filter_fn)})
         root_infra = project.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)

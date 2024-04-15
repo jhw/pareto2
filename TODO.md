@@ -2,10 +2,10 @@
 
 - fix const validation
 
-- add hello builder demo
-
 - add queue fields to schema
   - including const detail type
+
+- add unbound event demo
 
 - validate leaf values
 
@@ -115,6 +115,7 @@
 
 ### done
 
+- add hello builder demo
 - fix builder/codebuild source
 - fix bucket/s3 source
 - add pk, sk to table example
