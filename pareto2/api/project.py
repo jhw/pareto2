@@ -148,13 +148,27 @@ class Project(dict):
             recipe += StreamTable(namespace = namespace,
                                   indexes = indexes,
                                   batch_window = batch_window)
+
+    """
+    bucket, builder events are similar in that -
+    - source is the service and the instance is defined in the detail
+    - they don't involve inline code
+
+    queue, table events are similar in that -
+    - source is the actual instance
+    - they both involve inline code
+    - they both involve sync bindings (AWS::Lambda::EventSourceMapping)
+    - the raw message needs to be expanded before passing to EventBridge so that individual fields can be pattern matched
+    """
             
     def insert_event_source(self, event, namespace = AppNamespace):
         if event["type"] == "bucket":
             event["pattern"]["detail"].setdefault("bucket", {})
             event["pattern"]["detail"]["bucket"]["name"] = [{"Ref": H(f"{namespace}-bucket")}]
+            event["pattern"]["source"] = ["aws.s3"]
         elif event["type"] == "builder":
             event["pattern"]["detail"]["project-name"] = [{"Ref": H(f"{namespace}-project")}]
+            event["pattern"]["source"] = ["aws.codebuild"]
         elif event["type"] == "queue":
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-queue")}]
         elif event["type"] == "table":

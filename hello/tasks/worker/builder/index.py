@@ -11,8 +11,6 @@ infra:
         - SUBMITTED
         completed-phase-status:
         - TIMED_OUT
-      source:
-      - aws.codebuild
   alarm:
     period: 60
     threshold: 10
