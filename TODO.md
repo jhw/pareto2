@@ -1,6 +1,8 @@
 ### short
 
-- complete event schema
+- add table, queue fields to schema
+- prevent s3 example from failing due to missing bucket/object
+- uncomment source fields
 
 - validate leaf values
 

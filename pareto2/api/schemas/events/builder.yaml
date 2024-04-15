@@ -4,13 +4,41 @@ type: object
 properties:
   detail:
     type: object
-    properties: {}
-    required: []
+    properties:
+      project-name:
+        type: array
+        items:
+          type: string
+        minItems: 1
+        maxItems: 1
+      completed-phase:
+        type: array
+        items:
+          type: string
+        minItems: 1
+      completed-phase-status:
+        type: array
+        items:
+          type: string
+        minItems: 1
+    required:
+     - project-name
+     - completed-phase
+     - completed-phase-status
     additionalProperties: true
   detail-type:
     type: array
-  source: 
+    items:
+      type: string
+    minItems: 1
+    maxItems: 1
+  source:
     type: array
+    items:
+      type: string
+    const: "aws.codebuild"
+    minItems: 1
+    maxItems: 1
 required:
 - detail
 # - detail-type

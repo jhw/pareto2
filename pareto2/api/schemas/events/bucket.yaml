@@ -4,13 +4,38 @@ type: object
 properties:
   detail:
     type: object
-    properties: {}
+    properties:
+      bucket:
+        type: object
+        properties:
+          name: {}
+        required:
+        - name
+        additionalProperties: true
+      object:
+        type: object
+        properties:
+          key: {}
+        required:
+        - key
+        additionalProperties: true
     required: []
+    # - bucket
+    # - object
     additionalProperties: true
   detail-type:
     type: array
-  source: 
+    items:
+      type: string
+    minItems: 1
+    maxItems: 1
+  source:
     type: array
+    items:
+      type: string
+    const: "aws.s3"
+    minItems: 1
+    maxItems: 1
 required:
 - detail
 # - detail-type
