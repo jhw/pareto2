@@ -1,10 +1,12 @@
 ### short
 
-- add table fields to schema
-- add queue fields to schema
 - prevent s3 example from failing due to missing bucket/object
 - prevent table example from failing due to missing records
+
 - uncomment source fields
+
+- add queue fields to schema
+  - including const detail type
 
 - validate leaf values
 
@@ -114,6 +116,7 @@
 
 ### done
 
+- add table fields to schema
 - validate against local event schema
 - add event validation block
 - check for existence of detail
