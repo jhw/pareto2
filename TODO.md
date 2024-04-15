@@ -1,6 +1,5 @@
 ### short
 
-- remove records from queue schema
 - change task queue to pass the json parsed sqs message body as detail and see what breaks
 - remove aws S3/codebuild refs from hello event example and have project insert them along with bucket / project name 
 - compare and contast streaming table inline code with task queue code to ensure pattern consistency 
@@ -112,6 +111,7 @@
 
 ### done
 
+- remove records from queue schema
 - validate leaf values
 - fix const validation
 - add hello builder demo

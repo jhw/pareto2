@@ -5,8 +5,7 @@ infra:
     type: queue
     pattern:
       detail:
-        Records:
-        - hello: world
+        hello: world
   alarm:
     period: 60
     threshold: 10
