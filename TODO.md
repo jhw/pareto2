@@ -1,11 +1,9 @@
 ### short
 
-- add unbound event demo
-
 - add queue fields to schema
   - including const detail type
-
-- validate leaf values
+  
+- add unbound event demo
 
 - add subscription to topic worker
 - add alerts to api handlers
@@ -113,6 +111,7 @@
 
 ### done
 
+- validate leaf values
 - fix const validation
 - add hello builder demo
 - fix builder/codebuild source

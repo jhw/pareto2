@@ -160,6 +160,12 @@ class Project(dict):
         elif event["type"] == "table":
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-table")}]
 
+    """
+    There is no boto3 events method which will pre- validate the format of a rule, unfortunately
+
+    Also you can't assume all leaf values should always be lists; Eventbridge supports exact matching, and prefix (and similar) matching does not involve lists-at-leaf either
+    """
+            
     def validate_event(self, event):
         schema = self.load_schema("events/%s" % event["type"])
         self.validate_schema(struct = event["pattern"],
