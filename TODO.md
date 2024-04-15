@@ -1,8 +1,7 @@
 ### short
 
-- add pk, sk to table example
-
-- uncomment source fields
+- fix bucket/s3 source
+- fix builder/codebuild source
 
 - add queue fields to schema
   - including const detail type
@@ -115,6 +114,7 @@
 
 ### done
 
+- add pk, sk to table example
 - prevent table example from failing due to missing records
 - prevent s3 example from failing due to missing bucket/object
 - add table fields to schema
