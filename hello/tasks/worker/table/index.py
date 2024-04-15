@@ -5,6 +5,10 @@ infra:
     type: table
     pattern:
       detail:
+        pk:
+        - hello
+        sk:
+        - world
         records:
         - hello: world
   alarm:
