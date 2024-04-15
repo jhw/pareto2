@@ -1,5 +1,15 @@
 ### short
 
+- add event validation block
+- check for existence of detail
+- check for existence of detail-type if unbound
+- validate against local event schema
+- validate leaf values
+
+- add subscription to topic worker
+- add alerts to api handlers
+- simplify scripts/debug
+
 ### medium
 
 - python version as environment variable
