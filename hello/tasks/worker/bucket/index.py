@@ -5,8 +5,12 @@ infra:
     type: bucket
     pattern:
       detail:
-        hello:
-        - world
+        bucket:
+          name:
+          - hello
+        object:
+          key:
+          - world
   alarm:
     period: 60
     threshold: 10

@@ -19,9 +19,9 @@ properties:
         required:
         - key
         additionalProperties: true
-    required: []
-    # - bucket
-    # - object
+    required:
+    - bucket
+    - object
     additionalProperties: true
   detail-type:
     type: array

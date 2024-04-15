@@ -1,6 +1,5 @@
 ### short
 
-- prevent s3 example from failing due to missing bucket/object
 - prevent table example from failing due to missing records
 
 - uncomment source fields
@@ -116,6 +115,7 @@
 
 ### done
 
+- prevent s3 example from failing due to missing bucket/object
 - add table fields to schema
 - validate against local event schema
 - add event validation block
