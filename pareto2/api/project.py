@@ -103,12 +103,12 @@ class Project(dict):
             cache[type] = yaml.safe_load(f.read())
         return cache[type]
 
-    def validate_schema(self, filename, struct, schema):
+    def validate_schema(self, struct, schema):
         try:
             jsonschema.validate(instance=struct,
                                 schema=schema)
         except jsonschema.exceptions.ValidationError as error:
-            raise RuntimeError("%s :: error validating schema: %s" % (filename, str(error)))
+            raise RuntimeError("error validating schema: %s" % str(error))
     
     """
     api (obviously) conflicts with public bucket over use of domain name
@@ -118,8 +118,7 @@ class Project(dict):
     def handle_root(self, recipe, endpoints, namespace = AppNamespace):
         struct = self.root_content["infra"]
         schema = self.load_schema("root")
-        self.validate_schema(filename = self.root_filename,
-                             struct = struct,
+        self.validate_schema(struct = struct,
                              schema = schema)
         for attr in ["api", "builder"]:
             if (attr in struct and
@@ -149,14 +148,6 @@ class Project(dict):
             recipe += StreamTable(namespace = namespace,
                                   indexes = indexes,
                                   batch_window = batch_window)
-
-    def validate_event_attributes(self, event):
-        if event["type"] == "unbound":
-            if "detail-type" not in event["pattern"]:
-                raise RuntimeError("unbound event must have detail-type")
-        else:
-            if "detail" not in event["pattern"]:
-                raise RuntimeError("bound event must have detail")
             
     def insert_event_source(self, event, namespace = AppNamespace):
         if event["type"] == "bucket":
@@ -168,6 +159,11 @@ class Project(dict):
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-queue")}]
         elif event["type"] == "table":
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-table")}]
+
+    def validate_event(self, event):
+        schema = self.load_schema("events/%s" % event["type"])
+        self.validate_schema(struct = event,
+                             schema = schema)
             
     """
     Note that worker and timer create namespaces from python paths, whereas endpoint create namespace from endpoint (http) path
@@ -178,8 +174,7 @@ class Project(dict):
             struct = asset["infra"]
             type = struct.pop("type") if "type" in struct else "root"
             schema = self.load_schema(type)
-            self.validate_schema(filename = filename,
-                                 struct = struct,
+            self.validate_schema(struct = struct,
                                  schema = schema)
             struct["handler"] = filename.replace(".py", ".handler") 
             struct["variables"] = {k: {"Ref": H(k)}
@@ -190,8 +185,8 @@ class Project(dict):
             elif type == "worker":
                 namespace = "-".join(filename.split("/")[1:-1])
                 if "event" in struct:
-                    self.validate_event_attributes(struct["event"])
                     self.insert_event_source(struct["event"])
+                    self.validate_event(struct["event"])
                 recipe += EventWorker(namespace = namespace,
                                       worker = struct)
             elif type == "timer":

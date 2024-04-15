@@ -1,6 +1,6 @@
 ### short
 
-- validate against local event schema
+- complete event schema
 - validate leaf values
 
 - add subscription to topic worker
@@ -109,6 +109,7 @@
 
 ### done
 
+- validate against local event schema
 - add event validation block
 - check for existence of detail
 - check for existence of detail-type if unbound
