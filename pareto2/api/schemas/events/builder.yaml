@@ -34,7 +34,7 @@ properties:
     type: array
     items:
       type: string
-    # const: "aws.codebuild"
+      const: "aws.codebuild"
     minItems: 1
     maxItems: 1
 required:
