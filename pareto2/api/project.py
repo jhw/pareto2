@@ -162,7 +162,7 @@ class Project(dict):
 
     def validate_event(self, event):
         schema = self.load_schema("events/%s" % event["type"])
-        self.validate_schema(struct = event,
+        self.validate_schema(struct = event["pattern"],
                              schema = schema)
             
     """

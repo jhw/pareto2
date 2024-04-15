@@ -1,6 +1,18 @@
 ---
 "$schema": "http://json-schema.org/draft-07/schema#"
 type: object
-properties: {}
-required: []
-additionalProperties: true
+properties:
+  detail:
+    type: object
+    properties: {}
+    required: []
+    additionalProperties: true
+  detail-type:
+    type: array
+  source: 
+    type: array
+required:
+# - detail
+- detail-type
+# - source
+additionalProperties: false
