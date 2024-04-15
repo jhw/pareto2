@@ -1,15 +1,13 @@
 ### short
 
+- rename tests/recipes as tests/recipes/demos
+- add tests/recipes/inline 
 - add unbound event demo
-
 - add subscription to topic worker
 - add alerts to api handlers
-
 - simplify scripts/debug
 
 ### medium
-
-- consider tests for inline code
 
 - python version as environment variable
 
