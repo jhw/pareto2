@@ -1,8 +1,8 @@
 ### short
 
-- fix builder/codebuild source
-
 - fix const validation
+
+- add hello builder demo
 
 - add queue fields to schema
   - including const detail type
@@ -115,6 +115,7 @@
 
 ### done
 
+- fix builder/codebuild source
 - fix bucket/s3 source
 - add pk, sk to table example
 - prevent table example from failing due to missing records
