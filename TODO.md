@@ -1,13 +1,13 @@
-### short [02-inline-code-tests]
-
-- slack alerts/alarms test
-
-### medium
+### short
 
 - add unbound event demo
+
 - add subscription to topic worker
 - add alerts to api handlers
 - simplify scripts/debug
+
+### medium
+
 
 - python version as environment variable
 
@@ -108,6 +108,7 @@
 
 ### done
 
+- slack alerts/alarms test
 - task queue test
 - initialise mock events with rules
 - check message received by sqs
