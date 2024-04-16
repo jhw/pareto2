@@ -1,13 +1,10 @@
 ### short
 
-- add unbound event demo
-
 - add subscription to topic worker
 - add alerts to api handlers
 - simplify scripts/debug
 
 ### medium
-
 
 - python version as environment variable
 
@@ -108,6 +105,7 @@
 
 ### done
 
+- add unbound event demo
 - slack alerts/alarms test
 - task queue test
 - initialise mock events with rules

@@ -15,11 +15,8 @@ properties:
         - unbound
       pattern:
         type: object
-        properties:
-          detail:
-            type: object
-        required:
-        - detail
+        properties: {}
+        required: []
         additionalProperties: true
     required:
     - type
