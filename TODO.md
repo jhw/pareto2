@@ -1,7 +1,7 @@
 ### short
 
-- add subscription to topic worker
 - add alerts to api handlers
+  - seems to leave AppFunction as unhandled parameter?
 
 ### medium
 
@@ -103,6 +103,10 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- add subscription to topic worker
+
+- https://securitylabs.datadoghq.com/articles/amplified-exposure-how-aws-flaws-made-amplify-iam-roles-vulnerable-to-takeover/?utm_source=newsletter&utm_medium=email&utm_content=offbynone&utm_campaign=Off-by-none%3A%20Issue%20%23275
 
 - simplify scripts/debug
 - add unbound event demo

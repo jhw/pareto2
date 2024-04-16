@@ -64,6 +64,7 @@ class EventWorker(AlarmsMixin, AlertsMixin):
                  Policy(namespace = namespace,
                         permissions = policy_permissions(worker)),
                  Topic(namespace = namespace),
+                 Subscription(namespace = namespace),
                  TopicPermission(namespace = namespace)]
 
         
