@@ -2,7 +2,6 @@
 
 - add subscription to topic worker
 - add alerts to api handlers
-- simplify scripts/debug
 
 ### medium
 
@@ -105,6 +104,7 @@
 
 ### done
 
+- simplify scripts/debug
 - add unbound event demo
 - slack alerts/alarms test
 - task queue test

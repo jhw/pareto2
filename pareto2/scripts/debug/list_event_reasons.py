@@ -7,7 +7,7 @@ from botocore.exceptions import ClientError
 
 import boto3, os, re, sys
 
-def fetch_events(cf, stackname, n, filterfn = lambda x: True):
+def fetch_events(cf, stackname, n):
     events, token = [], None
     while True:
         if len(events) > n:
@@ -17,8 +17,7 @@ def fetch_events(cf, stackname, n, filterfn = lambda x: True):
             kwargs["NextToken"] = token
         resp = cf.describe_stack_events(**kwargs)
         for event in resp["StackEvents"]:
-            if filterfn(event):
-                events.append(event)
+            events.append(event)
         if "NextToken" in resp:
             token = resp["NextToken"]
         else:
