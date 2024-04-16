@@ -4,7 +4,7 @@ from moto import mock_events, mock_sqs
 
 import unittest.mock as mock
 
-import os, unittest, yaml
+import json, os, unittest, yaml
 
 SampleEvent = yaml.safe_load("""
 Records:
@@ -33,20 +33,37 @@ Records:
     eventSourceARN: "arn:aws:dynamodb:us-east-1:123456789012:table/YourTableName/stream/2020-01-01T00:00:00.000"
 """)
 
+Rules = yaml.safe_load("""
+- detail:
+    pk:
+    - prefix: LEAGUE
+""")
+
 @mock_events
 @mock_sqs
 class StreamTableInlineTest(unittest.TestCase,
                             EventsTestMixin):
 
-    def setUp(self):        
+    def setUp(self, rules = Rules):        
         self.env = {}
         self.env["APP_TABLE"] = "app-table" # doesn't have to be mocked, is passed as source reference only
-        self.setup_events(rules = [])
+        self.setup_events(rules = rules)
     
     def test_code(self, event = SampleEvent):
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.stream_table.inline_code import handler
             handler(event, context = None)
+            messages = self.drain_queue(queue = self.events_queue)
+            self.assertTrue(messages != [])
+            message = messages.pop()
+            body = json.loads(message["Body"])
+            self.assertTrue("detail" in body)
+            detail = body["detail"]
+            for k, v in [("eventName", "INSERT"),
+                         ("pk", "LEAGUE#ENG1"),
+                         ("sk", "TEAM")]:
+                self.assertTrue(k in detail)
+                self.assertEqual(detail[k], v)
 
     def tearDown(self):
         self.teardown_events()

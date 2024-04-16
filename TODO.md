@@ -1,9 +1,5 @@
 ### short [02-inline-code-tests]
 
-- initialise mock events with rules
-- check message received by sqs
-- assert format of message
-
 - task queue test
 - slack alerts/alarms test
 
@@ -113,6 +109,9 @@
 
 ### done
 
+- initialise mock events with rules
+- check message received by sqs
+- assert format of message
 - sample ddb event
 - rename tests/recipes as tests/recipes/demos
 - add tests/recipes/inline 
