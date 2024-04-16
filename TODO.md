@@ -1,8 +1,5 @@
 ### short
 
-- add alerts to api handlers
-  - seems to leave AppFunction as unhandled parameter?
-
 ### medium
 
 - python version as environment variable
@@ -104,6 +101,8 @@
 
 ### done
 
+- add alerts to api handlers
+  - seems to leave AppFunction as unhandled parameter
 - add subscription to topic worker
 
 - https://securitylabs.datadoghq.com/articles/amplified-exposure-how-aws-flaws-made-amplify-iam-roles-vulnerable-to-takeover/?utm_source=newsletter&utm_medium=email&utm_content=offbynone&utm_campaign=Off-by-none%3A%20Issue%20%23275

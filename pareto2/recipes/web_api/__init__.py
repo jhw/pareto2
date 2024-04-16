@@ -4,6 +4,7 @@ from pareto2.services.cognito import *
 from pareto2.services.iam import *
 from pareto2.services.route53 import *
 from pareto2.recipes import *
+from pareto2.recipes.mixins.alerts import AlertsMixin
 
 import importlib, re
 
@@ -49,7 +50,7 @@ class PrivateRoute(Route):
         })
         return props
                 
-class WebApi(Recipe):    
+class WebApi(AlertsMixin):    
 
     def __init__(self, namespace, endpoints):
         super().__init__()
@@ -59,6 +60,7 @@ class WebApi(Recipe):
         for endpoint in endpoints:
             self.init_endpoint(api_namespace = namespace,
                                endpoint = endpoint)
+        self.init_alert_resources()
 
     def has_private_endpoint(self, endpoints):
         for endpoint in endpoints:
@@ -92,7 +94,10 @@ class WebApi(Recipe):
                                     for tok in re.split("\\W", endpoint["path"])
                                     if tok != ""]))
     
-    def init_endpoint(self, api_namespace, endpoint):
+    def init_endpoint(self,
+                      api_namespace,
+                      endpoint,
+                      log_levels = ["warning", "error"]):
         endpoint_namespace = self.endpoint_namespace(api_namespace, endpoint)
         routeclass = eval("%sRoute" % endpoint["auth"].capitalize())
         fn = L.InlineFunction if "code" in endpoint else L.S3Function
@@ -110,6 +115,9 @@ class WebApi(Recipe):
                                   function_namespace = endpoint_namespace,
                                   method = endpoint["method"],
                                   path = endpoint["path"])]
+        self.init_alert_hooks(namespace = endpoint_namespace,
+                              log_levels = log_levels)
+
 
 if __name__ == "__main__":
     pass
