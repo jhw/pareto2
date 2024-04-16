@@ -1,4 +1,4 @@
-from pareto2.recipes.pip_builder import PipBuilder
+from pareto2.recipes.task_queue import TaskQueue
 from pareto2.recipes.event_worker import EventWorker
 
 import unittest, yaml
@@ -10,30 +10,7 @@ alarm:
 event:
   pattern:
     source:
-    - "aws.codebuild"
-    detail-type:
-    - "CodeBuild Build Phase Change"
-    detail:
-      project-name:
-      - Ref: AppProject
-      completed-phase:
-      - SUBMITTED
-      - PROVISIONING
-      - DOWNLOAD_SOURCE
-      - INSTALL
-      - PRE_BUILD
-      - BUILD
-      - POST_BUILD
-      - UPLOAD_ARTIFACTS
-      - FINALIZING
-      completed-phase-status:
-      - TIMED_OUT
-      - STOPPED
-      - FAILED
-      - SUCCEEDED
-      - FAULT
-      - CLIENT_ERROR
-permissions: []
+    - Ref: HelloQueue
 """)
 
 CodeBody="""
@@ -46,18 +23,18 @@ def handler(event, context=None):
     logger.warning(str(event))
 """
 
-class PipBuilderTest(unittest.TestCase):
+class TaskQueueDemoTest(unittest.TestCase):
 
     def test_template(self):
-        recipe = PipBuilder(namespace = "app")
+        recipe = TaskQueue(namespace = "hello")
         worker = Worker
         worker["code"] = CodeBody
         recipe += EventWorker(namespace = "demo",
                               worker = worker)
         template = recipe.render()
         template.init_parameters()
-        template.dump_file(filename = "tmp/pip-builder.json")
-        parameters = list(template["Parameters"].keys())
+        template.dump_file(filename = "tmp/task-queue.json")
+        parameters = list(template["Parameters"].keys())                
         self.assertTrue(len(parameters) == 1)
         self.assertTrue("SlackWebhookUrl" in parameters)
 

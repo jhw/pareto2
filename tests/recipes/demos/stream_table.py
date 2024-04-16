@@ -1,4 +1,4 @@
-from pareto2.recipes.task_queue import TaskQueue
+from pareto2.recipes.stream_table import StreamTable
 from pareto2.recipes.event_worker import EventWorker
 
 import unittest, yaml
@@ -9,8 +9,15 @@ alarm:
   threshold: 10
 event:
   pattern:
+    detail:
+      eventName:
+      - INSERT
+      pk: 
+      - prefix: LEAGUE
     source:
-    - Ref: HelloQueue
+    - Ref: AppTable
+permissions:
+- s3:GetObject
 """)
 
 CodeBody="""
@@ -23,18 +30,18 @@ def handler(event, context=None):
     logger.warning(str(event))
 """
 
-class TaskQueueTest(unittest.TestCase):
+class StreamTableDemoTest(unittest.TestCase):
 
     def test_template(self):
-        recipe = TaskQueue(namespace = "hello")
+        recipe = StreamTable(namespace = "app")
         worker = Worker
         worker["code"] = CodeBody
         recipe += EventWorker(namespace = "demo",
                               worker = worker)
         template = recipe.render()
         template.init_parameters()
-        template.dump_file(filename = "tmp/task-queue.json")
-        parameters = list(template["Parameters"].keys())                
+        template.dump_file(filename = "tmp/stream-table.json")
+        parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 1)
         self.assertTrue("SlackWebhookUrl" in parameters)
 

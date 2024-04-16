@@ -1,10 +1,16 @@
-from pareto2.recipes.event_timer import EventTimer
+from pareto2.recipes.event_worker import EventWorker
 
 import unittest, yaml
 
-Timer = yaml.safe_load("""
+Worker = yaml.safe_load("""
 event:
-  schedule: "rate(1 minute)"
+  pattern:
+    detail:
+      hello:
+       - world
+alarm:
+  period: 60
+  threshold: 10
 """)
 
 CodeBody="""
@@ -17,16 +23,16 @@ def handler(event, context=None):
     logger.warning(str(event))
 """
 
-class EventTimerTest(unittest.TestCase):
+class EventWorkerDemoTest(unittest.TestCase):
     
     def test_template(self):
-        timer = Timer
-        timer["code"] = CodeBody
-        recipe = EventTimer(namespace = "my",
-                            timer = timer)
+        worker = Worker
+        worker["code"] = CodeBody
+        recipe = EventWorker(namespace = "my",
+                             worker = worker)
         template = recipe.render()
         template.init_parameters()
-        template.dump_file(filename = "tmp/event-timer.json")
+        template.dump_file(filename = "tmp/event-worker.json")
         parameters = list(template["Parameters"].keys())
         self.assertTrue(len(parameters) == 1)
         self.assertTrue("SlackWebhookUrl" in parameters)

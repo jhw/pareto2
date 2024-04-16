@@ -40,7 +40,7 @@ Endpoints = yaml.safe_load("""
   - s3:PutObject
 """)
 
-class WebApiTest(unittest.TestCase):
+class WebApiDemoTest(unittest.TestCase):
 
     def test_template(self):
         endpoints = {endpoint["path"]:endpoint

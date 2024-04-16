@@ -1,13 +1,18 @@
-### short
+### short [02-inline-code-tests]
 
-- rename tests/recipes as tests/recipes/demos
-- add tests/recipes/inline 
+- initialise mock events with rules
+- check message received by sqs
+- assert format of message
+
+- task queue test
+- slack alerts/alarms test
+
+### medium
+
 - add unbound event demo
 - add subscription to topic worker
 - add alerts to api handlers
 - simplify scripts/debug
-
-### medium
 
 - python version as environment variable
 
@@ -108,6 +113,9 @@
 
 ### done
 
+- sample ddb event
+- rename tests/recipes as tests/recipes/demos
+- add tests/recipes/inline 
 - remove aws S3/codebuild refs from hello event example and have project insert them along with bucket / project name 
 - compare and contast streaming table inline code with task queue code to ensure pattern consistency 
 - change task queue to pass the json parsed sqs message body as detail and see what breaks

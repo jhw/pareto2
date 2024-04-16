@@ -2,7 +2,7 @@ from pareto2.recipes.website import Website
 
 import unittest
 
-class WebsiteTest(unittest.TestCase):
+class WebsiteDemoTest(unittest.TestCase):
 
     def test_template(self):
         recipe = Website(namespace = "app")
