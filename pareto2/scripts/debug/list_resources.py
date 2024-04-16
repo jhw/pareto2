@@ -8,39 +8,39 @@ def matches(values, pat):
             return True
     return False
 
-def format_value(value, n=32):
-    text=str(value)
+def format_value(value, n = 32):
+    text = str(value)
     return text[:n] if len(text) > n else text+"".join([" " for i in range(n-len(text))])
 
-def fetch_resources(cf, stackname, filterfn=lambda x: True):
+def fetch_resources(cf, stackname, filterfn = lambda x: True):
     resources, token = [], None
     while True:
-        kwargs={"StackName": stackname}
+        kwargs = {"StackName": stackname}
         if token:
-            kwargs["NextToken"]=token
-        resp=cf.list_stack_resources(**kwargs)
+            kwargs["NextToken"] = token
+        resp = cf.list_stack_resources(**kwargs)
         for resource in resp["StackResourceSummaries"]:
             if filterfn(resource):
                 resources.append(resource)
         if "NextToken" in resp:
-            token=resp["NextToken"]
+            token = resp["NextToken"]
         else:
             break
     return sorted(resources,
-                  key=lambda x: x["LastUpdatedTimestamp"])
+                  key = lambda x: x["LastUpdatedTimestamp"])
 
-if __name__=="__main__":
+if __name__ == "__main__":
     try:
-        stackname=os.environ["APP_NAME"]
+        stackname = os.environ["APP_NAME"]
         if stackname in ["", None]:
             raise RuntimeError("APP_NAME not found")
         if len(sys.argv) < 2:
             raise RuntimeError("please enter pattern")
-        pattern=sys.argv[1]
-        cf=boto3.client("cloudformation")
+        pattern = sys.argv[1]
+        cf = boto3.client("cloudformation")
         resources, count = fetch_resources(cf, stackname), 0
         for resource in resources:
-            values=[resource[attr] if attr in resource else ""
+            values = [resource[attr] if attr in resource else ""
                     for attr in ["LastUpdatedTimestamp",
                                  "LogicalResourceId",
                                  "PhysicalResourceId",
@@ -49,10 +49,10 @@ if __name__=="__main__":
             if (pattern not in ["", "*"] and
                 not matches(values, pattern)):
                 continue            
-            formatstr=" ".join(["%s" for value in values])
+            formatstr = " ".join(["%s" for value in values])
             print (formatstr % tuple([format_value(value)
                                       for value in values]))
-            count+=1
+            count += 1
         print ()
         print ("%i resources" % count)
     except RuntimeError as error:
