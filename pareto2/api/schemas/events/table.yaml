@@ -20,10 +20,7 @@ properties:
         minItems: 1
         maxItems: 1
       records:
-        type: array
-        items:
-          type: object
-        minItems: 1
+        type: object # NB not an array (rule is object; data is array)
     required:
     - records   
     additionalProperties: false

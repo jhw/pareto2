@@ -10,7 +10,7 @@ infra:
         sk:
         - world
         records:
-        - hello: world
+          hello: world
   alarm:
     period: 60
     threshold: 10
