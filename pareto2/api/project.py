@@ -222,7 +222,11 @@ class Project(dict):
                    if variable not in resource_names]
         if missing != []:
             raise RuntimeError("references to unknown resources: %s" % ", ".join(missing))
-    
+
+    """
+    app-bucket included in singletons as could be spawned by both website and builder
+    """        
+        
     def spawn_recipe(self, singletons = ["^alert",
                                          "^alarm",
                                          "^app\\-bucket$"]):    
