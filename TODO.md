@@ -1,6 +1,5 @@
 ### short [02-inline-code-tests]
 
-- task queue test
 - slack alerts/alarms test
 
 ### medium
@@ -109,6 +108,7 @@
 
 ### done
 
+- task queue test
 - initialise mock events with rules
 - check message received by sqs
 - assert format of message

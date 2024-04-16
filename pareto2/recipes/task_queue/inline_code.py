@@ -1,16 +1,16 @@
-import boto3, json, math, os
+import boto3, math, os
 
 """
-Need to expand body before sending to EventBridge so that different body fields can be pattern matched
+SQS passes body as a string; this is simply forwarded to EventBridge as the Detail (string) value
 
-Else there is no way for records sent to a single queue to be handled by different functions
+In this manner, body attributes can be pattern matched and picked up by different Lambdas, event though they have originated from the same single queue
 
 EventBridge max batch size is 10
 """
 
 def handler(event, context, batchsize = 10):
     source = os.environ["APP_QUEUE"]
-    entries = [{"Detail": json.loads(record["body"]),
+    entries = [{"Detail": record["body"],
                 "DetailType": "record-body",
                 "Source": source}
                for record in event["Records"]]
