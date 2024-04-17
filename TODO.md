@@ -1,5 +1,7 @@
 ### short
 
+- singletons should validate props consistency
+
 ### medium
 
 - python version as environment variable

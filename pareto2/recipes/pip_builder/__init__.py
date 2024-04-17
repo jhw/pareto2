@@ -14,7 +14,7 @@ class PipBuilder(Recipe):
         bucket_arn_ref = "%s.Arn" % H(f"{namespace}-bucket")
         self += [S3Project(namespace = namespace,
                            build_spec = build_spec),
-                 Bucket(namespace = namespace),
+                 StreamingBucket(namespace = namespace),
                  Role(namespace = namespace,
                       principal = "codebuild.amazonaws.com"),
                  Policy(namespace = namespace,
