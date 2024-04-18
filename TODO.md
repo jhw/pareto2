@@ -1,7 +1,8 @@
 ### short [01-tester]
 
-- add assets filter
-- add file munging capabilities on init
+- move assets to __init__
+
+- add __file__ munging capabilities on init
 - add file dumping 
 - add test class filtering
 - assert test classes
@@ -115,6 +116,7 @@
 
 ### done
 
+- add assets filter
 - filter out Base from test classes
 - add test scripts to hello
 - refactor project refs in scripts
