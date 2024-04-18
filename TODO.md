@@ -1,6 +1,5 @@
 ### short
 
-- add test scripts to hello
 - new tester class
   - extends assets
   - facilitates dev/tester.py functionality
@@ -108,6 +107,7 @@
 
 ### done
 
+- add test scripts to hello
 - refactor project refs in scripts
 - rename project as templater
 - add alerts to api handlers
