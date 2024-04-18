@@ -36,7 +36,7 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
-class Templatert(dict):
+class Templater(dict):
 
     """
     Note filtering; Templater may be passed full set of assets but not need everything

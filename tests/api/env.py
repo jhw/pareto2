@@ -13,7 +13,7 @@ DomainName, Region = "whatevs.com", "eu-west-1"
 @mock_s3
 @mock_lambda
 @mock_acm
-class EnvTest(ApiTestBase):
+class ApiEnvTest(ApiTestBase):
 
     def setUp(self):
         super().setUp()

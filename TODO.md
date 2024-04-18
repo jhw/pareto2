@@ -1,8 +1,16 @@
-### short
+### short [01-tester]
 
-- new tester class
-  - extends assets
-  - facilitates dev/tester.py functionality
+- filter out Base from test classes
+
+- add assets filter
+- add file munging capabilities on init
+- add file dumping 
+- add test class filtering
+- assert test classes
+- add test running 
+  - but don't test for it
+
+- add filesystem cleaning
 
 ### medium
 

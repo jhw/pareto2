@@ -9,7 +9,7 @@ import io, unittest, zipfile
 PkgRoot = "hello"
 
 @mock_s3
-class AssetsTest(ApiTestBase):
+class ApiAssetsTest(ApiTestBase):
 
     def setUp(self):
         super().setUp()

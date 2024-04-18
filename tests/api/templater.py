@@ -1,6 +1,6 @@
 from pareto2.api.assets import file_loader
 from pareto2.api.env import Env
-from pareto2.api.project import Templater
+from pareto2.api.templater import Templater
 
 from tests.api import ApiTestBase, BucketName
 
@@ -11,7 +11,7 @@ import unittest
 PkgRoot = "hello"
 
 @mock_s3
-class TemplaterTest(ApiTestBase):
+class ApiTemplaterTest(ApiTestBase):
 
     def setUp(self):
         super().setUp()
