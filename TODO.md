@@ -1,8 +1,15 @@
 ### short
 
-- singletons should validate props consistency
+- rename project as templater
+- refactor project refs in scripts
+- add test scripts to hello
+- new tester class
+  - extends assets
+  - facilitates dev/tester.py functionality
 
 ### medium
+
+- singletons should validate props consistency
 
 - python version as environment variable
 
