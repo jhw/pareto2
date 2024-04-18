@@ -1,7 +1,5 @@
 ### short [01-tester]
 
-- filter out Base from test classes
-
 - add assets filter
 - add file munging capabilities on init
 - add file dumping 
@@ -11,6 +9,8 @@
   - but don't test for it
 
 - add filesystem cleaning
+
+- modify run_tests.py to use Tester class
 
 ### medium
 
@@ -115,6 +115,7 @@
 
 ### done
 
+- filter out Base from test classes
 - add test scripts to hello
 - refactor project refs in scripts
 - rename project as templater

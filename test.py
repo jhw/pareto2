@@ -15,7 +15,9 @@ def find_and_run_tests(root_dirs):
                     for name in dir(module):
                         obj = getattr(module, name)
                         if (isinstance(obj, type) and
-                            issubclass(obj, unittest.TestCase)):
+                            issubclass(obj, unittest.TestCase) and
+                            "Base" not in str(obj)):
+                            print (str(obj)[1:-1].split(" ")[-1][1:-1])
                             suite.addTest(unittest.TestLoader().loadTestsFromTestCase(obj))
     unittest.TextTestRunner().run(suite)
 
