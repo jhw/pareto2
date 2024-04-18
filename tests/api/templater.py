@@ -1,6 +1,6 @@
 from pareto2.api.assets import file_loader
 from pareto2.api.env import Env
-from pareto2.api.project import Project
+from pareto2.api.project import Templater
 
 from tests.api import ApiTestBase, BucketName
 
@@ -11,7 +11,7 @@ import unittest
 PkgRoot = "hello"
 
 @mock_s3
-class ProjectTest(ApiTestBase):
+class TemplaterTest(ApiTestBase):
 
     def setUp(self):
         super().setUp()
@@ -25,9 +25,10 @@ class ProjectTest(ApiTestBase):
                                   'DomainName',
                                   'RegionalCertificateArn',
                                   'SlackWebhookUrl']):
-        project = Project(pkg_root, {k:v for k, v in file_loader(pkg_root)})
+        templater = Templater(pkg_root = pkg_root,
+                              assets = {k:v for k, v in file_loader(pkg_root)})
         env = Env({param: None for param in parameters})
-        template = project.spawn_template(env = env)
+        template = templater.spawn_template(env = env)
         self.assertTrue(template.is_complete)
         template.dump_s3(s3 = self.s3,
                          bucket_name = bucket_name,
@@ -46,15 +47,16 @@ class ProjectTest(ApiTestBase):
                                    'DomainName',
                                    'SlackWebhookUrl']):
         filter_fn = lambda x: "builder" not in x
-        project = Project(pkg_root, {k:v for k, v in file_loader(pkg_root,
-                                                                 filter_fn = filter_fn)})
-        root_infra = project.root_content["infra"]
+        templater = Templater(pkg_root = pkg_root,
+                              assets = {k:v for k, v in file_loader(pkg_root,
+                                                                    filter_fn = filter_fn)})
+        root_infra = templater.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
         root_infra.setdefault("bucket", {})
         root_infra["bucket"]["public"] = True
         env = Env({param: None for param in parameters})
-        template = project.spawn_template(env = env)        
+        template = templater.spawn_template(env = env)        
         self.assertTrue(template.is_complete)
         template.dump_s3(s3 = self.s3,
                          bucket_name = bucket_name,

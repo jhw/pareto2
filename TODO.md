@@ -1,7 +1,5 @@
 ### short
 
-- rename project as templater
-- refactor project refs in scripts
 - add test scripts to hello
 - new tester class
   - extends assets
@@ -110,6 +108,8 @@
 
 ### done
 
+- refactor project refs in scripts
+- rename project as templater
 - add alerts to api handlers
   - seems to leave AppFunction as unhandled parameter
 - add subscription to topic worker

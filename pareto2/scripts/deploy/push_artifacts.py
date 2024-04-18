@@ -1,6 +1,6 @@
 from pareto2.api.assets import Assets, file_loader
 from pareto2.api.env import Env
-from pareto2.api.project import Project
+from pareto2.api.templater import Templater
 
 from botocore.exceptions import ClientError
 
@@ -32,9 +32,9 @@ if __name__=="__main__":
         env.update_certificates()
         env["ArtifactsBucket"] = bucket_name
         env["ArtifactsKey"] = artifacts_key
-        project = Project(pkg_root = pkg_root,
-                          assets = assets)
-        template = project.spawn_template(env = env)
+        templater = Templater(pkg_root = pkg_root,
+                              assets = assets)
+        template = templater.spawn_template(env = env)
         if not template.is_complete:
             raise RuntimeError("template missing parameters %s" % ", ".join(template.unpopulated_parameters))
         for key in [f"template-{timestamp}.json",

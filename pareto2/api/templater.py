@@ -36,10 +36,10 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
-class Project(dict):
+class Templatert(dict):
 
     """
-    Note filtering; Project may be passed full set of assets but not need everything
+    Note filtering; Templater may be passed full set of assets but not need everything
     """
     
     def __init__(self, pkg_root, assets):
