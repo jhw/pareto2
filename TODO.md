@@ -1,11 +1,8 @@
 ### short [01-tester]
 
-- assert test classes
-- add test running 
-  - but don't test for it
-- add filesystem cleaning
-- modify run_tests.py to use Tester class
-- ensure file_loader, s3_zip_loader are covered by tests
+- refactor run_tests.py to use Tester
+- test run_tests.py on hello project
+- run_tests.py to clean local filesystem each time
 
 ### medium
 
@@ -110,6 +107,9 @@
 
 ### done
 
+- ensure file_loader, s3_zip_loader are covered by tests
+- complete Tester test
+- run tests
 - add test class filtering
 - add file dumping 
 - add __file__ path rewriting capabilities on init
