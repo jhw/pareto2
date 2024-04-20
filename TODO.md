@@ -1,23 +1,19 @@
 ### short [01-tester]
 
-- move file_loader, s3_loader s to __init__
-
 - add __file__ path rewriting capabilities on init
-
 - add file dumping 
 - add test class filtering
 - assert test classes
 - add test running 
   - but don't test for it
-
 - add filesystem cleaning
-
 - modify run_tests.py to use Tester class
+- ensure file_loader, s3_zip_loader are covered by tests
 
 ### medium
 
+- default values for layers, permissions, size, timeout
 - singletons should validate props consistency
-
 - python version as environment variable
 
 ### long
@@ -117,6 +113,7 @@
 
 ### done
 
+- move file_loader, s3_loader s to __init__
 - add assets filter
 - filter out Base from test classes
 - add test scripts to hello

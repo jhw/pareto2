@@ -1,4 +1,5 @@
-from pareto2.api.assets import Assets, file_loader, s3_zip_loader
+from pareto2.api import file_loader, s3_zip_loader
+from pareto2.api.assets import Assets
 
 from tests.api import ApiTestBase, BucketName
 

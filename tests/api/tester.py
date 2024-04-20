@@ -1,4 +1,4 @@
-from pareto2.api.assets import file_loader
+from pareto2.api import file_loader
 from pareto2.api.tester import Tester
 
 from tests.api import ApiTestBase, BucketName

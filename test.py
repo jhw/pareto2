@@ -8,10 +8,7 @@ def find_and_run_tests(root_dirs):
                 if file.endswith('.py'):
                     full_path = os.path.join(root, file)
                     module_name = full_path.replace(os.sep, '.')[:-3] 
-                    try:
-                        module = __import__(module_name, fromlist=[''])
-                    except ImportError:
-                        continue 
+                    module = __import__(module_name, fromlist=[''])
                     for name in dir(module):
                         obj = getattr(module, name)
                         if (isinstance(obj, type) and
