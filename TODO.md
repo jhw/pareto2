@@ -1,13 +1,10 @@
-### short [01-tester]
-
-- refactor run_tests.py to use Tester
-- test run_tests.py on hello project
-- run_tests.py to clean local filesystem each time
-
-### medium
+### short
 
 - default values for layers, permissions, size, timeout
 - singletons should validate props consistency
+
+### medium
+
 - python version as environment variable
 
 ### long
@@ -107,6 +104,9 @@
 
 ### done
 
+- refactor run_tests.py to use Tester
+- test run_tests.py on hello project
+- run_tests.py to clean local filesystem each time
 - ensure file_loader, s3_zip_loader are covered by tests
 - complete Tester test
 - run tests
