@@ -19,5 +19,6 @@ def handler(event, context, batchsize = 10):
         nbatches = math.ceil(len(entries)/batchsize)
         for i in range(nbatches):
             batch = entries[i*batchsize: (i+1)*batchsize]
-            events.put_events(Entries = batch)
+            if batch != []:
+                events.put_events(Entries = batch)
 
