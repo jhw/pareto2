@@ -1,8 +1,9 @@
 ### short [01-tester]
 
-- move assets to __init__
+- move file_loader, s3_loader s to __init__
 
-- add __file__ munging capabilities on init
+- add __file__ path rewriting capabilities on init
+
 - add file dumping 
 - add test class filtering
 - assert test classes
