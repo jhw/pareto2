@@ -1,7 +1,5 @@
 ### short [01-tester]
 
-- add file dumping 
-- add test class filtering
 - assert test classes
 - add test running 
   - but don't test for it
@@ -112,6 +110,8 @@
 
 ### done
 
+- add test class filtering
+- add file dumping 
 - add __file__ path rewriting capabilities on init
 - move file_loader, s3_loader s to __init__
 - add assets filter
