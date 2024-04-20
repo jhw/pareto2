@@ -1,6 +1,5 @@
 ### short [01-tester]
 
-- add __file__ path rewriting capabilities on init
 - add file dumping 
 - add test class filtering
 - assert test classes
@@ -113,6 +112,7 @@
 
 ### done
 
+- add __file__ path rewriting capabilities on init
 - move file_loader, s3_loader s to __init__
 - add assets filter
 - filter out Base from test classes
