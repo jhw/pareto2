@@ -1,4 +1,5 @@
-from pareto2.api.assets import Assets, file_loader
+from pareto2.api import file_loader
+from pareto2.api.assets import Assets
 from pareto2.api.env import Env
 from pareto2.api.templater import Templater
 
