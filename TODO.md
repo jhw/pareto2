@@ -1,9 +1,12 @@
 ### short
 
 - default values for layers, permissions, size, timeout
+
 - singletons should validate props consistency
 
 ### medium
+
+- memory_zip_loader test
 
 - python version as environment variable
 
