@@ -26,15 +26,5 @@ def s3_zip_loader(s3, bucket_name, key,
             content = zf.read(item.filename).decode("utf-8")
             yield (path_rewriter(item.filename), content)
 
-def memory_zip_loader(body,
-                      path_rewriter = lambda x: x,
-                      filter_fn = lambda x: True):
-    zf=zipfile.ZipFile(io.BytesIO(body), "a", zipfile.ZIP_DEFLATED, False)
-    for item in zf.infolist():
-        if (filter_fn(item.filename) and
-            not item.filename.endswith("/")):
-            content = zf.read(item.filename).decode("utf-8")
-            yield (path_rewriter(item.filename), content)
-
 if __name__ == "__main__":
     pass
