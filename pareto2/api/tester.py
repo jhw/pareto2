@@ -4,7 +4,7 @@ Tester dumps to filesystem rather than load tests into memory because of the com
 
 from pareto2.api.assets import Assets
 
-import importlib.util, os, unittest
+import importlib.util, os, traceback, unittest
 
 class Tester(Assets):
 
@@ -24,6 +24,10 @@ class Tester(Assets):
             with open(f"{dirname}/{filename}", 'w') as f:
                 f.write(v.replace("__file__", f"\"{root}/{k}\"")) # NB
 
+    """
+    try/catch block employed because a target app could include garbage code which, when imported, could bring down a pipeline unless correctly handled
+    """
+                
     def load_module_from_path(self, path):
         try:
             spec = importlib.util.spec_from_file_location("module.name", path)
@@ -31,7 +35,8 @@ class Tester(Assets):
             spec.loader.exec_module(module)
             return module
         except:
-            raise RuntimeError(f"error loading {path}")
+            tb = traceback.format_exc()
+            raise RuntimeError(f"error loading {path}: {tb}")
                 
     def discover_tests(self, root, target_file = "test.py"):
         suite = unittest.TestSuite()

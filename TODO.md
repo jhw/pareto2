@@ -1,9 +1,5 @@
 ### short
 
-- tester module loading has to be in try/except block
-- add traceback to template module loading
-- templater needs to make has_root check
-
 ### medium
 
 - default values for layers, permissions, size, timeout
@@ -107,6 +103,9 @@
 
 ### done
 
+- templater needs to make has_root check
+- add traceback to template module loading
+- tester module loading has to be in try/except block
 - refactor run_tests.py to use Tester
 - test run_tests.py on hello project
 - run_tests.py to clean local filesystem each time

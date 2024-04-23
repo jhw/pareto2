@@ -116,6 +116,8 @@ class Templater(dict):
     """
         
     def handle_root(self, recipe, endpoints, namespace = AppNamespace):
+        if not self.has_root:
+            raise RuntimeError(f"assets are missing {self.root_filename}")
         struct = self.root_content["infra"]
         schema = self.load_schema("root")
         self.validate_schema(struct = struct,
