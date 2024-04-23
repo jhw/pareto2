@@ -1,13 +1,13 @@
 ### short
 
-- default values for layers, permissions, size, timeout
-
-- singletons should validate props consistency
+- tester module loading has to be in try/except block
+- add traceback to template module loading
+- templater needs to make has_root check
 
 ### medium
 
-- memory_zip_loader test
-
+- default values for layers, permissions, size, timeout
+- singletons should validate props consistency
 - python version as environment variable
 
 ### long

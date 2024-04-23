@@ -25,10 +25,13 @@ class Tester(Assets):
                 f.write(v.replace("__file__", f"\"{root}/{k}\"")) # NB
 
     def load_module_from_path(self, path):
-        spec = importlib.util.spec_from_file_location("module.name", path)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module
+        try:
+            spec = importlib.util.spec_from_file_location("module.name", path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            return module
+        except:
+            raise RuntimeError(f"error loading {path}")
                 
     def discover_tests(self, root, target_file = "test.py"):
         suite = unittest.TestSuite()
