@@ -11,6 +11,8 @@ event:
 alarm:
   period: 60
   threshold: 10
+layers:
+  - foobar
 """)
 
 CodeBody="""
@@ -34,8 +36,10 @@ class EventWorkerDemoTest(unittest.TestCase):
         template.init_parameters()
         template.dump_file(filename = "tmp/event-worker.json")
         parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == 1)
-        self.assertTrue("SlackWebhookUrl" in parameters)
+        self.assertTrue(len(parameters) == 2)
+        for attr in ["SlackWebhookUrl",
+                     "FoobarLayerArn"]:
+            self.assertTrue(attr in parameters)
 
 if __name__ == "__main__":
     unittest.main()

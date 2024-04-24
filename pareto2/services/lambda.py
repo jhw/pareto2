@@ -37,7 +37,7 @@ class Function(Resource):
                                                   for k, v in self.variables.items()}}
         if self.layers != []:
             props["Layers"] = [{"Ref": H(f"{layername}-layer-arn")}
-                               for layername in self["layers"]]
+                               for layername in self.layers]
         return props
 
 class InlineFunction(Function):

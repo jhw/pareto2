@@ -5,6 +5,8 @@ import unittest, yaml
 Timer = yaml.safe_load("""
 event:
   schedule: "rate(1 minute)"
+layers:
+  - foobar
 """)
 
 CodeBody="""
@@ -28,8 +30,10 @@ class EventTimerDemoTest(unittest.TestCase):
         template.init_parameters()
         template.dump_file(filename = "tmp/event-timer.json")
         parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == 1)
-        self.assertTrue("SlackWebhookUrl" in parameters)
+        self.assertTrue(len(parameters) == 2)
+        for attr in ["SlackWebhookUrl",
+                     "FoobarLayerArn"]:
+            self.assertTrue(attr in parameters)
 
 if __name__ == "__main__":
     unittest.main()
