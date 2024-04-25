@@ -24,6 +24,18 @@ class Env(dict):
     def __init__(self, item = {}):
         dict.__init__(self, item)
 
+    def validate(self):
+        for attr in ["AppName",
+                     "PkgRoot",
+                     "SlackWebhookUrl"]:
+            if attr not in self:
+                raise RuntimeError(f"env is missing {attr}")
+        if "DomainName" in self:          
+            if len(self["DomainName"].split(".")) != 3:
+                raise RuntimeError("DOMAIN_NAME must be fully qualified")
+            if "AwsRegion" not in self:
+                raise RuntimeError("AWS_REGION must be defined if DOMAIN_NAME is defined")
+
     def update_layers(self):
         resp=boto3.client("lambda").list_layers()
         if "Layers" in resp:

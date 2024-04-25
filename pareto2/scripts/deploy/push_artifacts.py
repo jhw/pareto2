@@ -13,8 +13,7 @@ if __name__=="__main__":
     try:
         s3 = boto3.client("s3")
         env = Env.create_from_environ()
-        if "PkgRoot" not in env:
-            raise RuntimeError("env is missing PKG_ROOT")
+        env.validate()
         filter_fn = lambda x: not x.endswith("test.py")
         assets = Assets({k:v for k, v in file_loader(env["PkgRoot"],
                                                      filter_fn = filter_fn)})
