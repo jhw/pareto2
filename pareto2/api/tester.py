@@ -37,14 +37,20 @@ class Tester(Assets):
         except:
             tb = traceback.format_exc()
             raise RuntimeError(f"error loading {path}: {tb}")
-                
-    def discover_tests(self, root, target_file = "test.py"):
+
+    """
+    cache because historically have got into some recursive loops when tests call handlers which run tests
+    """
+        
+    def discover_tests(self, root, target_file = "test.py", cache = set()):
         suite = unittest.TestSuite()
         for root, dirs, files in os.walk(root):
             if target_file in files:
                 test_file_path = os.path.join(root, target_file)
-                test_module = self.load_module_from_path(test_file_path)
-                suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(test_module))
+                if test_file_path not in cache:
+                    test_module = self.load_module_from_path(test_file_path)
+                    suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(test_module))
+                    cache.add(test_file_path)
         return suite
 
     def run_tests(self, root = "tmp"):
