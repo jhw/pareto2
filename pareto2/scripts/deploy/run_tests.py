@@ -16,7 +16,8 @@ if __name__ == "__main__":
         if "PkgRoot" not in env:
             raise RuntimeError("env is missing PKG_ROOT")
         pkg_root = env["PkgRoot"]
-        os.system("rm -rf /tmp/*") # NB 
+        if os.path.exists("/tmp"):
+            os.system("rm -rf /tmp/*") # NB 
         tester = Tester({k:v for k, v in file_loader(pkg_root)})
         tester.dump_assets()
         tester.run_tests()
