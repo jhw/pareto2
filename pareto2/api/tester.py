@@ -6,13 +6,13 @@ from pareto2.api.assets import Assets
 
 import importlib.util, os, traceback, unittest
 
-def assert_root(fn):
-    def wrapped(self, **kwargs):
-        if ("root" in kwargs and
-            not os.path.exists(kwargs["root"])):
-            raise RuntimeError(f"tester root {root} does not exist")
-        return fn(self, **kwargs)
-    return wrapped
+"""
+/tmp guaranteed to exist on both Lambda and Unix systems in general
+
+On OSX it is generally a symlink to /private/tmp
+"""
+
+Root = "/tmp"
 
 class Tester(Assets):
 
@@ -23,8 +23,7 @@ class Tester(Assets):
     Refs to __file__ in code bodies have to be rewritten since they won't work in the local filesystem
     """
 
-    @assert_root
-    def dump_assets(self, root = "tmp"):
+    def dump_assets(self, root = Root):
         for k, v in self.items():
             dirname = "/".join([root]+k.split("/")[:-1])
             if not os.path.exists(dirname):
@@ -51,8 +50,10 @@ class Tester(Assets):
     cache because historically have got into some recursive loops when tests call handlers which run tests
     """
 
-    @assert_root
-    def discover_tests(self, root, target_file = "test.py", cache = set()):
+    def discover_tests(self,
+                       root = Root,
+                       target_file = "test.py",
+                       cache = set()):
         suite = unittest.TestSuite()
         for root, dirs, files in os.walk(root):
             if target_file in files:
@@ -63,8 +64,7 @@ class Tester(Assets):
                     cache.add(test_file_path)
         return suite
 
-    @assert_root
-    def run_tests(self, root = "tmp"):
+    def run_tests(self, root = Root):
         suite = self.discover_tests(root = root)
         if suite.countTestCases() == 0:
             raise RuntimeError("no tests found")

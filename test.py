@@ -19,4 +19,5 @@ def find_and_run_tests(root_dirs):
     unittest.TextTestRunner().run(suite)
 
 if __name__ == "__main__":
+    os.system("rm -rf /tmp/*") # clean local filesystem
     find_and_run_tests(["tests"])
