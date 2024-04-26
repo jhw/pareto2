@@ -107,9 +107,10 @@ def handle_events(struct, modstruct):
 def handle_timer(struct, modstruct):
     modstruct["type"] = "timer"
     timer = struct["timer"]
-    modstruct["schedule"] = timer["rate"]
+    event = modstruct["event"] = {}
+    event["schedule"] = timer["rate"]
     if "body" in struct:
-        modstruct["body"] = timer["body"]
+        event["body"] = timer["body"]
 
 """
 A queue worker has an event defined but possibly not a pattern, relying on source binding alone instead
