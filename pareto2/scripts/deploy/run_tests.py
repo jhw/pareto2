@@ -12,7 +12,7 @@ if __name__ == "__main__":
         pkg_root = env["PkgRoot"]
         os.system(f"rm -rf tmp/{pkg_root}")
         tester = Tester({k:v for k, v in file_loader(pkg_root)})
-        tester.dump_assets(root = "tmp")
-        tester.run_tests(root = "tmp")
+        tester.dump_assets()
+        tester.run_tests()
     except RuntimeError as error:
         print ("Error: %s" % error)

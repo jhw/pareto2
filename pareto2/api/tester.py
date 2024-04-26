@@ -6,6 +6,14 @@ from pareto2.api.assets import Assets
 
 import importlib.util, os, traceback, unittest
 
+def assert_root(fn):
+    def wrapped(self, **kwargs):
+        if ("root" in kwargs and
+            not os.path.exists(kwargs["root"])):
+            raise RuntimeError(f"tester root {root} does not exist")
+        return fn(self, **kwargs)
+    return wrapped
+
 class Tester(Assets):
 
     def __init__(self, item = {}):
@@ -14,7 +22,8 @@ class Tester(Assets):
     """
     Refs to __file__ in code bodies have to be rewritten since they won't work in the local filesystem
     """
-                 
+
+    @assert_root
     def dump_assets(self, root = "tmp"):
         for k, v in self.items():
             dirname = "/".join([root]+k.split("/")[:-1])
@@ -41,7 +50,8 @@ class Tester(Assets):
     """
     cache because historically have got into some recursive loops when tests call handlers which run tests
     """
-        
+
+    @assert_root
     def discover_tests(self, root, target_file = "test.py", cache = set()):
         suite = unittest.TestSuite()
         for root, dirs, files in os.walk(root):
@@ -53,6 +63,7 @@ class Tester(Assets):
                     cache.add(test_file_path)
         return suite
 
+    @assert_root
     def run_tests(self, root = "tmp"):
         suite = self.discover_tests(root = root)
         if suite.countTestCases() == 0:
