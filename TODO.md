@@ -1,5 +1,10 @@
 ### short
 
+- template to take resources = [] as default arg
+- run_tests.py should take command line arg for destination
+- push_artifacts.py has bad bucket_name ref
+- migrate_infra.py is failing to nest timer schedule under events
+
 ### medium
 
 - default values for layers, permissions, size, timeout
