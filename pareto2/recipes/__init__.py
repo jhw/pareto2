@@ -85,7 +85,7 @@ class Recipe(list):
 
 class Template(dict):
 
-    def __init__(self, resources):
+    def __init__(self, resources = []):
         dict.__init__(self, {"Parameters": {},
                              "Resources": dict([resource.render()
                                                 for resource in resources]),
