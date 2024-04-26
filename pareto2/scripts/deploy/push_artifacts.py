@@ -26,7 +26,8 @@ if __name__=="__main__":
                        key = artifacts_key)
         env.update_layers()
         env.update_certificates()
-        env["ArtifactsBucket"] = env["ArtifactsBucket"]
+        bucket_name = env["ArtifactsBucket"]
+        env["ArtifactsBucket"] = bucket_name
         env["ArtifactsKey"] = artifacts_key
         templater = Templater(pkg_root = env["PkgRoot"],
                               assets = assets)

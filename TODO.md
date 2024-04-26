@@ -1,8 +1,6 @@
 ### short
 
 - template to take resources = [] as default arg
-- run_tests.py should take command line arg for destination
-- push_artifacts.py has bad bucket_name ref
 - migrate_infra.py is failing to nest timer schedule under events
 
 ### medium
@@ -108,6 +106,8 @@
 
 ### done
 
+- run_tests.py should take command line arg for destination
+- push_artifacts.py has bad bucket_name ref
 - templater needs to make has_root check
 - add traceback to template module loading
 - tester module loading has to be in try/except block
