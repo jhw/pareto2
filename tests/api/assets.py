@@ -7,8 +7,6 @@ from moto import mock_s3
 
 import io, unittest, zipfile
 
-PkgRoot = "hello"
-
 @mock_s3
 class ApiAssetsTest(ApiTestBase):
 
@@ -16,10 +14,13 @@ class ApiAssetsTest(ApiTestBase):
         super().setUp()
     
     def test_round_trip(self,
-                        pkg_root = PkgRoot,
+                        app_name = "hello",
+                        pkg_root = "hello",
                         bucket_name = BucketName,
                         key = "assets.zip"):
-        assets = Assets({k:v for k, v in file_loader(pkg_root)})
+        path_rewriter = lambda x: "/".join(x.split("/")[1:])
+        assets = Assets({k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
+                                                     path_rewriter = path_rewriter)})
         assets.dump_s3(s3 = self.s3,
                        bucket_name = bucket_name,
                        key = key)

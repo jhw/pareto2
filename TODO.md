@@ -1,8 +1,7 @@
 ### short
 
-- hello / setenv-hello.sh should be self contained
-  - need to rewrite paths whenever hello is loader
-  - templater test should create env from bash not create from scratch
+- tests should always create assets classes
+- templater test should create env from bash not create from scratch
   
 ### medium
 
@@ -107,6 +106,8 @@
 
 ### done
 
+- hello / setenv-hello.sh should be self contained
+- need to rewrite paths whenever hello is loader
 - Tester to take root as constructor arg
   - modify anything that uses tester
 - migrate_infra.py is failing to nest timer schedule under events

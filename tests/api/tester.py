@@ -3,12 +3,10 @@ from pareto2.api.tester import Tester
 
 import os, unittest
 
-PkgRoot = "hello"
-
 class ApiTesterTest(unittest.TestCase):
 
     def test_tester(self,
-                    pkg_root = PkgRoot):
+                    pkg_root = "hello"):
         if os.path.exists("/tmp"):
             os.system("rm -rf /tmp/*")
         tester = Tester(item = {k:v for k, v in file_loader(pkg_root)})

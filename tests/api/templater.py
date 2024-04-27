@@ -8,8 +8,6 @@ from moto import mock_s3
 
 import unittest
 
-PkgRoot = "hello"
-
 @mock_s3
 class ApiTemplaterTest(ApiTestBase):
 
@@ -17,7 +15,8 @@ class ApiTemplaterTest(ApiTestBase):
         super().setUp()
     
     def test_webapi(self,
-                    pkg_root = PkgRoot,
+                    app_name = "hello",
+                    pkg_root = "hello",
                     bucket_name = BucketName,
                     parameters = ['AllowedOrigins',
                                   'ArtifactsBucket',
@@ -25,8 +24,11 @@ class ApiTemplaterTest(ApiTestBase):
                                   'DomainName',
                                   'RegionalCertificateArn',
                                   'SlackWebhookUrl']):
+        path_rewriter = lambda x: "/".join(x.split("/")[1:])
+        assets = {k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
+                                              path_rewriter = path_rewriter)}
         templater = Templater(pkg_root = pkg_root,
-                              assets = {k:v for k, v in file_loader(pkg_root)})
+                              assets = assets)
         env = Env({param: None for param in parameters})
         template = templater.spawn_template(env = env)
         self.assertTrue(template.is_complete)
@@ -39,17 +41,21 @@ class ApiTemplaterTest(ApiTestBase):
         self.assertTrue("template.json" in keys)
 
     def test_website(self,
-                     pkg_root = PkgRoot,
+                     app_name = "hello",
+                     pkg_root = "hello",
                      bucket_name = BucketName,
                      parameters = ['ArtifactsBucket',
                                    'ArtifactsKey',
                                    'DistributionCertificateArn',
                                    'DomainName',
                                    'SlackWebhookUrl']):
-        filter_fn = lambda x: "builder" not in x
+        path_rewriter = lambda x: "/".join(x.split("/")[1:])
+        filter_fn = lambda x: "builder" not in x                
+        assets = {k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
+                                              path_rewriter = path_rewriter,
+                                              filter_fn = filter_fn)}
         templater = Templater(pkg_root = pkg_root,
-                              assets = {k:v for k, v in file_loader(pkg_root,
-                                                                    filter_fn = filter_fn)})
+                              assets = assets)
         root_infra = templater.root_content["infra"]
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
