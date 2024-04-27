@@ -16,21 +16,22 @@ Root = "/tmp"
 
 class Tester(Assets):
 
-    def __init__(self, item = {}):
+    def __init__(self, root = Root, item = {}):
         super().__init__(item)
+        self.root = root
 
     """
     Refs to __file__ in code bodies have to be rewritten since they won't work in the local filesystem
     """
 
-    def dump_assets(self, root = Root):
+    def dump_assets(self):
         for k, v in self.items():
-            dirname = "/".join([root]+k.split("/")[:-1])
+            dirname = "/".join([self.root]+k.split("/")[:-1])
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
             filename = k.split("/")[-1]
             with open(f"{dirname}/{filename}", 'w') as f:
-                f.write(v.replace("__file__", f"\"{root}/{k}\"")) # NB
+                f.write(v.replace("__file__", f"\"{self.root}/{k}\"")) # NB
 
     """
     try/catch block employed because a target app could include garbage code which, when imported, could bring down a pipeline unless correctly handled
@@ -51,11 +52,10 @@ class Tester(Assets):
     """
 
     def discover_tests(self,
-                       root = Root,
                        target_file = "test.py",
                        cache = set()):
         suite = unittest.TestSuite()
-        for root, dirs, files in os.walk(root):
+        for root, dirs, files in os.walk(self.root):
             if target_file in files:
                 test_file_path = os.path.join(root, target_file)
                 if test_file_path not in cache:
@@ -64,8 +64,8 @@ class Tester(Assets):
                     cache.add(test_file_path)
         return suite
 
-    def run_tests(self, root = Root):
-        suite = self.discover_tests(root = root)
+    def run_tests(self):
+        suite = self.discover_tests()
         if suite.countTestCases() == 0:
             raise RuntimeError("no tests found")
         runner = unittest.TextTestRunner()

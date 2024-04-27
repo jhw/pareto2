@@ -19,8 +19,9 @@ if __name__ == "__main__":
         pkg_root = env["PkgRoot"]
         if os.path.exists(tmp):
             os.system(f"rm -rf {tmp}/*")
-        tester = Tester({k:v for k, v in file_loader(pkg_root)})
-        tester.dump_assets(root = tmp)
-        tester.run_tests(root = tmp)
+        tester = Tester(item = {k:v for k, v in file_loader(pkg_root)},
+                        root = tmp)
+        tester.dump_assets()
+        tester.run_tests()
     except RuntimeError as error:
         print ("Error: %s" % error)

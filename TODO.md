@@ -1,5 +1,7 @@
 ### short
 
+- hello / setenv-hello.sh should be self contained
+
 ### medium
 
 - default values for layers, permissions, size, timeout
@@ -103,6 +105,8 @@
 
 ### done
 
+- Tester to take root as constructor arg
+  - modify anything that uses tester
 - migrate_infra.py is failing to nest timer schedule under events
 - template to take resources = [] as default arg
 - run_tests.py should take command line arg for destination
