@@ -1,6 +1,5 @@
 ### short
 
-- tests should always create assets classes
 - templater test should create env from bash not create from scratch
   
 ### medium
@@ -106,6 +105,7 @@
 
 ### done
 
+- tests should always create assets classes
 - hello / setenv-hello.sh should be self contained
 - need to rewrite paths whenever hello is loader
 - Tester to take root as constructor arg

@@ -1,4 +1,5 @@
 from pareto2.api import file_loader
+from pareto2.api.assets import Assets
 from pareto2.api.env import Env
 from pareto2.api.templater import Templater
 
@@ -25,8 +26,8 @@ class ApiTemplaterTest(ApiTestBase):
                                   'RegionalCertificateArn',
                                   'SlackWebhookUrl']):
         path_rewriter = lambda x: "/".join(x.split("/")[1:])
-        assets = {k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
-                                              path_rewriter = path_rewriter)}
+        assets = Assets({k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
+                                                     path_rewriter = path_rewriter)})
         templater = Templater(pkg_root = pkg_root,
                               assets = assets)
         env = Env({param: None for param in parameters})
@@ -51,9 +52,9 @@ class ApiTemplaterTest(ApiTestBase):
                                    'SlackWebhookUrl']):
         path_rewriter = lambda x: "/".join(x.split("/")[1:])
         filter_fn = lambda x: "builder" not in x                
-        assets = {k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
-                                              path_rewriter = path_rewriter,
-                                              filter_fn = filter_fn)}
+        assets = Assets({k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
+                                                     path_rewriter = path_rewriter,
+                                                     filter_fn = filter_fn)})
         templater = Templater(pkg_root = pkg_root,
                               assets = assets)
         root_infra = templater.root_content["infra"]
