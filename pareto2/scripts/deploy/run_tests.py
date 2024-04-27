@@ -12,15 +12,15 @@ On Lambda the container is brought down each time in `finally` block; a new cont
 
 if __name__ == "__main__":
     try:
-        tmp = sys.argv[1] if len(sys.argv) > 1 else "/tmp"
+        os.environ["TMP_ROOT"] = tmp_root = sys.argv[1] if len(sys.argv) > 1 else "/tmp"
+        if os.path.exists(tmp_root):
+            os.system(f"rm -rf {tmp_root}/*")
         env = Env.create_from_environ()
         if "PkgRoot" not in env:
             raise RuntimeError("env is missing PKG_ROOT")
         pkg_root = env["PkgRoot"]
-        if os.path.exists(tmp):
-            os.system(f"rm -rf {tmp}/*")
         tester = Tester(item = {k:v for k, v in file_loader(pkg_root)},
-                        root = tmp)
+                        root = tmp_root)
         tester.dump_assets()
         tester.run_tests()
     except RuntimeError as error:
