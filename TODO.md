@@ -1,12 +1,14 @@
 ### short
 
 - hello / setenv-hello.sh should be self contained
-
+  - need to rewrite paths whenever hello is loader
+  - templater test should create env from bash not create from scratch
+  
 ### medium
 
+- python version as environment variable
 - default values for layers, permissions, size, timeout
 - singletons should validate props consistency
-- python version as environment variable
 
 ### long
 
