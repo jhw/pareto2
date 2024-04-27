@@ -1,6 +1,4 @@
 ### short
-
-- templater test should create env from bash not create from scratch
   
 ### medium
 
@@ -105,6 +103,8 @@
 
 ### done
 
+
+- templater test should create env from bash not create from scratch
 - tests should always create assets classes
 - hello / setenv-hello.sh should be self contained
 - need to rewrite paths whenever hello is loader

@@ -18,19 +18,15 @@ class ApiTemplaterTest(ApiTestBase):
     def test_webapi(self,
                     app_name = "hello",
                     pkg_root = "hello",
-                    bucket_name = BucketName,
-                    parameters = ['AllowedOrigins',
-                                  'ArtifactsBucket',
-                                  'ArtifactsKey',
-                                  'DomainName',
-                                  'RegionalCertificateArn',
-                                  'SlackWebhookUrl']):
+                    bucket_name = BucketName):
         path_rewriter = lambda x: "/".join(x.split("/")[1:])
-        assets = Assets({k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
-                                                     path_rewriter = path_rewriter)})
+        assets = Assets({k:v for k, v in file_loader(app_name, # include setenv.sh
+                                                     path_rewriter = path_rewriter)})        
         templater = Templater(pkg_root = pkg_root,
                               assets = assets)
-        env = Env({param: None for param in parameters})
+        env = Env.create_from_bash(assets["setenv.sh"])
+        env.update({attr:None for attr in ["ArtifactsKey",
+                                           "RegionalCertificateArn"]})
         template = templater.spawn_template(env = env)
         self.assertTrue(template.is_complete)
         template.dump_s3(s3 = self.s3,
@@ -52,7 +48,7 @@ class ApiTemplaterTest(ApiTestBase):
                                    'SlackWebhookUrl']):
         path_rewriter = lambda x: "/".join(x.split("/")[1:])
         filter_fn = lambda x: "builder" not in x                
-        assets = Assets({k:v for k, v in file_loader(f"{app_name}/{pkg_root}",
+        assets = Assets({k:v for k, v in file_loader(app_name, # include setenv.sh
                                                      path_rewriter = path_rewriter,
                                                      filter_fn = filter_fn)})
         templater = Templater(pkg_root = pkg_root,
@@ -62,7 +58,9 @@ class ApiTemplaterTest(ApiTestBase):
             root_infra.pop(attr)
         root_infra.setdefault("bucket", {})
         root_infra["bucket"]["public"] = True
-        env = Env({param: None for param in parameters})
+        env = Env.create_from_bash(assets["setenv.sh"])
+        env.update({attr:None for attr in ["ArtifactsKey",
+                                           "DistributionCertificateArn"]})
         template = templater.spawn_template(env = env)        
         self.assertTrue(template.is_complete)
         template.dump_s3(s3 = self.s3,
