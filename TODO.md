@@ -1,6 +1,8 @@
 ### short
 
-- add depends to event source mappings
+- consider adding depends to event source mappings
+  - but will require passing of parent namespace to (lambda) resource
+  - or alternative mechanism
 
 ### medium
 
