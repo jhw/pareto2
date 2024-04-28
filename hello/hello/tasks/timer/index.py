@@ -2,7 +2,7 @@
 infra:
   type: timer
   event:
-    schedule: "rate(1 minute)"
+    rate: "1 minute"
   permissions: []
   layers: []
   size: 1024

@@ -4,7 +4,7 @@ import unittest, yaml
 
 Timer = yaml.safe_load("""
 event:
-  schedule: "rate(1 minute)"
+  rate: "1 minute"
 layers:
   - foobar
 """)

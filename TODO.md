@@ -1,10 +1,5 @@
 ### short
 
-- check timer rate expression handler
-- check 1 minute/minutes 
-- check 1 hour/hours handling
-- check migration for how it handles timer schedule expressions
-
 - add depends to event source mappings
 
 ### medium
@@ -110,7 +105,11 @@
 
 ### done
 
-
+- add rate regex
+- check timer rate expression handler
+- check 1 minute/minutes 
+- check 1 hour/hours handling
+- check migration for how it handles timer schedule expressions
 - templater test should create env from bash not create from scratch
 - tests should always create assets classes
 - hello / setenv-hello.sh should be self contained

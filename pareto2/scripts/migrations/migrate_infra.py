@@ -108,7 +108,7 @@ def handle_timer(struct, modstruct):
     modstruct["type"] = "timer"
     timer = struct["timer"]
     event = modstruct["event"] = {}
-    event["schedule"] = timer["rate"]
+    event["rate"] = timer["rate"]
     if "body" in struct:
         event["body"] = timer["body"]
 

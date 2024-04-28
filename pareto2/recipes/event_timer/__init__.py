@@ -43,7 +43,7 @@ class EventTimer(AlertsMixin):
                  Policy(namespace = namespace,
                         permissions = policy_permissions(timer)),
                  TimerRule(namespace = namespace,
-                           schedule = timer["event"]["schedule"]),
+                           rate = timer["event"]["rate"]),
                  EventPermission(namespace = namespace)]
         
 if __name__ == "__main__":

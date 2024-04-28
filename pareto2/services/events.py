@@ -43,9 +43,9 @@ class PatternRule(Rule):
 
 class TimerRule(Rule):
 
-    def __init__(self, namespace, schedule, body = {}):
+    def __init__(self, namespace, rate, body = {}):
         super().__init__(namespace)
-        self.schedule = schedule
+        self.rate = rate
         self.body = body
 
     @property    
@@ -53,10 +53,13 @@ class TimerRule(Rule):
         target = super().target
         target["Input"] = json.dumps(self.body)
         return target
-        
+
+    def format_schedule(self, rate):
+        return f"rate({rate})"
+    
     @property    
     def aws_properties(self):
         props = super().aws_properties
-        props["ScheduleExpression"] = self.schedule
+        props["ScheduleExpression"] = self.format_schedule(self.rate)
         return props
 

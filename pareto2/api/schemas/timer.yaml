@@ -5,10 +5,11 @@ properties:
   event:
     type: object
     properties:
-      schedule:
+      rate:
         type: string
+        pattern: "\\d+ ((minute)|(hour))s?"
     required:
-    - schedule
+    - rate
     additionalProperties: false
   permissions: 
     type: array
