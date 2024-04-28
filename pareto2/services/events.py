@@ -54,8 +54,16 @@ class TimerRule(Rule):
         target["Input"] = json.dumps(self.body)
         return target
 
+    def format_rate(self, rate):
+        number, amount = rate.split(" ")
+        if (number == "1" and
+            amount.endswith("s")):
+            amount = amount[:-1]
+        return f"{number} {amount}"
+    
     def format_schedule(self, rate):
-        return f"rate({rate})"
+        formatted_rate = self.format_rate(rate)
+        return f"rate({formatted_rate})"
     
     @property    
     def aws_properties(self):
