@@ -1,5 +1,12 @@
 ### short
-  
+
+- check timer rate expression handler
+- check 1 minute/minutes 
+- check 1 hour/hours handling
+- check migration for how it handles timer schedule expressions
+
+- add depends to event source mappings
+
 ### medium
 
 - python version as environment variable
