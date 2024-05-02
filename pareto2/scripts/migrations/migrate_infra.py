@@ -121,6 +121,11 @@ def handle_queue(struct, modstruct):
     modstruct["type"] = "worker"
     modstruct["event"] = {
         "type": "queue"
+        "pattern": {
+            "detail": {
+                "hello": "world"
+            }
+        }
     }
 
 """
