@@ -12,7 +12,6 @@ properties:
     items:
       type: string
     minItems: 1
-    maxItems: 1
   source: 
     type: array
     items:
@@ -24,7 +23,6 @@ properties:
       - Ref
       additionalProperties: false
     minItems: 1
-    maxItems: 1
 required:
 - detail
 # - detail-type

@@ -10,15 +10,12 @@ properties:
         items:
           type: string
         minItems: 1
-        maxItems: 1
       pk:
         type: array
         minItems: 1
-        maxItems: 1
       sk:
         type: array
         minItems: 1
-        maxItems: 1
       records:
         type: object # NB not an array (rule is object; data is array)
     required: []
@@ -28,7 +25,6 @@ properties:
     items:
       type: string
     minItems: 1
-    maxItems: 1
   source: 
     type: array
     items:
@@ -40,7 +36,6 @@ properties:
       - Ref
       additionalProperties: false
     minItems: 1
-    maxItems: 1
 required:
 - detail
 # - detail-type
