@@ -1,9 +1,8 @@
 ### short
 
 - remove maxItems conditions in schemas unless absolutely necessary
-- when creating a queue event in migrate_infra.py, need to add {"detail": {"pattern": {"hello": "world"}}}
+- migrate_infra.py needs to change website event types to bucket
 - add validate_template.py
-- push_artifacts.py seems to include some unnecessary setting of ArtifactsBucket
 
 ### medium
 
@@ -116,7 +115,7 @@ AppStreamTableEventSourceMapping => Resource handler returned message: "Invalid 
 
 ### done
 
-- migrate_infra.py needs to change website event types to bucket
+- push_artifacts.py seems to include some unnecessary setting of ArtifactsBucket
 - fix bad ref to `handler_queue` in migrate_infra.py
 - when creating a queue event in migrate_infra.py, need to add {"detail": {"pattern": {"hello": "world"}}}
 - add rate regex

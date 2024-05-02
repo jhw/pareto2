@@ -26,8 +26,6 @@ if __name__=="__main__":
                        key = artifacts_key)
         env.update_layers()
         env.update_certificates()
-        bucket_name = env["ArtifactsBucket"]
-        env["ArtifactsBucket"] = bucket_name
         env["ArtifactsKey"] = artifacts_key
         templater = Templater(pkg_root = env["PkgRoot"],
                               assets = assets)
@@ -37,7 +35,7 @@ if __name__=="__main__":
         for key in [f"template-{timestamp}.json",
                     "template-latest.json"]:
             template.dump_s3(s3 = s3,
-                             bucket_name = bucket_name,
+                             bucket_name = env["ArtifactsBucket"],
                              key = key)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
