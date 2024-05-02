@@ -93,7 +93,7 @@ def handle_events(struct, modstruct):
     if len(events) > 1:
         raise RuntimeError("multiple events detected - %s" % struct)
     event = events.pop()
-    type = event["source"]["type"]
+    type = "bucket" if event["source"]["type"] == "website" else event["source"]["type"]
     if "pattern" in event:
         pattern = copy.deepcopy(event["pattern"])
         for attr in ["diffKeys"]:
