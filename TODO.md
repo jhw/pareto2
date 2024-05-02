@@ -1,8 +1,6 @@
 ### short
 
-
 - remove maxItems conditions in schemas unless absolutely necessary
-- fix bad ref to `handler_queue` in migrate_infra.py
 - when creating a queue event in migrate_infra.py, need to add {"detail": {"pattern": {"hello": "world"}}}
 - migrate_infra.py needs to change website event types to bucket
 - add validate_template.py
@@ -10,7 +8,7 @@
 
 ### medium
 
-``
+```
 AppStreamTableEventSourceMapping => Resource handler returned message: "Invalid request provided: Cannot access stream arn:aws:dynamodb:eu-west-1:119552584133:table/expander2-AppTable-I2VSV220STBT/stream/2024-05-02T14:22:21.710. Please ensure the role can perform the GetRecords, GetShardIterator, DescribeStream, and ListStreams Actions on your stream in IAM. (Service: Lambda, Status Code: 400, Request ID: 22b177aa-a376-45e2-8774-b9404551b52b)" (RequestToken: ae8d314d-801c-a026-5ad0-1cfffeafa4dd, HandlerErrorCode: InvalidRequest)
 ```
 
@@ -119,6 +117,8 @@ AppStreamTableEventSourceMapping => Resource handler returned message: "Invalid 
 
 ### done
 
+- fix bad ref to `handler_queue` in migrate_infra.py
+- when creating a queue event in migrate_infra.py, need to add {"detail": {"pattern": {"hello": "world"}}}
 - add rate regex
 - check timer rate expression handler
 - check 1 minute/minutes 

@@ -117,7 +117,7 @@ A queue worker has an event defined but possibly not a pattern, relying on sourc
 """
         
 @insert_alarm
-def handler_queue(struct, modstruct):
+def handle_queue(struct, modstruct):
     modstruct["type"] = "worker"
     modstruct["event"] = {
         "type": "queue"
