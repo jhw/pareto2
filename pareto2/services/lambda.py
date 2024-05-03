@@ -93,8 +93,10 @@ class EventSourceMapping(Resource):
 
     def __init__(self,
                  namespace,
+                 source_id,
                  source_arn):
         super().__init__(namespace)
+        self.source_id = source_id
         self.source_arn = source_arn
                 
     @property
@@ -104,6 +106,15 @@ class EventSourceMapping(Resource):
             "FunctionName": {"Ref": H(f"{self.namespace}-function")}
         }
 
+    """
+    AppStreamTableEventSourceMapping => Resource handler returned message: "Invalid request provided: Cannot access stream arn:aws:dynamodb:eu-west-1:119552584133:table/expander2-AppTable-PM60PI0BQUE3/stream/2024-04-27T20:06:50.876. Please ensure the role can perform the GetRecords, GetShardIterator, DescribeStream, and ListStreams Actions on your stream in IAM. (Service: Lambda, Status Code: 400, Request ID: 22ed7c2c-773e-42ec-9e77-65a343e9f4b4)" (RequestToken: dbbe4e1a-5a15-89b0-d1db-810d403e17ff, HandlerErrorCode: InvalidRequest)
+AppApiEventsIntegration => Resource creation Initiated
+    """
+    
+    @property
+    def depends(self):
+        return [self.source_id]
+    
 """
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#cfn-lambda-eventsourcemapping-maximumretryattempts
 
@@ -124,11 +135,13 @@ class DynamoDBEventSourceMapping(EventSourceMapping):
 
     def __init__(self,
                  namespace,
+                 source_id,
                  source_arn,
                  batch_window = 1, # NB
                  starting_position = "LATEST",
                  retries = 0):
         super().__init__(namespace = namespace,
+                         source_id = source_id,
                          source_arn = source_arn)
         self.batch_window = batch_window
         self.starting_position = starting_position
@@ -157,9 +170,11 @@ class SQSEventSourceMapping(EventSourceMapping):
 
     def __init__(self,
                  namespace,
+                 source_id,
                  source_arn,
                  batch_size = 10):
         super().__init__(namespace = namespace,
+                         source_id = source_id,
                          source_arn = source_arn)
         self.batch_size = batch_size
         

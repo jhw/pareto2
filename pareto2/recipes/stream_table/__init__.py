@@ -63,6 +63,7 @@ class StreamTable(AlertsMixin):
                               table_namespace = namespace),
                  L.DynamoDBEventSourceMapping(namespace = stream_namespace,
                                               batch_window = batch_window,
+                                              source_id = H(f"{namespace}-table"),
                                               source_arn = {"Fn::GetAtt": [H(f"{namespace}-table"), "StreamArn"]})]
             
 if __name__ == "__main__":

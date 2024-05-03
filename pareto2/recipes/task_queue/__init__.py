@@ -60,6 +60,7 @@ class TaskQueue(AlertsMixin):
                              queue_namespace = namespace),
                  L.SQSEventSourceMapping(namespace = queue_namespace,
                                          batch_size = batch_size,
+                                         source_id = H(f"{namespace}-queue"),
                                          source_arn = {"Fn::GetAtt": [H(f"{namespace}-queue"), "Arn"]})]
             
 if __name__ == "__main__":
