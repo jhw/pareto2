@@ -1,16 +1,19 @@
 ### short
 
-- list_events.py should cutoff on time window basis
-
 ### medium
 
-- python version as environment variable
-- default values for layers, permissions, size, timeout
+- list_events.py should cutoff on time window basis
+- validate test events against infra patterns
+- defaults for layers, permissions, size, timeout
+- infer existence of state variables from lambdas
+- option to pass existing user pool to private api
 - singletons should validate props consistency
+- python version as environment variable
 
 ### long
 
 - docstrings
+- app structure visualiser
 - react website demo
 - federated auth
 - step functions
@@ -105,6 +108,7 @@
 
 ### done
 
+- add back diffKeys for table streaming
 - consider adding depends to event source mappings
   - but will require passing of parent namespace to (lambda) resource
   - or alternative mechanism
