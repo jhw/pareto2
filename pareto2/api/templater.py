@@ -229,22 +229,26 @@ class Templater(dict):
     app-bucket included in singletons as could be spawned by both website and builder
     """        
         
-    def spawn_recipe(self, singletons = ["^alert",
-                                         "^alarm",
-                                         "^app\\-bucket$"]):    
+    def spawn_recipe(self,
+                     singletons = ["^alert",
+                                   "^alarm",
+                                   "^app\\-bucket$"],
+                     validate = True):
         recipe, endpoints, variables = Recipe(singletons = singletons), [], set()
         self.handle_lambdas(recipe, endpoints, variables)
         self.handle_root(recipe, endpoints)
-        self.post_validate_env_variables(recipe, variables)
-        recipe.validate()
+        if validate:
+            self.post_validate_env_variables(recipe, variables)
+            recipe.validate()
         return recipe
 
-    def spawn_template(self, env):
-        recipe = self.spawn_recipe()
+    def spawn_template(self, env, validate = True):
+        recipe = self.spawn_recipe(validate = validate)
         template = recipe.render()
         template.init_parameters()
         template.update_parameters(env)
-        template.validate()
+        if validate:
+            template.validate()
         return template
     
 if __name__ == "__main__":
