@@ -217,11 +217,16 @@ class Templater(dict):
                                      timer = struct)
             else:
                 raise RuntimeError(f"type {type} not recognised")
-    
+
+    """
+    not all env variables refer to resources; only those with app- prefix
+    """
+            
     def post_validate_env_variables(self, recipe, variables):
         resource_names = recipe.resource_names
         missing = [variable for variable in variables
-                   if variable not in resource_names]
+                   if (variable.startswith("app-") and
+                       variable not in resource_names)]
         if missing != []:
             raise RuntimeError("references to unknown resources: %s" % ", ".join(missing))
 
