@@ -108,6 +108,7 @@
 
 ### done
 
+- handle eventbridge max payload size
 - add back diffKeys for table streaming
 - consider adding depends to event source mappings
   - but will require passing of parent namespace to (lambda) resource

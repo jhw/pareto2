@@ -1,4 +1,4 @@
-import boto3, json, math, os
+import boto3, json, os
 
 class Key:
 
@@ -77,20 +77,29 @@ def batch_records(records):
     return [(key, groups[strkey])
             for strkey, key in keys.items()]
 
-"""
-- EventBridge max batch size is 10
-"""
-
-def handler(event, context, batch_size = 10):
+def handler(event, context,
+            max_entries_per_batch = 10,
+            max_payload_size = 256 * 1024):  # 256 KB
     source = os.environ["APP_TABLE"]
-    groups = batch_records(event["Records"])
+    groups = batch_records(event["Records"])    
     entries = [Entry(k, v, source).entry
-               for k, v in groups]
-    if entries != []:
-        events = boto3.client("events")
-        n_batches = math.ceil(len(entries)/batch_size)
-        for i in range(n_batches):
-            batch = entries[i*batch_size: (i+1)*batch_size]
+               for k, v in groups]    
+    events = boto3.client("events")
+    batch, batch_size_bytes = [], 0
+    for entry in entries:
+        entry_size = len(json.dumps(entry))
+        if entry_size > max_payload_size:
+            raise RuntimeError(f"single entry size exceeds 256 KB: {entry}")
+        if ((batch_size_bytes + entry_size) > max_payload_size or
+            len(batch) >= max_entries_per_batch):
             if batch != []:
                 events.put_events(Entries = batch)
+            batch = [entry]
+            batch_size_bytes = entry_size
+        else:
+            batch.append(entry)
+            batch_size_bytes += entry_size        
+    if batch != []:
+        events.put_events(Entries=batch)
+
 
