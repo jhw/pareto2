@@ -81,10 +81,10 @@ class WebApi(AlertsMixin):
                       SimpleEmailUserPool,
                       UserPoolClient,
                       IdentityPool,
-                      IdentityPoolAuthorizedRole,
-                      IdentityPoolAuthorizedPolicy,
-                      IdentityPoolUnauthorizedRole,
-                      IdentityPoolUnauthorizedPolicy,
+                      IdentityPoolAuthenticatedRole,
+                      IdentityPoolAuthenticatedPolicy,
+                      IdentityPoolUnauthenticatedRole,
+                      IdentityPoolUnauthenticatedPolicy,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
 

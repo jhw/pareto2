@@ -85,45 +85,54 @@ class IdentityPoolRoleBase(Role):
                          principal =  {"Federated": "cognito-identity.amazonaws.com"},                       
                          **kwargs)
 
-class IdentityPoolAuthorizedRole(IdentityPoolRoleBase):
+"""
+- https://stackoverflow.com/a/46028801/124179
+- https://chatgpt.com/c/9597be53-c249-438b-be81-9abba956c0c2
+"""
+        
+class IdentityPoolAuthenticatedRole(IdentityPoolRoleBase):
 
     def __init__(self, namespace):
-        super().__init__(namespace = f"{namespace}-identity-pool-authorized",
+        super().__init__(namespace = f"{namespace}-identity-pool-authenticated",
                          condition = {
                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
-                             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authorized"}
+                             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                          })
 
-class IdentityPoolAuthorizedPolicy(Policy):
+class IdentityPoolAuthenticatedPolicy(Policy):
 
     def __init__(self, namespace):
-        super().__init__(namespace =  f"{namespace}-identity-pool-authorized",
-                         permissions = ["cognito-sync:*",
-                                        "cognito-identity:*",
-                                        "lambda:InvokeFunction"])
+        super().__init__(namespace =  f"{namespace}-identity-pool-authenticated",
+                         permissions = ["cognito-identity:GetId",
+                                        "cognito-identity:GetCredentialsForIdentity",
+                                        "cognito-identity:DescribeIdentity",
+                                        "cognito-idp:ListUsers",
+                                        "cognito-idp:ListGroups",
+                                        "cognito-idp:AdminGetUser"])
 
-class IdentityPoolUnauthorizedRole(IdentityPoolRoleBase):
+class IdentityPoolUnauthenticatedRole(IdentityPoolRoleBase):
 
     def __init__(self, namespace):
-        super().__init__(namespace = f"{namespace}-identity-pool-unauthorized",
+        super().__init__(namespace = f"{namespace}-identity-pool-unauthenticated",
                          condition = {
                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref": H(f"{namespace}-identity-pool")}},
-                             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "unauthorized"}
+                             "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "unauthenticated"}
                          })
 
-class IdentityPoolUnauthorizedPolicy(Policy):
+class IdentityPoolUnauthenticatedPolicy(Policy):
 
     def __init__(self, namespace):
-        super().__init__(namespace = f"{namespace}-identity-pool-unauthorized",
-                         permissions = ["cognito-sync:*"])
+        super().__init__(namespace = f"{namespace}-identity-pool-unauthenticated",
+                         permissions = ["cognito-identity:GetId",
+                                        "cognito-identity:GetOpenIdToken"])
     
 class IdentityPoolRoleAttachment(Resource):
     
     @property
     def aws_properties(self):
         identity_pool_id = {"Ref": H(f"{self.namespace}-identity-pool")}
-        auth_role = {"Fn::GetAtt": [H(f"{self.namespace}-identity-pool-authorized-role"), "Arn"]}
-        unauth_role = {"Fn::GetAtt": [H(f"{self.namespace}-identity-pool-unauthorized-role"), "Arn"]}
+        auth_role = {"Fn::GetAtt": [H(f"{self.namespace}-identity-pool-authenticated-role"), "Arn"]}
+        unauth_role = {"Fn::GetAtt": [H(f"{self.namespace}-identity-pool-unauthenticated-role"), "Arn"]}
         roles = {
             "authenticated": auth_role,
             "unauthenticated": unauth_role
