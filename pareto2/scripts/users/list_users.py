@@ -1,6 +1,6 @@
 from botocore.exceptions import ClientError
 
-import boto3, json, os, re, sys
+import boto3, os, re, sys
 
 def hungarorise(text):
     return "".join([tok.capitalize()
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         userpool = outputs[userpoolkey]
         cognito = boto3.client("cognito-idp")
         resp = cognito.list_users(UserPoolId = userpool)
-        print (json.dumps(resp, indent = 2))
+        print (resp)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:

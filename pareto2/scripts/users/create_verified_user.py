@@ -17,19 +17,27 @@ def fetch_outputs(cf, stackname):
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) < 4:
-            raise RuntimeError("please enter stackname, namespace, email")
-        stackname, namespace, email = sys.argv[1:4]
+        if len(sys.argv) < 5:
+            raise RuntimeError("please enter stackname, namespace, email, password")
+        stackname, namespace, email, password = sys.argv[1:5]
         cf = boto3.client("cloudformation")
         outputs = fetch_outputs(cf, stackname)
         userpoolkey = hungarorise(f"{namespace}-user-pool")
         if userpoolkey not in outputs:
             raise RuntimeError("userpool not found")
         userpool = outputs[userpoolkey]
-        cognito = boto3.client("cognito-idp")
-        resp = cognito.admin_delete_user(UserPoolId = userpool,
-                                         Username = email)
-        print (resp)
+        clientkey = hungarorise(f"{namespace}-user-pool-client")
+        if clientkey not in outputs:
+            raise RuntimeError("client not found")
+        client = outputs[clientkey]
+        cognito = boto3.client("cognito-idp")        
+        resp0 = cognito.sign_up(ClientId = client,
+                              Username = email,
+                              Password = password)
+        print (resp0)
+        resp1 = cognito.admin_confirm_sign_up(UserPoolId = userpool,
+                                            Username = email)
+        print (resp1)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
     except ClientError as error:
