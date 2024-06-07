@@ -1,8 +1,8 @@
 ### short [01-user-callbacks]
 
-- userpool function and role at web_api level
-- add function arns to userpool
-- web_api inline code testing
+- create instances of userpool function and role
+- bind function arns to userpool
+- test userpool inline code
 - userpool event schema
 - update templater notes re userpool event
 - convert hello demo to use private api
@@ -119,6 +119,7 @@
 
 ### done
 
+- userpool function and role at web_api level
 - function body and testing
   - follows task_queue
 - list of user callbacks

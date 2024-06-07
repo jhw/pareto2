@@ -10,15 +10,24 @@ import importlib, re
 
 L = importlib.import_module("pareto2.services.lambda")
 
-class LambdaPermission(L.Permission):
+class UserCreationFunction(L.InlineFunction):
+    
+    def __init__(self, namespace):
+        with open("/".join(__file__.split("/")[:-1]+["/inline_code/userpool/callback.py"])) as f:
+            code = f.read()
+        super().__init__(namespace = namespace,
+                         code = code,
+                         variables = {"app-userpool": {"Ref": H(f"{namespace}-userpool")}})
 
-    def __init__(self, namespace, function_namespace, method, path):
-        api_ref, stage_ref = H(f"{namespace}-api"), H(f"{namespace}-stage"), 
-        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{api_ref}}}/${{{stage_ref}}}/{method}/{path}"}
-        super().__init__(namespace = function_namespace,    
-                         source_arn = source_arn,
-                         principal = "apigateway.amazonaws.com")
-        
+class UserCreationPolicy(Policy):
+    
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace,
+                         permissions = [{"action": "events:PutEvents"},
+                                        {"action": ["logs:CreateLogGroup",
+                                                    "logs:CreateLogStream",
+                                                    "logs:PutLogEvents"]}])
+
 class PublicRoute(Route):
 
     def __init__(self, namespace, api_namespace, endpoint):
@@ -49,7 +58,16 @@ class PrivateRoute(Route):
             "AuthorizerId": {"Ref": H(f"{self.api_namespace}-authorizer")}
         })
         return props
-                
+
+class LambdaPermission(L.Permission):
+
+    def __init__(self, namespace, function_namespace, method, path):
+        api_ref, stage_ref = H(f"{namespace}-api"), H(f"{namespace}-stage"), 
+        source_arn = {"Fn::Sub": f"arn:aws:execute-api:${{AWS::Region}}:${{AWS::AccountId}}:${{{api_ref}}}/${{{stage_ref}}}/{method}/{path}"}
+        super().__init__(namespace = function_namespace,    
+                         source_arn = source_arn,
+                         principal = "apigateway.amazonaws.com")
+    
 class WebApi(AlertsMixin):    
 
     def __init__(self, namespace, endpoints):
