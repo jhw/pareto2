@@ -10,7 +10,7 @@ Default assumption is that users are created one at a time and individual per- u
 def handler(event, context,
             max_payload_size = 256 * 1024):  # 256 KB
     source = os.environ["APP_USER_POOL"]
-    entry = {"Detail": event,
+    entry = {"Detail": json.dumps(event),
              "DetailType": "event",
              "Source": source}
     entry_size = len(json.dumps(entry))

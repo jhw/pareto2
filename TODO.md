@@ -1,7 +1,7 @@
 ### short [01-user-callbacks]
 
-- test api/userpool inline code
-- check if there are explicit tests for event
+- rename user-pool as userpool
+
 - convert hello demo to use private api
 
 ### medium
@@ -10,6 +10,9 @@
 - userpool message overriding
 - s3 handling of messages > 256kb
 
+- validate structure of custom event patterns
+  - using whatever code moto uses
+    
 - list_events.py should cutoff on time window basis
 - validate test events against infra patterns
 - infer existence of state variables from lambdas
@@ -116,6 +119,8 @@
 
 ### done
 
+- match userpool event name in demo
+- test api/userpool inline code
 - userpool event schema
 - update templater notes re userpool event
 - bind function arns to userpool

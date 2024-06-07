@@ -3,7 +3,7 @@ infra:
   type: endpoint
   method: GET
   path: hello-get
-  auth: public
+  auth: private
   parameters:
   - message
   permissions:
