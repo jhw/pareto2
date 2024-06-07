@@ -1,9 +1,5 @@
 ### short [01-user-callbacks]
 
-- rename user-pool as userpool
-
-- convert hello demo to use private api
-
 ### medium
 
 - change eventing code so uses logging.error if message over 256kb
@@ -119,6 +115,8 @@
 
 ### done
 
+- rename user-pool as userpool
+- convert hello demo to use private api
 - match userpool event name in demo
 - test api/userpool inline code
 - userpool event schema
