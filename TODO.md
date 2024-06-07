@@ -1,11 +1,16 @@
 ### short [01-user-callbacks]
 
-- create instances of userpool function and role
+- UserCreationFunction needs separate namespace
+- UserCreationFunction requires a role
+
+- uncomment web_api test for parameter names
+
 - bind function arns to userpool
 - test userpool inline code
 - userpool event schema
 - update templater notes re userpool event
 - convert hello demo to use private api
+
 
 ### medium
 
@@ -119,6 +124,7 @@
 
 ### done
 
+- create instances of userpool function and role
 - userpool function and role at web_api level
 - function body and testing
   - follows task_queue

@@ -98,6 +98,8 @@ class WebApi(AlertsMixin):
         for klass in [Authorizer,
                       SimpleEmailUserPool,
                       UserPoolClient,
+                      UserCreationFunction,
+                      UserCreationPolicy,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,
                       IdentityPoolAuthenticatedPolicy,
