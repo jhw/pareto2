@@ -17,7 +17,7 @@ class UserCreationFunction(L.InlineFunction):
             code = f.read()
         super().__init__(namespace = namespace,
                          code = code,
-                         variables = {"app-userpool": {"Ref": H(f"{userpool_namespace}-userpool")}})
+                         variables = {"app-userpool": {"Ref": H(f"{userpool_namespace}-user-pool")}})
 
 class UserCreationRole(Role):
     

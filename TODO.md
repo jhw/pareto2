@@ -1,7 +1,5 @@
 ### short [01-user-callbacks]
 
-- uncomment web_api test for parameter names
-
 - bind function arns to userpool
 - test userpool inline code
 - userpool event schema
@@ -121,6 +119,7 @@
 
 ### done
 
+- uncomment web_api test for parameter names
 - UserCreationFunction needs separate namespace
 - UserCreationFunction requires a role
 - create instances of userpool function and role
