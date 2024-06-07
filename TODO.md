@@ -1,8 +1,6 @@
 ### short [01-user-callbacks]
 
 - userpool function and role at web_api level
-- function body and testing
-  - follows task_queue
 - add function arns to userpool
 - web_api inline code testing
 - userpool event schema
@@ -121,6 +119,8 @@
 
 ### done
 
+- function body and testing
+  - follows task_queue
 - list of user callbacks
 - handle eventbridge max payload size
 - add back diffKeys for table streaming
