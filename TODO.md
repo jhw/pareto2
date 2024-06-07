@@ -1,7 +1,6 @@
 ### short [01-user-callbacks]
 
 - userpool event schema
-- update templater notes re userpool event
 - test userpool inline code
 - convert hello demo to use private api
 
@@ -117,6 +116,7 @@
 
 ### done
 
+- update templater notes re userpool event
 - bind function arns to userpool
 - refactor APP_USERPOOL as APP_USER_POOL
 - uncomment web_api test for parameter names

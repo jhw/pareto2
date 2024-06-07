@@ -161,6 +161,8 @@ class Templater(dict):
     - they both involve inline code
     - they both involve sync bindings (AWS::Lambda::EventSourceMapping)
     - the raw message needs to be expanded before passing to EventBridge so that individual fields can be pattern matched
+
+    user-pool is apparently a sync binding (we shall see) but looks very close to the queue implementation
     """
             
     def insert_event_source(self, event, namespace = AppNamespace):
@@ -175,6 +177,8 @@ class Templater(dict):
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-queue")}]
         elif event["type"] == "table":
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-table")}]
+        elif event["type"] == "user-pool":
+            event["pattern"]["source"] = [{"Ref": H(f"{namespace}-user-pool")}]
 
     """
     There is no boto3 events method which will pre- validate the format of a rule, unfortunately
