@@ -11,7 +11,9 @@
 
 ### medium
 
+- change eventing code so uses logging.error if message over 256kb
 - userpool message overriding
+- s3 handling of messages > 256kb
 
 - list_events.py should cutoff on time window basis
 - validate test events against infra patterns
