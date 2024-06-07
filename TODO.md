@@ -1,11 +1,10 @@
 ### short [01-user-callbacks]
 
 - bind function arns to userpool
-- test userpool inline code
 - userpool event schema
 - update templater notes re userpool event
+- test userpool inline code
 - convert hello demo to use private api
-
 
 ### medium
 
@@ -119,6 +118,7 @@
 
 ### done
 
+- refactor APP_USERPOOL as APP_USER_POOL
 - uncomment web_api test for parameter names
 - UserCreationFunction needs separate namespace
 - UserCreationFunction requires a role
