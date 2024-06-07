@@ -1,7 +1,6 @@
 ### short [01-user-callbacks]
 
 - UserCreationFunction needs separate namespace
-- UserCreationFunction requires a role
 
 - uncomment web_api test for parameter names
 
@@ -124,6 +123,7 @@
 
 ### done
 
+- UserCreationFunction requires a role
 - create instances of userpool function and role
 - userpool function and role at web_api level
 - function body and testing

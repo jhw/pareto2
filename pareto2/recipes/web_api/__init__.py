@@ -19,6 +19,11 @@ class UserCreationFunction(L.InlineFunction):
                          code = code,
                          variables = {"app-userpool": {"Ref": H(f"{namespace}-userpool")}})
 
+class UserCreationRole(Role):
+    
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace)
+        
 class UserCreationPolicy(Policy):
     
     def __init__(self, namespace):
@@ -99,6 +104,7 @@ class WebApi(AlertsMixin):
                       SimpleEmailUserPool,
                       UserPoolClient,
                       UserCreationFunction,
+                      UserCreationRole,
                       UserCreationPolicy,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,
