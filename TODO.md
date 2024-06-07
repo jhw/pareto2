@@ -1,9 +1,17 @@
-### short [01-user-callbacks]
+### short
+
+- consider if userpool callbacks need alert handling
+  - no because life's too short
+  - also it's impossible(?) for messages to exceed 256kb as they don't contain any user content
+  - so remove error handling?
+
+- add userpool callback to all relevant hooks
+
+- userpool message overriding
 
 ### medium
 
 - change eventing code so uses logging.error if message over 256kb
-- userpool message overriding
 - s3 handling of messages > 256kb
 
 - validate structure of custom event patterns
