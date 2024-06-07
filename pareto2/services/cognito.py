@@ -27,8 +27,12 @@ class SimpleEmailUserPool(UserPool):
             "Required": True,
             "StringAttributeConstraints": {"MinLength": "1"}
         }]
+        lambda_config = {
+            "PostAuthentication": {"Fn::GetAtt": [H(f"{self.namespace}-user-callback-function"), "Arn"]},
+        }
         return {
             "AutoVerifiedAttributes": ["email"],
+            "LambdaConfig": lambda_config,
             "Policies": {"PasswordPolicy": password_policy},
             "Schema": schema,
             "UsernameAttributes": ["email"]

@@ -1,6 +1,5 @@
 ### short [01-user-callbacks]
 
-- bind function arns to userpool
 - userpool event schema
 - update templater notes re userpool event
 - test userpool inline code
@@ -118,6 +117,7 @@
 
 ### done
 
+- bind function arns to userpool
 - refactor APP_USERPOOL as APP_USER_POOL
 - uncomment web_api test for parameter names
 - UserCreationFunction needs separate namespace
