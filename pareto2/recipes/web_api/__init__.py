@@ -12,21 +12,21 @@ L = importlib.import_module("pareto2.services.lambda")
 
 class UserCreationFunction(L.InlineFunction):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, userpool_namespace):
         with open("/".join(__file__.split("/")[:-1]+["/inline_code/userpool/callback.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
                          code = code,
-                         variables = {"app-userpool": {"Ref": H(f"{namespace}-userpool")}})
+                         variables = {"app-userpool": {"Ref": H(f"{userpool_namespace}-userpool")}})
 
 class UserCreationRole(Role):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace)
         
 class UserCreationPolicy(Policy):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace,
                          permissions = [{"action": "events:PutEvents"},
                                         {"action": ["logs:CreateLogGroup",
@@ -103,9 +103,6 @@ class WebApi(AlertsMixin):
         for klass in [Authorizer,
                       SimpleEmailUserPool,
                       UserPoolClient,
-                      UserCreationFunction,
-                      UserCreationRole,
-                      UserCreationPolicy,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,
                       IdentityPoolAuthenticatedPolicy,
@@ -113,6 +110,13 @@ class WebApi(AlertsMixin):
                       IdentityPoolUnauthenticatedPolicy,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
+        callback_namespace = f"{namespace}-user-callback"  
+        for klass in [UserCreationFunction,
+                      UserCreationRole,
+                      UserCreationPolicy]:
+            self.append(klass(namespace = callback_namespace,
+                              userpool_namespace = namespace))
+
 
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
