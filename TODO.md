@@ -1,10 +1,20 @@
-### short
+### short [01-user-callbacks]
+
+- userpool function and role at web_api level
+- function body and testing
+  - follows task_queue
+- add function arns to userpool
+- web_api inline code testing
+- userpool event schema
+- update templater notes re userpool event
+- convert hello demo to use private api
 
 ### medium
 
+- userpool message overriding
+
 - list_events.py should cutoff on time window basis
 - validate test events against infra patterns
-- defaults for layers, permissions, size, timeout
 - infer existence of state variables from lambdas
 - option to pass existing user pool to private api
 - singletons should validate props consistency
@@ -14,7 +24,6 @@
 
 - docstrings
 - app structure visualiser
-- react website demo
 - federated auth
 - step functions
 - cross- account deployments
@@ -27,6 +36,8 @@
 
 ### thoughts
 
+- defaults for layers, permissions, size, timeout?
+  - not sure this is an improvement?
 - don't you need some kind of zip writing util?
   - you have it already in assets.zipped_content and put_s3
 - refactor test.py as per scripts/deploy/run_tests.py?
@@ -108,6 +119,7 @@
 
 ### done
 
+- list of user callbacks
 - handle eventbridge max payload size
 - add back diffKeys for table streaming
 - consider adding depends to event source mappings

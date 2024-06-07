@@ -1,3 +1,7 @@
+### cognito callbacks 07/06/24
+
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cognito-userpool-lambdaconfig.html
+
 ### migrations script 08/04/24
 
 - rename API as paas 
