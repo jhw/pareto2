@@ -1,7 +1,7 @@
 ### short [01-user-callbacks]
 
-- userpool event schema
-- test userpool inline code
+- test api/userpool inline code
+- check if there are explicit tests for event
 - convert hello demo to use private api
 
 ### medium
@@ -116,6 +116,7 @@
 
 ### done
 
+- userpool event schema
 - update templater notes re userpool event
 - bind function arns to userpool
 - refactor APP_USERPOOL as APP_USER_POOL

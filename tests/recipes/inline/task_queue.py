@@ -55,17 +55,11 @@ class TaskQueueInlineTest(unittest.TestCase,
             handler(event, context = None)
             messages = self.drain_queue(queue = self.events_queue)
             self.assertTrue(len(messages) == 1)
-            """
             message = messages.pop()
             body = json.loads(message["Body"])
             self.assertTrue("detail" in body)
             detail = body["detail"]
-            for k, v in [("eventName", "INSERT"),
-                         ("pk", "LEAGUE#ENG1"),
-                         ("sk", "TEAM")]:
-                self.assertTrue(k in detail)
-                self.assertEqual(detail[k], v)
-            """
+            self.assertTrue("hello" in detail)
 
     def tearDown(self):
         self.teardown_events()
