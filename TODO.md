@@ -1,7 +1,7 @@
 ### short [02-custom-messages]
 
 - add cognito userpool hooks
-- complete inline code bodies
+- custom message function to define os variables
 - test inline code
 - define environment variables
 
@@ -119,6 +119,7 @@
 
 ### done
 
+- complete inline code bodies
 - revert to single custom message handler
 - consider if userpool callbacks need alert handling
   - no because life's too short
