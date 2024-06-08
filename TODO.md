@@ -1,8 +1,7 @@
 ### short [02-custom-messages]
 
-- custom message function to define os variables
-- test inline code
-- define environment variables
+- test custom message inline code
+  - assert codeParameter value replaced
 
 ### medium
 
@@ -118,6 +117,8 @@
 
 ### done
 
+- define environment variables
+- custom message function to define os variables
 - add cognito userpool hooks
 - complete inline code bodies
 - revert to single custom message handler

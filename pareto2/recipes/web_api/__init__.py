@@ -43,7 +43,12 @@ class CustomMessageFunction(L.InlineFunction):
         with open("/".join(__file__.split("/")[:-1]+["/inline_code/custom_message.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
-                         code = code)
+                         code = code,
+                         variables = {key: {"Ref": H(f"cognito-{key}")}
+                                      for key in ["temp-password-email-subject",
+                                                  "temp-password-email-message",
+                                                  "password-reset-email-subject",
+                                                  "password-reset-email-message"]})
 
 class CustomMessagePolicy(Policy):
     

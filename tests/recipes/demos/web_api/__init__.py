@@ -58,11 +58,15 @@ class WebApiDemoTest(unittest.TestCase):
         template.init_parameters()
         template.dump_file(filename = "tmp/web-api.json")
         parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == 4)
+        self.assertTrue(len(parameters) == 8)
         for attr in ["DomainName",
                      "RegionalCertificateArn",
                      "AllowedOrigins",
-                     "SlackWebhookUrl"]:
+                     "SlackWebhookUrl",
+                     "CognitoTempPasswordEmailSubject",
+                     "CognitoTempPasswordEmailMessage",
+                     "CognitoPasswordResetEmailSubject",
+                     "CognitoPasswordResetEmailMessage"]:
             self.assertTrue(attr in parameters)
 
 if __name__ == "__main__":
