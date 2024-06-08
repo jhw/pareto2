@@ -10,6 +10,10 @@ import importlib, re
 
 L = importlib.import_module("pareto2.services.lambda")
 
+"""
+Congito callback functions do not have alerts attached as the event messages do not have any user component so should always (??) fit inside the 256K EventBridge lmiit
+"""
+
 class UserCreationFunction(L.InlineFunction):
     
     def __init__(self, namespace, userpool_namespace):

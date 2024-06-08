@@ -1,12 +1,5 @@
 ### short
 
-- consider if userpool callbacks need alert handling
-  - no because life's too short
-  - also it's impossible(?) for messages to exceed 256kb as they don't contain any user content
-  - so remove error handling?
-
-- add userpool callback to all relevant hooks
-
 - userpool message overriding
 
 ### medium
@@ -123,6 +116,11 @@
 
 ### done
 
+- consider if userpool callbacks need alert handling
+  - no because life's too short
+  - also it's impossible(?) for messages to exceed 256kb as they don't contain any user content
+  - so remove error handling?
+- add userpool callback to all relevant hooks
 - rename user-pool as userpool
 - convert hello demo to use private api
 - match userpool event name in demo
