@@ -23,6 +23,8 @@ class SimpleEmailUserPool(UserPool):
                                      "PreAuthentication",
                                      "PostAuthentication",
                                      "PostConfirmation"]}
+        custom_message_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-message-function"), "Arn"]}
+        lambda_config["CustomMessage"] = custom_message_arn
         return lambda_config
     
     @property    
