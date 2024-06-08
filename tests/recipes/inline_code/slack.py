@@ -8,7 +8,7 @@ SampleEvent = {
     }
 }
 
-class SlackInlineTest(unittest.TestCase):
+class SlackInlineCodeTest(unittest.TestCase):
 
     def setUp(self):        
         self.env = {}

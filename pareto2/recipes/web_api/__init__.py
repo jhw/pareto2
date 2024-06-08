@@ -14,6 +14,11 @@ L = importlib.import_module("pareto2.services.lambda")
 Congito callback functions do not have alerts attached as the event messages do not have any user component so should always (??) fit inside the 256K EventBridge lmiit
 """
 
+class CognitoHookRole(Role):
+    
+    def __init__(self, namespace, **kwargs):
+        super().__init__(namespace = namespace)
+
 class UserCallbackFunction(L.InlineFunction):
     
     def __init__(self, namespace, userpool_namespace):
@@ -22,11 +27,6 @@ class UserCallbackFunction(L.InlineFunction):
         super().__init__(namespace = namespace,
                          code = code,
                          variables = {"app-user-pool": {"Ref": H(f"{userpool_namespace}-user-pool")}})
-
-class UserCallbackRole(Role):
-    
-    def __init__(self, namespace, **kwargs):
-        super().__init__(namespace = namespace)
         
 class UserCallbackPolicy(Policy):
     
@@ -37,6 +37,30 @@ class UserCallbackPolicy(Policy):
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
 
+class TempPasswordFunction(L.InlineFunction):
+    
+    def __init__(self, namespace):
+        with open("/".join(__file__.split("/")[:-1]+["/inline_code/temp_password.py"])) as f:
+            code = f.read()
+        super().__init__(namespace = namespace,
+                         code = code)
+
+class PasswordResetFunction(L.InlineFunction):
+    
+    def __init__(self, namespace):
+        with open("/".join(__file__.split("/")[:-1]+["/inline_code/password_reset.py"])) as f:
+            code = f.read()
+        super().__init__(namespace = namespace,
+                         code = code)
+        
+class CustomMessagePolicy(Policy):
+    
+    def __init__(self, namespace, **kwargs):
+        super().__init__(namespace = namespace,
+                         permissions = [{"action": ["logs:CreateLogGroup",
+                                                    "logs:CreateLogStream",
+                                                    "logs:PutLogEvents"]}])
+        
 class PublicRoute(Route):
 
     def __init__(self, namespace, api_namespace, endpoint):
@@ -114,13 +138,25 @@ class WebApi(AlertsMixin):
                       IdentityPoolUnauthenticatedPolicy,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
-        callback_namespace = f"{namespace}-user-callback"  
+        # user callback
+        user_callback_namespace = f"{namespace}-user-callback"  
         for klass in [UserCallbackFunction,
-                      UserCallbackRole,
+                      CognitoHookRole,
                       UserCallbackPolicy]:
-            self.append(klass(namespace = callback_namespace,
+            self.append(klass(namespace = user_callback_namespace,
                               userpool_namespace = namespace))
-
+        # temp password
+        temp_password_namespace = f"{namespace}-temp-password"  
+        for klass in [TempPasswordFunction,
+                      CognitoHookRole,
+                      CustomMessagePolicy]:
+            self.append(klass(namespace = temp_password_namespace))
+        # password reset
+        password_reset_namespace = f"{namespace}-password-reset"  
+        for klass in [PasswordResetFunction,
+                      CognitoHookRole,
+                      CustomMessagePolicy]:
+            self.append(klass(namespace = password_reset_namespace))
 
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,

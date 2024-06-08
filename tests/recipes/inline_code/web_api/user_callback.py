@@ -36,7 +36,7 @@ Rules = yaml.safe_load("""
 
 @mock_events
 @mock_sqs
-class WebApiInlineUserCallbackTest(unittest.TestCase,
+class WebApiInlineCodeUserCallbackTest(unittest.TestCase,
                                        EventsTestMixin):
 
     def setUp(self, rules = Rules):        

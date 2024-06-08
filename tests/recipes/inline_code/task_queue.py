@@ -41,8 +41,8 @@ Rules = yaml.safe_load("""
 
 @mock_events
 @mock_sqs
-class TaskQueueInlineTest(unittest.TestCase,
-                          EventsTestMixin):
+class TaskQueueInlineCodeTest(unittest.TestCase,
+                              EventsTestMixin):
 
     def setUp(self, rules = Rules):        
         self.env = {}

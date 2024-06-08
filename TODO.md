@@ -1,6 +1,10 @@
-### short [02-custom-email-messages]
+### short [02-custom-messages]
 
-- define setenv variables for (4x) temp_password|password_reset header|body email messages
+- revert to single custom message handler
+- add cognito userpool hooks
+- complete inline code bodies
+- test inline code
+- define environment variables
 
 ### medium
 

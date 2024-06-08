@@ -41,8 +41,8 @@ Rules = yaml.safe_load("""
 
 @mock_events
 @mock_sqs
-class StreamTableInlineTest(unittest.TestCase,
-                            EventsTestMixin):
+class StreamTableInlineCodeTest(unittest.TestCase,
+                                EventsTestMixin):
 
     def setUp(self, rules = Rules):        
         self.env = {}
