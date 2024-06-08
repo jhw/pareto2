@@ -14,6 +14,16 @@ class SimpleEmailUserPool(UserPool):
     """
     LambdaConfig binds to all relevant hooks; filter at event level by matching on event name
     """
+
+    @property
+    def lambda_config(self):
+        user_callback_arn = {"Fn::GetAtt": [H(f"{self.namespace}-user-callback-function"), "Arn"]}
+        lambda_config = {key: user_callback_arn
+                         for key in ["PreSignUp",
+                                     "PreAuthentication",
+                                     "PostAuthentication",
+                                     "PostConfirmation"]}
+        return lambda_config
     
     @property    
     def aws_properties(self, nmin = 8):
@@ -31,20 +41,14 @@ class SimpleEmailUserPool(UserPool):
             "Required": True,
             "StringAttributeConstraints": {"MinLength": "1"}
         }]
-        callback_arn = {"Fn::GetAtt": [H(f"{self.namespace}-user-callback-function"), "Arn"]}
-        lambda_config = {key: callback_arn
-                         for key in ["PreSignUp",
-                                     "PreAuthentication",
-                                     "PostAuthentication",
-                                     "PostConfirmation"]}
         return {
             "AutoVerifiedAttributes": ["email"],
-            "LambdaConfig": lambda_config,
+            "LambdaConfig": self.lambda_config,
             "Policies": {"PasswordPolicy": password_policy},
             "Schema": schema,
             "UsernameAttributes": ["email"]
         }
-
+    
 class UserPoolClient(Resource):
     
     @property
@@ -153,4 +157,5 @@ class IdentityPoolRoleAttachment(Resource):
             "IdentityPoolId": identity_pool_id
         }
     
+
 
