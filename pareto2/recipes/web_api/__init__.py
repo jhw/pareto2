@@ -14,21 +14,21 @@ L = importlib.import_module("pareto2.services.lambda")
 Congito callback functions do not have alerts attached as the event messages do not have any user component so should always (??) fit inside the 256K EventBridge lmiit
 """
 
-class UserCreationFunction(L.InlineFunction):
+class UserCallbackFunction(L.InlineFunction):
     
     def __init__(self, namespace, userpool_namespace):
-        with open("/".join(__file__.split("/")[:-1]+["/inline_code/userpool/callback.py"])) as f:
+        with open("/".join(__file__.split("/")[:-1]+["/inline_code/user_callback.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
                          code = code,
                          variables = {"app-user-pool": {"Ref": H(f"{userpool_namespace}-user-pool")}})
 
-class UserCreationRole(Role):
+class UserCallbackRole(Role):
     
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace)
         
-class UserCreationPolicy(Policy):
+class UserCallbackPolicy(Policy):
     
     def __init__(self, namespace, **kwargs):
         super().__init__(namespace = namespace,
@@ -115,9 +115,9 @@ class WebApi(AlertsMixin):
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
         callback_namespace = f"{namespace}-user-callback"  
-        for klass in [UserCreationFunction,
-                      UserCreationRole,
-                      UserCreationPolicy]:
+        for klass in [UserCallbackFunction,
+                      UserCallbackRole,
+                      UserCallbackPolicy]:
             self.append(klass(namespace = callback_namespace,
                               userpool_namespace = namespace))
 

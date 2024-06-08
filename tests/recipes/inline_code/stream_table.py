@@ -1,4 +1,4 @@
-from tests.recipes.inline import EventsTestMixin
+from tests.recipes.inline_code import EventsTestMixin
 
 from moto import mock_events, mock_sqs
 

@@ -1,4 +1,4 @@
-from tests.recipes.inline import EventsTestMixin
+from tests.recipes.inline_code import EventsTestMixin
 
 from moto import mock_events, mock_sqs
 
@@ -36,7 +36,7 @@ Rules = yaml.safe_load("""
 
 @mock_events
 @mock_sqs
-class WebApiInlineUserpoolCallbackTest(unittest.TestCase,
+class WebApiInlineUserCallbackTest(unittest.TestCase,
                                        EventsTestMixin):
 
     def setUp(self, rules = Rules):        
@@ -46,7 +46,7 @@ class WebApiInlineUserpoolCallbackTest(unittest.TestCase,
     
     def test_code(self, event = SampleEvent):
         with mock.patch.dict(os.environ, self.env):
-            from pareto2.recipes.web_api.inline_code.userpool.callback import handler
+            from pareto2.recipes.web_api.inline_code.user_callback import handler
             handler(event, context = None)
             messages = self.drain_queue(queue = self.events_queue)
             self.assertTrue(len(messages) == 1)

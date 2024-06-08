@@ -1,6 +1,6 @@
-### short
+### short [02-custom-email-messages]
 
-- userpool message overriding
+- define setenv variables for (4x) temp_password|password_reset header|body email messages
 
 ### medium
 
