@@ -1,6 +1,5 @@
 ### short [02-custom-messages]
 
-- revert to single custom message handler
 - add cognito userpool hooks
 - complete inline code bodies
 - test inline code
@@ -120,6 +119,7 @@
 
 ### done
 
+- revert to single custom message handler
 - consider if userpool callbacks need alert handling
   - no because life's too short
   - also it's impossible(?) for messages to exceed 256kb as they don't contain any user content

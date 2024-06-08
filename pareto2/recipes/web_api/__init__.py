@@ -37,22 +37,14 @@ class UserCallbackPolicy(Policy):
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
 
-class TempPasswordFunction(L.InlineFunction):
+class CustomMessageFunction(L.InlineFunction):
     
     def __init__(self, namespace):
-        with open("/".join(__file__.split("/")[:-1]+["/inline_code/temp_password.py"])) as f:
+        with open("/".join(__file__.split("/")[:-1]+["/inline_code/custom_message.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
                          code = code)
 
-class PasswordResetFunction(L.InlineFunction):
-    
-    def __init__(self, namespace):
-        with open("/".join(__file__.split("/")[:-1]+["/inline_code/password_reset.py"])) as f:
-            code = f.read()
-        super().__init__(namespace = namespace,
-                         code = code)
-        
 class CustomMessagePolicy(Policy):
     
     def __init__(self, namespace, **kwargs):
@@ -145,18 +137,12 @@ class WebApi(AlertsMixin):
                       UserCallbackPolicy]:
             self.append(klass(namespace = user_callback_namespace,
                               userpool_namespace = namespace))
-        # temp password
-        temp_password_namespace = f"{namespace}-temp-password"  
-        for klass in [TempPasswordFunction,
+        # custom message
+        custom_message_namespace = f"{namespace}-custom-message"  
+        for klass in [CustomMessageFunction,
                       CognitoHookRole,
                       CustomMessagePolicy]:
-            self.append(klass(namespace = temp_password_namespace))
-        # password reset
-        password_reset_namespace = f"{namespace}-password-reset"  
-        for klass in [PasswordResetFunction,
-                      CognitoHookRole,
-                      CustomMessagePolicy]:
-            self.append(klass(namespace = password_reset_namespace))
+            self.append(klass(namespace = custom_message_namespace))
 
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
