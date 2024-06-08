@@ -10,11 +10,11 @@ def handler(event, context):
     code_parameter = event['request']['codeParameter']    
     attributes = {**user_attributes, 'codeParameter': code_parameter}    
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
-        email_subject = os.environ['COGNITO_TEMP_PASSWORD_EMAIL_SUBJECT']
-        email_message = os.environ['COGNITO_TEMP_PASSWORD_EMAIL_MESSAGE']
+        email_subject = os.environ['TEMP_PASSWORD_EMAIL_SUBJECT']
+        email_message = os.environ['TEMP_PASSWORD_EMAIL_MESSAGE']
     elif event['triggerSource'] == 'CustomMessage_ForgotPassword':
-        email_subject = os.environ['COGNITO_PASSWORD_RESET_EMAIL_SUBJECT']
-        email_message = os.environ['COGNITO_PASSWORD_RESET_EMAIL_MESSAGE']
+        email_subject = os.environ['PASSWORD_RESET_EMAIL_SUBJECT']
+        email_message = os.environ['PASSWORD_RESET_EMAIL_MESSAGE']
     else:
         return event
     event['response']['emailSubject'] = replace_placeholders(email_subject, attributes)
