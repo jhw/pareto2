@@ -41,7 +41,6 @@ class WebApiInlineCodeUserCallbackTest(unittest.TestCase,
 
     def setUp(self, rules = Rules):        
         self.env = {}
-        self.env["APP_USER_POOL"] = "app-user-pol" # doesn't have to be mocked, is passed as source reference only
         self.setup_events(rules = rules)
     
     def test_code(self, event = SampleEvent):

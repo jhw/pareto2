@@ -1,4 +1,4 @@
-import boto3, json, os
+import boto3, json
 
 """
 This code is based on recipes/task_queue/inline_code.py
@@ -9,10 +9,9 @@ Don't bother checking for min size here there is no user component to the messag
 """
 
 def handler(event, context):
-    source = os.environ["APP_USER_POOL"]
     entry = {"Detail": json.dumps(event),
              "DetailType": "event",
-             "Source": source}
+             "Source": event["userPoolId"]}
     events = boto3.client("events")
     batch = [entry]
     events.put_events(Entries=batch)

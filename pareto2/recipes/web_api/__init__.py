@@ -16,21 +16,20 @@ Congito callback functions do not have alerts attached as the event messages do 
 
 class CognitoHookRole(Role):
     
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace):
         super().__init__(namespace = namespace)
 
 class UserCallbackFunction(L.InlineFunction):
     
-    def __init__(self, namespace, userpool_namespace):
+    def __init__(self, namespace):
         with open("/".join(__file__.split("/")[:-1]+["/inline_code/user_callback.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
-                         code = code,
-                         variables = {"app-user-pool": {"Ref": H(f"{userpool_namespace}-user-pool")}})
+                         code = code)
         
 class UserCallbackPolicy(Policy):
     
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace):
         super().__init__(namespace = namespace,
                          permissions = [{"action": "events:PutEvents"},
                                         {"action": ["logs:CreateLogGroup",
@@ -52,7 +51,7 @@ class CustomMessageFunction(L.InlineFunction):
 
 class CustomMessagePolicy(Policy):
     
-    def __init__(self, namespace, **kwargs):
+    def __init__(self, namespace):
         super().__init__(namespace = namespace,
                          permissions = [{"action": ["logs:CreateLogGroup",
                                                     "logs:CreateLogStream",
@@ -140,8 +139,7 @@ class WebApi(AlertsMixin):
         for klass in [UserCallbackFunction,
                       CognitoHookRole,
                       UserCallbackPolicy]:
-            self.append(klass(namespace = user_callback_namespace,
-                              userpool_namespace = namespace))
+            self.append(klass(namespace = user_callback_namespace))
         # custom message
         custom_message_namespace = f"{namespace}-custom-message"  
         for klass in [CustomMessageFunction,
