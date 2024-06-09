@@ -8,6 +8,10 @@ Default assumption is that users are created one at a time and individual per- u
 Don't bother checking for min size here there is no user component to the messages, ie can be resonably (??) sure they will fit inside the 256KB limit
 """
 
+"""
+All Cognito callbacks must return JSON else they will fail!
+"""
+
 def handler(event, context):
     entry = {"Detail": json.dumps(event),
              "DetailType": "event",
@@ -15,4 +19,4 @@ def handler(event, context):
     events = boto3.client("events")
     batch = [entry]
     events.put_events(Entries=batch)
-                
+    return event # NB 

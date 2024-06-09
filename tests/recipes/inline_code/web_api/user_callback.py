@@ -46,7 +46,8 @@ class WebApiInlineCodeUserCallbackTest(unittest.TestCase,
     def test_code(self, event = SampleEvent):
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.user_callback import handler
-            handler(event, context = None)
+            modevent = handler(event, context = None)
+            self.assertTrue(modevent != None)
             messages = self.drain_queue(queue = self.events_queue)
             self.assertTrue(len(messages) == 1)
             message = messages.pop()
