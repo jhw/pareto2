@@ -56,6 +56,14 @@ class CustomMessagePolicy(Policy):
                          permissions = [{"action": ["logs:CreateLogGroup",
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]}])
+
+class CognitoPermission(L.Permission):
+
+    def __init__(self, namespace, userpool_namespace):
+        source_arn = {"Fn::GetAtt": [H(f"{userpool_namespace}-user-pool"), "Arn"]}
+        super().__init__(namespace = namespace,    
+                         source_arn = source_arn,
+                         principal = "cognito-idp.amazonaws.com")
         
 class PublicRoute(Route):
 
@@ -88,7 +96,7 @@ class PrivateRoute(Route):
         })
         return props
 
-class LambdaPermission(L.Permission):
+class EndpointPermission(L.Permission):
 
     def __init__(self, namespace, function_namespace, method, path):
         api_ref, stage_ref = H(f"{namespace}-api"), H(f"{namespace}-stage"), 
@@ -135,17 +143,22 @@ class WebApi(AlertsMixin):
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
         # user callback
-        user_callback_namespace = f"{namespace}-user-callback"  
+        user_callback_namespace = f"{namespace}-user-callback"
+        self.append(CognitoPermission(namespace = user_callback_namespace,
+                                      userpool_namespace = namespace))
         for klass in [UserCallbackFunction,
                       CognitoHookRole,
                       UserCallbackPolicy]:
             self.append(klass(namespace = user_callback_namespace))
         # custom message
-        custom_message_namespace = f"{namespace}-custom-message"  
+        custom_message_namespace = f"{namespace}-custom-message"
+        self.append(CognitoPermission(namespace = custom_message_namespace,
+                                      userpool_namespace = namespace))
         for klass in [CustomMessageFunction,
                       CognitoHookRole,
                       CustomMessagePolicy]:
             self.append(klass(namespace = custom_message_namespace))
+
 
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
@@ -170,10 +183,10 @@ class WebApi(AlertsMixin):
                  Role(namespace = endpoint_namespace),
                  Policy(namespace = endpoint_namespace,
                         permissions = policy_permissions(endpoint)),
-                 LambdaPermission(namespace = api_namespace,
-                                  function_namespace = endpoint_namespace,
-                                  method = endpoint["method"],
-                                  path = endpoint["path"])]
+                 EndpointPermission(namespace = api_namespace,
+                                    function_namespace = endpoint_namespace,
+                                    method = endpoint["method"],
+                                    path = endpoint["path"])]
         self.init_alert_hooks(namespace = endpoint_namespace,
                               log_levels = log_levels)
 
