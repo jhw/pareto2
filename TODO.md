@@ -1,5 +1,8 @@
 ### short
 
+- include (and validate) username in admin create user message
+- add error alerting to custom message handler
+
 ### medium
 
 - iam optimiser
