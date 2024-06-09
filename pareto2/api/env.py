@@ -1,6 +1,6 @@
 from pareto2.services import hungarorise as H
 
-import boto3, json, os
+import boto3, json, os, re
 
 class Env(dict):
 
@@ -10,16 +10,16 @@ class Env(dict):
 
     @classmethod
     def create_from_bash(self, text):
-        def init_tuple(kv):
-            return (H(kv[0]), kv[1])
-        cleantext="\n".join([" ".join([tok for tok in row.split(" ")
-                                       if tok != ''])
-                             for row in text.split("/n")
-                             if row != []])
-        return Env(dict([init_tuple([tok.replace('"', "")
-                                     for tok in row.split(" ")[1].split("=")])
-                         for row in text.split("\n")
-                         if row.startswith("export")]))
+        def extract_exports(bash_script):
+            export_pattern = re.compile(r'export (\w+)=["\']?([^"\']*)["\']?')
+            exports = {}            
+            for line in bash_script.splitlines():
+                match = export_pattern.match(line.strip())
+                if match:
+                    key, value = match.groups()
+                    exports[key] = value
+            return exports
+        return Env({H(k):v for k, v in extract_exports(text).items()})
     
     def __init__(self, item = {}):
         dict.__init__(self, item)

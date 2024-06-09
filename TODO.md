@@ -2,23 +2,21 @@
 
 ### medium
 
-- change eventing code so uses logging.error if message over 256kb
+- iam optimiser
+- eventbridge inline code to use logging.error and continue f message over 256kb
 - s3 handling of messages > 256kb
-
 - validate structure of custom event patterns
   - using whatever code moto uses
-    
 - list_events.py should cutoff on time window basis
 - validate test events against infra patterns
 - infer existence of state variables from lambdas
-- option to pass existing user pool to private api
 - singletons should validate props consistency
 - python version as environment variable
 
 ### long
 
 - docstrings
-- app structure visualiser
+- visualiser
 - federated auth
 - step functions
 - cross- account deployments
