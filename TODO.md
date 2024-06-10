@@ -1,6 +1,5 @@
 ### short
 
-- include (and validate) username in admin create user message
 - add error alerting to custom message handler
 
 ### medium
@@ -115,6 +114,7 @@
 
 ### done
 
+- include (and validate) username in admin create user message
 - test custom message inline code
   - assert codeParameter value replaced
 - define environment variables

@@ -57,10 +57,10 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
     def setUp(self):        
         self.env = {}
         self.env['TEMP_PASSWORD_EMAIL_SUBJECT'] = 'Temporary Password'
-        self.env['TEMP_PASSWORD_EMAIL_MESSAGE'] = 'Your temporary password is {codeParameter}'
+        self.env['TEMP_PASSWORD_EMAIL_MESSAGE'] = 'Your username is {username} and your temporary password is {codeParameter}'
         self.env['PASSWORD_RESET_EMAIL_SUBJECT'] = 'Password Reset'
         self.env['PASSWORD_RESET_EMAIL_MESSAGE'] = 'Your password reset code is {codeParameter}'
-    
+
     def test_admin_create_user(self, event = AdminCreateUserEvent):
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.custom_message import handler
@@ -69,7 +69,7 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
             self.assertTrue("emailSubject" in response)
             self.assertEqual(response["emailSubject"], 'Temporary Password')
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"], 'Your temporary password is TEMP_PASSWORD_1234')
+            self.assertEqual(response["emailMessage"],  'Your username is user@example.com and your temporary password is TEMP_PASSWORD_1234')
 
     def test_forgot_password(self, event = ForgotPasswordEvent):
         with mock.patch.dict(os.environ, self.env):
@@ -80,7 +80,6 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
             self.assertEqual(response["emailSubject"], 'Password Reset')
             self.assertTrue("emailMessage" in response)
             self.assertEqual(response["emailMessage"], 'Your password reset code is RESET_CODE_5678')
-
 
     def tearDown(self):
         pass
