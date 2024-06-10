@@ -1,4 +1,4 @@
-import logging, os, urllib.parse
+import logging, os
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -28,8 +28,7 @@ def handler(event, context):
     # END TEMP CODE
     user_attributes = event['request']['userAttributes']
     code_parameter = event['request']['codeParameter']
-    user_name = event['request']['userAttributes']['email']
-    username_parameter = urllib.parse.quote(user_name)  # URL-encode the usernameParameter
+    username_parameter = event['request']['userAttributes']['email']
     attributes = {**user_attributes,
                   'codeParameter': code_parameter,
                   'usernameParameter': username_parameter}
