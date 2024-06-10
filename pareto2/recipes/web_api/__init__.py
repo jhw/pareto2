@@ -11,7 +11,11 @@ import importlib, re
 L = importlib.import_module("pareto2.services.lambda")
 
 """
-Congito callback functions do not have alerts attached as the event messages do not have any user component so should always (??) fit inside the 256K EventBridge lmiit
+You shouldn't need to attach alerts to Cognito lambdas
+
+- UserCallbackLambda doesn't throw any exceptions and doesn't contain any user content so hard to see how it can exceed 256KB; provided it passes tests it's fine
+
+- CustomMessageLambda throws exceptions, but these are all within the context of scripts/users and not within applications, and calls to these functions are sync not async, so any error will be returned to the command line
 """
 
 class CognitoHookRole(Role):

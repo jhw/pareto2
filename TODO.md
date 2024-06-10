@@ -1,7 +1,5 @@
 ### short
 
-- add error alerting to custom message handler
-
 ### medium
 
 - iam optimiser
