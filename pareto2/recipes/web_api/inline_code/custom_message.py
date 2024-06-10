@@ -1,4 +1,7 @@
-import os, urllib.parse
+import logging, os, urllib.parse
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def replace_placeholders(message, attributes):
     for key, value in attributes.items():
@@ -36,5 +39,8 @@ def handler(event, context):
         return event
     validate_placeholders(email_message, required_placeholders)
     event['response']['emailSubject'] = replace_placeholders(email_subject, attributes)
-    event['response']['emailMessage'] = replace_placeholders(email_message, attributes)    
+    event['response']['emailMessage'] = replace_placeholders(email_message, attributes)
+    # START TEMP CODE
+    logger.info("Custom message response: %s", event['response'])
+    # END TEMP CODE
     return event
