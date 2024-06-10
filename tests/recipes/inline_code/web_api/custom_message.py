@@ -6,7 +6,7 @@ AdminCreateUserEvent = yaml.safe_load("""
 triggerSource: "CustomMessage_AdminCreateUser"
 region: "us-east-1"
 userPoolId: "us-east-1_123456789"
-userName: "user@example.com"
+userName: "ABC-DEF"
 callerContext:
   awsSdkVersion: "aws-sdk-unknown-unknown"
   clientId: "abcd1234abcd1234abcd1234"
@@ -17,7 +17,7 @@ request:
     email: "user@example.com"
     given_name: "John"
     family_name: "Doe"
-  codeParameter: "TEMP_PASSWORD_1234"
+  codeParameter: "{####}"
   linkParameter: ""
   usernameParameter: ""
 response:
@@ -31,7 +31,7 @@ ForgotPasswordEvent = yaml.safe_load("""
 triggerSource: "CustomMessage_ForgotPassword"
 region: "us-east-1"
 userPoolId: "us-east-1_123456789"
-userName: "user@example.com"
+userName: "ABD-DEF"
 callerContext:
   awsSdkVersion: "aws-sdk-unknown-unknown"
   clientId: "abcd1234abcd1234abcd1234"
@@ -42,7 +42,7 @@ request:
     email: "user@example.com"
     given_name: "John"
     family_name: "Doe"
-  codeParameter: "RESET_CODE_5678"
+  codeParameter: "{####}"
   linkParameter: ""
   usernameParameter: ""
 response:
@@ -69,7 +69,7 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
             self.assertTrue("emailSubject" in response)
             self.assertEqual(response["emailSubject"], 'Temporary Password')
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"],  'Your username is user%40example.com and your temporary password is TEMP_PASSWORD_1234')
+            self.assertEqual(response["emailMessage"],  'Your username is user%40example.com and your temporary password is {####}')
 
     def test_forgot_password(self, event = ForgotPasswordEvent):
         with mock.patch.dict(os.environ, self.env):
@@ -79,7 +79,7 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
             self.assertTrue("emailSubject" in response)
             self.assertEqual(response["emailSubject"], 'Password Reset')
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"], 'Your password reset code is RESET_CODE_5678')
+            self.assertEqual(response["emailMessage"], 'Your password reset code is {####}')
 
     def tearDown(self):
         pass
