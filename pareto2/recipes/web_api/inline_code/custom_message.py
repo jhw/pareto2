@@ -19,6 +19,9 @@ https://github.com/aws-amplify/amplify-js/issues/2487#issuecomment-535902638
 """ 
        
 def handler(event, context):
+    # START TEMP CODE
+    logger.info("Event [START]: %s", event)
+    # END TEMP CODE
     user_attributes = event['request']['userAttributes']
     code_parameter = event['request']['codeParameter']
     user_name = event['userName']
@@ -41,6 +44,6 @@ def handler(event, context):
     event['response']['emailSubject'] = replace_placeholders(email_subject, attributes)
     event['response']['emailMessage'] = replace_placeholders(email_message, attributes)
     # START TEMP CODE
-    logger.info("Custom message response: %s", event['response'])
+    logger.info("Event [END]: %s", event)
     # END TEMP CODE
     return event
