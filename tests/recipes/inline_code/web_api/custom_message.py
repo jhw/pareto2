@@ -69,7 +69,7 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
             self.assertTrue("emailSubject" in response)
             self.assertEqual(response["emailSubject"], 'Temporary Password')
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"],  'Your username is user@example.com and your temporary password is TEMP_PASSWORD_1234')
+            self.assertEqual(response["emailMessage"],  'Your username is user%40example.com and your temporary password is TEMP_PASSWORD_1234')
 
     def test_forgot_password(self, event = ForgotPasswordEvent):
         with mock.patch.dict(os.environ, self.env):

@@ -1,4 +1,4 @@
-import os
+import os, urllib.parse
 
 def replace_placeholders(message, attributes):
     for key, value in attributes.items():
@@ -12,15 +12,17 @@ def validate_placeholders(message, required_placeholders):
 
 """
 https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-custom-message.html#cognito-user-pools-lambda-trigger-syntax-custom-message
+https://github.com/aws-amplify/amplify-js/issues/2487#issuecomment-535902638
 """ 
        
 def handler(event, context):
     user_attributes = event['request']['userAttributes']
     code_parameter = event['request']['codeParameter']
     user_name = event['userName']
+    username_parameter = urllib.parse.quote(user_name)  # URL-encode the usernameParameter
     attributes = {**user_attributes,
                   'codeParameter': code_parameter,
-                  'usernameParameter': user_name}    
+                  'usernameParameter': username_parameter}
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
         email_subject = os.environ['TEMP_PASSWORD_EMAIL_SUBJECT']
         email_message = os.environ['TEMP_PASSWORD_EMAIL_MESSAGE']
