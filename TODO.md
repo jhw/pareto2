@@ -1,5 +1,8 @@
 ### short
 
+- add notes for custom message handler
+- custom message handler to check for unknown template variables
+
 ### medium
 
 - iam optimiser
@@ -112,6 +115,9 @@
 
 ### done
 
+- remove user attributes stuff
+- insert {username} placeholder rather than username value
+- override userName with url quoted email value
 - include (and validate) username in admin create user message
 - test custom message inline code
   - assert codeParameter value replaced

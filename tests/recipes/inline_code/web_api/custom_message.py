@@ -17,9 +17,9 @@ request:
     email: "user@example.com"
     given_name: "John"
     family_name: "Doe"
-  codeParameter: "{####}"
-  linkParameter: ""
-  usernameParameter: ""
+  codeParameter: "{####}" # NB ** THIS VALUE IS MANDATED BY COGNITO **
+  linkParameter: "{##Click Here##}" # NB ** THIS VALUE IS MANDATED BY COGNITO **
+  usernameParameter: "{username}" # NB ** THIS VALUE IS MANDATED BY COGNITO **
 response:
   smsMessage: ""
   emailMessage: ""
@@ -57,9 +57,9 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
     def setUp(self):        
         self.env = {}
         self.env['TEMP_PASSWORD_EMAIL_SUBJECT'] = 'Temporary Password'
-        self.env['TEMP_PASSWORD_EMAIL_MESSAGE'] = 'Your username is {usernameParameter} and your temporary password is {codeParameter}'
+        self.env['TEMP_PASSWORD_EMAIL_MESSAGE'] = 'Your username is {username} and your temporary password is {code}'
         self.env['PASSWORD_RESET_EMAIL_SUBJECT'] = 'Password Reset'
-        self.env['PASSWORD_RESET_EMAIL_MESSAGE'] = 'Your password reset code is {codeParameter}'
+        self.env['PASSWORD_RESET_EMAIL_MESSAGE'] = 'Your password reset code is {code}'
 
     def test_admin_create_user(self, event = AdminCreateUserEvent):
         with mock.patch.dict(os.environ, self.env):
@@ -69,7 +69,7 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
             self.assertTrue("emailSubject" in response)
             self.assertEqual(response["emailSubject"], 'Temporary Password')
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"],  'Your username is user@example.com and your temporary password is {####}')
+            self.assertEqual(response["emailMessage"],  'Your username is {username} and your temporary password is {####}')
 
     def test_forgot_password(self, event = ForgotPasswordEvent):
         with mock.patch.dict(os.environ, self.env):
