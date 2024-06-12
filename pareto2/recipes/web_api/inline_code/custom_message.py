@@ -1,4 +1,4 @@
-import os, urllib.parse
+import os
 
 def replace_placeholders(message, template_values):
     for key, value in template_values.items():
@@ -11,8 +11,7 @@ def validate_placeholders(message, required_placeholders):
             raise RuntimeError(f"Missing required placeholder: {{{placeholder}}}")
 
 def handler(event, context):
-    email= event['request']['userAttributes']['email']
-    event['userName'] = urllib.parse.quote(email)
+    event['userName'] = event['request']['userAttributes']['email']
     template_values = {'username': event['request']['usernameParameter'],
                        'code': event['request']['codeParameter']}
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
