@@ -10,8 +10,14 @@ def validate_placeholders(message, required_placeholders):
         if f'{{{placeholder}}}' not in message:
             raise RuntimeError(f"Missing required placeholder: {{{placeholder}}}")
 
+"""
+Commenting out username override as -
+
+Error: An error occurred (InvalidLambdaResponseException) when calling the AdminCreateUser operation: Invalid user name. User name in Lambda mismatches the actual username.
+"""
+        
 def handler(event, context):
-    event['userName'] = event['request']['userAttributes']['email']
+    # event['userName'] = event['request']['userAttributes']['email']
     template_values = {'username': event['request']['usernameParameter'],
                        'code': event['request']['codeParameter']}
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
