@@ -57,7 +57,7 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
     def setUp(self):        
         self.env = {}
         self.env['TEMP_PASSWORD_EMAIL_SUBJECT'] = 'Temporary Password'
-        self.env['TEMP_PASSWORD_EMAIL_MESSAGE'] = 'Your username is {username} and your temporary password is {code}'
+        self.env['TEMP_PASSWORD_EMAIL_MESSAGE'] = 'Your temporary password is {code}'
         self.env['PASSWORD_RESET_EMAIL_SUBJECT'] = 'Password Reset'
         self.env['PASSWORD_RESET_EMAIL_MESSAGE'] = 'Your password reset code is {code}'
 
@@ -69,7 +69,7 @@ class WebApiInlineCodeCustomMessageTest(unittest.TestCase):
             self.assertTrue("emailSubject" in response)
             self.assertEqual(response["emailSubject"], 'Temporary Password')
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"],  'Your username is {username} and your temporary password is {####}')
+            self.assertEqual(response["emailMessage"],  'Your temporary password is {####}')
 
     def test_forgot_password(self, event = ForgotPasswordEvent):
         with mock.patch.dict(os.environ, self.env):

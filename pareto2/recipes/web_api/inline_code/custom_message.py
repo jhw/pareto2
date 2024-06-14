@@ -11,19 +11,17 @@ def validate_placeholders(message, required_placeholders):
             raise RuntimeError(f"Missing required placeholder: {{{placeholder}}}")
 
 """
-Commenting out username override as -
+Giving up on using username in email message because it's simply all too awful
 
-Error: An error occurred (InvalidLambdaResponseException) when calling the AdminCreateUser operation: Invalid user name. User name in Lambda mismatches the actual username.
+Available parameters should be username, code, link
 """
         
 def handler(event, context):
-    # event['userName'] = event['request']['userAttributes']['email']
-    template_values = {'username': event['request']['usernameParameter'],
-                       'code': event['request']['codeParameter']}
+    template_values = {'code': event['request']['codeParameter']}
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
         email_subject = os.environ['TEMP_PASSWORD_EMAIL_SUBJECT']
         email_message = os.environ['TEMP_PASSWORD_EMAIL_MESSAGE']
-        required_placeholders = ['username', 'code']
+        required_placeholders = ['code']
     elif event['triggerSource'] == 'CustomMessage_ForgotPassword':
         email_subject = os.environ['PASSWORD_RESET_EMAIL_SUBJECT']
         email_message = os.environ['PASSWORD_RESET_EMAIL_MESSAGE']
