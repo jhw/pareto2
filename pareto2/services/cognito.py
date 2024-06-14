@@ -26,7 +26,14 @@ class SimpleEmailUserPool(UserPool):
         custom_message_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-message-function"), "Arn"]}
         lambda_config["CustomMessage"] = custom_message_arn
         return lambda_config
-    
+
+
+    """
+    If you have UsernameAttributes set to email but do not have UsernameConfiguration set, Cognito will allow users to sign in with their email address, but it will not guarantee that the userName property is set to the email. The userName field may still contain a UUID or another value assigned by Cognito.
+
+    To ensure that the userName property is set to the email, you need to explicitly configure the UsernameConfiguration in your CloudFormation template.
+    """
+
     @property    
     def aws_properties(self, nmin = 8):
         password_policy = {
@@ -48,7 +55,10 @@ class SimpleEmailUserPool(UserPool):
             "LambdaConfig": self.lambda_config,
             "Policies": {"PasswordPolicy": password_policy},
             "Schema": schema,
-            "UsernameAttributes": ["email"]
+            "UsernameAttributes": ["email"],
+            "UsernameConfiguration": {
+                "CaseSensitive": False
+            }
         }
     
 class UserPoolClient(Resource):
