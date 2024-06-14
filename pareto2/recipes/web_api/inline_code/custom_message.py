@@ -1,4 +1,7 @@
-import os
+import logging, os
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def replace_placeholders(message, template_values):
     for key, value in template_values.items():
@@ -12,11 +15,12 @@ def validate_placeholders(message, required_placeholders):
 
 """
 Giving up on using username in email message because it's simply all too awful
-
 Available parameters should be username, code, link
+Added back logging to try and see what's going on
 """
         
 def handler(event, context):
+    logger.info("Event [START]: %s", event)
     template_values = {'code': event['request']['codeParameter']}
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
         email_subject = os.environ['TEMP_PASSWORD_EMAIL_SUBJECT']
@@ -31,4 +35,5 @@ def handler(event, context):
     validate_placeholders(email_message, required_placeholders)
     event['response']['emailSubject'] = replace_placeholders(email_subject, template_values)
     event['response']['emailMessage'] = replace_placeholders(email_message, template_values)
+    logger.info("Event [END]: %s", event)
     return event
