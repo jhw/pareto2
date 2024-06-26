@@ -1,12 +1,15 @@
 ### short [02-userpool-custom-attributes]
 
-- userpool struct to pass attributes to SimpleEmailUserPool
-- include userpool attributes field in api config
+- UserPool to render custom attributes
+- add sample attributes to temp fields
+- move temp userpool.attributes to hello demo
+- add userpool.attributes to schema definition
 
 ### medium
 
+- replace event source mapping with eventbridge pipes
 - iam optimiser
-- eventbridge inline code to use logging.error and continue f message over 256kb
+- eventbridge inline code to use logging.error and continue if message over 256kb
 - s3 handling of messages > 256kb
 - validate structure of custom event patterns
   - using whatever code moto uses
