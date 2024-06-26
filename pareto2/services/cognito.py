@@ -60,13 +60,16 @@ class SimpleEmailUserPool(UserPool):
             return "Boolean"
         else:
             raise RuntimeError(f"{type} not recognised as Cognito custom attribute type")
+
+    """
+    custom attributes do not have DefaultValue fields; values must be set via lambda callback
+    """
     
     def custom_attribute(self, attr):
         return {
             "Name": "custom:%s" % attr["name"].lower(),
             "AttributeDataType": self.format_attribute_type(attr["type"]),
             "Mutable": True,
-            "DefaultValue": attr["value"]
         }
                       
     @property    

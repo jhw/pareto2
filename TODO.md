@@ -1,7 +1,5 @@
 ### short
 
-- check UserPool custom attribute fields
-- remove UserPool DefaultValue setting
 - add custom attribute inline code
 - add custom attribute test 
 - add custom attribute initialisation to web_api recipe
@@ -126,6 +124,8 @@
 
 ### done
 
+- remove UserPool DefaultValue setting
+- check UserPool custom attribute fields
 - UserPool to render custom attributes
 - move temp userpool.attributes to hello demo
 - add userpool.attributes to schema definition
