@@ -1,7 +1,7 @@
 ### short
 
-- test to fetch user
-- custom_attributes to pass real event
+- use real event
+- test class to create custom attributes
 - handler to update user attributes
 - test to confirm attributes created
 
