@@ -129,7 +129,9 @@ class Templater(dict):
                 raise RuntimeError(f"app can't have both {attr} and public bucket")
         if "api" in struct:
             # userpool = struct["api"]["userpool"]
-            userpool = {} # TEMP
+            userpool = {
+                "attributes": []
+            } # TEMP
             if endpoints != []:
                 recipe += WebApi(namespace = namespace,
                                  endpoints = endpoints,

@@ -52,7 +52,9 @@ class WebApiDemoTest(unittest.TestCase):
                 endpoint["code"] = EchoPostBody
             else:
                 raise RuntimeError("couldn't embed code body for endpoint %s" % path)
-        userpool = {} # TEMP
+        userpool = {
+            "attributes": []
+        } # TEMP
         recipe = WebApi(namespace = "app",
                         endpoints = list(endpoints.values()),
                         userpool = userpool)
