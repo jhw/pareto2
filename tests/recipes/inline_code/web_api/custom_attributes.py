@@ -6,6 +6,13 @@ class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
 
     def setUp(self):        
         self.env = {}
+        self.env['USER_CUSTOM_ATTRIBUTES'] = json.dumps([
+            {
+                "name": "foo",
+                "type": "str",
+                "value": "bar"
+            }
+        ])
 
     def test_handler(self, event = {}):
         with mock.patch.dict(os.environ, self.env):

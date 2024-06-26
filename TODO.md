@@ -1,7 +1,5 @@
 ### short
 
-- test to initialise CUSTOM_ATTRIBUTES
-- handler to iterate over CUSTOM_ATTRIBUTES
 - web_api recipe to pass CUSTOM_ATTRIBUTES
 
 - test function to mock cognito
@@ -122,6 +120,8 @@
 
 ### done
 
+- test to initialise CUSTOM_ATTRIBUTES
+- handler to iterate over CUSTOM_ATTRIBUTES
 - bind function to UserPool as part of Lambda config
 - add custom attribute initialisation to web_api recipe
 - add custom attribute inline code
