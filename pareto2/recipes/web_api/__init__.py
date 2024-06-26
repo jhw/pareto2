@@ -92,7 +92,7 @@ class EndpointPermission(L.Permission):
     
 class WebApi(AlertsMixin):    
 
-    def __init__(self, namespace, endpoints):
+    def __init__(self, namespace, endpoints, userpool):
         super().__init__()
         self.init_api_base(namespace = namespace)
         if self.has_private_endpoint(endpoints):

@@ -128,9 +128,12 @@ class Templater(dict):
                 struct["bucket"]["public"]):
                 raise RuntimeError(f"app can't have both {attr} and public bucket")
         if "api" in struct:
+            # userpool = struct["api"]["userpool"]
+            userpool = {} # TEMP
             if endpoints != []:
                 recipe += WebApi(namespace = namespace,
-                                 endpoints = endpoints)
+                                 endpoints = endpoints,
+                                 userpool = userpool)
         if "bucket" in struct:
             if struct["bucket"]["public"]:
                 binary_media = struct["bucket"]["binary-media"] if "binary-media" in struct["bucket"] else False

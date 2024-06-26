@@ -1,4 +1,7 @@
-### short
+### short [02-userpool-custom-attributes]
+
+- userpool struct to pass attributes to SimpleEmailUserPool
+- include userpool attributes field in api config
 
 ### medium
 
@@ -112,6 +115,7 @@
 
 ### done
 
+- templater to pass userpool to WebApi
 - add notes for custom message handler
 - custom message handler to check for unknown template variables
 - remove user attributes stuff
