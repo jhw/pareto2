@@ -15,11 +15,8 @@ class SimpleEmailUserPool(UserPool):
         super().__init__(namespace = namespace,
                          **kwargs)
         self.attributes = attributes
+        print (self.attributes) # TEMP
     
-    """
-    LambdaConfig binds to all relevant hooks; filter at event level by matching on event name
-    """
-
     @property
     def lambda_config(self):
         custom_message_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-message-function"), "Arn"]}
