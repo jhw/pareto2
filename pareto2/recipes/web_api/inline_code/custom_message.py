@@ -2,10 +2,7 @@
 https://stackoverflow.com/a/78622562/124179
 """
 
-import logging, os
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+import os
 
 def replace_placeholders(message, template_values):
     for key, value in template_values.items():
@@ -18,7 +15,6 @@ def validate_placeholders(message, required_placeholders):
             raise RuntimeError(f"Missing required placeholder: {{{placeholder}}}")
 
 def handler(event, context):
-    logger.info("Event [START]: %s", event)
     template_values = {'username': event['request']['usernameParameter'],
                        'code': event['request']['codeParameter']}
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
@@ -34,5 +30,4 @@ def handler(event, context):
     validate_placeholders(email_message, required_placeholders)
     event['response']['emailSubject'] = replace_placeholders(email_subject, template_values)
     event['response']['emailMessage'] = replace_placeholders(email_message, template_values)
-    logger.info("Event [END]: %s", event)
     return event

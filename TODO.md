@@ -1,7 +1,5 @@
 ### short
 
-- add custom attribute inline code
-- add custom attribute test 
 - add custom attribute initialisation to web_api recipe
 - bind function to UserPool as part of Lambda config
 - pass attributes to function as JSON environment variable
@@ -124,6 +122,8 @@
 
 ### done
 
+- add custom attribute inline code
+- add custom attribute test 
 - remove UserPool DefaultValue setting
 - check UserPool custom attribute fields
 - UserPool to render custom attributes
