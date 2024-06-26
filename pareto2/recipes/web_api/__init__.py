@@ -34,7 +34,23 @@ class CustomMessageFunction(L.InlineFunction):
                                                   "password-reset-email-subject",
                                                   "password-reset-email-message"]})
 
+class CustomAttributesFunction(L.InlineFunction):
+    
+    def __init__(self, namespace):
+        with open("/".join(__file__.split("/")[:-1]+["/inline_code/custom_attributes.py"])) as f:
+            code = f.read()
+        super().__init__(namespace = namespace,
+                         code = code)
+
 class CustomMessagePolicy(Policy):
+    
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace,
+                         permissions = [{"action": ["logs:CreateLogGroup",
+                                                    "logs:CreateLogStream",
+                                                    "logs:PutLogEvents"]}])
+
+class CustomAttributesPolicy(Policy):
     
     def __init__(self, namespace):
         super().__init__(namespace = namespace,
@@ -137,7 +153,14 @@ class WebApi(AlertsMixin):
                       CognitoHookRole,
                       CustomMessagePolicy]:
             self.append(klass(namespace = custom_message_namespace))
-
+        # custom attributes
+        custom_attributes_namespace = f"{namespace}-custom-attributes"
+        self.append(CognitoPermission(namespace = custom_attributes_namespace,
+                                      userpool_namespace = namespace))
+        for klass in [CustomAttributesFunction,
+                      CognitoHookRole,
+                      CustomAttributesPolicy]:
+            self.append(klass(namespace = custom_attributes_namespace))
 
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,

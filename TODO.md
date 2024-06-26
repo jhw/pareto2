@@ -1,6 +1,5 @@
 ### short
 
-- add custom attribute initialisation to web_api recipe
 - bind function to UserPool as part of Lambda config
 - pass attributes to function as JSON environment variable
 - handler to iterate over JSON attributes
@@ -122,6 +121,7 @@
 
 ### done
 
+- add custom attribute initialisation to web_api recipe
 - add custom attribute inline code
 - add custom attribute test 
 - remove UserPool DefaultValue setting
