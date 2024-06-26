@@ -13,8 +13,6 @@ L = importlib.import_module("pareto2.services.lambda")
 """
 You shouldn't need to attach alerts to Cognito lambdas
 
-- UserCallbackLambda doesn't throw any exceptions and doesn't contain any user content so hard to see how it can exceed 256KB; provided it passes tests it's fine
-
 - CustomMessageLambda throws exceptions, but these are all within the context of scripts/users and not within applications, and calls to these functions are sync not async, so any error will be returned to the command line
 """
 
@@ -22,23 +20,6 @@ class CognitoHookRole(Role):
     
     def __init__(self, namespace):
         super().__init__(namespace = namespace)
-
-class UserCallbackFunction(L.InlineFunction):
-    
-    def __init__(self, namespace):
-        with open("/".join(__file__.split("/")[:-1]+["/inline_code/user_callback.py"])) as f:
-            code = f.read()
-        super().__init__(namespace = namespace,
-                         code = code)
-        
-class UserCallbackPolicy(Policy):
-    
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace,
-                         permissions = [{"action": "events:PutEvents"},
-                                        {"action": ["logs:CreateLogGroup",
-                                                    "logs:CreateLogStream",
-                                                    "logs:PutLogEvents"]}])
 
 class CustomMessageFunction(L.InlineFunction):
     
@@ -146,14 +127,6 @@ class WebApi(AlertsMixin):
                       IdentityPoolUnauthenticatedPolicy,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
-        # user callback
-        user_callback_namespace = f"{namespace}-user-callback"
-        self.append(CognitoPermission(namespace = user_callback_namespace,
-                                      userpool_namespace = namespace))
-        for klass in [UserCallbackFunction,
-                      CognitoHookRole,
-                      UserCallbackPolicy]:
-            self.append(klass(namespace = user_callback_namespace))
         # custom message
         custom_message_namespace = f"{namespace}-custom-message"
         self.append(CognitoPermission(namespace = custom_message_namespace,

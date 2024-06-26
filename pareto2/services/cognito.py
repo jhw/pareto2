@@ -17,14 +17,8 @@ class SimpleEmailUserPool(UserPool):
 
     @property
     def lambda_config(self):
-        user_callback_arn = {"Fn::GetAtt": [H(f"{self.namespace}-user-callback-function"), "Arn"]}
-        lambda_config = {key: user_callback_arn
-                         for key in ["PreSignUp",
-                                     "PreAuthentication",
-                                     "PostAuthentication",
-                                     "PostConfirmation"]}
         custom_message_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-message-function"), "Arn"]}
-        lambda_config["CustomMessage"] = custom_message_arn
+        lambda_config = {"CustomMessage": custom_message_arn}
         return lambda_config
 
 
