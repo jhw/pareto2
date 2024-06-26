@@ -15,7 +15,6 @@ class SimpleEmailUserPool(UserPool):
         super().__init__(namespace = namespace,
                          **kwargs)
         self.attributes = attributes
-        print (self.attributes) # TEMP
     
     @property
     def lambda_config(self):
@@ -30,6 +29,46 @@ class SimpleEmailUserPool(UserPool):
     To ensure that the userName property is set to the email, you need to explicitly configure the UsernameConfiguration in your CloudFormation template.
     """
 
+    @property
+    def email_attribute(self):
+        return {
+            "AttributeDataType": "String",
+            "Mutable": True,
+            "Name": "email",
+            "Required": True,
+            "StringAttributeConstraints": {"MinLength": "1"}
+        }
+
+    def validate_attribute_value(self, name, type, value):
+        if type == "int" and not isinstance(value, int):
+            raise RuntimeError(f"attribute {name} must have an int value")
+        elif type == "bool" and not isinstance(value, bool):
+            raise RuntimeError(f"attribute {name} must have a boolean value")
+        elif type == "str" and not isinstance(value, str):
+            raise RuntimeError(f"attribute {name} must have a string value")
+
+    """
+    DateTime and StringArray also supported by Cognito
+    """
+    
+    def format_attribute_type(self, type):
+        if type == "string":
+            return "String"
+        elif type == "int":
+            return "Number"
+        elif type == "bool":
+            return "Boolean"
+        else:
+            raise RuntimeError(f"{type} not recognised as Cognito custom attribute type")
+    
+    def custom_attribute(self, attr):
+        return {
+            "Name": "custom:%s" % attr["name"].lower(),
+            "AttributeDataType": self.format_attribute_type(attr["type"]),
+            "Mutable": True,
+            "DefaultValue": attr["value"]
+        }
+                      
     @property    
     def aws_properties(self, nmin = 8):
         password_policy = {
@@ -39,13 +78,10 @@ class SimpleEmailUserPool(UserPool):
             "RequireSymbols": True,
             "RequireUppercase": True
         }
-        schema = [{
-            "AttributeDataType": "String",
-            "Mutable": True,
-            "Name": "email",
-            "Required": True,
-            "StringAttributeConstraints": {"MinLength": "1"}
-        }]
+        schema = [self.email_attribute]
+        for attr in self.attributes:
+            self.validate_attribute_value(**attr)
+            schema.append(self.custom_attribute(attr))
         return {
             "AutoVerifiedAttributes": ["email"],
             "LambdaConfig": self.lambda_config,

@@ -1,6 +1,4 @@
-### short [02-userpool-custom-attributes]
-
-- UserPool to render custom attributes
+### short
 
 ### medium
 
@@ -115,6 +113,7 @@
 
 ### done
 
+- UserPool to render custom attributes
 - move temp userpool.attributes to hello demo
 - add userpool.attributes to schema definition
 - remove userpool event type
