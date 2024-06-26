@@ -73,12 +73,22 @@ class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
             MessageAction='SUPPRESS'
         )
 
-    def test_handler(self, event = SampleEvent):
+    def test_handler(self,
+                     event = SampleEvent,
+                     username = Username):
         event = dict(event)
         event["userPoolId"] = self.user_pool_id # else handler can't find pool
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.custom_attributes import handler
             handler(event, context = None)
+            user = self.cognito.admin_get_user(
+                UserPoolId = self.user_pool_id,
+                Username = username
+            )
+            attributes = {attr["Name"]:attr["Value"]
+                          for attr in user["UserAttributes"]}
+            self.assertTrue("custom:foo" in attributes)
+            self.assertEqual(attributes["custom:foo"], "bar")
 
     def teardown_cognito(self, username = Username):
         self.cognito.admin_delete_user(

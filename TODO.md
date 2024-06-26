@@ -1,11 +1,12 @@
 ### short
 
-- test to confirm attributes created
-
 ### medium
 
 - replace event source mapping with eventbridge pipes
+- social and/or email login
+
 - iam optimiser
+- convert recipe classes to functions
 - eventbridge inline code to use logging.error and continue if message over 256kb
 - s3 handling of messages > 256kb
 - validate structure of custom event patterns
@@ -115,6 +116,7 @@
 
 ### done
 
+- test to confirm attributes created
 - handler to update user attributes
 - use real event
 - test class to create custom attributes
