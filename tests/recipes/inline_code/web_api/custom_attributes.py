@@ -8,7 +8,7 @@ SampleEvent = yaml.safe_load("""
 version: "1.0"
 triggerSource: "whatevs_man" 
 region: "us-west-2"
-userPoolId: "us-west-2_aaaaaaaaa"
+userPoolId: "us-west-2_aaaaaaaaa" # overwritten by test case
 userName: "janedoe"
 callerContext:
   awsSdkVersion: "aws-sdk-unknown-unknown"
@@ -74,6 +74,8 @@ class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
         )
 
     def test_handler(self, event = SampleEvent):
+        event = dict(event)
+        event["userPoolId"] = self.user_pool_id # else handler can't find pool
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.custom_attributes import handler
             handler(event, context = None)
