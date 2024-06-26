@@ -1,7 +1,9 @@
 ### short
 
-- pass attributes to function as JSON environment variable
-- handler to iterate over JSON attributes
+- test to initialise CUSTOM_ATTRIBUTES
+- handler to iterate over CUSTOM_ATTRIBUTES
+- web_api recipe to pass CUSTOM_ATTRIBUTES
+
 - test function to mock cognito
 - test function to create user
 - handler to load user
