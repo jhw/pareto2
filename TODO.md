@@ -1,7 +1,5 @@
 ### short
 
-- web_api recipe to pass CUSTOM_ATTRIBUTES
-
 - test function to mock cognito
 - test function to create user
 - handler to load user
@@ -120,6 +118,7 @@
 
 ### done
 
+- web_api recipe to pass CUSTOM_ATTRIBUTES
 - test to initialise CUSTOM_ATTRIBUTES
 - handler to iterate over CUSTOM_ATTRIBUTES
 - bind function to UserPool as part of Lambda config

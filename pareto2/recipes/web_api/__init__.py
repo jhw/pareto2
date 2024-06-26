@@ -6,7 +6,7 @@ from pareto2.services.route53 import *
 from pareto2.recipes import *
 from pareto2.recipes.mixins.alerts import AlertsMixin
 
-import importlib, re
+import importlib, json, re
 
 L = importlib.import_module("pareto2.services.lambda")
 
@@ -36,11 +36,12 @@ class CustomMessageFunction(L.InlineFunction):
 
 class CustomAttributesFunction(L.InlineFunction):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, attributes):
         with open("/".join(__file__.split("/")[:-1]+["/inline_code/custom_attributes.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
-                         code = code)
+                         code = code,
+                         variables = {"user-custom-attributes": json.dumps(attributes)})
 
 class CustomMessagePolicy(Policy):
     
@@ -157,8 +158,9 @@ class WebApi(AlertsMixin):
         custom_attributes_namespace = f"{namespace}-custom-attributes"
         self.append(CognitoPermission(namespace = custom_attributes_namespace,
                                       userpool_namespace = namespace))
-        for klass in [CustomAttributesFunction,
-                      CognitoHookRole,
+        self.append(CustomAttributesFunction(namespace = custom_attributes_namespace,
+                                             attributes = userpool["attributes"]))
+        for klass in [CognitoHookRole,
                       CustomAttributesPolicy]:
             self.append(klass(namespace = custom_attributes_namespace))
 
