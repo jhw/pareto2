@@ -1,5 +1,18 @@
 ### short
 
+- check UserPool custom attribute fields
+- remove UserPool DefaultValue setting
+- add custom attribute inline code
+- add custom attribute test 
+- add custom attribute initialisation to web_api recipe
+- bind function to UserPool as part of Lambda config
+- pass attributes to function as JSON environment variable
+- handler to iterate over JSON attributes
+- test function to mock cognito
+- test function to create user
+- handler to load user
+- handler to set values of custom attributes
+  
 ### medium
 
 - replace event source mapping with eventbridge pipes
