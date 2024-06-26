@@ -96,7 +96,8 @@ class WebApi(AlertsMixin):
         super().__init__()
         self.init_api_base(namespace = namespace)
         if self.has_private_endpoint(endpoints):
-            self.init_private_api(namespace = namespace)
+            self.init_private_api(namespace = namespace,
+                                  userpool = userpool)
         for endpoint in endpoints:
             self.init_endpoint(api_namespace = namespace,
                                endpoint = endpoint)
@@ -116,9 +117,10 @@ class WebApi(AlertsMixin):
                       RegionalRecordSet]: # NB
             self.append(klass(namespace = namespace))
         
-    def init_private_api(self, namespace):
+    def init_private_api(self, namespace, userpool):
+        self.append(SimpleEmailUserPool(namespace = namespace,
+                                        attributes = userpool["attributes"]))
         for klass in [Authorizer,
-                      SimpleEmailUserPool,
                       UserPoolClient,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,

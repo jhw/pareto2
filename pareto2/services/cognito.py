@@ -11,6 +11,11 @@ class UserPool(Resource):
 
 class SimpleEmailUserPool(UserPool):
 
+    def __init__(self, namespace, attributes, **kwargs):
+        super().__init__(namespace = namespace,
+                         **kwargs)
+        self.attributes = attributes
+    
     """
     LambdaConfig binds to all relevant hooks; filter at event level by matching on event name
     """
