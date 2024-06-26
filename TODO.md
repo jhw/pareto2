@@ -1,7 +1,6 @@
 ### short
 
 - use real event
-- test class to create custom attributes
 - handler to update user attributes
 - test to confirm attributes created
 
@@ -118,6 +117,7 @@
 
 ### done
 
+- test class to create custom attributes
 - test function to create user
 - handler to set values of custom attributes
 - test function to mock cognito

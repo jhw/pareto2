@@ -30,6 +30,11 @@ class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
                     'AttributeDataType': 'String',
                     'Mutable': True,
                     'Required': True,
+                },
+                {
+                    'Name': 'custom:foo',
+                    'AttributeDataType': 'String',
+                    'Mutable': True
                 }
             ]
         )
