@@ -1,10 +1,10 @@
 ### short
 
-- test function to mock cognito
-- test function to create user
-- handler to load user
-- handler to set values of custom attributes
-  
+- test to fetch user
+- custom_attributes to pass real event
+- handler to update user attributes
+- test to confirm attributes created
+
 ### medium
 
 - replace event source mapping with eventbridge pipes
@@ -118,6 +118,9 @@
 
 ### done
 
+- test function to create user
+- handler to set values of custom attributes
+- test function to mock cognito
 - web_api recipe to pass CUSTOM_ATTRIBUTES
 - test to initialise CUSTOM_ATTRIBUTES
 - handler to iterate over CUSTOM_ATTRIBUTES
