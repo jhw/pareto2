@@ -13,7 +13,6 @@ properties:
         - queue
         - table
         - unbound
-        - userpool
       pattern:
         type: object
         properties: {}
