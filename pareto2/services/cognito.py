@@ -19,8 +19,11 @@ class SimpleEmailUserPool(UserPool):
     @property
     def lambda_config(self):
         custom_message_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-message-function"), "Arn"]}
-        lambda_config = {"CustomMessage": custom_message_arn}
-        return lambda_config
+        custom_attributes_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-attributes-function"), "Arn"]}
+        return {
+            "CustomMessage": custom_message_arn,
+            "PostAuthentication": custom_attributes_arn # PostConfirmation?
+        }
 
 
     """
