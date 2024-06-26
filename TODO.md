@@ -1,6 +1,5 @@
 ### short
 
-- use real event
 - handler to update user attributes
 - test to confirm attributes created
 
@@ -117,6 +116,7 @@
 
 ### done
 
+- use real event
 - test class to create custom attributes
 - test function to create user
 - handler to set values of custom attributes

@@ -2,7 +2,29 @@ import unittest.mock as mock
 
 from moto import mock_cognitoidp
 
-import boto3, json, os, unittest
+import boto3, json, os, unittest, yaml
+
+SampleEvent = yaml.safe_load("""
+version: "1.0"
+triggerSource: "whatevs_man" 
+region: "us-west-2"
+userPoolId: "us-west-2_aaaaaaaaa"
+userName: "janedoe"
+callerContext:
+  awsSdkVersion: "aws-sdk-unknown-unknown"
+  clientId: "1example23456789"
+request:
+  userAttributes:
+    sub: "12345678-1234-1234-1234-123456789012"
+    email_verified: "true"
+    email: "foo@bar.com" # consistent with Username
+  validationData:
+    someKey: "someValue"
+response:
+  autoConfirmUser: false
+  autoVerifyEmail: false
+  autoVerifyPhone: false
+""")
 
 PoolName, Username = "hello-pool", "foo@bar.com"
 
@@ -51,7 +73,7 @@ class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
             MessageAction='SUPPRESS'
         )
 
-    def test_handler(self, event = {}):
+    def test_handler(self, event = SampleEvent):
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.custom_attributes import handler
             handler(event, context = None)
