@@ -43,7 +43,7 @@ Endpoints = yaml.safe_load("""
 UserPool = yaml.safe_load("""
 attributes:
 - name: foo
-  type: string
+  type: str
   value: bar
 """)
 

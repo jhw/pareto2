@@ -52,7 +52,7 @@ class SimpleEmailUserPool(UserPool):
     """
     
     def format_attribute_type(self, type):
-        if type == "string":
+        if type == "str":
             return "String"
         elif type == "int":
             return "Number"
