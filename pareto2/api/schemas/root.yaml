@@ -1,13 +1,38 @@
----
 "$schema": "http://json-schema.org/draft-07/schema#"
 type: object
 properties:
   api:
     type: object
-    properties: {}
-    required: []
+    properties:
+      userpool:
+        type: object
+        properties:
+          attributes:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - string
+                    - int
+                    - bool
+                value:
+                  type: [string, integer, boolean]
+              required:
+                - name
+                - type
+                - value
+            additionalProperties: false
+        required:
+          - attributes
+    required:
+      - userpool
     additionalProperties: false
-  bucket: 
+  bucket:
     type: object
     properties:
       public:
@@ -15,14 +40,14 @@ properties:
       binary-media:
         type: boolean
     required:
-    - public
+      - public
     additionalProperties: false
-  builder: 
+  builder:
     type: object
     properties: {}
     required: []
     additionalProperties: false
-  queue: 
+  queue:
     type: object
     properties:
       batch-size:
@@ -30,7 +55,7 @@ properties:
         minimum: 1
     required: []
     additionalProperties: false
-  table: 
+  table:
     type: object
     properties:
       batch-window:
@@ -46,11 +71,11 @@ properties:
             type:
               type: string
               enum:
-              - S
-              # - N
+                - S
+                # - N
           required:
-          - name
-          - type
+            - name
+            - type
           additionalProperties: false
     required: []
     additionalProperties: false

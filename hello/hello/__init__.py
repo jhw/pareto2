@@ -1,6 +1,11 @@
 """
 infra:
-  api: {}
+  api:
+    userpool:
+      attributes:
+      - name: foo
+        type: string
+        value: bar
   bucket:
     public: false
   builder: {}

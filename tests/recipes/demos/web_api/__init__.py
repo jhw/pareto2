@@ -40,6 +40,13 @@ Endpoints = yaml.safe_load("""
   - s3:PutObject
 """)
 
+UserPool = yaml.safe_load("""
+attributes:
+- name: foo
+  type: string
+  value: bar
+""")
+
 class WebApiDemoTest(unittest.TestCase):
 
     def test_template(self):
@@ -52,20 +59,9 @@ class WebApiDemoTest(unittest.TestCase):
                 endpoint["code"] = EchoPostBody
             else:
                 raise RuntimeError("couldn't embed code body for endpoint %s" % path)
-        # START TEMP CODE
-        userpool = {
-            "attributes": [
-                {
-                    "name": "foo",
-                    "type": "string",
-                    "value": "bar"
-                    }
-            ]
-        }
-        # END TEMP CODE
         recipe = WebApi(namespace = "app",
                         endpoints = list(endpoints.values()),
-                        userpool = userpool)
+                        userpool = UserPool)
         template = recipe.render()
         template.init_parameters()
         template.dump_file(filename = "tmp/web-api.json")
