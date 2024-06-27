@@ -8,6 +8,10 @@ def format_value(type, value):
     else:
         return str(value)
 
+"""
+latest info suggests you do *not* use `custom:` prefix when defining in cloudformation, but you *do* need same prefix when referencing from boto3
+"""
+    
 def handler(event, context):
     user_pool_id = event["userPoolId"]
     username = event["request"]["userAttributes"]["email"]

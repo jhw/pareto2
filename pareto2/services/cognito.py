@@ -66,11 +66,13 @@ class SimpleEmailUserPool(UserPool):
 
     """
     custom attributes do not have DefaultValue fields; values must be set via lambda callback
+
+    latest info suggests you do *not* use `custom:` prefix when defining in cloudformation, but you *do* need same prefix when referencing from boto3
     """
     
     def custom_attribute(self, attr):
         return {
-            "Name": "custom:%s" % attr["name"].lower(),
+            "Name": attr["name"],
             "AttributeDataType": self.format_attribute_type(attr["type"]),
             "Mutable": True,
         }
