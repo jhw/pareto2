@@ -1,14 +1,16 @@
 ### short
 
+- custom attributes handler needs to return json (test)
+- remove custom attribute type and use string for everything
+- add notes saying cognito functions don't need alerts as they are always invoked sync
+
 ### medium
 
-- check whether/if cognito inline functions should have alerts
 - replace event source mapping with eventbridge pipes
 - social and/or email login
 - iam optimiser
 - convert recipe classes to functions
 - eventbridge inline code to use logging.error and continue if message over 256kb
-- s3 handling of messages > 256kb
 - validate structure of custom event patterns
   - using whatever code moto uses
 - list_events.py should cutoff on time window basis
@@ -21,15 +23,11 @@
 
 - docstrings
 - visualiser
-- federated auth
 - step functions
 - cross- account deployments
-- s3 multipart uploads
 - secrets
-- passwordless auth
 - tracing and xrays
 - appsync
-- rockset
 
 ### thoughts
 
