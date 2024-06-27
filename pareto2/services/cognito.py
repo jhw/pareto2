@@ -22,7 +22,7 @@ class SimpleEmailUserPool(UserPool):
         custom_attributes_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-attributes-function"), "Arn"]}
         return {
             "CustomMessage": custom_message_arn,
-            "PostAuthentication": custom_attributes_arn # PostConfirmation?
+            "PostConfirmation": custom_attributes_arn # PostAuthentication is executed on each login
         }
 
 
