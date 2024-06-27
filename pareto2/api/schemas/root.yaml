@@ -14,17 +14,10 @@ properties:
               properties:
                 name:
                   type: string
-                type:
-                  type: string
-                  enum:
-                    - str
-                    - int
-                    - bool
                 value:
                   type: [string, integer, boolean]
               required:
                 - name
-                - type
                 - value
             additionalProperties: false
         required:

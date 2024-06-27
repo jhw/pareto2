@@ -4,7 +4,6 @@ infra:
     userpool:
       attributes:
       - name: foo
-        type: str
         value: bar
   bucket:
     public: false

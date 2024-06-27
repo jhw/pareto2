@@ -37,7 +37,6 @@ class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
         self.env['USER_CUSTOM_ATTRIBUTES'] = json.dumps([
             {
                 "name": "foo",
-                "type": "str",
                 "value": "bar"
             }
         ])

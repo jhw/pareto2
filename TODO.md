@@ -1,9 +1,5 @@
 ### short
 
-- custom attributes handler needs to return json (test)
-- remove custom attribute type and use string for everything
-- add notes saying cognito functions don't need alerts as they are always invoked sync
-
 ### medium
 
 - replace event source mapping with eventbridge pipes
@@ -114,6 +110,9 @@
 
 ### done
 
+- custom attributes handler needs to return json (test)
+- remove custom attribute type and use string for everything
+- add notes saying cognito functions don't need alerts as they are always invoked sync
 - test to confirm attributes created
 - handler to update user attributes
 - use real event

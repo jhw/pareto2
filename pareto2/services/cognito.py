@@ -42,13 +42,6 @@ class SimpleEmailUserPool(UserPool):
             "StringAttributeConstraints": {"MinLength": "1"}
         }
 
-    def validate_attribute_value(self, name, type, value):
-        if type == "int" and not isinstance(value, int):
-            raise RuntimeError(f"attribute {name} must have an int value")
-        elif type == "bool" and not isinstance(value, bool):
-            raise RuntimeError(f"attribute {name} must have a boolean value")
-        elif type == "str" and not isinstance(value, str):
-            raise RuntimeError(f"attribute {name} must have a string value")
 
     """
     DateTime and StringArray also supported by Cognito
@@ -65,15 +58,18 @@ class SimpleEmailUserPool(UserPool):
             raise RuntimeError(f"{type} not recognised as Cognito custom attribute type")
 
     """
-    custom attributes do not have DefaultValue fields; values must be set via lambda callback
-
     latest info suggests you do *not* use `custom:` prefix when defining in cloudformation, but you *do* need same prefix when referencing from boto3
+    """
+
+    """
+    - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cognito-userpool-schemaattribute.html
+    A custom attribute value in your user's ID token is always a string, for example "custom:isMember" : "true" or "custom:YearsAsMember" : "12".
     """
     
     def custom_attribute(self, attr):
         return {
             "Name": attr["name"],
-            "AttributeDataType": self.format_attribute_type(attr["type"]),
+            "AttributeDataType": "String",
             "Mutable": True,
         }
                       
@@ -88,7 +84,6 @@ class SimpleEmailUserPool(UserPool):
         }
         schema = [self.email_attribute]
         for attr in self.attributes:
-            self.validate_attribute_value(**attr)
             schema.append(self.custom_attribute(attr))
         return {
             "AutoVerifiedAttributes": ["email"],
