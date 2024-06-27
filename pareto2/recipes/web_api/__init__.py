@@ -57,7 +57,9 @@ class CustomAttributesPolicy(Policy):
         super().__init__(namespace = namespace,
                          permissions = [{"action": ["logs:CreateLogGroup",
                                                     "logs:CreateLogStream",
-                                                    "logs:PutLogEvents"]}])
+                                                    "logs:PutLogEvents"]},
+                                        {"action": "cognito-idp:AdminUpdateUserAttributes"}])
+
 
 class CognitoPermission(L.Permission):
 

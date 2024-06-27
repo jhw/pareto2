@@ -2,9 +2,9 @@
 
 ### medium
 
+- check whether/if cognito inline functions should have alerts
 - replace event source mapping with eventbridge pipes
 - social and/or email login
-
 - iam optimiser
 - convert recipe classes to functions
 - eventbridge inline code to use logging.error and continue if message over 256kb
