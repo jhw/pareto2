@@ -80,7 +80,8 @@ class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
         event["userPoolId"] = self.user_pool_id # else handler can't find pool
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.custom_attributes import handler
-            handler(event, context = None)
+            event_ = handler(event, context = None)
+            self.assertTrue("version" in event_) # assert JSON returned
             user = self.cognito.admin_get_user(
                 UserPoolId = self.user_pool_id,
                 Username = username

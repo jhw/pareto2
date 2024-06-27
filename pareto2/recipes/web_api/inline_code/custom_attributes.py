@@ -28,5 +28,6 @@ def handler(event, context):
                 }
             ]
         )
+    return event # NB Cognito Lambda handlers must return JSON
         
 

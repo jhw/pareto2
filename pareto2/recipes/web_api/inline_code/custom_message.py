@@ -30,4 +30,5 @@ def handler(event, context):
     validate_placeholders(email_message, required_placeholders)
     event['response']['emailSubject'] = replace_placeholders(email_subject, template_values)
     event['response']['emailMessage'] = replace_placeholders(email_message, template_values)
-    return event
+    return event # NB Cognito Lambda handlers must return JSON
+
