@@ -2,31 +2,36 @@
 
 ### medium
 
+- suppress email on create confirmed user
 - replace event source mapping with eventbridge pipes
-- social and/or email login
+- eventbridge inline code
+  - use logging.warn for messages over 256kb
+  - continue don't exit  
+- artifacts/fetch_object.py fails if ARTIFACTS_BUCKET not present
+- run_tests and validate_template should be in /build not /deploy
+- email and social login
 - iam optimiser
-- convert recipe classes to functions
-- eventbridge inline code to use logging.error and continue if message over 256kb
-- validate structure of custom event patterns
-  - using whatever code moto uses
+
+- use moto events code to validate custom eventbridge detail
 - list_events.py should cutoff on time window basis
-- validate test events against infra patterns
-- infer existence of state variables from lambdas
-- singletons should validate props consistency
+- validate test events against patterns in infra
+- validate singleton props consistency before silently overwriting
 - python version as environment variable
 
 ### long
 
 - docstrings
 - visualiser
-- step functions
 - cross- account deployments
-- secrets
-- tracing and xrays
+- xray and tracing
+- step functions
 - appsync
+- secrets
+- winglang
 
 ### thoughts
 
+- infer existence of state variables from lambdas?
 - defaults for layers, permissions, size, timeout?
   - not sure this is an improvement?
 - don't you need some kind of zip writing util?
