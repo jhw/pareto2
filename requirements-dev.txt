@@ -1,3 +1,4 @@
 jsonschema
-moto
+moto==4.2.14
+python-jose
 pyyaml

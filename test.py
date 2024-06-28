@@ -1,4 +1,8 @@
-import os, unittest
+import os, unittest, warnings
+
+from cryptography.utils import CryptographyDeprecationWarning
+
+warnings.filterwarnings("ignore", category=CryptographyDeprecationWarning)
 
 def find_and_run_tests(root_dirs):
     suite = unittest.TestSuite()    
