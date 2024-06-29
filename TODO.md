@@ -1,15 +1,26 @@
-### short
+### short [01-google-federated-login]
+
+- move push_artifacts.py, run_tests.py etc to scripts/build
+- script to dump template
+
+- suppress email on create confirmed user
+- remove create_unconfirmed_user
+- remove custom message code
+
+- user pool
+- user pool client
+- user pool domain
+- social provider mapping
+
+- gist test
 
 ### medium
 
-- suppress email on create confirmed user
 - replace event source mapping with eventbridge pipes
 - eventbridge inline code
   - use logging.warn for messages over 256kb
   - continue don't exit  
-- artifacts/fetch_object.py fails if ARTIFACTS_BUCKET not present
-- run_tests and validate_template should be in /build not /deploy
-- email and social login
+- email login
 - iam optimiser
 
 - use moto events code to validate custom eventbridge detail
