@@ -11,28 +11,13 @@ import importlib, json, re
 L = importlib.import_module("pareto2.services.lambda")
 
 """
-You shouldn't need to attach alerts to Cognito lambdas
-
-- CustomMessageLambda throws exceptions, but these are all within the context of scripts/users and not within applications, and calls to these functions are sync not async, so any error will be returned to the command line
+You shouldn't need to attach alerts to Cognito lambdas as they are all executed synchronously
 """
 
 class CognitoHookRole(Role):
     
     def __init__(self, namespace):
         super().__init__(namespace = namespace)
-
-class CustomMessageFunction(L.InlineFunction):
-    
-    def __init__(self, namespace):
-        with open("/".join(__file__.split("/")[:-1]+["/inline_code/custom_message.py"])) as f:
-            code = f.read()
-        super().__init__(namespace = namespace,
-                         code = code,
-                         variables = {key: {"Ref": H(f"cognito-{key}")}
-                                      for key in ["temp-password-email-subject",
-                                                  "temp-password-email-message",
-                                                  "password-reset-email-subject",
-                                                  "password-reset-email-message"]})
 
 class CustomAttributesFunction(L.InlineFunction):
     
@@ -42,14 +27,6 @@ class CustomAttributesFunction(L.InlineFunction):
         super().__init__(namespace = namespace,
                          code = code,
                          variables = {"user-custom-attributes": json.dumps(attributes)})
-
-class CustomMessagePolicy(Policy):
-    
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace,
-                         permissions = [{"action": ["logs:CreateLogGroup",
-                                                    "logs:CreateLogStream",
-                                                    "logs:PutLogEvents"]}])
 
 class CustomAttributesPolicy(Policy):
     
@@ -148,14 +125,6 @@ class WebApi(AlertsMixin):
                       IdentityPoolUnauthenticatedPolicy,
                       IdentityPoolRoleAttachment]:
             self.append(klass(namespace = namespace))
-        # custom message
-        custom_message_namespace = f"{namespace}-custom-message"
-        self.append(CognitoPermission(namespace = custom_message_namespace,
-                                      userpool_namespace = namespace))
-        for klass in [CustomMessageFunction,
-                      CognitoHookRole,
-                      CustomMessagePolicy]:
-            self.append(klass(namespace = custom_message_namespace))
         # custom attributes
         custom_attributes_namespace = f"{namespace}-custom-attributes"
         self.append(CognitoPermission(namespace = custom_attributes_namespace,

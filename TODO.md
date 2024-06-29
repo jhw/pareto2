@@ -1,6 +1,5 @@
 ### short [01-google-federated-login]
 
-- remove custom message code
 - add new federated cognito code
 - gist test
 
@@ -118,6 +117,7 @@
 
 ### done
 
+- remove custom message code
 - suppress email on create confirmed user
 - remove create_unconfirmed_user
 - move push_artifacts.py, run_tests.py etc to scripts/build

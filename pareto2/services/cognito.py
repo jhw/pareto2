@@ -18,10 +18,8 @@ class SimpleEmailUserPool(UserPool):
     
     @property
     def lambda_config(self):
-        custom_message_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-message-function"), "Arn"]}
         custom_attributes_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-attributes-function"), "Arn"]}
         return {
-            "CustomMessage": custom_message_arn,
             "PostConfirmation": custom_attributes_arn # PostAuthentication is executed on each login
         }
 
