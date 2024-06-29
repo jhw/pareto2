@@ -1,10 +1,5 @@
 ### short [01-google-federated-login]
 
-- move push_artifacts.py, run_tests.py etc to scripts/build
-- script to dump template
-
-- suppress email on create confirmed user
-- remove create_unconfirmed_user
 - remove custom message code
 
 - user pool
@@ -15,6 +10,8 @@
 - gist test
 
 ### medium
+
+- script to dump template
 
 - replace event source mapping with eventbridge pipes
 - eventbridge inline code
@@ -126,6 +123,9 @@
 
 ### done
 
+- suppress email on create confirmed user
+- remove create_unconfirmed_user
+- move push_artifacts.py, run_tests.py etc to scripts/build
 - custom attributes handler needs to return json (test)
 - remove custom attribute type and use string for everything
 - add notes saying cognito functions don't need alerts as they are always invoked sync
