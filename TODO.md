@@ -1,7 +1,7 @@
 ### short [01-google-federated-login]
 
 - AWS::Cognito::UserPoolDomain
-  - use ${AWS::StackName} for doman
+  - use ${AWS::StackName} for domain
 
 - user pool client changes
   - callback to reference UserPoolDomain
