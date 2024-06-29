@@ -1,12 +1,7 @@
 ### short [01-google-federated-login]
 
 - remove custom message code
-
-- user pool
-- user pool client
-- user pool domain
-- social provider mapping
-
+- add new federated cognito code
 - gist test
 
 ### medium
