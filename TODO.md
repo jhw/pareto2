@@ -1,6 +1,19 @@
 ### short [01-google-federated-login]
 
-- add new federated cognito code
+- AWS::Cognito::UserPoolDomain
+  - use ${AWS::StackName} for doman
+
+- user pool client changes
+  - callback to reference UserPoolDomain
+  - logout url to reference DomainName
+    - see Route53 HostedZone 
+	
+- AWS::Cognito::UserPoolIdentityProvider
+  - base clase
+  - Google sub class
+  - env variables for client_id and client_secret
+  
+- include new components in web_api recipe
 - gist test
 
 ### medium
