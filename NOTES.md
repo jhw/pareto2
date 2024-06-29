@@ -1,3 +1,148 @@
+### changes to existing cognito resources 29/6/24
+
+AppUserPoolClient:
+
+- Added SupportedIdentityProviders with "Google" to support federated login.
+- Added CallbackURLs and LogoutURLs to specify the URLs for OAuth callbacks.
+
+AppUserPoolIdentityProviderGoogle:
+
+- Created a new AWS::Cognito::UserPoolIdentityProvider resource to define the Google identity provider.
+Included the client ID, client secret, and authorization scopes for Google.
+
+CognitoUserPoolDomain:
+
+- Created a new AWS::Cognito::UserPoolDomain resource to specify the domain for the user pool, which will be used in the OAuth callback.
+
+### cognito federated login pattern 29/06/24
+
+```
+{
+  "Resources": {
+    "AppUserPool": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AutoVerifiedAttributes": [
+          "email"
+        ],
+        "LambdaConfig": {
+          "PostConfirmation": {
+            "Fn::GetAtt": [
+              "AppCustomAttributesFunction",
+              "Arn"
+            ]
+          }
+        },
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 8,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": true,
+            "RequireUppercase": true
+          }
+        },
+        "Schema": [
+          {
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "email",
+            "Required": true,
+            "StringAttributeConstraints": {
+              "MinLength": "1"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "lang"
+          },
+          {
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "account-level"
+          },
+          {
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "onboarded"
+          },
+          {
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "article-count"
+          },
+          {
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "word-count"
+          },
+          {
+            "AttributeDataType": "String",
+            "Mutable": true,
+            "Name": "char-count"
+          }
+        ],
+        "UsernameAttributes": [
+          "email"
+        ],
+        "UsernameConfiguration": {
+          "CaseSensitive": false
+        }
+      }
+    },
+    "AppUserPoolClient": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "ExplicitAuthFlows": [
+          "ALLOW_USER_SRP_AUTH",
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH"
+        ],
+        "PreventUserExistenceErrors": "ENABLED",
+        "UserPoolId": {
+          "Ref": "AppUserPool"
+        },
+        "SupportedIdentityProviders": [
+          "COGNITO",
+          "Google"
+        ],
+        "CallbackURLs": [
+          "https://polyreader.auth.eu-west-1.amazoncognito.com/oauth2/idpresponse"
+        ],
+        "LogoutURLs": [
+          "https://polyreader.net"
+        ]
+      }
+    },
+    "AppUserPoolIdentityProviderGoogle": {
+      "Type": "AWS::Cognito::UserPoolIdentityProvider",
+      "Properties": {
+        "ProviderName": "Google",
+        "UserPoolId": {
+          "Ref": "AppUserPool"
+        },
+        "ProviderType": "Google",
+        "ProviderDetails": {
+          "client_id": "removed",
+          "client_secret": "removed',
+          "authorize_scopes": "openid email profile"
+        }
+      }
+    },
+    "CognitoUserPoolDomain": {
+      "Type": "AWS::Cognito::UserPoolDomain",
+      "Properties": {
+        "Domain": "polyreader",
+        "UserPoolId": {
+          "Ref": "AppUserPool"
+        }
+      }
+    }
+  }
+}
+```
+
 ### cognito callbacks 07/06/24
 
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cognito-userpool-lambdaconfig.html
