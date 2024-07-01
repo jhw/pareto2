@@ -1,7 +1,8 @@
 ### short [01-google-federated-login]
 
 - replace GoogleSocialIdentityProvider with passing provider-namespace to single core resources
-  - override resource_name to use provider-namespace
+  - override resource_name to use provider-namespace  
+- pass lisf of social providers from recipe to service
 
 ### medium
 
