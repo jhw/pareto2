@@ -120,7 +120,39 @@ class UserPoolDomain(Resource):
             "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")},
             "Domain": {"Fn::Sub": f"${{AWS::StackName}}"}
         }
+
+class UserPoolIdentityProvider(Resource):
+
+    Scopes = ["openid", "email", "profile"]
     
+    @property
+    def provider_type(self):
+        return self.provider_name.lower().capitalize()
+
+    @property
+    def provider_details(self):
+        return {
+            "client_id": {"Ref": H(f"{self.provider_name}-client-id")},
+            "client_secret": {"Ref": H(f"{self.provider_name}-client-secret")},
+            "authorize_scopes": " ".join(self.Scopes)
+        }
+    
+    @property
+    def aws_properties(self):
+        return {
+            "ProviderDetails": self.provider_details,
+            "ProviderName": self.provider_name,
+            "ProviderType": self.provider_type,
+            "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")}
+        }        
+
+class GoogleSocialIdentityProvider(UserPoolIdentityProvider):
+
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace)
+        self.provider_name = "Google"
+    
+
 """
 You should be able to use a User pool without an Identity pool, but experience of the Flutter Amplify libraries suggests an Identity pool is always required, even if not used
 

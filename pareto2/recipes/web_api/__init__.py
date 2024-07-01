@@ -119,6 +119,7 @@ class WebApi(AlertsMixin):
         for klass in [Authorizer,
                       UserPoolClient,
                       UserPoolDomain,
+                      GoogleSocialIdentityProvider,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,
                       IdentityPoolAuthenticatedPolicy,

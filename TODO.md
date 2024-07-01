@@ -1,15 +1,10 @@
 ### short [01-google-federated-login]
 
-- user pool client changes
+- UserPoolClient
   - callback to reference UserPoolDomain
   - logout url to reference DomainName
     - see Route53 HostedZone 
 	
-- AWS::Cognito::UserPoolIdentityProvider
-  - base clase
-  - Google sub class
-  - env variables for client_id and client_secret
-  
 - include new components in web_api recipe
 - gist test
 
@@ -127,6 +122,10 @@
 
 ### done
 
+- AWS::Cognito::UserPoolIdentityProvider
+  - base clase
+  - Google sub class
+  - env variables for client_id and client_secret
 - AWS::Cognito::UserPoolDomain
   - use ${AWS::StackName} for domain
 - remove custom message code
