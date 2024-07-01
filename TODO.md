@@ -1,7 +1,7 @@
 ### short [01-google-federated-login]
 
-- include new components in web_api recipe
-- gist test
+- replace GoogleSocialIdentityProvider with passing provider-namespace to single core resources
+  - override resource_name to use provider-namespace
 
 ### medium
 
