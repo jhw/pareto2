@@ -113,13 +113,19 @@ class WebApi(AlertsMixin):
                       RegionalRecordSet]: # NB
             self.append(klass(namespace = namespace))
         
-    def init_private_api(self, namespace, userpool):
+    def init_private_api(self,
+                         namespace,
+                         userpool,
+                         identity_providers = ["google"]):
         self.append(SimpleEmailUserPool(namespace = namespace,
                                         attributes = userpool["attributes"]))
+        self.append(UserPoolClient(namespace = namespace,
+                                   identity_providers = identity_providers))
+        for provider in identity_providers:
+            self.append(UserPoolIdentityProvider(namespace = namespace,
+                                                 provider_namespace = provider))
         for klass in [Authorizer,
-                      UserPoolClient,
                       UserPoolDomain,
-                      GoogleSocialIdentityProvider,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,
                       IdentityPoolAuthenticatedPolicy,

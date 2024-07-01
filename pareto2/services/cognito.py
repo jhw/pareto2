@@ -95,6 +95,18 @@ class SimpleEmailUserPool(UserPool):
         }
     
 class UserPoolClient(Resource):
+
+    def __init__(self, namespace, identity_providers):
+        super().__init__(namespace = namespace)
+        self.identity_providers = ["cognito"] + identity_providers
+
+    """
+    https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html
+    COGNITO, Facebook, Google, SignInWithApple, and LoginWithAmazon.
+    """
+        
+    def format_provider(self, provider):
+        return provider.upper() if provider == "cognito" else provider.lower().capitalize()
     
     @property
     def aws_properties(self):
@@ -106,10 +118,8 @@ class UserPoolClient(Resource):
                 "ALLOW_ADMIN_USER_PASSWORD_AUTH", # for localhost testing
                 "ALLOW_REFRESH_TOKEN_AUTH"
             ],
-            "SupportedIdentityProviders": [
-                "COGNITO",
-                "Google",
-            ],
+            "SupportedIdentityProviders": [self.format_provider(provider)
+                                           for provider in self.identity_providers],
             "CallbackURLs": [
                 {"Fn::Sub": f"https://${{AppUserPoolDomain}}.auth.${{AWS::Region}}.amazoncognito.com/oauth2/idpresponse"} # ref to UserPoolDomain returns Domain property
 
@@ -135,18 +145,32 @@ class UserPoolDomain(Resource):
 class UserPoolIdentityProvider(Resource):
 
     Scopes = ["openid", "email", "profile"]
-    
-    @property
-    def provider_type(self):
-        return self.provider_name.lower().capitalize()
 
+    """
+    NB note switch of namespace
+    """
+    
+    def __init__(self, namespace, provider_namespace):
+        super().__init__(namespace = provider_namespace)
+        self.provider_name = provider_namespace.lower().capitalize()
+        self.app_namespace = namespace
+        
     @property
     def provider_details(self):
         return {
-            "client_id": {"Ref": H(f"{self.provider_name}-client-id")},
-            "client_secret": {"Ref": H(f"{self.provider_name}-client-secret")},
+            "client_id": {"Ref": H(f"{self.namespace}-client-id")},
+            "client_secret": {"Ref": H(f"{self.namespace}-client-secret")},
             "authorize_scopes": " ".join(self.Scopes)
         }
+
+    """
+    https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolidentityprovider.html
+    Allowed values: SAML | Facebook | Google | LoginWithAmazon | SignInWithApple | OIDC
+    """
+
+    @property
+    def provider_type(self):
+        return self.provider_name
     
     @property
     def aws_properties(self):
@@ -154,15 +178,8 @@ class UserPoolIdentityProvider(Resource):
             "ProviderDetails": self.provider_details,
             "ProviderName": self.provider_name,
             "ProviderType": self.provider_type,
-            "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")}
-        }        
-
-class GoogleSocialIdentityProvider(UserPoolIdentityProvider):
-
-    def __init__(self, namespace):
-        super().__init__(namespace = namespace)
-        self.provider_name = "Google"
-    
+            "UserPoolId": {"Ref": H(f"{self.app_namespace}-user-pool")}
+        }    
 
 """
 You should be able to use a User pool without an Identity pool, but experience of the Flutter Amplify libraries suggests an Identity pool is always required, even if not used
