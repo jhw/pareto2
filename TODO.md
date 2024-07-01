@@ -1,10 +1,5 @@
 ### short [01-google-federated-login]
 
-- UserPoolClient
-  - callback to reference UserPoolDomain
-  - logout url to reference DomainName
-    - see Route53 HostedZone 
-	
 - include new components in web_api recipe
 - gist test
 
@@ -122,6 +117,10 @@
 
 ### done
 
+- UserPoolClient
+  - callback to reference UserPoolDomain
+  - logout url to reference DomainName
+    - see Route53 HostedZone 
 - AWS::Cognito::UserPoolIdentityProvider
   - base clase
   - Google sub class

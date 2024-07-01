@@ -105,6 +105,17 @@ class UserPoolClient(Resource):
                 "ALLOW_USER_SRP_AUTH", # for web access
                 "ALLOW_ADMIN_USER_PASSWORD_AUTH", # for localhost testing
                 "ALLOW_REFRESH_TOKEN_AUTH"
+            ],
+            "SupportedIdentityProviders": [
+                "COGNITO",
+                "Google",
+            ],
+            "CallbackURLs": [
+                {"Fn::Sub": f"https://${{AppUserPoolDomain}}.auth.${{AWS::Region}}.amazoncognito.com/oauth2/idpresponse"} # ref to UserPoolDomain returns Domain property
+
+            ],
+            "LogoutURLs": [
+                {"Fn::Sub": f"https://${{DomainName}}"}
             ]
         }
 
