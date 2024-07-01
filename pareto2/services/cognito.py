@@ -3,6 +3,13 @@ from pareto2.services import Resource
 
 from pareto2.services.iam import *
 
+SocialIdentityProviders = {
+    "google": "Google",
+    "facebook": "Facebook",
+    "amazon": "LoginWithAmazon",
+    "apple": "SignInWithApple"
+}
+
 class UserPool(Resource):
 
     @property
@@ -104,9 +111,14 @@ class UserPoolClient(Resource):
     https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html
     COGNITO, Facebook, Google, SignInWithApple, and LoginWithAmazon.
     """
-        
-    def format_provider(self, provider):
-        return provider.upper() if provider == "cognito" else provider.lower().capitalize()
+                
+    def format_provider(self, provider, providers = SocialIdentityProviders):
+        if provider == "cognito":
+            return "COGNITO"
+        elif provider in providers:
+            return providers[provider]
+        else:
+            raise RuntimeError(f"{provider} not recognised as cognito identity provider")
     
     @property
     def aws_properties(self):
@@ -152,7 +164,6 @@ class UserPoolIdentityProvider(Resource):
     
     def __init__(self, namespace, provider_namespace):
         super().__init__(namespace = provider_namespace)
-        self.provider_name = provider_namespace.lower().capitalize()
         self.app_namespace = namespace
         
     @property
@@ -167,16 +178,19 @@ class UserPoolIdentityProvider(Resource):
     https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolidentityprovider.html
     Allowed values: SAML | Facebook | Google | LoginWithAmazon | SignInWithApple | OIDC
     """
-
-    @property
-    def provider_type(self):
-        return self.provider_name
     
+    @property
+    def provider_type(self, providers = SocialIdentityProviders):
+        if self.namespace in providers:
+            return providers[self.namespace]
+        else:
+            raise RuntimeError(f"{self.namespace} not recognised as cognito identity provider")
+
     @property
     def aws_properties(self):
         return {
             "ProviderDetails": self.provider_details,
-            "ProviderName": self.provider_name,
+            "ProviderName": self.namespace.capitalize(),
             "ProviderType": self.provider_type,
             "UserPoolId": {"Ref": H(f"{self.app_namespace}-user-pool")}
         }    
