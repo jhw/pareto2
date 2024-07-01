@@ -1,5 +1,7 @@
 ### short 
 
+- revert create_confirmed_user.py
+
 ### medium
 
 - replace event source mapping with eventbridge pipes
