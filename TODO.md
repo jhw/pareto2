@@ -1,8 +1,5 @@
 ### short [01-google-federated-login]
 
-- AWS::Cognito::UserPoolDomain
-  - use ${AWS::StackName} for domain
-
 - user pool client changes
   - callback to reference UserPoolDomain
   - logout url to reference DomainName
@@ -130,6 +127,8 @@
 
 ### done
 
+- AWS::Cognito::UserPoolDomain
+  - use ${AWS::StackName} for domain
 - remove custom message code
 - suppress email on create confirmed user
 - remove create_unconfirmed_user

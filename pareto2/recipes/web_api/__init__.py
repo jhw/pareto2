@@ -118,6 +118,7 @@ class WebApi(AlertsMixin):
                                         attributes = userpool["attributes"]))
         for klass in [Authorizer,
                       UserPoolClient,
+                      UserPoolDomain,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,
                       IdentityPoolAuthenticatedPolicy,
