@@ -1,16 +1,16 @@
-### short [01-google-federated-login]
+### short 
 
 ### medium
 
-- script to dump template
-
 - replace event source mapping with eventbridge pipes
+
 - eventbridge inline code
   - use logging.warn for messages over 256kb
   - continue don't exit  
-- email login
 - iam optimiser
 
+- email login
+- script to dump template
 - use moto events code to validate custom eventbridge detail
 - list_events.py should cutoff on time window basis
 - validate test events against patterns in infra
