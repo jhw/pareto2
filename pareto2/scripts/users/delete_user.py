@@ -9,7 +9,7 @@ def hungarorise(text):
 def fetch_outputs(cf, stackname):
     outputs = {}
     for stack in cf.describe_stacks()["Stacks"]:
-        if (stack["StackName"].startswith(stackname) and
+        if (stack["StackName"]==stackname and
             "Outputs" in stack):
             for output in stack["Outputs"]:
                 outputs[output["OutputKey"]] = output["OutputValue"]
