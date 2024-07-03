@@ -1,8 +1,10 @@
 from botocore.exceptions import ClientError
+
 import boto3, os, re, sys
 
 def hungarorise(text):
-    return "".join([tok.capitalize() for tok in re.split("\\-|\\_", text)])
+    return "".join([tok.capitalize()
+                    for tok in re.split("\\-|\\_", text)])
 
 def fetch_outputs(cf, stackname):
     outputs = {}
@@ -28,26 +30,14 @@ if __name__ == "__main__":
         if clientkey not in outputs:
             raise RuntimeError("client not found")
         client = outputs[clientkey]
-        cognito = boto3.client("cognito-idp")
-        # Create the user with a temporary password
-        print (cognito.admin_create_user(
-            UserPoolId=userpool,
-            Username=email,
-            MessageAction='SUPPRESS'
-        ))
-        # Set the user's password to the desired password and mark as confirmed
-        print (cognito.admin_set_user_password(
-            UserPoolId=userpool,
-            Username=email,
-            Password=password,
-            Permanent=True
-        ))
-        # Confirm the user
-        print (cognito.admin_confirm_sign_up(
-            UserPoolId=userpool,
-            Username=email
-        ))
+        cognito = boto3.client("cognito-idp")        
+        print (cognito.sign_up(ClientId = client,
+                               Username = email,
+                               Password = password))
+        print (cognito.admin_confirm_sign_up(UserPoolId = userpool,
+                                             Username = email))
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print ("Error: %s" % str(error))
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print ("Error: %s" % str(error))
+

@@ -1,8 +1,5 @@
 ### short 
 
-- replace stack.startswith
-- revert create_confirmed_user.py
-
 ### medium
 
 - replace event source mapping with eventbridge pipes
@@ -14,6 +11,7 @@
 
 - email login
 - script to dump template
+- suppress message on create confirmed user
 - use moto events code to validate custom eventbridge detail
 - list_events.py should cutoff on time window basis
 - validate test events against patterns in infra
@@ -117,6 +115,8 @@
 
 ### done
 
+- replace stack.startswith
+- revert create_confirmed_user.py
 - replace GoogleSocialIdentityProvider with passing provider-namespace to single core resources
   - override resource_name to use provider-namespace  
 - pass list of social providers from recipe to service
