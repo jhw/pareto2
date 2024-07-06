@@ -1,5 +1,8 @@
 ### short 
 
+- replace allowed origins with explicit dev, prod ui endpoints
+- refactor cognito callback and logout urls
+
 ### medium
 
 - replace event source mapping with eventbridge pipes
