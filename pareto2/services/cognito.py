@@ -133,8 +133,12 @@ class UserPoolClient(Resource):
             "SupportedIdentityProviders": [self.format_provider(provider)
                                            for provider in self.identity_providers],
             "CallbackURLs": [
+                {"Fn::Sub": f"https://${{DevUiEndpoint}}/oauth/callback"},
+                {"Fn::Sub": f"https://${{ProdUiEndpoint}}/oauth/callback"}                
             ],
             "LogoutURLs": [
+                {"Fn::Sub": f"https://${{DevUiEndpoint}}/logout"},
+                {"Fn::Sub": f"https://${{ProdUiEndpoint}}/logout"}                
             ]
         }
 

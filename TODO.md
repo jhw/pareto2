@@ -1,6 +1,7 @@
 ### short 
 
-- refactor user pool client callback and logout urls to reflect ui endpoints
+- connect user attributes callback to multiple cognito hooks
+- user attributes lambda to check if attributes exist before writing them 
 
 ### medium
 
@@ -117,6 +118,7 @@
 
 ### done
 
+- refactor user pool client callback and logout urls to reflect ui endpoints
 - replace allowed origin with explicit dev/prod ui endpoints
 - remove user pool domain
 - check use os startswith in list_outputs
