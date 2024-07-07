@@ -23,7 +23,10 @@ class Api(Resource):
         return {
             "Name": {"Fn::Sub": f"{self.namespace}-api-${{AWS::StackName}}"},
             "CorsConfiguration": {
-                "AllowOrigins": {"Fn::Split": ["|", {"Ref": H("allowed-origins")}]},
+                "AllowOrigins": [
+                    {"Ref": H("dev-ui-endpoint")},
+                    {"Ref": H("prod-ui-endpoint")}
+                ],
                 "AllowMethods": [
                     "GET",
                     "POST"

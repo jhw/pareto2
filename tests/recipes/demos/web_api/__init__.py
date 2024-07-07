@@ -66,13 +66,14 @@ class WebApiDemoTest(unittest.TestCase):
         template.init_parameters()
         template.dump_file(filename = "tmp/web-api.json")
         parameters = list(template["Parameters"].keys())
-        self.assertTrue(len(parameters) == 6)
+        self.assertTrue(len(parameters) == 7)
         for attr in ["DomainName",
                      "RegionalCertificateArn",
-                     "AllowedOrigins",
                      "SlackWebhookUrl",
                      "GoogleClientId",
-                     "GoogleClientSecret"]:
+                     "GoogleClientSecret",
+                     "ProdUiEndpoint",
+                     "DevUiEndpoint"]:
             self.assertTrue(attr in parameters)
 
 if __name__ == "__main__":

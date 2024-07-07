@@ -1,6 +1,5 @@
 ### short 
 
-- replace allowed origin with explicit dev/prod ui endpoints
 - refactor user pool client callback and logout urls to reflect ui endpoints
 
 ### medium
@@ -118,6 +117,7 @@
 
 ### done
 
+- replace allowed origin with explicit dev/prod ui endpoints
 - remove user pool domain
 - check use os startswith in list_outputs
 - replace stack.startswith
