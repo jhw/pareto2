@@ -1,7 +1,7 @@
 ### short 
 
-- replace allowed origins with explicit dev, prod ui endpoints
-- refactor cognito callback and logout urls
+- replace allowed origin with explicit dev/prod ui endpoints
+- refactor user pool client callback and logout urls to reflect ui endpoints
 
 ### medium
 
@@ -118,6 +118,8 @@
 
 ### done
 
+- remove user pool domain
+- check use os startswith in list_outputs
 - replace stack.startswith
 - revert create_confirmed_user.py
 - replace GoogleSocialIdentityProvider with passing provider-namespace to single core resources

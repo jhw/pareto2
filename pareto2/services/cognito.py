@@ -133,26 +133,14 @@ class UserPoolClient(Resource):
             "SupportedIdentityProviders": [self.format_provider(provider)
                                            for provider in self.identity_providers],
             "CallbackURLs": [
-                {"Fn::Sub": f"https://${{AppUserPoolDomain}}.auth.${{AWS::Region}}.amazoncognito.com/oauth2/idpresponse"} # ref to UserPoolDomain returns Domain property
-
             ],
             "LogoutURLs": [
-                {"Fn::Sub": f"https://${{DomainName}}"}
             ]
         }
 
     @property
     def visible(self):
         return True
-
-class UserPoolDomain(Resource):
-
-    @property
-    def aws_properties(self):
-        return {
-            "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")},
-            "Domain": {"Fn::Sub": f"${{AWS::StackName}}"}
-        }
 
 class UserPoolIdentityProvider(Resource):
 
