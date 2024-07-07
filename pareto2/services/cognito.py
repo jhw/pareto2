@@ -22,14 +22,21 @@ class SimpleEmailUserPool(UserPool):
         super().__init__(namespace = namespace,
                          **kwargs)
         self.attributes = attributes
+
+    """
+    Standard Cognito sign up will trigger PostConfirmation, but social login doesn't really have a (sign up) confirmation step, only (login) authentication
+    """
     
+        
     @property
     def lambda_config(self):
         custom_attributes_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-attributes-function"), "Arn"]}
         return {
-            "PostConfirmation": custom_attributes_arn # PostAuthentication is executed on each login
+            key: custom_attributes_arn 
+            for key in ["PostConfirmation", # Cognito
+                        "PostAuthentication"] # Google
         }
-
+    
 
     """
     If you have UsernameAttributes set to email but do not have UsernameConfiguration set, Cognito will allow users to sign in with their email address, but it will not guarantee that the userName property is set to the email. The userName field may still contain a UUID or another value assigned by Cognito.

@@ -1,9 +1,5 @@
 ### short 
 
-- ask chatgpt what it thinks are the best callbacks
-- connect user attributes callback to multiple cognito hooks
-- check google project for callback and logout urls
-
 ### medium
 
 - replace event source mapping with eventbridge pipes
@@ -119,6 +115,9 @@
 
 ### done
 
+- ask chatgpt what it thinks are the best callbacks
+- connect user attributes callback to multiple cognito hooks
+- check google project for callback and logout urls
 - user attributes lambda to check if custom attributes exist prior to write
 - add back user pool domain with notes
 - refactor user pool client callback and logout urls to reflect ui endpoints
