@@ -1,6 +1,5 @@
 ### short 
 
-- user attributes lambda to check if custom attributes exist prior to write
 - ask chatgpt what it thinks are the best callbacks
 - connect user attributes callback to multiple cognito hooks
 - check google project for callback and logout urls
@@ -120,6 +119,7 @@
 
 ### done
 
+- user attributes lambda to check if custom attributes exist prior to write
 - add back user pool domain with notes
 - refactor user pool client callback and logout urls to reflect ui endpoints
 - replace allowed origin with explicit dev/prod ui endpoints
