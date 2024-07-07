@@ -1,7 +1,10 @@
 ### short 
 
+- add back user pool domain with notes
+- user attributes lambda to check if custom attributes exist prior to write
+- ask chatgpt what it thinks are the best callbacks
 - connect user attributes callback to multiple cognito hooks
-- user attributes lambda to check if attributes exist before writing them 
+- check google project for callback and logout urls
 
 ### medium
 
