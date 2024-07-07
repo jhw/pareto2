@@ -145,7 +145,7 @@ class UserPoolClient(Resource):
     @property
     def visible(self):
         return True
-
+    
 class UserPoolIdentityProvider(Resource):
 
     Scopes = ["openid", "email", "profile"]
@@ -188,12 +188,26 @@ class UserPoolIdentityProvider(Resource):
         }    
 
 """
+Suggestion is that Amplify auth requires a UserPoolDomain as part of federated login workflow, even if hosted UI is not being used
+"""
+    
+class UserPoolDomain(Resource):
+
+    @property
+    def aws_properties(self):
+        return {
+            "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")},
+            "Domain": {"Fn::Sub": f"${{AWS::StackName}}"}
+        }
+    
+"""
 You should be able to use a User pool without an Identity pool, but experience of the Flutter Amplify libraries suggests an Identity pool is always required, even if not used
 
 All this Identity pool code is therefore boilerplate; not really clear if it should live in services or recipes; for now, keep it in the former
 
 Could set AllowUnauthenticatedIdentities to False, but don't know precisely what Amplify Auth requires from IdentityPool
 """
+
 
 class IdentityPool(Resource):
 

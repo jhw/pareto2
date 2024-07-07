@@ -125,6 +125,7 @@ class WebApi(AlertsMixin):
             self.append(UserPoolIdentityProvider(namespace = namespace,
                                                  provider_namespace = provider))
         for klass in [Authorizer,
+                      UserPoolDomain,
                       IdentityPool,
                       IdentityPoolAuthenticatedRole,
                       IdentityPoolAuthenticatedPolicy,

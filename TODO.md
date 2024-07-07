@@ -1,6 +1,5 @@
 ### short 
 
-- add back user pool domain with notes
 - user attributes lambda to check if custom attributes exist prior to write
 - ask chatgpt what it thinks are the best callbacks
 - connect user attributes callback to multiple cognito hooks
@@ -121,6 +120,7 @@
 
 ### done
 
+- add back user pool domain with notes
 - refactor user pool client callback and logout urls to reflect ui endpoints
 - replace allowed origin with explicit dev/prod ui endpoints
 - remove user pool domain
