@@ -206,6 +206,16 @@ class UserPoolDomain(Resource):
             "UserPoolId": {"Ref": H(f"{self.namespace}-user-pool")},
             "Domain": {"Fn::Sub": f"${{AWS::StackName}}"}
         }
+
+    @property
+    def output_value(self):
+        domain_ref = H(f"{self.namespace}-user-pool-domain")
+        return {"Fn::Sub": f"${{{domain_ref}}}.auth.${{AWS::Region}}.amazoncognito.com"}
+
+    @property
+    def visible(self):
+        return True
+    
     
 """
 You should be able to use a User pool without an Identity pool, but experience of the Flutter Amplify libraries suggests an Identity pool is always required, even if not used

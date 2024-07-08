@@ -2,13 +2,7 @@
 
 ### medium
 
-- replace event source mapping with eventbridge pipes
-
-- eventbridge inline code
-  - use logging.warn for messages over 256kb
-  - continue don't exit  
 - iam optimiser
-
 - email login
 - script to dump template
 - suppress message on create confirmed user
@@ -17,6 +11,14 @@
 - validate test events against patterns in infra
 - validate singleton props consistency before silently overwriting
 - python version as environment variable
+
+### pending 
+
+- replace event source mapping with eventbridge pipes
+
+- eventbridge inline code
+  - use logging.warn for messages over 256kb
+  - continue don't exit
 
 ### long
 

@@ -65,6 +65,10 @@ class Resource:
         return {}
 
     @property
+    def output_value(self):        
+        return {"Ref": hungarorise(self.resource_name)}
+    
+    @property
     def visible(self):
         return False
     

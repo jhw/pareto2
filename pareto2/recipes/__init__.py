@@ -89,7 +89,7 @@ class Template(dict):
         dict.__init__(self, {"Parameters": {},
                              "Resources": dict([resource.render()
                                                 for resource in resources]),
-                             "Outputs": {H(resource.resource_name): {"Value": {"Ref": H(resource.resource_name)}}
+                             "Outputs": {H(resource.resource_name): {"Value": resource.output_value}
                                          for resource in resources
                                          if resource.visible}})
 
