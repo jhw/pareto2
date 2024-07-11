@@ -195,7 +195,9 @@ class UserPoolIdentityProvider(Resource):
         }    
 
 """
-Suggestion is that Amplify auth requires a UserPoolDomain as part of federated login workflow, even if hosted UI is not being used
+UserPoolDomain is for connection between Cognito backend and federated identity providers
+
+Current info suggests you don't define the URL here in aws-exports.oauth.domain if you are not using the Hosted UI
 """
     
 class UserPoolDomain(Resource):
