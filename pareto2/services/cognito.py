@@ -126,7 +126,7 @@ class UserPoolClient(Resource):
             return providers[provider]
         else:
             raise RuntimeError(f"{provider} not recognised as cognito identity provider")
-    
+
     @property
     def aws_properties(self):
         return {
@@ -136,6 +136,15 @@ class UserPoolClient(Resource):
                 "ALLOW_USER_SRP_AUTH", # for web access
                 "ALLOW_ADMIN_USER_PASSWORD_AUTH", # for localhost testing
                 "ALLOW_REFRESH_TOKEN_AUTH"
+            ],
+            "AllowedOAuthFlows": [
+                "code"
+            ],
+            "AllowedOAuthFlowsUserPoolClient": True,
+            "AllowedOAuthScopes": [
+                "openid",
+                "email",
+                "profile"
             ],
             "SupportedIdentityProviders": [self.format_provider(provider)
                                            for provider in self.identity_providers],
@@ -195,9 +204,9 @@ class UserPoolIdentityProvider(Resource):
         }    
 
 """
-UserPoolDomain is for connection between Cognito backend and federated identity providers
-
-Current info suggests you don't define the URL here in aws-exports.oauth.domain if you are not using the Hosted UI
+UserPoolDomain has a number of different uses
+- brokering OAuth connection between client and identity provider
+- supporting Hosted UI
 """
     
 class UserPoolDomain(Resource):

@@ -58,7 +58,7 @@ def filter_packages(root):
     
 setuptools.setup(
     name="pareto2",
-    version="0.8.67",
+    version="0.8.68",
     author="jhw",
     author_email="justin.worrall@gmail.com",
     description="An opinionated Cloudformation generator",
