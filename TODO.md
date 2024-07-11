@@ -1,6 +1,6 @@
 ### short 
 
-- Cognito UserPoolClient OAuth flow fields
+- rename /oauth/callback as /oauth2/callback
 
 ### medium
 
@@ -119,6 +119,7 @@
 
 ### done
 
+- Cognito UserPoolClient OAuth flow fields
 - ask chatgpt what it thinks are the best callbacks
 - connect user attributes callback to multiple cognito hooks
 - check google project for callback and logout urls
