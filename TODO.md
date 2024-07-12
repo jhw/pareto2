@@ -1,5 +1,8 @@
 ### short 
 
+- custom_attributes needs to look up user by username and not email 
+- maybe don't need the post login callback
+
 ### medium
 
 - rename /oauth/callback as /oauth2/callback
