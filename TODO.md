@@ -1,9 +1,9 @@
 ### short 
 
-- rename /oauth/callback as /oauth2/callback
-
 ### medium
 
+- rename /oauth/callback as /oauth2/callback
+- secrets
 - iam optimiser
 - email login
 - script to dump template
