@@ -3,11 +3,14 @@ from pareto2.services import Resource
 
 from pareto2.services.iam import *
 
+"""
+- don't inclue `sub` in attribute mapping as it should be immutable
+"""
+
 SocialIdentityProviders = {
     "google": {
         "id": "Google",
-        "attribute-mapping": {key:key for key in ["sub",
-                                                  "email",
+        "attribute-mapping": {key:key for key in ["email",
                                                   "email_verified",
                                                   "name",
                                                   "given_name",
