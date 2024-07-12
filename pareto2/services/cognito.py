@@ -4,10 +4,24 @@ from pareto2.services import Resource
 from pareto2.services.iam import *
 
 SocialIdentityProviders = {
-    "google": "Google",
-    "facebook": "Facebook",
-    "amazon": "LoginWithAmazon",
-    "apple": "SignInWithApple"
+    "google": {
+        "id": "Google",
+        "attribute-mapping": {key:key for key in ["sub",
+                                                  "email",
+                                                  "email_verified",
+                                                  "name",
+                                                  "given_name",
+                                                  "family_name"]}
+    },
+    "facebook": {
+        "id": "Facebook"
+    },
+    "amazon": {
+        "id": "LoginWithAmazon"
+    },
+    "apple": {
+        "id": "SignInWithApple"
+    }
 }
 
 class UserPool(Resource):
@@ -119,11 +133,11 @@ class UserPoolClient(Resource):
     COGNITO, Facebook, Google, SignInWithApple, and LoginWithAmazon.
     """
                 
-    def format_provider(self, provider, providers = SocialIdentityProviders):
+    def provider_id(self, provider, providers = SocialIdentityProviders):
         if provider == "cognito":
             return "COGNITO"
         elif provider in providers:
-            return providers[provider]
+            return providers[provider]["id"]
         else:
             raise RuntimeError(f"{provider} not recognised as cognito identity provider")
 
@@ -146,7 +160,7 @@ class UserPoolClient(Resource):
                 "email",
                 "profile"
             ],
-            "SupportedIdentityProviders": [self.format_provider(provider)
+            "SupportedIdentityProviders": [self.provider_id(provider)
                                            for provider in self.identity_providers],
             "CallbackURLs": [
                 {"Fn::Sub": f"${{DevUiEndpoint}}/oauth/callback"},
@@ -165,7 +179,7 @@ class UserPoolClient(Resource):
 class UserPoolIdentityProvider(Resource):
 
     Scopes = ["openid", "email", "profile"]
-
+    
     """
     NB note switch of namespace
     """
@@ -190,13 +204,21 @@ class UserPoolIdentityProvider(Resource):
     @property
     def provider_type(self, providers = SocialIdentityProviders):
         if self.namespace in providers:
-            return providers[self.namespace]
+            return providers[self.namespace]["id"]
         else:
             raise RuntimeError(f"{self.namespace} not recognised as cognito identity provider")
 
     @property
+    def provider_attribute_mapping(self, providers = SocialIdentityProviders):
+        if self.namespace in providers:
+            return providers[self.namespace]["attribute-mapping"]
+        else:
+            raise RuntimeError(f"{self.namespace} not recognised as cognito identity provider")
+        
+    @property
     def aws_properties(self):
         return {
+            "AttributeMapping": self.provider_attribute_mapping,
             "ProviderDetails": self.provider_details,
             "ProviderName": self.namespace.capitalize(),
             "ProviderType": self.provider_type,
