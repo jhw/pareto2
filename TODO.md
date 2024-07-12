@@ -1,7 +1,7 @@
 ### short 
 
 ```
-Cannot modify the non-mutable attribute sub
+[ERROR] UserNotFoundException: An error occurred (UserNotFoundException) when calling the AdminGetUser operation: User does not exist.Traceback (most recent call last):  File "/var/task/index.py", line 22, in handler    for attr in cognito.admin_get_user(  File "/var/runtime/botocore/client.py", line 553, in _api_call    return self._make_api_call(operation_name, kwargs)  File "/var/runtime/botocore/client.py", line 1009, in _make_api_call    raise error_class(parsed_response, operation_name)
 ```
 
 ### medium
@@ -122,6 +122,11 @@ Cannot modify the non-mutable attribute sub
   - think topic, pattern probably more naturalg
 
 ### done
+
+```
+Cannot modify the non-mutable attribute sub
+```
+
 
 - Cognito UserPoolClient OAuth flow fields
 - ask chatgpt what it thinks are the best callbacks
