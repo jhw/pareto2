@@ -11,6 +11,10 @@ latest info suggests you do *not* use `custom:` prefix when defining in cloudfor
 This routine might get called by a load of different Cognito Lambda callbacks, because it seems one can never be precisely sure what callback gets called by what action in different sign up / confirm routines (eg Cognito username/password vs social login); hence makes sense to check if a custom attribute exists before blindly writing it
 """
 
+"""
+Catching client error on admin_get_user as this is what is thrown if a user doesn't exist; then catching similar for admin_update_user_attributes simply for good measure
+"""
+
 import boto3
 import json
 import os
