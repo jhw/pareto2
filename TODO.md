@@ -1,13 +1,17 @@
 ### short 
 
-- custom_attributes needs to look up user by username and not email 
-- maybe don't need the post login callback
+- add email protection to create_confirmed_user
+- add email protection to delete_user
+- refactor delete_user to look up email attributes
+- replace email refs in cognito callbacks with userName refs
+- check for any other email refs
 
 ### medium
 
-- rename /oauth/callback as /oauth2/callback
-- secrets
+- consider removing PostAuthentication callback
 - iam optimiser
+- secrets
+
 - email login
 - script to dump template
 - suppress message on create confirmed user
