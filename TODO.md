@@ -1,6 +1,5 @@
 ### short 
 
-- refactor delete_user to look up email attributes
 - replace email refs in cognito callbacks with userName refs
 - check for any other email refs
 
@@ -124,6 +123,7 @@
 
 ### done
 
+- refactor delete_user to look up email attributes
 - add email protection to create_confirmed_user
 - add email protection to delete_user
 
