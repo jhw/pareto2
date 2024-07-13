@@ -1,7 +1,5 @@
 ### short 
 
-- add email protection to create_confirmed_user
-- add email protection to delete_user
 - refactor delete_user to look up email attributes
 - replace email refs in cognito callbacks with userName refs
 - check for any other email refs
@@ -125,6 +123,9 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- add email protection to create_confirmed_user
+- add email protection to delete_user
 
 ```
 [ERROR] UserNotFoundException: An error occurred (UserNotFoundException) when calling the AdminGetUser operation: User does not exist.Traceback (most recent call last):  File "/var/task/index.py", line 22, in handler    for attr in cognito.admin_get_user(  File "/var/runtime/botocore/client.py", line 553, in _api_call    return self._make_api_call(operation_name, kwargs)  File "/var/runtime/botocore/client.py", line 1009, in _make_api_call    raise error_class(parsed_response, operation_name)

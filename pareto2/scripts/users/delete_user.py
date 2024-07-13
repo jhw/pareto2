@@ -2,6 +2,8 @@ from botocore.exceptions import ClientError
 
 import boto3, os, re, sys
 
+EmailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
 def hungarorise(text):
     return "".join([tok.capitalize()
                     for tok in re.split("\\-|\\_", text)])
@@ -20,6 +22,8 @@ if __name__ == "__main__":
         if len(sys.argv) < 4:
             raise RuntimeError("please enter stackname, namespace, email")
         stackname, namespace, email = sys.argv[1:4]
+        if not re.match(EmailRegex, email):
+            raise RuntimeError("invalid email format")
         cf = boto3.client("cloudformation")
         outputs = fetch_outputs(cf, stackname)
         userpoolkey = hungarorise(f"{namespace}-user-pool")
