@@ -1,30 +1,21 @@
 ### short 
 
-- replace email refs in cognito callbacks with userName refs
-- check for any other email refs
+- consider removing PostAuthentication callback
+- check using admin_create_user to supress message sending
 
 ### medium
 
-- consider removing PostAuthentication callback
+- eventbridge pipes
 - iam optimiser
+- list_events.py should cutoff on time window basis
 - secrets
 
-- email login
+- email login workflow
 - script to dump template
-- suppress message on create confirmed user
 - use moto events code to validate custom eventbridge detail
-- list_events.py should cutoff on time window basis
 - validate test events against patterns in infra
 - validate singleton props consistency before silently overwriting
 - python version as environment variable
-
-### pending 
-
-- replace event source mapping with eventbridge pipes
-
-- eventbridge inline code
-  - use logging.warn for messages over 256kb
-  - continue don't exit
 
 ### long
 
@@ -39,7 +30,10 @@
 
 ### thoughts
 
+- suppress message on create confirmed user?
+  - not sure is possible
 - infer existence of state variables from lambdas?
+  - not sure is desirable
 - defaults for layers, permissions, size, timeout?
   - not sure this is an improvement?
 - don't you need some kind of zip writing util?
@@ -123,6 +117,8 @@
 
 ### done
 
+- replace email refs in cognito callbacks with userName refs
+- check for any other email refs
 - refactor delete_user to look up email attributes
 - add email protection to create_confirmed_user
 - add email protection to delete_user

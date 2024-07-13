@@ -22,10 +22,9 @@ from botocore.exceptions import ClientError
 
 def handler(event, context):
     user_pool_id = event["userPoolId"]
-    username = event["request"]["userAttributes"]["email"]
+    username = event["userName"]
     attributes = json.loads(os.environ["USER_CUSTOM_ATTRIBUTES"])
-    cognito = boto3.client("cognito-idp")
-    
+    cognito = boto3.client("cognito-idp")    
     try:
         existing_attributes = {attr["Name"].split(":")[1]: attr["Value"]
                                for attr in cognito.admin_get_user(
@@ -40,12 +39,10 @@ def handler(event, context):
         else:
             print(f"An error occurred: {e}")
         return event  # Return the event regardless of the error
-
     new_attributes = [{'Name': "custom:%s" % attr["name"],
                        'Value': str(attr["value"])}
                       for attr in attributes
                       if attr["name"] not in existing_attributes]
-
     if new_attributes:
         try:
             cognito.admin_update_user_attributes(
@@ -56,7 +53,6 @@ def handler(event, context):
         except ClientError as e:
             print(f"An error occurred while updating user attributes: {e}")
             return event  # Return the event even if updating attributes fails    
-
     return event  # Cognito Lambda triggers must return the event
 
 

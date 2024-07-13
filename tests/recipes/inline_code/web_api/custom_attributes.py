@@ -9,7 +9,7 @@ version: "1.0"
 triggerSource: "whatevs_man" 
 region: "us-west-2"
 userPoolId: "us-west-2_aaaaaaaaa" # overwritten by test case
-userName: "janedoe"
+userName: "foo@bar.com"
 callerContext:
   awsSdkVersion: "aws-sdk-unknown-unknown"
   clientId: "1example23456789"
@@ -17,7 +17,7 @@ request:
   userAttributes:
     sub: "12345678-1234-1234-1234-123456789012"
     email_verified: "true"
-    email: "foo@bar.com" # consistent with Username
+    email: "something@different.com"
   validationData:
     someKey: "someValue"
 response:

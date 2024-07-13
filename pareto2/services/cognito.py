@@ -54,11 +54,11 @@ class SimpleEmailUserPool(UserPool):
                         "PostAuthentication"] # Google
         }
     
-
     """
-    If you have UsernameAttributes set to email but do not have UsernameConfiguration set, Cognito will allow users to sign in with their email address, but it will not guarantee that the userName property is set to the email. The userName field may still contain a UUID or another value assigned by Cognito.
-
-    To ensure that the userName property is set to the email, you need to explicitly configure the UsernameConfiguration in your CloudFormation template.
+    email attribute is configured for email aliasing, which allows email to act as an alias for username
+    if you create a user with an email- like username, it will auto populate the email field with that username
+    some processes (eg Google federated login) will randomise the username, but with email aliasing you can guarantee they won't create multiple users with the same email attribute
+    email aliasing allows clients to login with email
     """
 
     @property
