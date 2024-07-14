@@ -83,3 +83,36 @@ The Redirect URI under Credentials is incorrect; needs to be -
 https://polyreader.auth.eu-west-1.amazoncognito.com/oauth2/idpresponse
 
 So the callback and logout URLs probably appear under Javascript origins
+
+### update 14/07/24
+
+#### Credentials
+
+##### Authorized Javascript Origins 
+
+http://localhost:3000
+
+https://react-app.polyreader.net
+
+##### Authorized redirect URIs
+
+https://polyreader.auth.eu-west-1.amazoncognito.com/oauth2/idpresponse
+
+
+#### OAuth consent screen
+
+##### App Domain
+
+https://home.polyreader.net
+
+##### Authorized domains
+
+polyreader.auth.eu-west-1.amazoncognito.com
+
+polyreader.net
+
+---
+
+Note that /oauth/callback and /logout don't appear anywhere ie Google is concerned with domains and not particular paths
+
+So you should be able to implement Hash Router by sychronising callback and logout URIs at cognito and aws-exports levels
