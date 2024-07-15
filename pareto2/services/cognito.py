@@ -144,6 +144,10 @@ class UserPoolClient(Resource):
         else:
             raise RuntimeError(f"{provider} not recognised as cognito identity provider")
 
+    """
+    Cognito does not support hashed callback paths
+    """
+        
     @property
     def aws_properties(self):
         return {
