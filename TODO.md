@@ -11,6 +11,7 @@
 - list_events.py should cutoff on time window basis
 - secrets
 
+- replace apigatewayv1 website pattern with cloudfront equivalent
 - email login workflow
 - script to dump template
 - use moto events code to validate custom eventbridge detail
