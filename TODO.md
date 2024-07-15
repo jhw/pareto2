@@ -1,5 +1,6 @@
 ### short 
 
+- rename SimpleEmailUserPool as EmailAliasedUserPool
 - consider removing PostAuthentication callback
 - check using admin_create_user to supress message sending
 

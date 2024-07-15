@@ -144,6 +144,10 @@ class UserPoolClient(Resource):
         else:
             raise RuntimeError(f"{provider} not recognised as cognito identity provider")
 
+    """
+    NB callback paths are hashed to work with a combination of react-router HashRouter and (prod) S3 bucket hosting
+    """
+        
     @property
     def aws_properties(self):
         return {
@@ -166,12 +170,12 @@ class UserPoolClient(Resource):
             "SupportedIdentityProviders": [self.provider_id(provider)
                                            for provider in self.identity_providers],
             "CallbackURLs": [
-                {"Fn::Sub": f"${{DevUiEndpoint}}/oauth/callback"},
-                {"Fn::Sub": f"${{ProdUiEndpoint}}/oauth/callback"}                
+                {"Fn::Sub": f"${{DevUiEndpoint}}/#/oauth/callback"}, 
+                {"Fn::Sub": f"${{ProdUiEndpoint}}/#/oauth/callback"}                
             ],
             "LogoutURLs": [
-                {"Fn::Sub": f"${{DevUiEndpoint}}/logout"},
-                {"Fn::Sub": f"${{ProdUiEndpoint}}/logout"}                
+                {"Fn::Sub": f"${{DevUiEndpoint}}/#/logout"},
+                {"Fn::Sub": f"${{ProdUiEndpoint}}/#/logout"}                
             ]
         }
 
