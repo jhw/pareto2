@@ -10,11 +10,7 @@ from pareto2.services.iam import *
 SocialIdentityProviders = {
     "google": {
         "id": "Google",
-        "attribute-mapping": {key:key for key in ["email",
-                                                  "email_verified",
-                                                  "name",
-                                                  "given_name",
-                                                  "family_name"]}
+        "attribute-mapping": {key:key for key in ["email"]}
     },
     "facebook": {
         "id": "Facebook"

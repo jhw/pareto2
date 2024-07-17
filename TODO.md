@@ -1,6 +1,5 @@
 ### short 
 
-- restrict cognito mapping to email only
 - cognito cloudwatch logging
 - rename simple email user pool as email aliased user pool
 - fix queue related bug in migrations scripts 
@@ -123,6 +122,7 @@
 
 ### done
 
+- restrict cognito mapping to email only
 - replace email refs in cognito callbacks with userName refs
 - check for any other email refs
 - refactor delete_user to look up email attributes
