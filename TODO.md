@@ -1,16 +1,20 @@
 ### short 
 
-- rename SimpleEmailUserPool as EmailAliasedUserPool
-- consider removing PostAuthentication callback
-- check using admin_create_user to supress message sending
+- restrict cognito mapping to email only
+- cognito cloudwatch logging
+- rename simple email user pool as email aliased user pool
+- fix queue related bug in migrations scripts 
+- remove redirect from user pool
+- allow API to be defined in config without user pool
+- revised create confirmed user with message suppression 
 
 ### medium
 
+- new react hosting recipe
 - eventbridge pipes
 - iam optimiser
 - list_events.py should cutoff on time window basis
 - secrets
-
 - replace apigatewayv1 website pattern with cloudfront equivalent
 - email login workflow
 - script to dump template
