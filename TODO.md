@@ -1,7 +1,6 @@
 ### short 
 
 - cognito cloudwatch logging
-- rename simple email user pool as email aliased user pool
 - fix queue related bug in migrations scripts 
 - remove redirect from user pool
 - allow API to be defined in config without user pool
@@ -122,6 +121,7 @@
 
 ### done
 
+- rename simple email user pool as email aliased user pool
 - restrict cognito mapping to email only
 - replace email refs in cognito callbacks with userName refs
 - check for any other email refs

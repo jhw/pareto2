@@ -118,8 +118,8 @@ class WebApi(AlertsMixin):
                          namespace,
                          userpool,
                          identity_providers = ["google"]):
-        self.append(SimpleEmailUserPool(namespace = namespace,
-                                        attributes = userpool["attributes"]))
+        self.append(EmailAliasedUserPool(namespace = namespace,
+                                         attributes = userpool["attributes"]))
         self.append(UserPoolClient(namespace = namespace,
                                    identity_providers = identity_providers))
         for provider in identity_providers:

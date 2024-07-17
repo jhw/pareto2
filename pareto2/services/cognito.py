@@ -29,7 +29,7 @@ class UserPool(Resource):
     def visible(self):
         return True
 
-class SimpleEmailUserPool(UserPool):
+class EmailAliasedUserPool(UserPool):
 
     def __init__(self, namespace, attributes, **kwargs):
         super().__init__(namespace = namespace,
