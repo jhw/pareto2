@@ -1,20 +1,17 @@
 ### short 
 
-- fix queue related bug in migrations scripts 
 - cognito cloudwatch logging
 - allow API to be defined in config without user pool
-- revised create confirmed user with message suppression 
+- revised create confirmed user with message suppression
+- list_events.py should cutoff on time window basis
 
 ### medium
 
-- new react hosting recipe
+- secrets
+- react host recipe
 - eventbridge pipes
 - iam optimiser
-- list_events.py should cutoff on time window basis
-- secrets
-- replace apigatewayv1 website pattern with cloudfront equivalent
 - email login workflow
-- script to dump template
 - use moto events code to validate custom eventbridge detail
 - validate test events against patterns in infra
 - validate singleton props consistency before silently overwriting
@@ -120,6 +117,7 @@
 
 ### done
 
+- fix queue related bug in migrations scripts 
 - remove redirect from user pool
 - rename simple email user pool as email aliased user pool
 - restrict cognito mapping to email only

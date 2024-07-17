@@ -120,7 +120,7 @@ A queue worker has an event defined but possibly not a pattern, relying on sourc
 def handle_queue(struct, modstruct):
     modstruct["type"] = "worker"
     modstruct["event"] = {
-        "type": "queue"
+        "type": "queue",
         "pattern": {
             "detail": {
                 "hello": "world"
