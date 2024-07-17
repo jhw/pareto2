@@ -1,8 +1,7 @@
 ### short 
 
-- cognito cloudwatch logging
 - fix queue related bug in migrations scripts 
-- remove redirect from user pool
+- cognito cloudwatch logging
 - allow API to be defined in config without user pool
 - revised create confirmed user with message suppression 
 
@@ -121,6 +120,7 @@
 
 ### done
 
+- remove redirect from user pool
 - rename simple email user pool as email aliased user pool
 - restrict cognito mapping to email only
 - replace email refs in cognito callbacks with userName refs

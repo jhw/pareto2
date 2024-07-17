@@ -64,51 +64,15 @@ class ProxyPolicy(Policy):
         super().__init__(namespace = namespace,
                          permissions = permissions)
 
-class RedirectMethod(Method):
-
-    def __init__(self, namespace, api_namespace, path = "index.html"):
-        super().__init__(namespace = namespace)
-        self.api_namespace = api_namespace
-        self.path = path
-
-    @property
-    def _integration(self):
-        request_templates = {"application/json": "{\"statusCode\" : 302}"}
-        domain_name_ref = H("domain-name")
-        redirect_url = {"Fn::Sub": f"'https://${{{domain_name_ref}}}/{self.path}'"}
-        integration_responses = [{"StatusCode": 302,
-                                  "ResponseTemplates": {"application/json": "{}"},
-                                  "ResponseParameters": {"method.response.header.Location": redirect_url}}]
-        return {"Type": "MOCK",
-                "RequestTemplates": request_templates,
-                "IntegrationResponses": integration_responses}      
-        
-    @property
-    def aws_properties(self):
-        method_responses = [{"StatusCode": 302,
-                             "ResponseParameters": {"method.response.header.Location": True}}]
-        resource_id = {"Fn::GetAtt": [H(f"{self.api_namespace}-rest-api"), "RootResourceId"]}
-        return {"HttpMethod": "GET",
-                "AuthorizationType": "NONE",
-                "MethodResponses": method_responses,
-                "Integration": self._integration,
-                "ResourceId": resource_id, 
-                "RestApiId": {"Ref": H(f"{self.api_namespace}-rest-api")}}
-
 """
 This is not currently CORS enabled. You could do it but it would be a big ball ache. You would need to define a CorsMethod which did all the CORS pre- flight stuff. This is possible, the code exists in branches from approx 23/03/24 - 30/03/24. But then you would also need ProxyMethod to return the CORS headers that the Lambda does in the APIGatewayV2 web-api recipe. All in all it's probably too much of a pain - this is supposed to be a simple pattern! If you really need CORS then you are probably better relying on the web-api recipe.
 """
 
-"""
-BinaryMediaTypes = ["*/*"] is required if you want to get this pattern to serve any kind of binary data from S3; but enabling it messes up the redirect; hence the either/or switch enabled by has_binary_media. As per CORS, I am simply not willing to wrestle with APIGateway any more to fix this, in what is likely to be a minority- use pattern.
-"""
-
 class Website(Recipe):    
 
-    def __init__(self, namespace, binary_media = True):
+    def __init__(self, namespace):
         super().__init__()
-        self.append(RestApi(namespace = namespace,
-                            binary_media_types = ["*/*"] if binary_media else []))
+        self.append(RestApi(namespace = namespace))
         for klass in [Stage,
                       ProxyResource,
                       ProxyRole,
@@ -118,7 +82,7 @@ class Website(Recipe):
                       DistributionRecordSet, # NB                   
                       StreamingBucket]:
             self.append(klass(namespace = namespace))
-        method_attrs = ["proxy", "redirect"] if not binary_media else ["proxy"]            
+        method_attrs = ["proxy"]
         for attr in method_attrs:
             klass = eval("%sMethod" % attr.capitalize())
             self.append(klass(namespace = f"{namespace}-{attr}",

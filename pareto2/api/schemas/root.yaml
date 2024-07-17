@@ -30,8 +30,6 @@ properties:
     properties:
       public:
         type: boolean
-      binary-media:
-        type: boolean
     required:
       - public
     additionalProperties: false

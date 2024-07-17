@@ -135,9 +135,7 @@ class Templater(dict):
                                  userpool = userpool)
         if "bucket" in struct:
             if struct["bucket"]["public"]:
-                binary_media = struct["bucket"]["binary-media"] if "binary-media" in struct["bucket"] else False
-                recipe += Website(namespace = namespace,
-                                  binary_media = binary_media)
+                recipe += Website(namespace = namespace)
             else:
                 recipe.append(StreamingBucket(namespace = namespace))
         if "builder" in struct:
