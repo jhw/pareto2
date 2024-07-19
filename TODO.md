@@ -1,16 +1,18 @@
 ### short 
 
+
+### medium
+
+- SPA host receipe
+- user callbacks to be piped to eventbridge first
 - cognito cloudwatch logging
 - allow API to be defined in config without user pool
 - revised create confirmed user with message suppression
 - list_events.py should cutoff on time window basis
-
-### medium
+- iam optimiser
 
 - secrets
-- react host recipe
 - eventbridge pipes
-- iam optimiser
 - email login workflow
 - use moto events code to validate custom eventbridge detail
 - validate test events against patterns in infra
@@ -25,7 +27,6 @@
 - xray and tracing
 - step functions
 - appsync
-- secrets
 - winglang
 
 ### thoughts
