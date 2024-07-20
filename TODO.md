@@ -2,7 +2,7 @@
 
 - revised create confirmed user with message suppression
 - allow API to be defined in config without user pool
-- user callbacks to be piped to eventbridge first
+- user callbacks to be piped to eventbridge first >> 0.8.54
 
 ### medium
 
