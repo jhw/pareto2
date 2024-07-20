@@ -1,13 +1,13 @@
 ### short 
 
+- revised create confirmed user with message suppression
+- allow API to be defined in config without user pool
+- user callbacks to be piped to eventbridge first
 
 ### medium
 
-- SPA host receipe
-- user callbacks to be piped to eventbridge first
+- replace apigw website with cloudfront version
 - cognito cloudwatch logging
-- allow API to be defined in config without user pool
-- revised create confirmed user with message suppression
 - list_events.py should cutoff on time window basis
 - iam optimiser
 
