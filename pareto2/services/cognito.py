@@ -37,17 +37,16 @@ class EmailAliasedUserPool(UserPool):
         self.attributes = attributes
 
     """
-    Standard Cognito sign up will trigger PostConfirmation, but social login doesn't really have a (sign up) confirmation step, only (login) authentication
-    """
-    
+    Hard to know which Cognito callbacks are triggered by which parts of which flow, so best to bind to the most sensible ones (with respect to user attributes and my specific login flows of a) standard username + password and b) social login); ensure callback knows it could be triggered more than once; and hope for the best
+    """    
         
     @property
     def lambda_config(self):
         custom_attributes_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-attributes-function"), "Arn"]}
         return {
             key: custom_attributes_arn 
-            for key in ["PostConfirmation", # Cognito
-                        "PostAuthentication"] # Google
+            for key in ["PostConfirmation",
+                        "PostAuthentication"]
         }
     
     """
