@@ -1,6 +1,5 @@
 ### short [01-cognito-events-push]
 
-- update permissions required for events push
 - update cognito hooks
 - add userpool event handler block to templater
 - add userpool event to worker.yaml schema definition
@@ -124,6 +123,7 @@
 
 ### done
 
+- update permissions required for events push
 - add events push code
 - add events push test
 - clean up user attributes code

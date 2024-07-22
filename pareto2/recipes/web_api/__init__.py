@@ -35,6 +35,7 @@ class CustomAttributesPolicy(Policy):
                          permissions = [{"action": ["logs:CreateLogGroup",
                                                     "logs:CreateLogStream",
                                                     "logs:PutLogEvents"]},
+                                        {"action": "events:PutEvents"},
                                         {"action": ["cognito-idp:AdminGetUser",
                                                     "cognito-idp:AdminUpdateUserAttributes"]}])
 
