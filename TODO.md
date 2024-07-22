@@ -1,6 +1,7 @@
 ### short [01-cognito-events-push]
 
-- add userpool event to worker.yaml schema definition
+- check userpool refs in schemas/root.yaml
+- add userpool event test
 - run tests
 - check tests are being called
 
@@ -121,6 +122,7 @@
 
 ### done
 
+- add userpool event to worker.yaml schema definition
 - add userpool event handler block to templater
 - update permissions required for events push
 - add events push code
