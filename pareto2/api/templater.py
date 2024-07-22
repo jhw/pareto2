@@ -177,6 +177,8 @@ class Templater(dict):
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-queue")}]
         elif event["type"] == "table":
             event["pattern"]["source"] = [{"Ref": H(f"{namespace}-table")}]
+        elif event["type"] == "userpool":
+            event["pattern"]["source"] = [{"Ref": H(f"{namespace}-user-pool")}]
 
     """
     There is no boto3 events method which will pre- validate the format of a rule, unfortunately

@@ -1,7 +1,5 @@
 ### short [01-cognito-events-push]
 
-- update cognito hooks
-- add userpool event handler block to templater
 - add userpool event to worker.yaml schema definition
 - run tests
 - check tests are being called
@@ -123,6 +121,7 @@
 
 ### done
 
+- add userpool event handler block to templater
 - update permissions required for events push
 - add events push code
 - add events push test
