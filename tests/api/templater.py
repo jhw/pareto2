@@ -21,7 +21,7 @@ class ApiTemplaterTest(ApiTestBase):
                     bucket_name = BucketName):
         path_rewriter = lambda x: "/".join(x.split("/")[1:])
         assets = Assets({k:v for k, v in file_loader(app_name, # include setenv.sh
-                                                     path_rewriter = path_rewriter)})        
+                                                     path_rewriter = path_rewriter)})
         templater = Templater(pkg_root = pkg_root,
                               assets = assets)
         env = Env.create_from_bash(assets["setenv.sh"])
@@ -50,7 +50,8 @@ class ApiTemplaterTest(ApiTestBase):
         filter_fn = lambda x: "builder" not in x                
         assets = Assets({k:v for k, v in file_loader(app_name, # include setenv.sh
                                                      path_rewriter = path_rewriter,
-                                                     filter_fn = filter_fn)})
+                                                     filter_fn = filter_fn)
+                         if "userpool" not in k}) # because website can't have api hence userpool not created
         templater = Templater(pkg_root = pkg_root,
                               assets = assets)
         root_infra = templater.root_content["infra"]
