@@ -4,19 +4,21 @@
 
 ### medium
 
+- pre- iam optimiser requiring explicit iam role/policy provision
 - revised create confirmed user with message suppression
 - replace apigw website with cloudfront version
 - cognito cloudwatch logging
-- list_events.py should cutoff on time window basis
-- iam optimiser
 
+- iam optimiser
 - secrets
 - eventbridge pipes
 - email login workflow
 - use moto events code to validate custom eventbridge detail
 - validate test events against patterns in infra
-- validate singleton props consistency before silently overwriting
 - python version as environment variable
+
+- list_events.py should cutoff on time window basis
+- validate singleton props consistency before silently overwriting
 
 ### long
 
