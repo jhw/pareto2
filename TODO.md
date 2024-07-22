@@ -1,11 +1,19 @@
-### short 
+### short [01-cognito-events-push]
 
-- revised create confirmed user with message suppression
-- allow API to be defined in config without user pool
-- user callbacks to be piped to eventbridge first >> 0.8.54
+- add events push code
+- add events push test
+- update permissions required for events push
+- update cognito hooks
+- add userpool event handler block to templater
+- add userpool event to worker.yaml schema definition
+- run tests
+- check tests are being called
 
 ### medium
 
+- defaults
+
+- revised create confirmed user with message suppression
 - replace apigw website with cloudfront version
 - cognito cloudwatch logging
 - list_events.py should cutoff on time window basis
@@ -118,6 +126,7 @@
 
 ### done
 
+- clean up user attributes code
 - fix queue related bug in migrations scripts 
 - remove redirect from user pool
 - rename simple email user pool as email aliased user pool
