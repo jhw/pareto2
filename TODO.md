@@ -1,7 +1,5 @@
 ### short [01-cognito-events-push]
 
-- add events push code
-- add events push test
 - update permissions required for events push
 - update cognito hooks
 - add userpool event handler block to templater
@@ -126,6 +124,8 @@
 
 ### done
 
+- add events push code
+- add events push test
 - clean up user attributes code
 - fix queue related bug in migrations scripts 
 - remove redirect from user pool

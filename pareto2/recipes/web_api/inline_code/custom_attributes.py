@@ -50,7 +50,7 @@ def push_event(events, event):
              "DetailType": "event",
              "Source": event["userPoolId"]}
     batch = [entry]
-    events.put_events(Entries=batch)
+    events.put_events(Entries = batch)
     
 """
 - Cognito handler always needs to return the event! (sync call)
@@ -58,7 +58,7 @@ def push_event(events, event):
 """
     
 def handler(event, context):
-    cognito, events = (boto3.client("cognito-idp")
+    cognito, events = (boto3.client("cognito-idp"),
                        boto3.client("events"))
     user_pool_id, username = (event["userPoolId"],
                               event["userName"])
