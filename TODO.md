@@ -1,8 +1,19 @@
 ### short [01-cognito-events-push]
 
-- add userpool event test
-- run tests
-- check tests are being called
+```
+Traceback (most recent call last):
+  File "/Users/jhw/work/pareto2/env/lib/python3.10/site-packages/moto/core/models.py", line 150, in wrapper
+    result = func(*args, **kwargs)
+  File "/Users/jhw/work/pareto2/tests/api/templater.py", line 64, in test_website
+    template = templater.spawn_template(env = env)
+  File "/Users/jhw/work/pareto2/pareto2/api/templater.py", line 255, in spawn_template
+    recipe = self.spawn_recipe(validate = validate)
+  File "/Users/jhw/work/pareto2/pareto2/api/templater.py", line 250, in spawn_recipe
+    self.post_validate_env_variables(recipe, variables)
+  File "/Users/jhw/work/pareto2/pareto2/api/templater.py", line 235, in post_validate_env_variables
+    raise RuntimeError("references to unknown resources: %s" % ", ".join(missing))
+RuntimeError: references to unknown resources: app-user-pool
+```
 
 ### medium
 
@@ -121,6 +132,9 @@
 
 ### done
 
+- add userpool event test
+- run tests
+- check tests are being called
 - check userpool refs in schemas/root.yaml
 - add userpool event to worker.yaml schema definition
 - add userpool event handler block to templater
