@@ -42,14 +42,26 @@ def update_attribute_values(cognito, user_pool_id, username, attributes):
     )
 
 """
+- event pushed to Eventbridge so custom handlers can trigger off it
+"""
+
+def push_event(events, event):
+    entry = {"Detail": json.dumps(event),
+             "DetailType": "event",
+             "Source": event["userPoolId"]}
+    batch = [entry]
+    events.put_events(Entries=batch)
+    
+"""
 - Cognito handler always needs to return the event! (sync call)
 - only update values if they don't already exist; don't want to wipe over changed values with defaults (remembering that some Cognito looks trigger on every login)
 """
     
 def handler(event, context):
-    cognito = boto3.client("cognito-idp")       
-    user_pool_id = event["userPoolId"]
-    username = event["userName"]
+    cognito, events = (boto3.client("cognito-idp")
+                       boto3.client("events"))
+    user_pool_id, username = (event["userPoolId"],
+                              event["userName"])
     attributes = json.loads(os.environ["USER_CUSTOM_ATTRIBUTES"])
     existing_values = fetch_attribute_values(cognito, user_pool_id, username)
     if existing_values == None:
@@ -60,7 +72,8 @@ def handler(event, context):
                   if attr["name"] not in existing_values]
     if new_values ==[]:
         return event
-    update_attribute_values(cognito, user_pool_id, username, new_values)    
+    update_attribute_values(cognito, user_pool_id, username, new_values)
+    push_event(events, event)
     return event
 
 

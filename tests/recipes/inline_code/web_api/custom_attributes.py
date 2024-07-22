@@ -1,6 +1,6 @@
 import unittest.mock as mock
 
-from moto import mock_cognitoidp
+from moto import mock_cognitoidp, mock_events, mock_sqs
 
 import boto3, json, os, unittest, yaml
 
@@ -28,6 +28,8 @@ response:
 
 PoolName, Username = "hello-pool", "foo@bar.com"
 
+@mock_events
+@mock_sqs
 @mock_cognitoidp
 class WebApiInlineCodeCustomAttributesTest(unittest.TestCase):
 
