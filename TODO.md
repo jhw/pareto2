@@ -1,9 +1,13 @@
 ### short [01-sensible-defaults]
 
-- remove default values from demo stuff
-- add defaults code to new content classe
+- why can't root infra be deep copied?
+- why can't alarm be removed from demos config?
 
 ### medium
+
+
+- remove hello/hello nesting
+- refactor tests so directory structure matches pareto
 
 - pre- iam optimiser requiring explicit iam role/policy provision
 - revised create confirmed user with message suppression
@@ -119,6 +123,9 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- remove default values from demo stuff
+- add defaults code to new content classes
 
 ```
 Traceback (most recent call last):

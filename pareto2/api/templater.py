@@ -42,8 +42,11 @@ class RootContent:
         self._infra = infra
 
     @property
-    def infra(self):
-        print (self._infra)
+    def infra(self):        
+        """
+        infra = copy.deepcopy(self._infra)
+        return infra
+        """
         return self._infra
 
 class LambdaContent:
