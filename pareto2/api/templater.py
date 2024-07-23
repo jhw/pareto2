@@ -36,6 +36,31 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
+class RootContent:
+
+    def __init__(self, infra, **kwargs):
+        self._infra = infra
+
+    @property
+    def infra(self):
+        print (self._infra)
+        return self._infra
+
+class LambdaContent:
+
+    def __init__(self, infra, variables):
+        self._infra = infra
+        self._variables = variables
+
+    @property
+    def infra(self):
+        print (self._infra["type"])
+        return self._infra
+
+    @property
+    def variables(self):
+        return self._variables
+
 class Templater(dict):
 
     """
@@ -43,13 +68,17 @@ class Templater(dict):
     """
     
     def __init__(self, pkg_root, assets):
+        def init_content(self, path, content, is_root):
+            klass = RootContent if is_root else LambdaContent
+            return klass(infra = self.filter_infra(path, content),
+                         variables = self.filter_variables(path, content))
         dict.__init__(self, {
-            path: {
-                "infra": self.filter_infra(path, content),
-                "variables": self.filter_variables(path, content)
-            }
+            path: init_content(self,
+                               path = path,
+                               content = content,
+                               is_root = path == f"{pkg_root}/__init__.py")
             for path, content in assets.items()
-            if (path  == f"{pkg_root}/__init__.py" or
+            if (path == f"{pkg_root}/__init__.py" or
                 path.endswith("index.py"))
         })
         self.pkg_root = pkg_root
@@ -118,7 +147,7 @@ class Templater(dict):
     def handle_root(self, recipe, endpoints, namespace = AppNamespace):
         if not self.has_root:
             raise RuntimeError(f"assets are missing {self.root_filename}")
-        struct = self.root_content["infra"]
+        struct = self.root_content.infra
         schema = self.load_schema("root")
         self.validate_schema(struct = struct,
                              schema = schema)
@@ -196,15 +225,15 @@ class Templater(dict):
     """
     
     def handle_lambdas(self, recipe, endpoints, variables):
-        for filename, asset in self.lambda_content.items():
-            struct = asset["infra"]
+        for filename, content in self.lambda_content.items():
+            struct = content.infra
             type = struct.pop("type") if "type" in struct else "root"
             schema = self.load_schema(type)
             self.validate_schema(struct = struct,
                                  schema = schema)
             struct["handler"] = filename.replace(".py", ".handler") 
             struct["variables"] = {k: {"Ref": H(k)}
-                                   for k in asset["variables"]}
+                                   for k in content.variables}
             variables.update(struct["variables"])
             if type == "endpoint":
                 endpoints.append(struct)

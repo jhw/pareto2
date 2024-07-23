@@ -1,6 +1,7 @@
-### short
+### short [01-sensible-defaults]
 
-- defaults
+- remove default values from demo stuff
+- add defaults code to new content classe
 
 ### medium
 

@@ -54,7 +54,7 @@ class ApiTemplaterTest(ApiTestBase):
                          if "userpool" not in k}) # because website can't have api hence userpool not created
         templater = Templater(pkg_root = pkg_root,
                               assets = assets)
-        root_infra = templater.root_content["infra"]
+        root_infra = templater.root_content.infra
         for attr in ["api", "builder"]:
             root_infra.pop(attr)
         root_infra.setdefault("bucket", {})
