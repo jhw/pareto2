@@ -43,11 +43,10 @@ class RootContent:
 
     @property
     def infra(self):        
-        """
         infra = copy.deepcopy(self._infra)
+        if "api" in infra:
+            infra["api"].setdefault("userpool", {"attributes": []})
         return infra
-        """
-        return self._infra
 
 class LambdaContent:
 

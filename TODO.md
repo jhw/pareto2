@@ -1,12 +1,11 @@
 ### short [01-sensible-defaults]
 
-- why can't root infra be deep copied?
-- why can't alarm be removed from demos config?
 
 ### medium
 
+- separate hello demo project to test website flow
+- why can't alarm be removed from demos config?
 
-- remove hello/hello nesting
 - refactor tests so directory structure matches pareto
 
 - pre- iam optimiser requiring explicit iam role/policy provision
@@ -124,6 +123,7 @@
 
 ### done
 
+- why can't root infra be deep copied?
 - remove default values from demo stuff
 - add defaults code to new content classes
 

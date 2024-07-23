@@ -1,10 +1,6 @@
 """
 infra:
-  api:
-    userpool:
-      attributes:
-      - name: foo
-        value: bar
+  api: {}
   bucket:
     public: false
   builder: {}
