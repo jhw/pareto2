@@ -8,7 +8,6 @@ infra:
   - message
   permissions:
   - s3:GetObject
-  layers: []
 """
 
 def handler(event, context = None):

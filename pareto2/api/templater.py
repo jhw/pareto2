@@ -10,7 +10,7 @@ from pareto2.recipes.website import Website
 from pareto2.services import hungarorise as H
 from pareto2.services.s3 import StreamingBucket
 
-import jsonschema, os, re, yaml
+import copy, jsonschema, os, re, yaml
 
 """
 Pros and cons to having a single top- level namespace
@@ -53,11 +53,18 @@ class LambdaContent:
         self._variables = variables
 
     @property
-    def infra(self, defaults={"size": 1024,
-                              "timeout": 30}):
-        for k, v in defaults.items():
-            self._infra.setdefault(k, v)
-        return self._infra
+    def infra(self):
+        infra = copy.deepcopy(self._infra)
+        for k, v in {"size": 1024,
+                     "timeout": 30,
+                     "permissions": [],
+                     "layers": []}.items():
+            infra.setdefault(k, v)
+        if self._infra["type"] == "worker":
+            for k, v in {"alarm": {"period": 60,
+                                   "threshold": 10}}.items():
+                infra.setdefault(k, v)
+        return infra
 
     @property
     def variables(self):
