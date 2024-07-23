@@ -53,8 +53,10 @@ class LambdaContent:
         self._variables = variables
 
     @property
-    def infra(self):
-        print (self._infra["type"])
+    def infra(self, defaults={"size": 1024,
+                              "timeout": 30}):
+        for k, v in defaults.items():
+            self._infra.setdefault(k, v)
         return self._infra
 
     @property

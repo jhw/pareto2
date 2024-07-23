@@ -9,8 +9,6 @@ infra:
   permissions:
   - s3:GetObject
   layers: []
-  size: 1024
-  timeout: 30
 """
 
 def handler(event, context = None):
