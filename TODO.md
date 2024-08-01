@@ -1,16 +1,15 @@
-### short [01-sensible-defaults]
+### short
 
+- try removing alarm from demos
+- separate hello demo project to test website flow
+- refactor tests so test directory structure matches app 
+- pre- iam optimiser -> explicit iam role/policy provision
+- python version as environment variable
+- replace apigw website with cloudfront version
 
 ### medium
 
-- separate hello demo project to test website flow
-- why can't alarm be removed from demos config?
-
-- refactor tests so directory structure matches pareto
-
-- pre- iam optimiser requiring explicit iam role/policy provision
 - revised create confirmed user with message suppression
-- replace apigw website with cloudfront version
 - cognito cloudwatch logging
 
 - iam optimiser
@@ -19,7 +18,6 @@
 - email login workflow
 - use moto events code to validate custom eventbridge detail
 - validate test events against patterns in infra
-- python version as environment variable
 
 - list_events.py should cutoff on time window basis
 - validate singleton props consistency before silently overwriting
