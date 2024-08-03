@@ -1,3 +1,14 @@
+### iam optimiser  03/08/24
+
+- so this is superficially attractive as it's a way of reducing the number of resources you have 
+- particularly roles where there are only a few types ever used, so a lot of duplication
+- but also policies as well where there is a lot of overlap
+- but it doesn't half feel like a premature optimisation, or over- optimisation
+- a good deal of work for something which in the end doesn't actually have any day to day benefit
+- it also feels like the codebase becomes more brittle by doing this
+- pareto2 has limits, notably in the ability to mix pre- flight and in- flight code, something that only wing seems intent on solving
+- accepting these limits might mean there are some initiatives, possibly this one, that simply aren't worth spending resources on
+
 ### changes to existing cognito resources 29/6/24
 
 AppUserPoolClient:

@@ -1,6 +1,5 @@
 ### short
 
-- pre- iam optimiser -> explicit iam role/policy provision
 - python version as environment variable
 - replace apigw website with cloudfront version
 
@@ -9,7 +8,6 @@
 - revised create confirmed user with message suppression
 - cognito cloudwatch logging
 
-- iam optimiser
 - secrets
 - eventbridge pipes
 - email login workflow
@@ -21,6 +19,7 @@
 
 ### long
 
+- iam optimiser [notes]
 - docstrings
 - visualiser
 - cross- account deployments
