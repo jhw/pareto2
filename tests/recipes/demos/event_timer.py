@@ -2,6 +2,11 @@ from pareto2.recipes.event_timer import EventTimer
 
 import unittest, yaml
 
+"""
+Timer config doesn't have API in front of it hence doesn't benefit from API defaults
+"""
+
+
 Timer = yaml.safe_load("""
 event:
   rate: "1 minute"

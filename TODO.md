@@ -1,7 +1,6 @@
 ### short
 
 - refactor tests so test directory structure matches app 
-- try removing alarm from demos
 - pre- iam optimiser -> explicit iam role/policy provision
 - python version as environment variable
 - replace apigw website with cloudfront version
@@ -122,6 +121,7 @@
 
 ### done
 
+- try removing alarm from demos
 - why can't root infra be deep copied?
 - remove default values from demo stuff
 - add defaults code to new content classes

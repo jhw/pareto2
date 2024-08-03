@@ -3,6 +3,10 @@ from pareto2.recipes.event_worker import EventWorker
 
 import unittest, yaml
 
+"""
+Worker config doesn't have API in front of it hence doesn't benefit from API defaults
+"""
+
 Worker = yaml.safe_load("""
 alarm:
   period: 60
