@@ -1,35 +1,34 @@
 ### short
 
-- python version as environment variable
-- replace apigw website with cloudfront version
+- eventbridge pipes
+- website cloudfront version
+- create_confirmed_user.py with message suppression
+- cognito cloudwatch logging
 
 ### medium
 
-- revised create confirmed user with message suppression
-- cognito cloudwatch logging
-
 - secrets
-- eventbridge pipes
 - email login workflow
 - use moto events code to validate custom eventbridge detail
 - validate test events against patterns in infra
-
 - list_events.py should cutoff on time window basis
 - validate singleton props consistency before silently overwriting
 
 ### long
 
-- iam optimiser [notes]
+
 - docstrings
 - visualiser
-- cross- account deployments
 - xray and tracing
 - step functions
 - appsync
-- winglang
 
 ### thoughts
 
+- python version as environment variable?
+  - not sure this is warranted
+  - could say that pareto is opinionated about running on 3.10
+  - but if that changes it's a simple change and a new tag
 - separate hello demo project to test website flow?
   - just don't see it's worth it
 - suppress message on create confirmed user?

@@ -39,8 +39,8 @@ PoolName, Username = "hello-pool", "foo@bar.com"
 @mock_events
 @mock_sqs
 @mock_cognitoidp
-class WebApiInlineCodeCustomAttributesTest(unittest.TestCase,
-                                           EventsTestMixin):
+class CustomAttributesInlineCodeTest(unittest.TestCase,
+                                     EventsTestMixin):
 
     def setUp(self, rules = Rules):
         self.setup_events(rules = Rules)
