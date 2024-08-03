@@ -1,8 +1,7 @@
 ### short
 
-- try removing alarm from demos
-- separate hello demo project to test website flow
 - refactor tests so test directory structure matches app 
+- try removing alarm from demos
 - pre- iam optimiser -> explicit iam role/policy provision
 - python version as environment variable
 - replace apigw website with cloudfront version
@@ -34,6 +33,8 @@
 
 ### thoughts
 
+- separate hello demo project to test website flow?
+  - just don't see it's worth it
 - suppress message on create confirmed user?
   - not sure is possible
 - infer existence of state variables from lambdas?
