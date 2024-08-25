@@ -1,12 +1,14 @@
 ### short
 
+- allow social provider to be optional
+- check for blank parameters
+
+### medium
+
 - eventbridge pipes
 - website cloudfront version
 - create_confirmed_user.py with message suppression
 - cognito cloudwatch logging
-
-### medium
-
 - secrets
 - email login workflow
 - use moto events code to validate custom eventbridge detail
@@ -118,6 +120,7 @@
 
 ### done
 
+- templater to set detail by default
 - refactor tests so test directory structure matches app 
 - try removing alarm from demos
 - why can't root infra be deep copied?

@@ -204,13 +204,19 @@ class Templater(dict):
 
     userpool is apparently a sync binding (we shall see) but looks very close to the queue implementation
     """
+
+    """
+    event["pattern"].setdefault("detail", {}) because detail is not explicitly required by schema
+    """
             
     def insert_event_source(self, event, namespace = AppNamespace):
         if event["type"] == "bucket":
+            event["pattern"].setdefault("detail", {})
             event["pattern"]["detail"].setdefault("bucket", {})
             event["pattern"]["detail"]["bucket"]["name"] = [{"Ref": H(f"{namespace}-bucket")}]
             event["pattern"]["source"] = ["aws.s3"]
         elif event["type"] == "builder":
+            event["pattern"].setdefault("detail", {})
             event["pattern"]["detail"]["project-name"] = [{"Ref": H(f"{namespace}-project")}]
             event["pattern"]["source"] = ["aws.codebuild"]
         elif event["type"] == "queue":
