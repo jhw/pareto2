@@ -3,7 +3,6 @@ from pareto2.services.events import *
 from pareto2.services.iam import *
 from pareto2.services.sns import *
 from pareto2.recipes import *
-from pareto2.recipes.mixins.alarms import AlarmsMixin
 from pareto2.recipes.mixins.alerts import AlertsMixin
 
 import importlib
@@ -26,7 +25,7 @@ class TopicPermission(L.Permission):
                          source_arn = source_arn,
                          principal = "sns.amazonaws.com")
         
-class EventWorker(AlarmsMixin, AlertsMixin):    
+class EventWorker(AlertsMixin):    
 
     def __init__(self,
                  namespace,
@@ -36,11 +35,8 @@ class EventWorker(AlarmsMixin, AlertsMixin):
         workerfn = self.init_event_worker if "event" in worker else self.init_topic_worker
         workerfn(namespace = namespace,
                  worker = worker)
-        self.init_alarm_hook(namespace = namespace,
-                             alarm = worker["alarm"])
         self.init_alert_hooks(namespace = namespace,
                               log_levels = log_levels)
-        self.init_alarm_resources()
         self.init_alert_resources()
 
     def init_event_worker(self, namespace, worker):

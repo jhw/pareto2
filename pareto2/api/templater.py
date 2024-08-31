@@ -62,10 +62,6 @@ class LambdaContent:
                      "permissions": [],
                      "layers": []}.items():
             infra.setdefault(k, v)
-        if self._infra["type"] == "worker":
-            for k, v in {"alarm": {"period": 60,
-                                   "threshold": 10}}.items():
-                infra.setdefault(k, v)
         return infra
 
     @property
@@ -286,7 +282,6 @@ class Templater(dict):
         
     def spawn_recipe(self,
                      singletons = ["^alert",
-                                   "^alarm",
                                    "^app\\-bucket$"],
                      validate = True):
         recipe, endpoints, variables = Recipe(singletons = singletons), [], set()

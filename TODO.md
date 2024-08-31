@@ -1,14 +1,15 @@
 ### short
 
-- allow social provider to be optional
+- check social provider is optional
 - check for blank parameters
+- add spa host pattern 
 
 ### medium
 
-- eventbridge pipes
-- website cloudfront version
-- create_confirmed_user.py with message suppression
 - cognito cloudwatch logging
+
+- eventbridge pipes
+- create_confirmed_user.py with message suppression
 - secrets
 - email login workflow
 - use moto events code to validate custom eventbridge detail
@@ -17,7 +18,6 @@
 - validate singleton props consistency before silently overwriting
 
 ### long
-
 
 - docstrings
 - visualiser
@@ -120,6 +120,7 @@
 
 ### done
 
+- remove alarms
 - templater to set detail by default
 - refactor tests so test directory structure matches app 
 - try removing alarm from demos

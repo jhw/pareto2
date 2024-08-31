@@ -21,11 +21,6 @@ class SlackInlineCodeTest(unittest.TestCase):
             from pareto2.recipes.mixins.alerts.inline_code import handler
             handler(event, context = None)
 
-    def test_alarms(self, event = SampleEvent):
-        with mock.patch.dict(os.environ, self.env):
-            from pareto2.recipes.mixins.alarms.inline_code import handler
-            handler(event, context = None)
-
     def tearDown(self):
         pass
             
