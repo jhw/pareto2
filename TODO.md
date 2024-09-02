@@ -1,9 +1,13 @@
 ### short [01-custom-message]
 
-- add function/role/policy to web_api
 - add cognito custom_message lambda config
 
+- why does variables referenced in custom_message inline code required `cognito` prefix when defined in setenv.sh?
+- does web_api custom_attributes function need cognito permissions?
+
 ### medium
+
+
 
 - check social provider is optional
 - check for blank parameters
@@ -121,6 +125,7 @@
 
 ### done
 
+- add function/role/policy to web_api
 - add inline code
 - add inline code test
 - remove alarms

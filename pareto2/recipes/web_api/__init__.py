@@ -39,7 +39,27 @@ class CustomAttributesPolicy(Policy):
                                         {"action": ["cognito-idp:AdminGetUser",
                                                     "cognito-idp:AdminUpdateUserAttributes"]}])
 
+class CustomMessageFunction(L.InlineFunction):
+    
+    def __init__(self, namespace):
+        with open("/".join(__file__.split("/")[:-1]+["/inline_code/custom_message.py"])) as f:
+            code = f.read()
+        super().__init__(namespace = namespace,
+                         code = code,
+                         variables = {key: {"Ref": H(f"cognito-{key}")}
+                                      for key in ["temp-password-email-subject",
+                                                  "temp-password-email-message",
+                                                  "password-reset-email-subject",
+                                                  "password-reset-email-message"]})
 
+class CustomMessagePolicy(Policy):
+    
+    def __init__(self, namespace):
+        super().__init__(namespace = namespace,
+                         permissions = [{"action": ["logs:CreateLogGroup",
+                                                    "logs:CreateLogStream",
+                                                    "logs:PutLogEvents"]}])
+        
 class CognitoPermission(L.Permission):
 
     def __init__(self, namespace, userpool_namespace):
@@ -144,6 +164,14 @@ class WebApi(AlertsMixin):
         for klass in [CognitoHookRole,
                       CustomAttributesPolicy]:
             self.append(klass(namespace = custom_attributes_namespace))
+        # custom message
+        custom_message_namespace = f"{namespace}-custom-message"
+        self.append(CognitoPermission(namespace = custom_message_namespace,
+                                      userpool_namespace = namespace))
+        for klass in [CustomMessageFunction,
+                      CognitoHookRole,
+                      CustomMessagePolicy]:
+            self.append(klass(namespace = custom_message_namespace))
 
     def endpoint_namespace(self, namespace, endpoint):
         return "%s-%s" % (namespace,
