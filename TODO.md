@@ -1,9 +1,7 @@
 ### short [01-custom-message]
 
-- add inline code
 - add function/role/policy to web_api
 - add cognito custom_message lambda config
-- add inline code test
 
 ### medium
 
@@ -123,6 +121,8 @@
 
 ### done
 
+- add inline code
+- add inline code test
 - remove alarms
 - templater to set detail by default
 - refactor tests so test directory structure matches app 
