@@ -1,13 +1,16 @@
-### short
+### short [01-custom-message]
+
+- add inline code
+- add function/role/policy to web_api
+- add cognito custom_message lambda config
+- add inline code test
+
+### medium
 
 - check social provider is optional
 - check for blank parameters
 - add spa host pattern 
-
-### medium
-
 - cognito cloudwatch logging
-
 - eventbridge pipes
 - create_confirmed_user.py with message suppression
 - secrets
