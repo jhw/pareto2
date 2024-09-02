@@ -43,11 +43,10 @@ class EmailAliasedUserPool(UserPool):
     @property
     def lambda_config(self):
         custom_attributes_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-attributes-function"), "Arn"]}
-        return {
-            key: custom_attributes_arn 
-            for key in ["PostConfirmation",
-                        "PostAuthentication"]
-        }
+        custom_message_arn = {"Fn::GetAtt": [H(f"{self.namespace}-custom-message-function"), "Arn"]}
+        return {"CustomMessage": custom_message_arn,
+                "PostConfirmation": custom_attributes_arn,
+                "PostAuthentication": custom_attributes_arn}
     
     """
     email attribute is configured for email aliasing, which allows email to act as an alias for username
