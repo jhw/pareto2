@@ -1,8 +1,8 @@
 ### short [01-custom-message]
 
-- does web_api custom_attributes function need cognito permissions?
-
-- why does variables referenced in custom_message inline code required `cognito` prefix when defined in setenv.sh?
+- why do custom message os variables have to be defined in hello setenv.sh but USER_CUSTOM_ATTRIBUTES (used by custom attributes handler) do not?
+- why do variables referenced in custom_message inline code required `cognito` prefix when defined in setenv.sh?
+- are user attributes even part of root schema now?
 
 ### medium
 
@@ -122,6 +122,7 @@
 
 ### done
 
+- does web_api custom_attributes function need cognito permissions?
 - add cognito custom_message lambda config
 - add function/role/policy to web_api
 - add inline code
