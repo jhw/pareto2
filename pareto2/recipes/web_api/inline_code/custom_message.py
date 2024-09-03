@@ -28,8 +28,7 @@ def handler(event, context):
     else:
         return event
     template_values = {attr: event['request'][f"{attr}Parameter"]
-                       for attr in ["username", "code"]
-                       if f"{attr}Parameter" in event["request"]}
+                       for attr in ["username", "code"]}
     event['response']['emailSubject'] = replace_placeholders(subject_body, template_values)
     event['response']['emailMessage'] = replace_placeholders(message_body, template_values)
     return event # NB Cognito Lambda handlers must return JSON
