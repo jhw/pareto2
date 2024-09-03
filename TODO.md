@@ -1,9 +1,7 @@
 ### short [01-cognito-templates]
 
-- refactor templater to pass templates to web API recipe like attributes 
-- add template placeholders, looking at old inline validation code to make sure you have correct names for different cases 
-- add templater checks for template placeholder variables
-- add template to root jsonschema 
+- extend JSONschema templates validation
+- templater to validate existence of required template placeholders
 
 ### medium
 
@@ -123,6 +121,8 @@
 
 ### done
 
+- add template to root jsonschema 
+- refactor templater to pass templates to web API recipe like attributes 
 - remove cognito os variables from hello setenv
 - refactor web API to pass templates to custom message function like custom attributes 
 - refactor inline code to take single json struct of templates

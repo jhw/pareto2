@@ -10,7 +10,11 @@ from pareto2.recipes.website import Website
 from pareto2.services import hungarorise as H
 from pareto2.services.s3 import StreamingBucket
 
-import copy, jsonschema, os, re, yaml
+import copy
+import jsonschema
+import os
+import re
+import yaml
 
 """
 Pros and cons to having a single top- level namespace
@@ -36,16 +40,28 @@ In the end a) may be the least bad solution, esp as the key culprits (website an
 
 AppNamespace = "app"
 
+EmailTemplates = yaml.safe_load("""
+temp_password:
+  subject: 'Temporary Password'
+  message: 'Your username is {username} and your temporary password is {code}'
+password_reset:
+  subject: 'Password Reset'
+  message: 'Your password reset code is {code}'
+""")
+
 class RootContent:
 
     def __init__(self, infra, **kwargs):
         self._infra = infra
 
     @property
-    def infra(self):        
+    def infra(self, templates = EmailTemplates):        
         infra = copy.deepcopy(self._infra)
         if "api" in infra:
-            infra["api"].setdefault("userpool", {"attributes": []})
+            infra["api"].setdefault("userpool", {})
+            userpool = infra["api"]["userpool"]
+            userpool.setdefault("attributes", [])
+            userpool.setdefault("templates", templates)
         return infra
 
 class LambdaContent:

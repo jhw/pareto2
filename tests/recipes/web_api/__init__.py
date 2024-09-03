@@ -45,6 +45,13 @@ attributes:
 - name: foo
   type: str
   value: bar
+templates:
+  temp_password:
+    subject: "whatevs"
+    message: "whatevs"
+  password_reset:
+    subject: "whatevs"
+    message: "whatevs"
 """)
 
 class WebApiDemoTest(unittest.TestCase):

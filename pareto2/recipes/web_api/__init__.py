@@ -164,12 +164,8 @@ class WebApi(AlertsMixin):
         custom_message_namespace = f"{namespace}-custom-message"
         self.append(CognitoPermission(namespace = custom_message_namespace,
                                       userpool_namespace = namespace))
-        temp_templates = {"temp_password": {"subject": "whatevs",
-                                            "message": "whatevs"},
-                          "password_reset": {"subject": "whatevs",
-                                             "message": "whatevs"}}
         self.append(CustomMessageFunction(namespace = custom_message_namespace,
-                                          templates = temp_templates))
+                                          templates = userpool["templates"]))
         for klass in [CognitoHookRole,
                       CustomMessagePolicy]:
             self.append(klass(namespace = custom_message_namespace))

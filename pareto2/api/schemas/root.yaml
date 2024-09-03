@@ -20,8 +20,13 @@ properties:
                 - name
                 - value
             additionalProperties: false
+          templates:
+            type: object
+            properties: {}
+            required: []
         required:
           - attributes
+          - templates
     required:
       - userpool
     additionalProperties: false
