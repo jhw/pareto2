@@ -1,6 +1,12 @@
-### short [01-custom-message]
+### short [01-cognito-templates]
 
-- include custom messages in root __init__.py block as templates variable
+- refactor inline code to take single json struct of templates
+- remove cognito os variables from hello setenv
+- refactor web API to pass templates to custom message function like custom attributes 
+- refactor templater to pass templates to web API recipe like attributes 
+- add template placeholders, looking at old inline validation code to make sure you have correct names for different cases 
+- add templater checks for template placeholder variables
+- add template to root jsonschema 
 
 ### medium
 
@@ -120,6 +126,7 @@
 
 ### done
 
+- remove validation from inline code 
 - are user attributes even part of root schema now?
 - does web_api custom_attributes function need cognito permissions?
 - add cognito custom_message lambda config
