@@ -41,16 +41,12 @@ class CustomAttributesPolicy(Policy):
 
 class CustomMessageFunction(L.InlineFunction):
     
-    def __init__(self, namespace):
+    def __init__(self, namespace, templates):
         with open("/".join(__file__.split("/")[:-1]+["/inline_code/custom_message.py"])) as f:
             code = f.read()
         super().__init__(namespace = namespace,
                          code = code,
-                         variables = {key: {"Ref": H(f"cognito-{key}")}
-                                      for key in ["temp-password-email-subject",
-                                                  "temp-password-email-message",
-                                                  "password-reset-email-subject",
-                                                  "password-reset-email-message"]})
+                         variables = {"email-templates": json.dumps(templates)})
 
 class CustomMessagePolicy(Policy):
     
@@ -168,8 +164,13 @@ class WebApi(AlertsMixin):
         custom_message_namespace = f"{namespace}-custom-message"
         self.append(CognitoPermission(namespace = custom_message_namespace,
                                       userpool_namespace = namespace))
-        for klass in [CustomMessageFunction,
-                      CognitoHookRole,
+        temp_templates = {"temp_password": {"subject": "whatevs",
+                                            "message": "whatevs"},
+                          "password_reset": {"subject": "whatevs",
+                                             "message": "whatevs"}}
+        self.append(CustomMessageFunction(namespace = custom_message_namespace,
+                                          templates = temp_templates))
+        for klass in [CognitoHookRole,
                       CustomMessagePolicy]:
             self.append(klass(namespace = custom_message_namespace))
 
