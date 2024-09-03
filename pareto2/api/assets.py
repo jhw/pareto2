@@ -1,4 +1,6 @@
-import io, os, zipfile
+import io
+import os
+import zipfile
 
 class Assets(dict):
 

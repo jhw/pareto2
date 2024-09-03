@@ -1,6 +1,9 @@
 from pareto2.services import hungarorise as H
 
-import boto3, json, os, re
+import boto3
+import json
+import os
+import re
 
 class Env(dict):
 

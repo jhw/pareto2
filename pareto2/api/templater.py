@@ -6,7 +6,6 @@ from pareto2.recipes.stream_table import StreamTable
 from pareto2.recipes.task_queue import TaskQueue
 from pareto2.recipes.web_api import WebApi
 from pareto2.recipes.website import Website
-
 from pareto2.services import hungarorise as H
 from pareto2.services.s3 import StreamingBucket
 
@@ -47,6 +46,14 @@ temp_password:
 password_reset:
   subject: 'Password Reset'
   message: 'Your password reset code is {code}'
+""")
+
+EmailPlaceholders = yaml.safe_load("""
+temp_password:
+  - "{username}"
+  - "{code}"
+password_reset:
+  - "{code}"
 """)
 
 class RootContent:
@@ -170,7 +177,11 @@ class Templater(dict):
     builder conflicts with public bucket because both have role, policy in app namespace; no good reason for both to exist the same time
     """
         
-    def handle_root(self, recipe, endpoints, namespace = AppNamespace):
+    def handle_root(self,
+                    recipe,
+                    endpoints,
+                    placeholders = EmailPlaceholders,
+                    namespace = AppNamespace):
         if not self.has_root:
             raise RuntimeError(f"assets are missing {self.root_filename}")
         struct = self.root_content.infra
@@ -188,6 +199,13 @@ class Templater(dict):
                 recipe += WebApi(namespace = namespace,
                                  endpoints = endpoints,
                                  userpool = userpool)
+                for key, template in userpool["templates"].items():
+                    missing = []
+                    for placeholder in placeholders[key]:
+                        if placeholder not in template["message"]:
+                            missing.append(placeholder)
+                    if missing != []:
+                        raise RuntimeError(f"{key} template is missing placeholders - {', '.join(missing)}")                   
         if "bucket" in struct:
             if struct["bucket"]["public"]:
                 recipe += Website(namespace = namespace)

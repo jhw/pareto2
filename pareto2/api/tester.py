@@ -4,7 +4,10 @@ Tester dumps to filesystem rather than load tests into memory because of the com
 
 from pareto2.api.assets import Assets
 
-import importlib.util, os, traceback, unittest
+import importlib.util
+import os
+import traceback
+import unittest
 
 """
 /tmp guaranteed to exist on both Lambda and Unix systems in general

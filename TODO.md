@@ -1,7 +1,5 @@
 ### short [01-cognito-templates]
 
-- templater to validate existence of required template placeholders
-
 ### medium
 
 - check social provider is optional
@@ -120,6 +118,7 @@
 
 ### done
 
+- templater to validate existence of required template placeholders
 - extend JSONschema templates validation
 - add template to root jsonschema 
 - refactor templater to pass templates to web API recipe like attributes 
