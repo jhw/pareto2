@@ -1,6 +1,5 @@
 ### short [01-cognito-templates]
 
-- refactor inline code to take single json struct of templates
 - remove cognito os variables from hello setenv
 - refactor web API to pass templates to custom message function like custom attributes 
 - refactor templater to pass templates to web API recipe like attributes 
@@ -126,6 +125,7 @@
 
 ### done
 
+- refactor inline code to take single json struct of templates
 - remove validation from inline code 
 - are user attributes even part of root schema now?
 - does web_api custom_attributes function need cognito permissions?

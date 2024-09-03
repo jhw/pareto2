@@ -3,12 +3,13 @@ https://stackoverflow.com/a/78622562/124179
 """
 
 """
-    if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
-        required_placeholders = ['username', 'code']
-    elif event['triggerSource'] == 'CustomMessage_ForgotPassword':
-        required_placeholders = ['code']
+if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
+    required_placeholders = ['username', 'code']
+elif event['triggerSource'] == 'CustomMessage_ForgotPassword':
+    required_placeholders = ['code']
 """
 
+import json
 import os
 
 def replace_placeholders(message, template_values):
@@ -17,12 +18,13 @@ def replace_placeholders(message, template_values):
     return message
 
 def handler(event, context):
+    templates = json.loads(os.environ["EMAIL_TEMPLATES"])
     if event['triggerSource'] == 'CustomMessage_AdminCreateUser':
-        subject_body = os.environ['TEMP_PASSWORD_EMAIL_SUBJECT']
-        message_body = os.environ['TEMP_PASSWORD_EMAIL_MESSAGE']
+        subject_body = templates["temp_password"]["subject"]
+        message_body = templates["temp_password"]["message"]
     elif event['triggerSource'] == 'CustomMessage_ForgotPassword':
-        subject_body = os.environ['PASSWORD_RESET_EMAIL_SUBJECT']
-        message_body = os.environ['PASSWORD_RESET_EMAIL_MESSAGE']
+        subject_body = templates["password_reset"]["subject"]
+        message_body = templates["password_reset"]["message"]
     else:
         return event
     template_values = {attr: event['request'][f"{attr}Parameter"]

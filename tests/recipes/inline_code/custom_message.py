@@ -52,34 +52,48 @@ response:
   smsSubject: ""
 """)
 
+EmailTemplates = yaml.safe_load("""
+temp_password:
+  subject: 'Temporary Password'
+  message: 'Your username is {username} and your temporary password is {code}'
+password_reset:
+  subject: 'Password Reset'
+  message: 'Your password reset code is {code}'
+""")
+
 class CustomMessageInlineCodeTest(unittest.TestCase):
 
-    def setUp(self):        
+    def setUp(self, email_templates = EmailTemplates):   
         self.env = {}
-        self.env['TEMP_PASSWORD_EMAIL_SUBJECT'] = 'Temporary Password'
-        self.env['TEMP_PASSWORD_EMAIL_MESSAGE'] = 'Your username is {username} and your temporary password is {code}'
-        self.env['PASSWORD_RESET_EMAIL_SUBJECT'] = 'Password Reset'
-        self.env['PASSWORD_RESET_EMAIL_MESSAGE'] = 'Your password reset code is {code}'
+        self.env["EMAIL_TEMPLATES"] = json.dumps(email_templates)
 
-    def test_admin_create_user(self, event = AdminCreateUserEvent):
+    def test_admin_create_user(self,
+                               event = AdminCreateUserEvent,
+                               email_templates = EmailTemplates):
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.custom_message import handler
             modevent = handler(event, context = None)
             response = modevent["response"]
             self.assertTrue("emailSubject" in response)
-            self.assertEqual(response["emailSubject"], 'Temporary Password')
+            self.assertEqual(response["emailSubject"],
+                             email_templates["temp_password"]["subject"])
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"],  'Your username is {username} and your temporary password is {####}')
+            self.assertEqual(response["emailMessage"],
+                             email_templates["temp_password"]["message"].replace("{code}", "{####}"))
 
-    def test_forgot_password(self, event = ForgotPasswordEvent):
+    def test_forgot_password(self,
+                             event = ForgotPasswordEvent,
+                             email_templates = EmailTemplates):
         with mock.patch.dict(os.environ, self.env):
             from pareto2.recipes.web_api.inline_code.custom_message import handler
             modevent = handler(event, context = None)
             response = modevent["response"]
             self.assertTrue("emailSubject" in response)
-            self.assertEqual(response["emailSubject"], 'Password Reset')
+            self.assertEqual(response["emailSubject"],
+                             email_templates["password_reset"]["subject"])
             self.assertTrue("emailMessage" in response)
-            self.assertEqual(response["emailMessage"], 'Your password reset code is {####}')
+            self.assertEqual(response["emailMessage"],
+                             email_templates["password_reset"]["message"].replace("{code}", "{####}"))
 
     def tearDown(self):
         pass

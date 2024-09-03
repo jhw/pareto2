@@ -46,43 +46,27 @@ class CustomAttributesInlineCodeTest(unittest.TestCase,
         self.setup_events(rules = Rules)
         self.setup_cognito()
         self.env = {}
-        self.env['USER_CUSTOM_ATTRIBUTES'] = json.dumps([
-            {
-                "name": "foo",
-                "value": "bar"
-            }
-        ])
+        self.env['USER_CUSTOM_ATTRIBUTES'] = json.dumps([{"name": "foo",
+                                                          "value": "bar"}])
 
     def setup_cognito(self, pool_name = PoolName, username = Username):
         self.cognito = boto3.client("cognito-idp")
         response = self.cognito.create_user_pool(
             PoolName = pool_name,
-            Schema=[
-                {
-                    'Name': 'email',
+            Schema=[{'Name': 'email',
                     'AttributeDataType': 'String',
                     'Mutable': True,
-                    'Required': True,
-                },
-                {
-                    'Name': 'custom:foo',
+                    'Required': True},
+                    {'Name': 'custom:foo',
                     'AttributeDataType': 'String',
-                    'Mutable': True
-                }
-            ]
-        )
+                    'Mutable': True}])
         self.user_pool_id = response['UserPool']['Id']
         self.cognito.admin_create_user(
             UserPoolId = self.user_pool_id,
             Username = username,
-            UserAttributes=[
-                {
-                    'Name': 'email',
-                    'Value': username
-                }
-            ],
-            MessageAction='SUPPRESS'
-        )
+            UserAttributes=[{'Name': 'email',
+                             'Value': username}],
+            MessageAction='SUPPRESS')
 
     def test_handler(self,
                      event = SampleEvent,
