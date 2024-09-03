@@ -22,7 +22,27 @@ properties:
             additionalProperties: false
           templates:
             type: object
-            properties: {}
+            properties:
+              temp_password:
+                type: object
+                properties:
+                  subject:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - subject
+                  - message
+              password_reset:
+                type: object
+                properties:
+                  subject:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - subject
+                  - message
             required: []
         required:
           - attributes

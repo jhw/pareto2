@@ -55,13 +55,16 @@ class RootContent:
         self._infra = infra
 
     @property
-    def infra(self, templates = EmailTemplates):        
+    def infra(self, default_templates = EmailTemplates):        
         infra = copy.deepcopy(self._infra)
         if "api" in infra:
             infra["api"].setdefault("userpool", {})
             userpool = infra["api"]["userpool"]
             userpool.setdefault("attributes", [])
-            userpool.setdefault("templates", templates)
+            userpool.setdefault("templates", {})
+            templates = userpool["templates"]
+            for key, value in default_templates.items():
+                templates.setdefault(key, value)
         return infra
 
 class LambdaContent:

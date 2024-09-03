@@ -1,6 +1,5 @@
 ### short [01-cognito-templates]
 
-- extend JSONschema templates validation
 - templater to validate existence of required template placeholders
 
 ### medium
@@ -121,6 +120,7 @@
 
 ### done
 
+- extend JSONschema templates validation
 - add template to root jsonschema 
 - refactor templater to pass templates to web API recipe like attributes 
 - remove cognito os variables from hello setenv
