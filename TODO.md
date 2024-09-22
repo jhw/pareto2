@@ -1,6 +1,6 @@
 ### short
 
-- replace %s
+- continue replacing %s
 
 ``
 You need to add a DependsOn attribute to the AppApiMapping resource, ensuring that it only gets created after the AppDomainName resource has been successfully created. Here's how you can modify the CloudFormation template:

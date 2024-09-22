@@ -27,8 +27,7 @@ if __name__ == "__main__":
         cf = boto3.client("cloudformation")
         functions = fetch_functions(cf, stack_name)
         for logical_id in sorted(functions.keys()):
-            print("%s\t%s" % (logical_id,
-                               functions[logical_id]))
+            print(f"{logical_id}\t{functions[logical_id]}")
     except RuntimeError as error:
         print(f"Error: {error}")
     except ClientError as error:

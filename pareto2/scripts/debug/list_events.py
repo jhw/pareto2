@@ -52,7 +52,7 @@ if __name__ == "__main__":
                                        for value in values]))
             count += 1
         print()
-        print("%i events" % count)
+        print(f"{count} events")
     except RuntimeError as error:
         print(f"Error: {error}")
     except ClientError as error:

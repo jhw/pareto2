@@ -44,11 +44,10 @@ if __name__ == "__main__":
         for event in events:
             if "ResourceStatusReason" not in event:
                 continue
-            print("%s => %s" % (event["LogicalResourceId"],
-                                 event["ResourceStatusReason"]))
+            print(f"{event['LogicalResourceId']} => {event['ResourceStatusReason']}")
             count += 1
         print()
-        print("%i events" % count)
+        print(f"{count} events")
     except RuntimeError as error:
         print(f"Error: {error}")
     except ClientError as error:

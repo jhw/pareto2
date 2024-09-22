@@ -9,7 +9,7 @@ def list_hosted_zones(route53):
             for zone in (route53.list_hosted_zones_by_name()["HostedZones"])}
 
 def list_record_sets(route53, hosted_zone_id):
-    print("fetching record sets for %s" % hosted_zone_id)
+    print(f"fetching record sets for {hosted_zone_id}")
     return route53.list_resource_record_sets(HostedZoneId = hosted_zone_id)["ResourceRecordSets"]
 
 def list_certificates(acm):
@@ -17,48 +17,44 @@ def list_certificates(acm):
     return {cert["DomainName"]:cert["CertificateArn"]
             for cert in acm.list_certificates()["CertificateSummaryList"]}
 
-def fetch_resource_record(acm, cert_arn, maxtries = 30, wait = 2):
-    for i in range(maxtries):
-        print("fetching resource record for %s [%i/%i]" % (cert_arn,
-                                                            i+1,
-                                                            maxtries))
+def fetch_resource_record(acm, cert_arn, max_tries = 30, wait = 2):
+    for i in range(max_tries):
+        print(f"fetching resource record for {cert_arn} [{i+1}/{max_tries}]")
         cert = acm.describe_certificate(CertificateArn = resp["CertificateArn"])["Certificate"]
         if ("DomainValidationOptions" in cert and
             cert["DomainValidationOptions"] != [] and
             "ResourceRecord" in cert["DomainValidationOptions"][0]):
             return cert["DomainValidationOptions"][0]["ResourceRecord"]
         time.sleep(wait)
-    raise RuntimeError("no resource record found for %s" % cert_arn)
+    raise RuntimeError(f"no resource record found for {cert_arn}")
 
-def check_certificate_status(acm, cert_arn, maxtries = 500, wait = 2, targetstatus = "ISSUED"):
-    for i in range(maxtries):
+def check_certificate_status(acm, cert_arn, max_tries = 500, wait = 2, target_status = "ISSUED"):
+    for i in range(max_tries):
         cert = acm.describe_certificate(CertificateArn = cert_arn)["Certificate"]
-        print("certificate status %s [%i/%i]" % (cert["Status"],
-                                                  i+1,
-                                                  maxtries))
-        if cert["Status"] == targetstatus:
+        print(f"certificate status {cert['Status']} [{i+1}/{max_tries}]")
+        if cert["Status"] == target_status:
             return
         time.sleep(wait)
-    raise RuntimeError("certificate status of %s not realised" % targetstatus)
+    raise RuntimeError(f"certificate status of {target_status} not realised")
 
 if __name__ == "__main__":
     try:
         if len(sys.argv) < 3:
-            raise RuntimeError("please enter hostname, region")
-        hostname, region = sys.argv[1:3]
-        nperiods = len([c for c in hostname
+            raise RuntimeError("please enter host_name, region")
+        host_name, region = sys.argv[1:3]
+        nperiods = len([c for c in host_name
                         if c == "."])
         if nperiods != 1:            
-            raise RuntimeError("hostname can only have a single period")
-        if hostname[-1] == ".":
-            raise RuntimeError("hostname cannot end in period")
+            raise RuntimeError("host_name can only have a single period")
+        if host_name[-1] == ".":
+            raise RuntimeError("host_name cannot end in period")
         if not re.search("^\\D{2}\\-\\D{4}\\-\\d{1}$", region):
             raise RuntimeError("region is invalid")
         route53 = boto3.client("route53")
         hosted_zones = list_hosted_zones(route53)
-        hosted_zone_name = "%s." % hostname        
+        hosted_zone_name = f"{host_name}."
         if hosted_zone_name not in hosted_zones:
-            raise RuntimeError("hosted zone %s not found" % hosted_zone_name)
+            raise RuntimeError(f"hosted zone {hosted_zone_name} not found")
         hosted_zone_id = hosted_zones[hosted_zone_name]
         record_sets = list_record_sets(route53, hosted_zone_id)
         record_settypes = set([record_set["Type"] for record_set in record_sets])
@@ -68,10 +64,10 @@ if __name__ == "__main__":
         """
         acm = boto3.client("acm", region_name = region)
         certificates = list_certificates(acm)
-        cert_domain_name = "*.%s" % hostname
+        cert_domain_name = f"*.{host_name}"
         if cert_domain_name in certificates:
-            raise RuntimeError("cert %s already exists" % cert_domain_name)
-        print("fetching certificate for %s" % cert_domain_name)
+            raise RuntimeError(f"cert {cert_domain_name} already exists")
+        print(f"fetching certificate for {cert_domain_name}")
         resp = acm.request_certificate(DomainName = cert_domain_name,
                                        ValidationMethod = "DNS",
                                        SubjectAlternativeNames = [cert_domain_name])
@@ -83,7 +79,7 @@ if __name__ == "__main__":
                                "ResourceRecords": [{"Value": resource_record["Value"]}]}
         change_batch = {"Changes": [{'Action': 'UPSERT',
                                      'ResourceRecordSet': resource_record_set}]}
-        print("creating CNAME record for %s" % hosted_zone_id)
+        print(f"creating CNAME record for {hosted_zone_id}")
         print(route53.change_resource_record_sets(HostedZoneId = hosted_zone_id,
                                                    ChangeBatch = change_batch))
         print("checking certificate status")

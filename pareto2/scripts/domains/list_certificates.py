@@ -11,9 +11,9 @@ if __name__ == "__main__":
             raise RuntimeError("region is invalid")
         acm = boto3.client("acm", region_name = region) # NB
         for cert in acm.list_certificates()["CertificateSummaryList"]:
-            print("--- %s ---" % (cert["DomainName"]))
-            print("arn: %s" % cert["CertificateArn"])
+            print(f"--- {cert['DomainName']} ---")
+            print(f"arn: {cert['CertificateArn']}")
             cert_ = acm.describe_certificate(CertificateArn = cert["CertificateArn"])["Certificate"]
-            print("status: %s" % cert_["Status"])
+            print(f"status: {cert_['Status']}")
     except RuntimeError as error:
         print(f"Error: {error}")

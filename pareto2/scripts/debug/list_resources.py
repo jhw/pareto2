@@ -43,7 +43,7 @@ if __name__ == "__main__":
                                       for value in values]))
             count += 1
         print()
-        print("%i resources" % count)
+        print(f"{count} resources")
     except RuntimeError as error:
         print(f"Error: {error}")
     except ClientError as error:

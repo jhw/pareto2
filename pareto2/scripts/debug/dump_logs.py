@@ -53,7 +53,7 @@ if __name__ == "__main__":
         if logical_id not in functions:
             raise RuntimeError("logical id not found")
         physical_id = functions[logical_id]
-        log_group_name = "/aws/lambda/%s" % physical_id
+        log_group_name = f"/aws/lambda/{physical_id}"
         kwargs = {"logGroupName": log_group_name,
                   "startTime": start_time,
                   "interleaved": True}

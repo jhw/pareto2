@@ -20,23 +20,23 @@ def fetch_resources(cf, stack_name, filter_fn = lambda x: True):
     return sorted(resources,
                   key = lambda x: x["LastUpdatedTimestamp"])
 
-def empty_bucket(s3, bucketname):
+def empty_bucket(s3, bucket_name):
     try:
-        print("emptying %s" % bucketname)
+        print(f"emptying {bucket_name}")
         paginator = s3.get_paginator("list_objects_v2")
-        pages = paginator.paginate(Bucket = bucketname)
+        pages = paginator.paginate(Bucket = bucket_name)
         for struct in pages:
             if "Contents" in struct:
                 for obj in struct["Contents"]:
-                    print("deleting %s" % obj["Key"])
-                    s3.delete_object(Bucket = bucketname,
+                    print(f"deleting {obj['Key']}")
+                    s3.delete_object(Bucket = bucket_name,
                                      Key = obj["Key"])
     except ClientError as error:
         if error.response["Error"]["Code"] not in ["NoSuchBucket"]:
             raise error
 
 def delete_stack(cf, s3, stack_name):
-    print("deleting stack %s" % stack_name)
+    print(f"deleting stack {stack_name}")
     filter_fn = lambda x: x["ResourceType"] == "AWS::S3::Bucket"
     buckets = fetch_resources(cf, stack_name, filter_fn)
     for bucket in buckets:

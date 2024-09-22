@@ -13,8 +13,8 @@ if __name__ == "__main__":
         for stack in reversed(sorted(cf.describe_stacks()["Stacks"],
                                      key = lambda x: x["CreationTime"])):
             print("%s %s %s" % (format_value(stack["StackName"]),
-                                 format_value(stack["StackStatus"]),
-                                 format_value(stack["CreationTime"])))
+                                format_value(stack["StackStatus"]),
+                                format_value(stack["CreationTime"])))
     except RuntimeError as error:
         print(f"Error: {error}")
     except ClientError as error:

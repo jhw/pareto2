@@ -25,14 +25,14 @@ if __name__ == "__main__":
         file_name = "template-latest.json" if len(sys.argv) < 2 else sys.argv[1]
         cf = boto3.client("cloudformation")
         action = "update" if stack_exists(cf, stack_name) else "create"
-        fn = getattr(cf, "%s_stack" % action)
+        fn = getattr(cf, f"{action}_stack")
         templateurl = TemplatePath % (region,
                                       bucket_name,
                                       file_name)
         fn(StackName = stack_name,
            TemplateURL = templateurl,
            Capabilities = ["CAPABILITY_IAM"])
-        waiter = cf.get_waiter("stack_%s_complete" % action)
+        waiter = cf.get_waiter(f"stack_{action}_complete")
         waiter.wait(StackName = stack_name)
     except RuntimeError as error:
         print(f"Error: {error}")
