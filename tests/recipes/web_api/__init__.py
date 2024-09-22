@@ -41,10 +41,12 @@ Endpoints = yaml.safe_load("""
 """)
 
 UserPool = yaml.safe_load("""
+identity_providers:
+  - google
 attributes:
-- name: foo
-  type: str
-  value: bar
+  - name: foo
+    type: str
+    value: bar
 templates:
   temp_password:
     subject: "whatevs"

@@ -1,6 +1,6 @@
 ### short
 
-- social providers should be optional [so don't have to supply google client and secret]
+- multiple web-api tests with different userpool api configurations
 
 - POST method should auto- insert parameters attribute
 
@@ -120,6 +120,8 @@
   - think topic, pattern probably more naturalg
 
 ### done
+
+- social providers should be optional [so don't have to supply google client and secret]
 
 ```
 To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvider resource is created before the AppUserPoolClient. This can be achieved by explicitly adding a DependsOn attribute to the AppUserPoolClient resource to ensure it waits for the GoogleUserPoolIdentityProvider resource to be created and configured.

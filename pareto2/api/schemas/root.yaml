@@ -7,6 +7,12 @@ properties:
       userpool:
         type: object
         properties:
+          identity_providers:
+            type: array
+            items:
+              type: string
+              enum:
+                - google
           attributes:
             type: array
             items:
@@ -45,6 +51,7 @@ properties:
                   - message
             required: []
         required:
+          - identity_providers
           - attributes
           - templates
     required:

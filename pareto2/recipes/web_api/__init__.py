@@ -132,13 +132,12 @@ class WebApi(AlertsMixin):
         
     def init_private_api(self,
                          namespace,
-                         userpool,
-                         identity_providers = ["google"]):
+                         userpool):
         self.append(EmailAliasedUserPool(namespace = namespace,
                                          attributes = userpool["attributes"]))
         self.append(UserPoolClient(namespace = namespace,
-                                   identity_providers = identity_providers))
-        for provider in identity_providers:
+                                   identity_providers = userpool["identity_providers"]))
+        for provider in userpool["identity_providers"]:
             self.append(UserPoolIdentityProvider(namespace = namespace,
                                                  provider_namespace = provider))
         for klass in [Authorizer,

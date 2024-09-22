@@ -67,6 +67,7 @@ class RootContent:
         if "api" in infra:
             infra["api"].setdefault("userpool", {})
             userpool = infra["api"]["userpool"]
+            userpool.setdefault("identity_providers", [])
             userpool.setdefault("attributes", [])
             userpool.setdefault("templates", {})
             templates = userpool["templates"]
