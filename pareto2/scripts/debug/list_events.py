@@ -47,9 +47,9 @@ if __name__ == "__main__":
                                  "PhysicalResourceId",
                                  "ResourceType",
                                  "ResourceStatus"]]
-            formatstr = " ".join(["%s" for value in values])
-            print (formatstr % tuple([format_value(value)
-                                      for value in values]))
+            format_str = " ".join(["%s" for value in values])
+            print (format_str % tuple([format_value(value)
+                                       for value in values]))
             count += 1
         print ()
         print ("%i events" % count)

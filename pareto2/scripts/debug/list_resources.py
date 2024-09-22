@@ -8,10 +8,10 @@ def format_value(value, n = 32):
     text = str(value)
     return text[:n] if len(text) > n else text+"".join([" " for i in range(n-len(text))])
 
-def fetch_resources(cf, stackname):
+def fetch_resources(cf, stack_name):
     resources, token = [], None
     while True:
-        kwargs = {"StackName": stackname}
+        kwargs = {"StackName": stack_name}
         if token:
             kwargs["NextToken"] = token
         resp = cf.list_stack_resources(**kwargs)
@@ -26,11 +26,11 @@ def fetch_resources(cf, stackname):
 
 if __name__ == "__main__":
     try:
-        stackname = os.environ["APP_NAME"]
-        if stackname in ["", None]:
+        stack_name = os.environ["APP_NAME"]
+        if stack_name in ["", None]:
             raise RuntimeError("APP_NAME not found")
         cf = boto3.client("cloudformation")
-        resources, count = fetch_resources(cf, stackname), 0
+        resources, count = fetch_resources(cf, stack_name), 0
         for resource in resources:
             values = [resource[attr] if attr in resource else ""
                     for attr in ["LastUpdatedTimestamp",

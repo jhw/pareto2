@@ -4,9 +4,9 @@ import boto3
 import os
 import sys
 
-def list_contents(s3, bucketname, prefix):
+def list_contents(s3, bucket_name, prefix):
     paginator = s3.get_paginator("list_objects_v2")
-    kwargs = {"Bucket": bucketname}
+    kwargs = {"Bucket": bucket_name}
     if prefix:
         kwargs["Prefix"] = prefix
     pages = paginator.paginate(**kwargs)
@@ -19,12 +19,12 @@ def list_contents(s3, bucketname, prefix):
     
 if __name__ == "__main__":
     try:
-        bucketname = os.environ["ARTIFACTS_BUCKET"]
-        if bucketname in ["", None]:
+        bucket_name = os.environ["ARTIFACTS_BUCKET"]
+        if bucket_name in ["", None]:
             raise RuntimeError("ARTIFACTS_BUCKET does not exist")
         prefix = sys.argv[1] if len(sys.argv) > 1 else None            
         s3 = boto3.client("s3")
-        list_contents(s3, bucketname, prefix)
+        list_contents(s3, bucket_name, prefix)
     except RuntimeError as error:
         print ("Error: %s" % (str(error)))
     except ClientError as error:

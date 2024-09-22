@@ -29,14 +29,14 @@ if __name__ == "__main__":
             raise RuntimeError("invalid email format")
         cf = boto3.client("cloudformation")
         outputs = fetch_outputs(cf, stackname)
-        userpoolkey = hungarorise(f"{namespace}-user-pool")
-        if userpoolkey not in outputs:
+        userpool_key = hungarorise(f"{namespace}-user-pool")
+        if userpool_key not in outputs:
             raise RuntimeError("userpool not found")
-        userpool = outputs[userpoolkey]
-        clientkey = hungarorise(f"{namespace}-user-pool-client")
-        if clientkey not in outputs:
+        userpool = outputs[userpool_key]
+        client_key = hungarorise(f"{namespace}-user-pool-client")
+        if client_key not in outputs:
             raise RuntimeError("client not found")
-        client = outputs[clientkey]
+        client = outputs[client_key]
         cognito = boto3.client("cognito-idp")        
         print (cognito.sign_up(ClientId = client,
                                Username = email,
