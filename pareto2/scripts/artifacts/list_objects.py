@@ -13,7 +13,7 @@ def list_contents(s3, bucket_name, prefix):
     for struct in pages:
         if "Contents" in struct:
             for obj in struct["Contents"]:
-                print ("%s\t%s\t%s" % (obj["LastModified"],
+                print("%s\t%s\t%s" % (obj["LastModified"],
                                        obj["Size"],
                                        obj["Key"]))
     
@@ -26,6 +26,6 @@ if __name__ == "__main__":
         s3 = boto3.client("s3")
         list_contents(s3, bucket_name, prefix)
     except RuntimeError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))
     except ClientError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))

@@ -35,8 +35,8 @@ if __name__ == "__main__":
         waiter = cf.get_waiter("stack_%s_complete" % action)
         waiter.wait(StackName = stack_name)
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except WaiterError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))

@@ -31,9 +31,9 @@ if __name__ == "__main__":
         userpool = outputs[userpool_key]
         cognito = boto3.client("cognito-idp")
         resp = cognito.list_users(UserPoolId = userpool)
-        print (resp)
+        print(resp)
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
 

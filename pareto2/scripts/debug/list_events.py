@@ -48,14 +48,14 @@ if __name__ == "__main__":
                                  "ResourceType",
                                  "ResourceStatus"]]
             format_str = " ".join(["%s" for value in values])
-            print (format_str % tuple([format_value(value)
+            print(format_str % tuple([format_value(value)
                                        for value in values]))
             count += 1
-        print ()
-        print ("%i events" % count)
+        print()
+        print("%i events" % count)
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
 
         

@@ -24,6 +24,6 @@ if __name__=="__main__":
         if not template.is_complete:
             raise RuntimeError("template missing parameters %s" % ", ".join(template.unpopulated_parameters))
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))

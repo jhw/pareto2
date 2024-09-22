@@ -142,13 +142,13 @@ class Template(dict):
             elif isinstance(element, dict):
                 for key, subelement in element.items():
                     if is_ref(key, subelement):
-                        # print (key, subelement)
+                        # print(key, subelement)
                         refs.add(subelement)
                     elif is_getatt(key, subelement):
-                        # print (key, subelement[0])
+                        # print(key, subelement[0])
                         refs.add(subelement[0])
                     elif is_depends(key, subelement):
-                        # print (key, set(subelement))
+                        # print(key, set(subelement))
                         refs.update(subelement)
                     else:
                         filter_refs(subelement, refs)

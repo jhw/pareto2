@@ -22,13 +22,13 @@ def fetch_resources(cf, stack_name, filter_fn = lambda x: True):
 
 def empty_bucket(s3, bucketname):
     try:
-        print ("emptying %s" % bucketname)
+        print("emptying %s" % bucketname)
         paginator = s3.get_paginator("list_objects_v2")
         pages = paginator.paginate(Bucket = bucketname)
         for struct in pages:
             if "Contents" in struct:
                 for obj in struct["Contents"]:
-                    print ("deleting %s" % obj["Key"])
+                    print("deleting %s" % obj["Key"])
                     s3.delete_object(Bucket = bucketname,
                                      Key = obj["Key"])
     except ClientError as error:
@@ -36,7 +36,7 @@ def empty_bucket(s3, bucketname):
             raise error
 
 def delete_stack(cf, s3, stack_name):
-    print ("deleting stack %s" % stack_name)
+    print("deleting stack %s" % stack_name)
     filter_fn = lambda x: x["ResourceType"] == "AWS::S3::Bucket"
     buckets = fetch_resources(cf, stack_name, filter_fn)
     for bucket in buckets:
@@ -53,6 +53,6 @@ if __name__ == "__main__":
         cf, s3 = boto3.client("cloudformation"), boto3.client("s3")
         delete_stack(cf, s3, stack_name)
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))

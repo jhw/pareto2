@@ -27,9 +27,9 @@ if __name__ == "__main__":
         cf = boto3.client("cloudformation")
         functions = fetch_functions(cf, stack_name)
         for logical_id in sorted(functions.keys()):
-            print ("%s\t%s" % (logical_id,
+            print("%s\t%s" % (logical_id,
                                functions[logical_id]))
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))

@@ -38,13 +38,13 @@ if __name__ == "__main__":
             raise RuntimeError("client not found")
         client = outputs[client_key]
         cognito = boto3.client("cognito-idp")        
-        print (cognito.sign_up(ClientId = client,
+        print(cognito.sign_up(ClientId = client,
                                Username = email,
                                Password = password))
-        print (cognito.admin_confirm_sign_up(UserPoolId = userpool,
+        print(cognito.admin_confirm_sign_up(UserPoolId = userpool,
                                              Username = email))
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
 

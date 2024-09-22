@@ -19,7 +19,7 @@ def refactor_src(pat, rep, root):
                 new_file_name = re.sub(pat, rep, file_name)
                 if (text != new_text or
                     file_name != new_file_name):
-                    print (new_file_name)
+                    print(new_file_name)
                     dest = open(new_file_name, 'w')
                     dest.write(new_text)
                     dest.close()
@@ -32,4 +32,4 @@ if __name__ == "__main__":
         pat, rep, root = sys.argv[1:5]
         refactor_src(pat, rep, root)
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))

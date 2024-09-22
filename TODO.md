@@ -1,6 +1,5 @@
 ### short
 
-- replace "print ("
 - replace %s
 
 ``
@@ -132,6 +131,7 @@ To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvide
 
 ### done
 
+- replace "print ("
 - validate_template should use validate = False so you can see template
 - templater to validate existence of required template placeholders
 - extend JSONschema templates validation

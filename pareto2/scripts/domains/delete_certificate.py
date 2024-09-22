@@ -3,17 +3,17 @@ import re
 import sys
 
 def list_hosted_zones(route53):
-    print ("fetching hosted zones")
+    print("fetching hosted zones")
     return {zone["Name"]: zone["Id"]
             for zone in (route53.list_hosted_zones_by_name()["HostedZones"])}
 
 def list_certificates(acm):
-    print ("fetching certificates")
+    print("fetching certificates")
     return {cert["DomainName"]:cert["CertificateArn"]
             for cert in acm.list_certificates()["CertificateSummaryList"]}
 
 def list_record_sets(route53, hosted_zone_id):
-    print ("fetching record sets for %s" % hosted_zone_id)
+    print("fetching record sets for %s" % hosted_zone_id)
     return route53.list_resource_record_sets(HostedZoneId = hosted_zone_id)["ResourceRecordSets"]
 
 if __name__ == "__main__":
@@ -41,8 +41,8 @@ if __name__ == "__main__":
         if cert_name not in certificates:
             raise RuntimeError("cert %s does not exists" % cert_name)
         cert_arn = certificates[cert_name]
-        print ("deleting certificate %s" % cert_arn)
-        print (acm.delete_certificate(CertificateArn = cert_arn))
+        print("deleting certificate %s" % cert_arn)
+        print(acm.delete_certificate(CertificateArn = cert_arn))
         record_sets = list_record_sets(route53, hosted_zone_id)
         record_set_types = [record_set["Type"] for record_set in record_sets]
         record_set_type = "CNAME"
@@ -57,8 +57,8 @@ if __name__ == "__main__":
         record_set = matching_record_sets[0]
         change_batch = {"Changes": [{'Action': 'DELETE',
                                     'ResourceRecordSet': record_set}]}
-        print ("deleting CNAME record for %s" % hosted_zone_id)
-        print (route53.change_resource_record_sets(HostedZoneId = hosted_zone_id,
+        print("deleting CNAME record for %s" % hosted_zone_id)
+        print(route53.change_resource_record_sets(HostedZoneId = hosted_zone_id,
                                                    ChangeBatch = change_batch))
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))

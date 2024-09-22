@@ -24,10 +24,10 @@ if __name__ == "__main__":
         cf = boto3.client("cloudformation")
         outputs = fetch_outputs(cf, stack_name)
         for k in sorted(outputs.keys()):
-            print ("%s\t%s" % (format_value(k),
+            print("%s\t%s" % (format_value(k),
                                outputs[k]))
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
         

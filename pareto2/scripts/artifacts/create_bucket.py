@@ -7,7 +7,7 @@ Region = "eu-west-1"
 
 def create_bucket(s3, bucket_name, region):
     location = {"LocationConstraint": region}
-    print (s3.create_bucket(Bucket = bucket_name,
+    print(s3.create_bucket(Bucket = bucket_name,
                             CreateBucketConfiguration = location))
     
 if __name__ == "__main__":
@@ -21,6 +21,6 @@ if __name__ == "__main__":
         s3 = boto3.client("s3")
         create_bucket(s3, bucket_name, region)
     except RuntimeError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))
     except ClientError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))

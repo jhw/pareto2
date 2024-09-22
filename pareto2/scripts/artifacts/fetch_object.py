@@ -18,6 +18,6 @@ if __name__ == "__main__":
         with open("tmp/%s" % key.replace("/", "-"), 'wb') as f:
             f.write(resp["Body"].read())
     except RuntimeError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))
     except ClientError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))

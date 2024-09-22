@@ -60,8 +60,8 @@ if __name__ == "__main__":
         events = fetch_log_events(logs, kwargs)
         for event in events:
             msg = re.sub("\\r|\\n", "", event["message"])
-            print (msg)
+            print(msg)
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))
     except ClientError as error:
-        print ("Error: %s" % str(error))
+        print("Error: %s" % str(error))

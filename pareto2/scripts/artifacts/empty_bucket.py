@@ -10,7 +10,7 @@ def empty_bucket(fn):
         for struct in pages:
             if "Contents" in struct:
                 for obj in struct["Contents"]:
-                    print (obj["Key"])
+                    print(obj["Key"])
                     s3.delete_object(Bucket = bucket_name,
                                      Key = obj["Key"])
         fn(s3, bucket_name)
@@ -18,7 +18,7 @@ def empty_bucket(fn):
 
 @empty_bucket
 def delete_bucket(s3, bucket_name):
-    # print (s3.delete_bucket(Bucket = bucket_name))
+    # print(s3.delete_bucket(Bucket = bucket_name))
     pass
     
 if __name__ == "__main__":
@@ -29,6 +29,6 @@ if __name__ == "__main__":
         s3 = boto3.client("s3")
         delete_bucket(s3, bucket_name)
     except RuntimeError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))
     except ClientError as error:
-        print ("Error: %s" % (str(error)))
+        print("Error: %s" % (str(error)))
