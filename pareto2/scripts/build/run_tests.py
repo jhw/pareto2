@@ -25,4 +25,4 @@ if __name__ == "__main__":
         tester.dump_assets()
         tester.run_tests()
     except RuntimeError as error:
-        print("Error: %s" % error)
+        print(f"Error: {error}")

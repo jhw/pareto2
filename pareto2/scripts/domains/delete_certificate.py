@@ -61,4 +61,4 @@ if __name__ == "__main__":
         print(route53.change_resource_record_sets(HostedZoneId = hosted_zone_id,
                                                    ChangeBatch = change_batch))
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

@@ -45,6 +45,6 @@ if __name__ == "__main__":
             )
             print(f"Deleted user {username}: {delete_resp}")    
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

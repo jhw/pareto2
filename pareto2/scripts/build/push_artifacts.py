@@ -36,6 +36,6 @@ if __name__=="__main__":
                              bucket_name = env["ArtifactsBucket"],
                              key = key)
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

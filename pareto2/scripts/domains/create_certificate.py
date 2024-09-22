@@ -89,4 +89,4 @@ if __name__ == "__main__":
         print("checking certificate status")
         check_certificate_status(acm, cert_arn)
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

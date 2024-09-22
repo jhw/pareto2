@@ -29,6 +29,6 @@ if __name__ == "__main__":
         s3 = boto3.client("s3")
         delete_bucket(s3, bucket_name)
     except RuntimeError as error:
-        print("Error: %s" % (str(error)))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % (str(error)))
+        print(f"Error: {error}")

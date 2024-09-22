@@ -62,6 +62,6 @@ if __name__ == "__main__":
             msg = re.sub("\\r|\\n", "", event["message"])
             print(msg)
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

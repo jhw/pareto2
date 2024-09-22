@@ -16,4 +16,4 @@ if __name__ == "__main__":
             cert_ = acm.describe_certificate(CertificateArn = cert["CertificateArn"])["Certificate"]
             print("status: %s" % cert_["Status"])
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

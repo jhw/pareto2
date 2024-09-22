@@ -33,7 +33,7 @@ if __name__ == "__main__":
         resp = cognito.list_users(UserPoolId = userpool)
         print(resp)
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
 

@@ -53,6 +53,6 @@ if __name__ == "__main__":
         cf, s3 = boto3.client("cloudformation"), boto3.client("s3")
         delete_stack(cf, s3, stack_name)
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

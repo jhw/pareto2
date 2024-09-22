@@ -21,6 +21,6 @@ if __name__ == "__main__":
         s3 = boto3.client("s3")
         create_bucket(s3, bucket_name, region)
     except RuntimeError as error:
-        print("Error: %s" % (str(error)))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % (str(error)))
+        print(f"Error: {error}")

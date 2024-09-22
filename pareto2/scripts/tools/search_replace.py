@@ -32,4 +32,4 @@ if __name__ == "__main__":
         pat, rep, root = sys.argv[1:5]
         refactor_src(pat, rep, root)
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")

@@ -27,7 +27,7 @@ if __name__ == "__main__":
             print("%s\t%s" % (format_value(k),
                                outputs[k]))
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
         

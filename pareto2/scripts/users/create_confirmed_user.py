@@ -44,7 +44,7 @@ if __name__ == "__main__":
         print(cognito.admin_confirm_sign_up(UserPoolId = userpool,
                                              Username = email))
     except RuntimeError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
     except ClientError as error:
-        print("Error: %s" % str(error))
+        print(f"Error: {error}")
 
