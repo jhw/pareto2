@@ -1,6 +1,10 @@
 from botocore.exceptions import ClientError
 
-import boto3, os, re, sys, time
+import boto3
+import os
+import re
+import sys
+import time
 
 def fetch_functions(cf, stack_name):
     functions, token = {}, None

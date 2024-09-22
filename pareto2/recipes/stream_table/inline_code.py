@@ -1,4 +1,6 @@
-import boto3, json, os
+import boto3
+import json
+import os
 
 class Key:
 

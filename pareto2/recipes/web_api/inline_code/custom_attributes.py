@@ -5,9 +5,11 @@
 - you do *not* use `custom:` prefix when defining in cloudformation, but you *do* need same prefix when referencing from boto3
 """
 
-import boto3, json, os
-
 from botocore.exceptions import ClientError
+
+import boto3
+import json
+import os
 
 """
 - admin_get_user throws ClientError [UserNotFoundException]

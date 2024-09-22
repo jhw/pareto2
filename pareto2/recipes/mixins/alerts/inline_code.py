@@ -1,4 +1,8 @@
-import base64, gzip, json, os, urllib.request
+import base64
+import gzip
+import json
+import os
+import urllib.request
 
 # https://colorswall.com/palette/3
 

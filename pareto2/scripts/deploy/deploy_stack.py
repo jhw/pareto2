@@ -1,6 +1,8 @@
 from botocore.exceptions import ClientError, WaiterError
 
-import boto3, os, sys
+import boto3
+import os
+import sys
 
 TemplatePath = "https://s3.%s.amazonaws.com/%s/%s"
 

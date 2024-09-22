@@ -1,4 +1,6 @@
-import boto3, re, sys
+import boto3
+import re
+import sys
 
 if __name__ == "__main__":
     try:

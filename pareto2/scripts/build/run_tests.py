@@ -2,7 +2,8 @@ from pareto2.api import file_loader
 from pareto2.api.env import Env
 from pareto2.api.tester import Tester
 
-import os, sys
+import os
+import sys
 
 """
 Note call to clean local /tmp filesystem, to avoid cross- pollution by different projects

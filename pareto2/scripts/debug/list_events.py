@@ -1,6 +1,9 @@
 from botocore.exceptions import ClientError
 
-import boto3, os, re, sys
+import boto3
+import os
+import re
+import sys
 
 def format_value(value, n = 32):
     text = str(value)

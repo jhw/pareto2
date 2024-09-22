@@ -1,6 +1,8 @@
 from botocore.exceptions import ClientError
 
-import boto3, os, sys
+import boto3
+import os
+import sys
 
 if __name__ == "__main__":
     try:

@@ -1,5 +1,8 @@
 ### short
 
+- replace %s
+- replace XXXkey
+
 ``
 You need to add a DependsOn attribute to the AppApiMapping resource, ensuring that it only gets created after the AppDomainName resource has been successfully created. Here's how you can modify the CloudFormation template:
 ```
@@ -10,7 +13,6 @@ To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvide
 
 - POST method should auto- insert parameters attribute
 - social providers should be optional [so don't have to supply google client and secret]
-- validate_template should use validate = False so you can see template
 
 ### medium
 
@@ -130,6 +132,7 @@ To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvide
 
 ### done
 
+- validate_template should use validate = False so you can see template
 - templater to validate existence of required template placeholders
 - extend JSONschema templates validation
 - add template to root jsonschema 

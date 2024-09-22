@@ -1,5 +1,4 @@
 from pareto2.services import hungarorise as H
-
 from pareto2.services import Resource
 
 LambdaMethodArn = "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${arn}/invocations"

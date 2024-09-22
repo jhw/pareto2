@@ -1,12 +1,11 @@
+from pareto2.recipes import *
+from pareto2.recipes.mixins.alerts import AlertsMixin
 from pareto2.services import hungarorise as H
 from pareto2.services.events import *
 from pareto2.services.iam import *
 from pareto2.services.sns import *
-from pareto2.recipes import *
-from pareto2.recipes.mixins.alerts import AlertsMixin
 
 import importlib
-
 L = importlib.import_module("pareto2.services.lambda")
 
 class RulePermission(L.Permission):

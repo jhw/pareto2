@@ -1,4 +1,7 @@
-import boto3, re, sys, time
+import boto3
+import re
+import sys
+import time
 
 def list_hosted_zones(route53):
     print ("fetching hosted zones")

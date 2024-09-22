@@ -1,6 +1,7 @@
 from botocore.exceptions import ClientError
 
-import boto3, os
+import boto3
+import os
 
 def fetch_resources(cf, stackname, filterfn = lambda x: True):
     resources, token = [], None

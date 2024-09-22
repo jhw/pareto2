@@ -1,5 +1,8 @@
 from botocore.exceptions import ClientError
-import boto3, re, sys
+
+import boto3
+import re
+import sys
 
 EmailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 

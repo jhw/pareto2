@@ -1,6 +1,7 @@
 from botocore.exceptions import ClientError
 
-import boto3, os
+import boto3
+import os
 
 def empty_bucket(fn):
     def wrapped(s3, bucketname):

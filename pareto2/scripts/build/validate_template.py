@@ -1,9 +1,8 @@
+from botocore.exceptions import ClientError
 from pareto2.api import file_loader
 from pareto2.api.assets import Assets
 from pareto2.api.env import Env
 from pareto2.api.templater import Templater
-
-from botocore.exceptions import ClientError
 
 import boto3
 
@@ -20,7 +19,8 @@ if __name__=="__main__":
                                                      filter_fn = filter_fn)})
         templater = Templater(pkg_root = env["PkgRoot"],
                               assets = assets)
-        template = templater.spawn_template(env = env)
+        template = templater.spawn_template(env = env,
+                                            validate = False) # else exception thrown and you don't get to see the template
         if not template.is_complete:
             raise RuntimeError("template missing parameters %s" % ", ".join(template.unpopulated_parameters))
     except RuntimeError as error:

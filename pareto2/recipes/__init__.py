@@ -1,12 +1,11 @@
 from pareto2.services import hungarorise as H
-
 from pareto2.services.iam import *
 
 import importlib
-
 L = importlib.import_module("pareto2.services.lambda")
-
-import json, os, re
+import json
+import os
+import re
                 
 """
 - a recipe is just a very thin wrapper around list of resources

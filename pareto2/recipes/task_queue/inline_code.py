@@ -1,4 +1,6 @@
-import boto3, json, os
+import boto3
+import json
+import os
 
 """
 SQS passes body as a string; this is simply forwarded to EventBridge as the Detail (string) value

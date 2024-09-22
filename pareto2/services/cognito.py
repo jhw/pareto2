@@ -1,6 +1,5 @@
 from pareto2.services import hungarorise as H
 from pareto2.services import Resource
-
 from pareto2.services.iam import *
 
 """

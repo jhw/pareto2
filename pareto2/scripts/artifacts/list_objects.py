@@ -1,6 +1,8 @@
 from botocore.exceptions import ClientError
 
-import boto3, os, sys
+import boto3
+import os
+import sys
 
 def list_contents(s3, bucketname, prefix):
     paginator = s3.get_paginator("list_objects_v2")
