@@ -175,6 +175,12 @@ class UserPoolClient(Resource):
     @property
     def visible(self):
         return True
+
+    @property
+    def depends(self):
+        return [H(f"{provider}-user-pool-identity-provider")
+                for provider in self.identity_providers
+                if provider != "cognito"]
     
 class UserPoolIdentityProvider(Resource):
 

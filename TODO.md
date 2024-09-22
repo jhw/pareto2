@@ -1,15 +1,11 @@
 ### short
 
-```
-To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvider resource is created before the AppUserPoolClient. This can be achieved by explicitly adding a DependsOn attribute to the AppUserPoolClient resource to ensure it waits for the GoogleUserPoolIdentityProvider resource to be created and configured.
-````
+- social providers should be optional [so don't have to supply google client and secret]
 
 - POST method should auto- insert parameters attribute
-- social providers should be optional [so don't have to supply google client and secret]
 
 ### medium
 
-- check social provider is optional
 - check for blank parameters
 - add spa host pattern 
 - cognito cloudwatch logging
@@ -124,6 +120,10 @@ To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvide
   - think topic, pattern probably more naturalg
 
 ### done
+
+```
+To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvider resource is created before the AppUserPoolClient. This can be achieved by explicitly adding a DependsOn attribute to the AppUserPoolClient resource to ensure it waits for the GoogleUserPoolIdentityProvider resource to be created and configured.
+````
 
 ```
 You need to add a DependsOn attribute to the AppApiMapping resource, ensuring that it only gets created after the AppDomainName resource has been successfully created. Here's how you can modify the CloudFormation template:
