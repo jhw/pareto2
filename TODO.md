@@ -1,11 +1,5 @@
 ### short
 
-- continue replacing %s
-
-``
-You need to add a DependsOn attribute to the AppApiMapping resource, ensuring that it only gets created after the AppDomainName resource has been successfully created. Here's how you can modify the CloudFormation template:
-```
-
 ```
 To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvider resource is created before the AppUserPoolClient. This can be achieved by explicitly adding a DependsOn attribute to the AppUserPoolClient resource to ensure it waits for the GoogleUserPoolIdentityProvider resource to be created and configured.
 ````
@@ -131,6 +125,11 @@ To resolve this issue, you need to ensure that the GoogleUserPoolIdentityProvide
 
 ### done
 
+```
+You need to add a DependsOn attribute to the AppApiMapping resource, ensuring that it only gets created after the AppDomainName resource has been successfully created. Here's how you can modify the CloudFormation template:
+```
+
+- continue replacing %s
 - replace "print ("
 - validate_template should use validate = False so you can see template
 - templater to validate existence of required template placeholders

@@ -100,3 +100,8 @@ class BasePathMapping(AWSResource):
             "Stage": {"Ref": H(f"{self.namespace}-stage")}
         }
 
+    @property
+    def depends(self):
+        return [H(f"{self.namespace}-domain-name")]
+
+
