@@ -1,11 +1,11 @@
 ### short
 
-- multiple web-api tests with different userpool api configurations
-
-- POST method should auto- insert parameters attribute
-
 ### medium
 
+- automatic insertion of standard s3 and dynamodb permissions
+- iam role/policy optimiser
+- multiple web-api tests with different userpool api configurations
+- POST method should auto- insert parameters attribute
 - check for blank parameters
 - add spa host pattern 
 - cognito cloudwatch logging
